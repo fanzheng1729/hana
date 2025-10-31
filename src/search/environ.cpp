@@ -73,8 +73,13 @@ bool Environ::valid(Move const & move) const
     if (!checkdisjvars(move))
         return false;
 
-    std::vector<Goalptr> hypvec(move.hypcount());
-    for (Hypsize i = 0; i < move.hypcount(); ++i)
+    // Vector of the hypotheses of the move.
+    std::vector<Goalptr> & hypvec = const_cast<Move &>(move).hypvec;
+    // # hypotheses of the move.
+    Hypsize const hypcount = move.hypcount();
+    // Record the hypotheses.
+    hypvec.assign(hypcount, NULL);
+    for (Hypsize i = 0; i < hypcount; ++i)
     {
         if (move.hypfloats(i)) continue;
         // Add the essential hypothesis as a goal.
@@ -101,8 +106,6 @@ bool Environ::valid(Move const & move) const
 // std::cout << ' ' << goalptr->first.RPN << goalptr->second.hypstotrim;
     }
 // std::cout << moves;
-    // Record the goal in the hypotheses of the move.
-    const_cast<Move &>(move).hypvec.swap(hypvec);
 
     return true;
 }
