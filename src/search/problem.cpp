@@ -54,7 +54,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 
     if (value == WDL::WIN)
         return p->game().writeproof() ? EvalWIN : EvalLOSS;
-    else
+    else // value is between WDL::LOSS and WDL::WIN.
         return Eval(value, false);
 }
 
