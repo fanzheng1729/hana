@@ -23,7 +23,7 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
 void Game::sethyps() const
 {
     typedef std::set<Goalptr> Goalset;
-    Goalset & set = const_cast<Goalset &>(hypset);
+    std::set<Goalptr> & set = const_cast<Goalset &>(hypset);
     std::remove_copy_if(attempt.hypvec.begin(), attempt.hypvec.end(),
                         end_inserter(set), std::logical_not<const void *>());
 }
