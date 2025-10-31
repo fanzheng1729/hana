@@ -24,9 +24,9 @@ Value Problem::UCBnewstage(Nodeptr p) const
 Eval Problem::evalleaf(Nodeptr p) const
 {
     Game const & game = p->game();
-    bool loops(Nodeptr p);
     if (game.attempt.type == Move::ASS)
     {
+        bool loops(Nodeptr p);
         if (loops(p))
             return game.setevaled(), EvalLOSS;
         game.setevaled();
