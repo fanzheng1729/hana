@@ -51,7 +51,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
         evalnewleaves(p);
         value = minimax(p);
     }
-    
+
     if (value == WDL::WIN)
         return p->game().writeproof() ? EvalWIN : EvalLOSS;
     else
