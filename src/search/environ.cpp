@@ -78,7 +78,7 @@ bool Environ::valid(Move const & move) const
     // # hypotheses of the move.
     Hypsize const hypcount = move.hypcount();
     // Record the hypotheses.
-    hypvec.assign(hypcount, NULL);
+    hypvec.resize(hypcount);
     for (Hypsize i = 0; i < hypcount; ++i)
     {
         if (move.hypfloats(i)) continue;
