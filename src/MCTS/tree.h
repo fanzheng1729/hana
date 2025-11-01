@@ -145,10 +145,10 @@ public:
         void reserve(size_type const n) const
         {
             if (!*this) return;
-            bool const moved = n > m_ptr->children.capacity();
+            bool const childmoved = n > m_ptr->children.capacity();
             m_ptr->children.reserve(n);
 #ifdef __cpp_lib_incomplete_container_elements
-            if (moved && hasgrandchild())
+            if (childmoved && hasgrandchild())
                 FOR (Nodeptr child, m_ptr->children)
                     child.m_ptr->fixparents();
 #endif // __cpp_lib_incomplete_container_elements
