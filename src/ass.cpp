@@ -12,10 +12,10 @@ Bvector & Assertion::trimvars
     for (Hypsize i = 0; i < hypcount(); ++i)
     {
         Hypothesis const & hyp = hypiters[i]->second;
-        if (!hyp.floats) continue;
+        if (!hypfloats(i)) continue;
         // Appearance of the variable in hypotheses
-        Bvector const & usage = varusage.at(hyp.expression[1]);
-// std::cout << "use of " << hyp.expreesion[1] << ' ';
+        Bvector const & usage = varusage.at(hypexp(i)[1]);
+// std::cout << "use of " << hypexp(i)[1] << ' ';
         Hypsize j = hypcount() - 1;
         for ( ; j != Hypsize(-1); --j)
             if (hypstotrim[j] && usage[j]) break;
