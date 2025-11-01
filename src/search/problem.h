@@ -39,6 +39,12 @@ public:
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(Nodeptr p) const;
+    // Call back when children of p moved.
+    virtual void expandcallback(Nodeptr p, NodeMovement movement)
+    {
+        if (!isourturn(p)) throw 1;
+        // if (isourturn(p) && movement == CHILDMOVED) throw 1;
+    }
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
     virtual Eval evalleaf(Nodeptr p) const;
@@ -80,7 +86,7 @@ public:
     void printstats() const;
     void printenvs() const;
     void navigate(bool detailed = true) const;
-    ~Problem()
+    virtual ~Problem()
     {
         FOR (Subenvs::const_reference subenv, subenvs)
             delete subenv.second;

@@ -6,6 +6,11 @@
 #include <vector>
 #include "../util/for.h"
 // #undef __cpp_lib_incomplete_container_elements
+
+#ifdef __cpp_lib_incomplete_container_elements
+enum NodeMovement {NONEMOVED = 0, SELFMOVED, CHILDMOVED};
+#endif // __cpp_lib_incomplete_container_elements
+
 template<class T>
 class Tree
 {
@@ -17,7 +22,6 @@ public:
     class TreeNode;
     // Children of a node
 #ifdef __cpp_lib_incomplete_container_elements
-    enum NodeMovement {NONEMOVED = 0, SELFMOVED, CHILDMOVED};
     typedef std::vector<TreeNode> Children;
 #else
     typedef std::vector<Nodeptr> Children;
@@ -159,7 +163,8 @@ public:
         {
             if (!*this)
                 return NONEMOVED;
-            bool const childmoved = n > m_ptr->children.capacity();
+            bool const childmoved = !m_ptr->children.empty() &&
+                                    n > m_ptr->children.capacity();
             m_ptr->children.reserve(n);
 #ifdef __cpp_lib_incomplete_container_elements
             if (!childmoved)
@@ -172,9 +177,8 @@ public:
                 grandchildmoved |=
                 (child.m_ptr->fixparents() == CHILDMOVED);
             return grandchildmoved ? CHILDMOVED : SELFMOVED;
-#else
-            return NONEMOVED;
 #endif // __cpp_lib_incomplete_container_elements
+            return NONEMOVED;
         }
         // Return true if *this is ancestor of p.
         // Return false if p is NULL
