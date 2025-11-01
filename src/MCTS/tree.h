@@ -17,6 +17,7 @@ public:
     class TreeNode;
     // Children of a node
 #ifdef __cpp_lib_incomplete_container_elements
+    enum NodeMovement {NONEMOVED = 0, SELFMOVED, CHILDMOVED};
     typedef std::vector<TreeNode> Children;
 #else
     typedef std::vector<Nodeptr> Children;
@@ -44,18 +45,26 @@ public:
         }
 #ifdef __cpp_lib_incomplete_container_elements
         // Fix parent pointers of children.
-        void fixparents()
+        // Return the movement of children and itself.
+        NodeMovement fixparents()
         {
             bool selfmoved = false;
+            // Check if the node itself is moved.
+            // If so, fix its children's parent pointer.
             FOR (TreeNode & child, children)
                 if (child.parent != this)
                 {
                     child.parent = this;
                     selfmoved = true;
                 }
-            if (selfmoved)
-                FOR (TreeNode & child, children)
-                    child.fixparents();
+            // Node itself is not moved.
+            if (!selfmoved)
+                return NONEMOVED;
+            // Node itself is moved. Check if its children moved.
+            bool childmoved = false;
+            FOR (TreeNode & child, children)
+                childmoved |= (child.fixparents() != NONEMOVED);
+            return childmoved ? CHILDMOVED : SELFMOVED;
         }
 #endif // __cpp_lib_incomplete_container_elements
     }; // class TreeNode
@@ -143,18 +152,28 @@ public:
         // Return pointer to a child of a node.
         // Return NULL if *this is NULL.
         Nodeptr child(size_type index) const
-            { return *this ? m_ptr->children[i] : Nodeptr(); }
+            { return *this ? m_ptr->children[index] : Nodeptr(); }
         // Reserve space for children and fix the parents of existing ones.
-        // DO NOTHING if *this is NULL.
-        void reserve(size_type const n) const
+        // Return the movement of children and grandchildren.
+        NodeMovement reserve(size_type n) const
         {
-            if (!*this) return;
+            if (!*this)
+                return NONEMOVED;
             bool const childmoved = n > m_ptr->children.capacity();
             m_ptr->children.reserve(n);
 #ifdef __cpp_lib_incomplete_container_elements
-            if (childmoved && hasgrandchild())
-                FOR (Nodeptr child, m_ptr->children)
-                    child.m_ptr->fixparents();
+            if (!childmoved)
+                return NONEMOVED;
+            if (!hasgrandchild())
+                return SELFMOVED;
+            // (childmoved && hasgrandchild())
+            bool grandchildmoved = false;
+            FOR (Nodeptr child, m_ptr->children)
+                grandchildmoved |=
+                (child.m_ptr->fixparents() == CHILDMOVED);
+            return grandchildmoved ? CHILDMOVED : SELFMOVED;
+#else
+            return NONEMOVED;
 #endif // __cpp_lib_incomplete_container_elements
         }
         // Return true if *this is ancestor of p.
