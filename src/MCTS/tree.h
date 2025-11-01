@@ -37,7 +37,6 @@ public:
         // Constructor. DOES NOT set size
         TreeNode(T const & x) : parent(NULL), value(x) {}
         // Change the sizes of the node and its ancestors.
-        // DO NOTHING if this == NULL.
         void incsize(size_type const n)
         {
             for (TreeNode * p = this; p; p = p->parent)
