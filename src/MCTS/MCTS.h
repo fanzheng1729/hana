@@ -142,6 +142,7 @@ public:
         stage_t & stage = p->m_stage;
         return addchildren(p, p->moves(isourturn(p), stage++));
     }
+    virtual void expandcallback(Nodeptr p, NodeMovement movement) {}
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
     virtual Eval evalleaf(Nodeptr p) const = 0;
@@ -224,7 +225,7 @@ public:
     void showeval() const
     {
         std::cout << "value = " << value() << " size = " << size();
-        std::cout << (issure() ? "" : " not") << " sure" << std::endl;
+        std::cout << &" not"[issure()] << std::endl;
     }
     virtual ~MCTS() {}
 private:
@@ -235,7 +236,7 @@ private:
 // if (p->stage() >= 5)
 // std::cout << "Adding " << moves.size() << " moves to " << *p;
         size_type const oldsize = p.children()->size();
-        p.reserve(oldsize + moves.size());
+        expandcallback(p, p.reserve(oldsize + moves.size()));
 
         FOR (typename Moves::const_reference move, moves)
         {
