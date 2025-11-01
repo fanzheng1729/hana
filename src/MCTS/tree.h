@@ -21,8 +21,6 @@ public:
 #else
     typedef std::vector<Nodeptr> Children;
 #endif // __cpp_lib_incomplete_container_elements
-    // Wrapper of pointer to a node
-private:
     // Node of the tree
     class TreeNode
     {
@@ -62,9 +60,11 @@ private:
         }
 #endif // __cpp_lib_incomplete_container_elements
     }; // class TreeNode
+private:
     // Pointer to the root
     TreeNode * m_data;
 public:
+    // Wrapper of pointer to a node
     class Nodeptr
     {
         friend Tree;
