@@ -22,8 +22,7 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
 // Set the hypothesis set of a game.
 void Game::sethyps() const
 {
-    typedef std::set<Goalptr> Goalset;
-    std::set<Goalptr> & set = const_cast<Goalset &>(hypset);
+    Goalptrs & set = const_cast<Goalptrs &>(hypset);
     std::remove_copy_if(attempt.hypvec.begin(), attempt.hypvec.end(),
                         end_inserter(set), std::logical_not<const void *>());
 }

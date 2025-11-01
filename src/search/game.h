@@ -22,7 +22,8 @@ struct Game
     // Proof attempt made, on their turn
     Move attempt;
     // Essential hypotheses needed, on their turn
-    std::set<Goalptr> hypset;
+    typedef std::set<Goalptr> Goalptrs;
+    Goalptrs hypset;
     Game(Goalptr pgoal = NULL, Environ * p = NULL, stage_t defer = 0) :
         goalptr(pgoal), penv(p), ndefer(defer), evaled(false) {}
     Goal const & goal() const;
