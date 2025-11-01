@@ -49,11 +49,16 @@ private:
         // Fix parent pointers of children.
         void fixparents()
         {
+            bool selfmoved = false;
             FOR (TreeNode & child, children)
-            {
-                child.parent = this;
-                child.fixparents();
-            }
+                if (child.parent != this)
+                {
+                    child.parent = this;
+                    selfmoved = true;
+                }
+            if (selfmoved)
+                FOR (TreeNode & child, children)
+                    child.fixparents();
         }
 #endif // __cpp_lib_incomplete_container_elements
     }; // class TreeNode
