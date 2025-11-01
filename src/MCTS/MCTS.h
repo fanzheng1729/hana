@@ -142,6 +142,7 @@ public:
         stage_t & stage = p->m_stage;
         return addchildren(p, p->moves(isourturn(p), stage++));
     }
+    // Call back when children of p moved.
     virtual void expandcallback(Nodeptr p, NodeMovement movement) {}
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
@@ -236,7 +237,9 @@ private:
 // if (p->stage() >= 5)
 // std::cout << "Adding " << moves.size() << " moves to " << *p;
         size_type const oldsize = p.children()->size();
-        expandcallback(p, p.reserve(oldsize + moves.size()));
+        NodeMovement const movement = p.reserve(oldsize + moves.size());
+        if (movement)
+            expandcallback(p, movement);
 
         FOR (typename Moves::const_reference move, moves)
         {
