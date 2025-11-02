@@ -76,8 +76,7 @@ public:
     Value UCB(Nodeptr p) const
     {
         Value const v = value(p);
-        if (v == WDL::WIN || v == WDL::LOSS)
-            return v;
+        if (::issure(v)) return v;
         return v + UCBbonus(!isourturn(p), p.parent().size(), p.size());
     }
     // Compare 2 children, by UCB and turn.
