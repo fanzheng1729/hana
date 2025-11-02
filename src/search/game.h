@@ -17,22 +17,17 @@ struct Game
     Environ * penv;
     // # defers to the game
     stage_t ndefer;
-    // If the game has been evaluated, on their turn
-    bool evaled;
     // Proof attempt made, on their turn
     Move attempt;
     // Essential hypotheses needed, on their turn
     typedef std::set<Goalptr> Goalptrs;
-    Goalptrs hypset;
+    // Goalptrs hypset;
     Game(Goalptr pgoal = NULL, Environ * p = NULL, stage_t defer = 0) :
-        goalptr(pgoal), penv(p), ndefer(defer), evaled(false) {}
+        goalptr(pgoal), penv(p), ndefer(defer) {}
     Goal const & goal() const;
     Goaldata & goaldata() const;
     Environ const & env() const { return *penv; }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
-    // Set the hypothesis set of a game.
-    void sethyps() const;
-    void setevaled() const { const_cast<bool &>(evaled) = true; }
     // Return true if the hypotheses of game 1 includes those of game 2.
     bool operator>=(Game const & game) const;
     // Return true if a move is legal.

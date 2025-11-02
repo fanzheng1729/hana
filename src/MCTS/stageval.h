@@ -19,7 +19,7 @@ struct  Eval
     Value value;
     bool sure;
     Eval(Value v, bool issure) : value(v), sure(issure) {}
-    Eval(Value v = 0) : value(v), sure(issure(v)) {}
+    Eval(Value v = WDL::DRAW) : value(v), sure(issure(v)) {}
 };
 inline  bool operator==(Eval x, Eval y)
     { return x.value == y.value && x.sure == y.sure; }

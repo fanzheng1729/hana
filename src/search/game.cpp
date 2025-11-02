@@ -19,21 +19,6 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
     return out;
 }
 
-// Set the hypothesis set of a game.
-void Game::sethyps() const
-{
-    Goalptrs & set = const_cast<Goalptrs &>(hypset);
-    std::remove_copy_if(attempt.hypvec.begin(), attempt.hypvec.end(),
-                        end_inserter(set), std::logical_not<const void *>());
-}
-
-// Return true if the hypotheses of game 1 includes those of game 2.
-bool Game::operator>=(Game const & game) const
-{
-    return std::includes
-        (hypset.begin(), hypset.end(), game.hypset.begin(), game.hypset.end());
-}
-
 // Return true if a move is legal.
 bool Game::legal(Move const & move, bool ourturn) const
 {
@@ -54,7 +39,7 @@ Game Game::play(Move const & move, bool ourturn) const
     {
         // On our turn, record the move.
         game.attempt = move;
-        game.ndefer = (move.type==Move::DEFER) * (ndefer+1);
+        game.ndefer = (move.type == Move::DEFER) * (ndefer + 1);
     }
     else if (attempt.type == Move::ASS)
     {

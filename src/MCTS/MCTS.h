@@ -143,7 +143,7 @@ public:
         return addchildren(p, p->moves(isourturn(p), stage++));
     }
     // Call back when children of p moved.
-    virtual void expandcallback(Nodeptr p, NodeMovement movement) {}
+    virtual void expandcallback(Nodeptr p) {}
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
     virtual Eval evalleaf(Nodeptr p) const = 0;
@@ -237,9 +237,8 @@ private:
 // if (p->stage() >= 5)
 // std::cout << "Adding " << moves.size() << " moves to " << *p;
         size_type const oldsize = p.children()->size();
-        NodeMovement const movement = p.reserve(oldsize + moves.size());
-        if (movement)
-            expandcallback(p, movement);
+        if (p.reserve(oldsize + moves.size()))
+            expandcallback(p);
 
         FOR (typename Moves::const_reference move, moves)
         {

@@ -28,13 +28,12 @@ Eval Problem::evalleaf(Nodeptr p) const
     {
         bool loops(Nodeptr p);
         if (loops(p))
-            return game.setevaled(), EvalLOSS;
-        game.setevaled();
+            return EvalLOSS;
     }
 
     if (!isourturn(p))
         return evaltheirleaf(p);
-
+    // Our leaf
     if (p.parent() && game.goaldata().proven())
         return EvalWIN;
     if (!p.parent() && proven(game.goalptr, assertion))
@@ -53,9 +52,12 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     }
 
     if (value == WDL::WIN)
-        return p->game().writeproof() ? EvalWIN : EvalLOSS;
-    else // value is between WDL::LOSS and WDL::WIN.
-        return Eval(value, false);
+        return p->game().writeproof() ? (closenodes(p), EvalWIN) : EvalLOSS;
+    // value is between WDL::LOSS and WDL::WIN.
+    if (p->game().ndefer == 0)
+        FOR (Nodeptr child, *p.children())
+            addnodeptr(child);
+    return Eval(value, false);
 }
 
 // Add a sub environment for the game. Return true if it is added.
@@ -114,13 +116,10 @@ static bool gotoonlyopenchild(Nodeptr & p)
 }
 
 // If goal appears as the goal of a node or its ancestors,
-// return the pointer of the latter.
+// return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
 static Nodeptr loops(Goalptr pgoal, Nodeptr pnode)
 {
-    if (!Problem::isourturn(pnode))
-        pnode = pnode.parent();
-
     while (true)
     {
         Game const & game = pnode->game();
@@ -133,56 +132,29 @@ static Nodeptr loops(Goalptr pgoal, Nodeptr pnode)
     return Nodeptr();
 }
 
-// Return true if ptr is no easier than any children of ancestor.
-static bool loops(Nodeptr p, Nodeptr ancestor)
-{
-    if (ancestor->game().ndefer > 0)
-        return false; // Quadratic runtime, only use when ancestor is not deferred.
-
-    Game const & game = p->game();
-    FOR (Nodeptr child, *ancestor.children())
-    {
-        Game const & game2 = child->game();
-        if (!game2.evaled || Problem::value(child) == WDL::LOSS)
-            continue; // attempt not checked or invalid
-
-        if (game >= game2)
-            return true;
-
-        if (gotoonlyopenchild(child)) // Recurse into the only open child.
-            if (loops(p, child))
-                return true;
-    }
-
-    return false;
-}
-
 // Return true if ptr duplicates upstream goals.
 bool loops(Nodeptr p)
 {
-    Game const & game = p->game();
-    Move const & move = game.attempt;
+    Move const & move = p->game().attempt;
+    Nodeptrs allnodes;
     // Check if any of the hypotheses appears in a parent node.
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
         if (move.hypfloats(i))
             continue;
-        if (loops(move.hypvec[i], p.parent()))
+        Goalptr const pgoal = move.hypvec[i];
+        if (pgoal->second.proven())
+            continue;
+        Nodeptrs const & nodeptrs = pgoal->second.nodeptrs;
+        if (loops(pgoal, p.parent()))
+        // if (nodeptrs.ancestor(p))
             return true;
+        allnodes.insert(nodeptrs.begin(), nodeptrs.end());
     }
-    // return false;
-    // Check if this node is no easier than a parent node.
-    game.sethyps();
-    Nodeptr other = p.parent();
-    while (true)
-    {
-        if (loops(p, other))
+
+    while (Nodeptr const newnode = allnodes.pop())
+        if (newnode.isancestorof(p))
             return true;
-        // Move up.
-        if (Nodeptr const parent = other.parent())
-            other = parent.parent();
-        else break;
-    }
     return false;
 }
 

@@ -5,6 +5,21 @@
 #include "goaldata.h"
 #include "../util/for.h"
 
+// Add node pointer to p's goal data.
+inline void addnodeptr(Nodeptr p)
+{
+    Goaldata & goaldata = p->game().goaldata();
+    if (!goaldata.proven())
+        goaldata.nodeptrs.insert(p);
+}
+
+// Close all the nodes with p's proven goal.
+inline void closenodes(Nodeptr p)
+{
+    FOR (Nodeptr other, p->game().goaldata().nodeptrs)
+        MCTS<Game>::seteval(other, EvalWIN);
+}
+
 // Problem statement + Proof search tree with loop detection
 // + environment management + UI
 class Problem: public MCTS<Game>
@@ -35,16 +50,11 @@ public:
         ->addgoal(assertion.expRPN, assertion.expression[0], GOALOPEN);
         // Fix the root node.
         const_cast<Game &>(root()->game()) = Game(pgoal, penv);
+        addnodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(Nodeptr p) const;
-    // Call back when children of p moved.
-    virtual void expandcallback(Nodeptr p, NodeMovement movement)
-    {
-        if (!isourturn(p)) throw 1;
-        // if (isourturn(p) && movement == CHILDMOVED) throw 1;
-    }
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
     virtual Eval evalleaf(Nodeptr p) const;
@@ -62,7 +72,7 @@ public:
     virtual void backpropcallback(Nodeptr p)
     {
         if (value(p) == WDL::WIN)
-            p->game().writeproof();
+            p->game().writeproof(), closenodes(p);
 }
     // Proof of the assertion, if any
     Proofsteps const & proof() const
