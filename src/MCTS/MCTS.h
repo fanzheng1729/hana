@@ -170,7 +170,7 @@ public:
             if (!child.children()->empty())
                 continue;
             Eval const eval = evalleaf(child);
-            child->seteval(eval);
+            seteval(child, eval);
             if (isourturn(p) && eval == EvalWIN)
                 break;
             if (!isourturn(p) && eval == EvalLOSS)
@@ -191,7 +191,7 @@ public:
         for ( ; p; p = p.parent())
         {
 // std::cout << "Back prop to " << *p;
-            p->seteval(evaluate(p));
+            seteval(p, evaluate(p));
             backpropcallback(p);
         }
     }
@@ -214,7 +214,7 @@ public:
     void play(size_type maxsize)
     {
         if (empty() || issure()) return;
-        root()->seteval(evalleaf(root()));
+        seteval(root(), evalleaf(root()));
         for ( ; !issure(); playonce())
         {
             if (size() > maxsize) break;
