@@ -26,8 +26,8 @@ Eval Problem::evalleaf(Nodeptr p) const
     Game const & game = p->game();
     if (game.attempt.type == Move::ASS)
     {
-        bool loops(Nodeptr p);
-        if (loops(p))
+        int loops(Nodeptr p);
+        if (int i = loops(p))
             return EvalLOSS;
     }
 
@@ -134,10 +134,10 @@ static Nodeptr loops(Goalptr pgoal, Nodeptr pnode)
 }
 
 // Return true if ptr duplicates upstream goals.
-bool loops(Nodeptr p)
+int loops(Nodeptr p)
 {
     Move const & move = p->game().attempt;
-    Nodeptrs allnodes;
+    Goalptrs allgoals;
     // Check if any of the hypotheses appears in a parent node.
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
@@ -146,16 +146,14 @@ bool loops(Nodeptr p)
         Goalptr const pgoal = move.hypvec[i];
         if (pgoal->second.proven())
             continue;
-        Nodeptrs const & nodeptrs = pgoal->second.nodeptrs;
         if (loops(pgoal, p.parent()))
-        // if (nodeptrs.ancestor(p))
             return true;
-        allnodes.insert(nodeptrs.begin(), nodeptrs.end());
+        allgoals.insert(pgoal);
     }
-
-    while (Nodeptr const newnode = allnodes.pop())
-        if (newnode.isancestorof(p))
-            return true;
+    while (Goalptr const newgoal = allgoals.saturate())
+        FOR (Nodeptr const newnode, newgoal->second.nodeptrs)
+            if (newnode.isancestorof(p))
+                return true;
     return false;
 }
 

@@ -166,6 +166,7 @@ public:
     {
         for (size_type i = p->index(); i < p.children()->size(); ++i)
         {
+// std::cout << i << '\t' << size() << std::endl;
             Nodeptr const child = (*p.children())[i];
             if (!child.children()->empty())
                 continue;
@@ -199,11 +200,11 @@ public:
     // Play out once. Return the value at the root.
     Value playonce()
     {
-// std::cout << "Playing out from size " << size() << std::endl;
+// std::cout << playcount() << '\t' << size() << std::endl;
         Nodeptr p = pickleaf(root());
 // std::cout << "Expanding @" << p << std::endl << *p << std::endl;
         if (size_type const n = expand<&G::moves>(p))
-// std::cout << "Expanded " << n << " new moves" std::endl;
+// std::cout << "Expanded " << n << " new moves" << std::endl;
             evalnewleaves(p);
 // std::cout << "Back propagating." << std::endl;
         backprop(p);

@@ -33,6 +33,7 @@ struct Environ : protected Gen
             std::size_t maxsize, bool isstaged = false) :
         database(db), assertion(ass), staged(isstaged), hypslen(ass.hypslen()),
         Gen(ass.varusage, maxsize) {}
+    Problem const & prob() const { return *pProb; }
     // Add a goal. Return its pointer.
     Goalptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
     // # goals of a given status

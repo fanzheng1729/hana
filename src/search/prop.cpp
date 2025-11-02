@@ -137,11 +137,8 @@ static Problem::size_type testpropsearch
 {
     // printass(*iter);
     tree.play(maxsize);
-    // if (iter->first == "pm2.18")
+    // if (iter->first == "pm2.61d1")
     //     tree.navigate();
-    // if (iter->first == "pm2.61d")
-    //     tree.navigate();
-    // Check answer
     if (tree.size() > maxsize)
     {
         // printass(*iter);

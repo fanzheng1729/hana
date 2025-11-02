@@ -96,9 +96,9 @@ int main(int argc, char * argv[])
     if (!database.checkpropassertion()) return EXIT_FAILURE;
     std::cout << " checked in " << timer << 's' << std::endl;
 
-    // Value parameters[] = {0, 5e-3, 0};
-    Value parameters[] = {0, 1e-4, Problem::STAGED};
-    Problem::size_type maxsize = 1 << 14;
+    Value parameters[] = {0, 1e-3, 0};
+    // Value parameters[] = {0, 1e-4, Problem::STAGED};
+    Problem::size_type maxsize = 1 << 15;
     if (!testpropsearch(database, maxsize, parameters))
         return EXIT_FAILURE;
 // Uncomment these lines if you want to output to a file.
