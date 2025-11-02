@@ -111,7 +111,8 @@ static Nodeptr onlyopenchild(Nodeptr p)
 // Move to the only open child of a node. Return true if it exists.
 static bool gotoonlyopenchild(Nodeptr & p)
 {
-    if (Nodeptr child = onlyopenchild(p)) return p = child;
+    if (Nodeptr child = onlyopenchild(p))
+        return p = child;
     return false;
 }
 
@@ -199,7 +200,7 @@ static void printourchildren(Nodeptr p, Problem const & tree)
     std::cout << std::endl;
 }
 
-// Format: STAGE(n) maj score*size   |- ...
+// Format: [STAGE(n)] maj score*size   |- ...
 static void printournode(Nodeptr p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
