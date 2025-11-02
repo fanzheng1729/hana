@@ -8,6 +8,7 @@
 
 // Pointer to node in proof search tree
 typedef MCTS<Game>::Nodeptr Nodeptr;
+
 // Set of nodes in proof search tree
 struct Nodeptrs : std::set<Nodeptr>
 {
@@ -19,6 +20,14 @@ struct Nodeptrs : std::set<Nodeptr>
             if (other.isancestorof(p))
                 return other;
         return Nodeptr();
+    }
+    // Check if all p's open children are present.
+    bool haschildren(Nodeptr p) const;
+    // Clear all p's children.
+    void clearchildren(Nodeptr p)
+    {
+        FOR (Nodeptr child, *p.children())
+            erase(child);
     }
     // Return a node that can be inferred.
     // Return NULL if there is not any.

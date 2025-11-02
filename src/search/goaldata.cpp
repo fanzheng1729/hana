@@ -1,5 +1,15 @@
 #include "goaldata.h"
 
+// Check if all p's open children are present.
+
+bool Nodeptrs::haschildren(Nodeptr p) const
+{
+    FOR (Nodeptr child, *p.children())
+        if (!child->game().goaldata().proven() && !count(child))
+            return false;
+    return true;
+}
+
 // Return a node that can be inferred.
 // Return NULL if there is not any.
 Nodeptr Nodeptrs::pop()
@@ -8,29 +18,24 @@ Nodeptr Nodeptrs::pop()
     FOR (Nodeptr p, *this)
     {
         // Parent of the node
-        Nodeptr const parent = p.parent();
-        Goaldata const & goaldata = parent->game().goaldata();
+        Nodeptr parent = p.parent();
         if (parentschecked.count(parent))
             continue;
-        // New parent
+        // New open parent
         parentschecked.insert(parent);
         // Check if all its open children are present.
-        bool allchildrenhere = !goaldata.proven();
-        if (allchildrenhere)
-            FOR (Nodeptr child, *parent.children())
-                if (!child->game().goaldata().proven() && !count(child))
-                    allchildrenhere = false;
-        // All open children present
-        if (allchildrenhere)
+        if (haschildren(parent))
         {
-            // Clear all children.
-            FOR (Nodeptr child, *parent.children())
-                erase(child);
-            // Infer parent.
-            insert(parent.parent());
-            return parent.parent();
+            // All open children present. Clear all children.
+            clearchildren(parent);
+            // Add the parent.
+            if (!parent->game().goaldata().proven())
+            {
+                insert(parent = parent.parent());
+                return parent;
+            }
         }
     }
-    // No inference possible
+    // No new node added
     return Nodeptr();
 }
