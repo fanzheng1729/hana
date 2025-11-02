@@ -75,9 +75,10 @@ public:
     // Compute the upper confidence bound.
     Value UCB(Nodeptr p) const
     {
-        Value const bonus(UCBbonus(!isourturn(p),
-                                    p.parent().size(), p.size()));
-        return value(p) + bonus;
+        Value const v = value(p);
+        if (v == WDL::WIN || v == WDL::LOSS)
+            return v;
+        return v + UCBbonus(!isourturn(p), p.parent().size(), p.size());
     }
     // Compare 2 children, by UCB and turn.
     // < 0 if x < y, = 0 if x == y, > 0 if x > y.
