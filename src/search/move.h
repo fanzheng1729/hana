@@ -77,6 +77,14 @@ struct Move
     Symbol3s::size_type varcount() const { return pass->second.varcount(); }
     // # of essential hypotheses the attempt (must be of type ASS) needs
     Hypsize esshypcount() const { return hypcount() - varcount(); }
+    // Return true if all variables in the assertion have been substituted.
+    bool allvarsfilled() const
+    {
+        FOR (Varusage::const_reference rvar, pass->second.varusage)
+            if (substitutions[rvar.first].empty())
+                return false;
+        return true;
+    }
     // Return true if the assertion applied has no essential hypothesis.
     bool closes() const { return type == ASS && esshypcount() == 0; }
     // Output the move (must be our move).

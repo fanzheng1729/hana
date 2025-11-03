@@ -38,7 +38,7 @@ struct Scopes : std::vector<Scope>
     int erraddfloatinghyp(strview var) const;
     // Determine if there is an active disjoint variable restriction on
     // two different variables.
-    bool isdvr(strview var1, strview var2) const;
+    bool hasdvr(strview var1, strview var2) const;
     // Determine mandatory disjoint variable restrictions.
     Disjvars disjvars(Symbol2s const & varusage) const;
     // Complete an Assertion from its Expression. That is, determine the

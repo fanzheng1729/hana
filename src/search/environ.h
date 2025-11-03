@@ -79,6 +79,8 @@ private:
     // Add Hypothesis-oriented moves. Return false.
     bool addhypmoves(Move const & move, Moves & moves,
                      Stepranges const & stepranges) const;
+    bool addhypmove2(Move const & move, Moves & moves,
+                     Stepranges const & stepranges) const;
     // Add a move with free variables. Return false.
     virtual bool addhardmoves
         (Assiter iter, Proofsize size, Move & move, Moves & moves) const

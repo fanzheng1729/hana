@@ -79,6 +79,8 @@ inline bool operator==(Hypiter iter, strview label) {return iter->first==label;}
 typedef std::vector<Hypiter> Hypiters;
 // # of hypotheses
 typedef Hypiters::size_type Hypsize;
+// Vector of hypothesis indices
+typedef std::vector<Hypsize> Hypsizes;
 
 // A constant or a variable with ID
 struct Symbol2 : strview

@@ -22,8 +22,10 @@ struct Assertion
     Hypsize nfreevar;
     // Map: variable used in statement -> (is used in hyp i, is used in exp)
     Varusage varusage;
-    // Index of key hypotheses: essential ones containing all free variables
-    std::vector<Hypsize> keyhyps;
+    // Indices of key hypotheses: essential ones containing all free variables
+    Hypsizes keyhyps;
+    // Indices of hypotheses containing most to fewest free variables
+    Hypsizes hypsorder;
     // revPolish of expression, proof steps
     Proofsteps expRPN, proofsteps;
     // Abstract syntax tree of expression
@@ -49,24 +51,26 @@ struct Assertion
     Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
     // AST of a hypothesis
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
+    // length of a hypothesis
+    Proofsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
     // Total length of RPNs of hypotheses, skipping trimmed ones
-    Expression::size_type hypslen(Bvector const & hypstotrim = Bvector()) const
+    Proofsize hypslen(Bvector const & hypstotrim = Bvector()) const
     {
-        Expression::size_type len = 0;
+        Proofsize len = 0;
         for (Hypsize i = 0; i < hypstotrim.size(); ++i)
-            len += !hypstotrim[i] * hypRPN(i).size();
+            len += !hypstotrim[i] * hyplen(i);
         for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
-            len += hypRPN(i).size();
+            len += hyplen(i);
         return len;
     }
-    // Total length of RPNs of hypotheses, skipping trimmed ones
-    Expression::size_type esshypslen(Bvector const & hypstotrim = Bvector()) const
+    // Total length of RPNs of essential hypotheses, skipping trimmed ones
+    Proofsize esshypslen(Bvector const & hypstotrim = Bvector()) const
     {
-        Expression::size_type len = 0;
+        Proofsize len = 0;
         for (Hypsize i = 0; i < hypstotrim.size(); ++i)
-            len += !hypfloats(i) * !hypstotrim[i] * hypRPN(i).size();
+            len += !hypfloats(i) * !hypstotrim[i] * hyplen(i);
         for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
-            len += !hypfloats(i) * hypRPN(i).size();
+            len += !hypfloats(i) * hyplen(i);
         return len;
     }
     // Return index the hypothesis matching the expression.

@@ -90,6 +90,8 @@ bool Game::writeproof() const
     if (attempt.type == Move::NONE || attempt.type == Move::DEFER)
         return false;
     // attempt.type == Move::ASS
+    if (goaldata().proven())
+        return true;
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)

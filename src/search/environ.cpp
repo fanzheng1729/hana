@@ -70,16 +70,17 @@ bool Environ::checkdisjvars(Move const & move) const
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
+    if (!move.allvarsfilled())
+        return false;
+
     if (!checkdisjvars(move))
         return false;
 
     // Vector of the hypotheses of the move.
     std::vector<Goalptr> & hypvec = const_cast<Move &>(move).hypvec;
-    // # hypotheses of the move.
-    Hypsize const hypcount = move.hypcount();
     // Record the hypotheses.
-    hypvec.resize(hypcount);
-    for (Hypsize i = 0; i < hypcount; ++i)
+    hypvec.resize(move.hypcount());
+    for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
         if (move.hypfloats(i)) continue;
         // Add the essential hypothesis as a goal.
@@ -168,7 +169,7 @@ bool Environ::addhypmoves(Move const & move, Moves & moves,
 {
     Assertion const & thm = move.pass->second;
     // Iterate through key hypotheses i of the theorem.
-    FOR (Hypsize i, thm.keyhyps)
+    FOR (Hypsize const i, thm.keyhyps)
     {
 // std::cout << move.pass->first << ' ' << thm.hypiters[i]->first << std::endl;
         for (Hypsize j = 0; j < assertion.hypcount(); ++j)
@@ -194,6 +195,11 @@ bool Environ::addhypmoves(Move const & move, Moves & moves,
         }
     }
     return false;
+}
+bool Environ::addhypmove2(Move const & move, Moves & moves,
+                          Stepranges const & stepranges) const
+{
+    //
 }
 
 // Try applying the theorem, and add moves if successful.

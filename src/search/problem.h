@@ -13,13 +13,6 @@ inline void addnodeptr(Nodeptr p)
         goaldata.nodeptrs.insert(p);
 }
 
-// Close all the nodes with p's proven goal.
-inline void closenodes(Nodeptr p)
-{
-    FOR (Nodeptr other, p->game().goaldata().nodeptrs)
-        MCTS<Game>::seteval(other, EvalWIN);
-}
-
 // Problem statement + Proof search tree with loop detection
 // + environment management + UI
 class Problem: public MCTS<Game>
@@ -67,6 +60,16 @@ public:
         bool const stuck = (staged & STAGED) && isourturn(p)
                             && value == WDL::LOSS;
         return stuck ? p->eval() : Eval(value);
+    }
+    // Close all the nodes with p's proven goal.
+    void closenodes(Nodeptr p)
+    {
+        FOR (Nodeptr other, p->game().goaldata().nodeptrs)
+            if (other != p && value(other) != WDL::WIN)
+            {
+                seteval(other, EvalWIN);
+                backprop(p.parent());
+            }
     }
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)

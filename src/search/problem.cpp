@@ -52,7 +52,12 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     }
 
     if (value == WDL::WIN)
-        return p->game().writeproof() ? (closenodes(p), EvalWIN) : EvalLOSS;
+    {
+        if (!p->game().writeproof())
+            return EvalLOSS;
+        const_cast<Problem *>(this)->closenodes(p);
+        return EvalWIN;
+    }
     // value is between WDL::LOSS and WDL::WIN.
     if (p->game().ndefer == 0)
         FOR (Nodeptr child, *p.children())

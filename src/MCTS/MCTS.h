@@ -189,6 +189,7 @@ public:
     // DO NOTHING if p is NULL.
     void backprop(Nodeptr p)
     {
+// std::cout << "Back prop called on " << p;
         for ( ; p; p = p.parent())
         {
 // std::cout << "Back prop to " << *p;

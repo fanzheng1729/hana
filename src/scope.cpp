@@ -1,4 +1,6 @@
+#include <algorithm>    // for std::reverse and std::sort
 #include <iostream>
+#include <numeric>      // for std::partial_sum
 #include "ass.h"
 #include "getproof.h"
 #include "util/filter.h"
@@ -12,7 +14,6 @@ bool Scopes::isouter(const char * msg) const
 {
     if (size() != 1 && msg)
         std::cerr << msg << std::endl;
-
     return size() == 1;
 }
 
@@ -80,7 +81,7 @@ int Scopes::erraddfloatinghyp(strview var) const
 
 // Determine if there is an active disjoint variable restriction on
 // two different variables.
-bool Scopes::isdvr(strview var1, strview var2) const
+bool Scopes::hasdvr(strview var1, strview var2) const
 {
     if (var1 == var2)
         return false;
@@ -94,14 +95,14 @@ bool Scopes::isdvr(strview var1, strview var2) const
 }
 
 // Determine mandatory disjoint variable restrictions.
-Disjvars Scopes::disjvars(Symbol2s const & varusage) const
+Disjvars Scopes::disjvars(Symbol2s const & varsused) const
 {
     Disjvars result;
 
     FOR (const_reference scope, *this)
         FOR (Symbol2s const & vars, scope.disjvars)
         {
-            Symbol2s dset(vars & varusage);
+            Symbol2s dset(vars & varsused);
             for (Symbol2s::iterator diter
                  (dset.begin()); diter != dset.end(); ++diter)
             {
@@ -114,54 +115,76 @@ Disjvars Scopes::disjvars(Symbol2s const & varusage) const
     return result;
 }
 
-// Return the key hypotheses of an assertion.
-static std::vector<Hypsize> keyhyps(Varusage const & varusage)
+// Return (# free variables in the hypotheses, total # free variables).
+// varusage should be NOT EMPTY.
+static Hypsizes freevarusage(Varusage const & varusage)
 {
-    // result[i] = true iff hypothesis i has all the free variables
-    std::vector<Hypsize> result(varusage.begin()->second.size() - 1, true);
+    Hypsizes result(varusage.begin()->second.size(), 0);
+
     FOR (Varusage::const_reference vardata, varusage)
     {
         if (vardata.second.back())
             continue; // Skip variables in the expression.
         std::transform(result.begin(), result.end(), vardata.second.begin(),
-                       result.begin(), std::logical_and<bool>());
+                       result.begin(), std::plus<Hypsize>());
+        ++result.back();
     }
-    // result = list of key hypotheses
-    std::vector<Hypsize>::iterator out(result.begin());
-    for (Hypsize in = 0; in < result.size(); ++in)
-        if (result[in])
-            *out++ = in;
-    result.erase(out, result.end());
+
     return result;
 }
+
+// Return the key hypotheses of an assertion.
+// varusage should be NOT EMPTY.
+static Hypsizes keyhyps(Hypsizes const & freevaruse)
+{
+    Hypsizes result(freevaruse);
+
+    Hypsizes::iterator out = result.begin();
+    for (Hypsize i = 0; i < result.size() - 1; ++i)
+        if (result[i] == result.back())
+            *out++ = i;
+    result.erase(out, result.end());
+
+    return result;
+}
+
+struct Hypcomp
+{
+    Assertion const & ass;
+    Hypsizes const & v;
+    bool operator()(Hypsize i, Hypsize j) const
+    {
+        return v[i] > v[j] || v[i] == v[j] && ass.hyplen(i) < ass.hyplen(j);
+    }
+};
 
 // Complete an Assertion from its Expression. That is, determine the
 // mandatory hypotheses and disjoint variable restrictions and the #.
 void Scopes::completeass(struct Assertion & ass) const
 {
-    Expression const & exp(ass.expression);
+    Expression const & exp = ass.expression;
 
     // Determine variables used and find mandatory hypotheses
-    Symbol2s varusage;
+    Symbol2s vars;
     FOR (Symbol3 var, exp)
         if (var)
         {
-            varusage.insert(var);
+            vars.insert(var);
             ass.varusage[var].assign(1, true);
 //std::cout << var << " ";
         }
 
-    for (const_reverse_iterator iter(rbegin()); iter != rend(); ++iter)
+    for (const_reverse_iterator iter = rbegin(); iter != rend(); ++iter)
     {
-        Hypiters const & hypvec(iter->activehyp);
+        Hypiters const & hypvec = iter->activehyp;
         for (Hypiters::const_reverse_iterator iter2
-            (hypvec.rbegin()); iter2 != hypvec.rend(); ++iter2)
+            = hypvec.rbegin(); iter2 != hypvec.rend(); ++iter2)
         {
-            Hypiter const hypiter(*iter2);
+            Hypiter const hypiter = *iter2;
 //std::cout << "Checking hypothesis " << hypiter->first << std::endl;
-            Hypothesis const & hyp(hypiter->second);
-            Expression const & hypexp(hyp.expression);
-            if (hyp.floats && varusage.count(hypexp[1]) > 0)
+            Hypothesis const & hyp = hypiter->second;
+            Expression const & hypexp = hyp.expression;
+            if (hyp.floats && vars.count(hypexp[1]))
             {
 //std::cout << "Mandatory floating Hypothesis: " << hypexp;
                 ass.hypiters.push_back(hypiter);
@@ -174,8 +197,8 @@ void Scopes::completeass(struct Assertion & ass) const
                 FOR (Symbol3 var, hypexp)
                     if (var)
                     {
-                        ass.nfreevar += varusage.insert(var).second;
-                        Bvector & usage(ass.varusage[var]);
+                        ass.nfreevar += vars.insert(var).second;
+                        Bvector & usage = ass.varusage[var];
                         usage.resize(ass.hypcount() + 1);
                         usage.back() = true;
 //std::cout << " " << var;
@@ -191,9 +214,21 @@ void Scopes::completeass(struct Assertion & ass) const
         vardata.second.resize(ass.hypcount() + 1);
         std::reverse(vardata.second.begin(), vardata.second.end());
     }
-    // Find disjoint variable hypotheses.
-    ass.disjvars = disjvars(varusage);
-    // Find key hypotheses.
+    // Find disjoint variable hypotheses
+    ass.disjvars = disjvars(vars);
     if (ass.nfreevar > 0)
-        ass.keyhyps = keyhyps(ass.varusage);
+    {
+        // Find free variable usage
+        Hypsizes freevaruse(freevarusage(ass.varusage));
+        // Find key hypotheses
+        ass.keyhyps = keyhyps(freevaruse);
+        // Sort hypotheses in order of decreasing # free variables
+        freevaruse.pop_back();
+        Hypsizes & hypsorder = ass.hypsorder;
+        hypsorder.assign(ass.hypcount(), 1);
+        hypsorder[0] = 0;
+        std::partial_sum(hypsorder.begin(), hypsorder.end(), hypsorder.begin());
+        Hypcomp comp = {ass, freevaruse};
+        std::sort(hypsorder.begin(), hypsorder.end(), comp);
+    }
 }

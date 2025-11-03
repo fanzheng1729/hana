@@ -140,8 +140,8 @@ Assertions::iterator Database::addass
      Tokens::size_type tokenpos)
 {
     Assertions::value_type value(label, Assertion());
-    Assertions::iterator iter(m_assertions.insert(value).first);
-    Assertion & ass(iter->second);
+    Assertions::iterator iter = m_assertions.insert(value).first;
+    Assertion & ass = iter->second;
     ass.expression = exp;
     scopes.completeass(ass);
     ass.number = assertions().size();
