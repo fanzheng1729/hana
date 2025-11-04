@@ -29,12 +29,6 @@ typedef std::vector<Proofnumber> Proofnumbers;
 
 // Proof is a sequence of labels.
 typedef std::vector<std::string> Proof;
-// Iterator to a proof
-typedef Proof::const_iterator Prfiter;
-// Begin and end of a subproof
-typedef std::pair<Prfiter, Prfiter> Subprf;
-// A sequence of subproofs
-typedef std::vector<Subprf> Subprfs;
 
 // Step in a regular or compressed proof
 struct Proofstep;
