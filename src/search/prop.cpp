@@ -169,10 +169,10 @@ static Problem::size_type testpropsearch
     return tree.size();
 }
 
-static void printtime(Problem::size_type nodecount, Time time)
+static void printtime(Problem::size_type nodes, Time time)
 {
-    std::cout << nodecount << " nodes / " << time << "s = ";
-    std::cout << nodecount/time << " nps" << std::endl;
+    std::cout << nodes << " nodes / " << time << "s = ";
+    std::cout << nodes/time << " nps" << std::endl;
 }
 
 // Test propositional proof search. Return 1 iff okay.
@@ -184,7 +184,7 @@ bool testpropsearch
     Progress progress(std::cerr);
     Timer timer;
     bool okay = true;
-    Problem::size_type nodecount = 0;
+    Problem::size_type nodes = 0;
     Assiters::size_type all = 0, proven = 0;
     // Test assertions
     Assiters const & assiters = database.assiters();
@@ -212,14 +212,14 @@ bool testpropsearch
             okay = false;
             break;
         }
-        nodecount += n;
+        nodes += n;
         proven += n <= maxsize;
         progress << i/static_cast<Ratio>(assiters.size() - 1);
     }
 
     // Print stats.
     std::cout << '\n';
-    printtime(nodecount, timer);
+    printtime(nodes, timer);
     printpercent(proven, "/", all, " = ", "% proven\n");
     return okay;
 }
