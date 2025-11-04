@@ -102,6 +102,7 @@ struct Substadder : Adder
             // std::cout << move << std::endl,
             // std::cout << move.substitutions,
             moves.push_back(move);
+// std::cin.get();
     }
 };
 

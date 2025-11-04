@@ -160,6 +160,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
         // std::cout << move << std::endl,
         // std::cout << move.substitutions,
         moves.push_back(move);
+// std::cin.get();
     return false;
 }
 
@@ -226,6 +227,7 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
                 // std::cout << move << std::endl,
                 // std::cout << move.substitutions,
                 moves.push_back(move);
+// std::cin.get();
         }
         else
         if (hypstack.size() < thm.nfreehyps() &&
@@ -237,6 +239,36 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
         }
     } while (::next(hypstack, substack, assertion, thm));
 
+    return false;
+}
+bool Environ::addhypmoves(Assptr pthm, Moves & moves,
+                          Stepranges const & stepranges) const
+{
+    Assertion const & thm = pthm->second;
+    FOR (Hypsize thmhyp, thm.keyhyps)
+    {
+// std::cout << move.label() << ' ' << thm.hyplabel(thmhyp) << ' ';
+        for (Hypsize asshyp = 0; asshyp < assertion.hypcount(); ++asshyp)
+        {
+            if (assertion.hypfloats(asshyp) ||
+                assertion.hyptypecode(asshyp) != thm.hyptypecode(thmhyp))
+                continue;
+            // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
+            Stepranges newsubst(stepranges);
+            if (findsubstitutions(assertion.hypRPN(asshyp), assertion.hypAST(asshyp),
+                                  thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
+                                  newsubst))
+            {
+// std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
+                Move move(pthm, newsubst);
+                if (valid(move))
+                    // std::cout << move << std::endl,
+                    // std::cout << move.substitutions,
+                    moves.push_back(move);
+// std::cin.get();
+            }
+        }
+    }
     return false;
 }
 
