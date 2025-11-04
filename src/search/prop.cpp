@@ -155,9 +155,9 @@ static Problem::size_type testpropsearch
         tree.printmainline();
         return 0;
     }
-    else if (!provesrightthing(iter->first,
-                               verify(tree.proof(), &*iter),
-                               iter->second.expression))
+    else
+    if (!provesrightthing(iter->first, verify(tree.proof(), &*iter),
+                            iter->second.expression))
     {
         std::cerr << "Wrong proof: " << tree.proof();
         // tree.navigate();
