@@ -50,15 +50,15 @@ Proofsize Gen::substcount(Argtypes const & argtypes, Genstack const & stack) con
     return count;
 }
 
-// Advance the stack. Return true if stack is advanced.
+// Advance the stack and return true if it can be advanced.
+// Clear the stack and return false if it cannot be advanced.
 bool Gen::next(Argtypes const & argtypes, Proofsize size, Genstack & stack) const
 {
-    Proofsize const argcount = argtypes.size();
     while (!stack.empty())
     {
         // Check if size of the last substitution is maximal.
         if (argssize(argtypes, genresult, stack)
-            < size - 1 - argcount + stack.size())
+            < size - 1 - argtypes.size() + stack.size())
             break;
         // Type of the last substitution
         strview type = argtypes[stack.size() - 1];
@@ -197,16 +197,17 @@ bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) c
                 // 1st substitution with that size
                 stack.push_back(termcounts[type][lastsize - 1]);
                 // # substitutions to be generated
-                // if (substcount(argtypes, stack) > m_maxcount/16)
+                // if (substcount(argtypes, stack) > m_maxmoves/16)
                 //     return false;  // Too many substitutions
             }
-            continue;
         }
-        // All arguments seen. Write RPN of term.
-        adder(argtypes, genresult, stack);
-        // Try the next substitution.
-        if (!next(argtypes, size, stack))
-            break;
+        else
+        {
+            // All arguments seen. Write RPN of term.
+            adder(argtypes, genresult, stack);
+            // Try the next substitution.
+            next(argtypes, size, stack);
+        }
     } while (!stack.empty());
     
     return true;

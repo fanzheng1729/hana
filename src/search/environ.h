@@ -4,7 +4,7 @@
 #include "../ass.h"
 #include "gen.h"
 #include "goal.h"
-#include "goalstat.h"
+#include "goaldata.h"
 #include "../MCTS/stageval.h"
 
 class Database;
@@ -77,14 +77,13 @@ private:
     // Return true if it has no essential hypotheses.
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add Hypothesis-oriented moves. Return false.
-    bool addhypmoves(Move const & move, Moves & moves,
-                     Stepranges const & stepranges) const;
-    bool addhypmove2(Move const & move, Moves & moves,
-                     Stepranges const & stepranges) const;
+    bool addhypmoves(Assptr pthm, Moves & moves,
+                     Stepranges const & stepranges,
+                     Hypsize nfreehyps = 1) const;
     // Add a move with free variables. Return false.
     virtual bool addhardmoves
-        (Assiter iter, Proofsize size, Move & move, Moves & moves) const
-        { return size == 0 && &move && &moves && !&*iter; }
+        (Assptr pthm, Proofsize size, Move & move, Moves & moves) const
+        { return !pthm && size == 0 && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
     // Return true if a move closes the goal.
     bool trythm(Game const & game, AST const & ast, Assiter iter,

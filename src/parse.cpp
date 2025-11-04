@@ -109,7 +109,8 @@ static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
 {
     // Pointers to the proofs to be included
     pProofs pproofs;
-    pproofs.reserve(ass.hypcount()); // Preallocate for efficiency
+    // Preallocate for efficiency
+    pproofs.reserve(ass.varcount());
 
     FOR (Hypiter iter, ass.hypiters)
     {

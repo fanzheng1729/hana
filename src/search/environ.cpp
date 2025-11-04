@@ -43,9 +43,9 @@ Goals::size_type Environ::countgoal(int status) const
 // Return true if a move satisfies disjoint variable hypotheses.
 bool Environ::checkdisjvars(Move const & move) const
 {
-    if (!move.pass) return false;
+    if (!move.pthm) return false;
 
-    FOR (Disjvars::const_reference vars, move.pass->second.disjvars)
+    FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
         // std::cout << "Checking DV " << move.pass->first;
         // revPolish notation of the expression substituted
@@ -70,9 +70,6 @@ bool Environ::checkdisjvars(Move const & move) const
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
-    if (!move.allvarsfilled())
-        return false;
-
     if (!checkdisjvars(move))
         return false;
 
@@ -82,7 +79,8 @@ bool Environ::valid(Move const & move) const
     hypvec.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
-        if (move.hypfloats(i)) continue;
+        if (move.hypfloats(i))
+            continue;
         // Add the essential hypothesis as a goal.
         Goalptr const goalptr = const_cast<Environ *>(this)
         ->addgoal(move.hypRPN(i), move.hyptypecode(i), GOALNEW);
@@ -129,7 +127,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         Assertion const & ass = iter->second;
         if ((ass.type & Asstype::USELESS) || !ontopic(ass))
             continue; // Skip non propositional theorems.
-        if (stage == 0 || (ass.nfreevar > 0 && stage >= ass.nfreevar))
+        if (stage == 0 || (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
             if (trythm(game, tree, iter, stage, moves))
                 break; // Move closes the goal.
     }
@@ -159,47 +157,85 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     }
 
     if (valid(move))
+        // std::cout << move << std::endl,
+        // std::cout << move.substitutions,
         moves.push_back(move);
     return false;
 }
 
 // Add Hypothesis-oriented moves. Return false.
-bool Environ::addhypmoves(Move const & move, Moves & moves,
-                          Stepranges const & stepranges) const
+template<class It, class T>
+static std::size_t count_not_eq(It begin, It end, T const & value)
 {
-    Assertion const & thm = move.pass->second;
-    // Iterate through key hypotheses i of the theorem.
-    FOR (Hypsize const i, thm.keyhyps)
-    {
-// std::cout << move.pass->first << ' ' << thm.hypiters[i]->first << std::endl;
-        for (Hypsize j = 0; j < assertion.hypcount(); ++j)
-        {
-            if (assertion.hypfloats(j)) continue;
-            // Match hypothesis j against key hypothesis i of the theorem.
-// std::cout << assertion.hyplabel(j) << ' ' << assertion.hypRPN(j);
-            Stepranges newsubs(stepranges);
-            if (findsubstitutions
-                (assertion.hypRPN(j), assertion.hypAST(j),
-                 thm.hypRPN(i), thm.hypAST(i), newsubs))
-            {
-                // Free substitutions from the key hypothesis
-                Move::Substitutions substitutions(stepranges.size());
-                for (Stepranges::size_type k = 1; k < newsubs.size(); ++k)
-                    substitutions[k].assign(newsubs[k].first,
-                                            newsubs[k].second);
-                Move newmove(move.pass, substitutions);
-                if (valid(newmove))
-                    moves.push_back(newmove);
-//std::cin.get();
-            }
-        }
-    }
-    return false;
+    std::size_t count = 0;
+    while (begin != end) count += (*begin++ != value);
+    return count;
 }
-bool Environ::addhypmove2(Move const & move, Moves & moves,
-                          Stepranges const & stepranges) const
+
+static bool next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
+                 Assertion const & ass, Assertion const & thm)
 {
-    //
+    while (!hypstack.empty())
+    {
+        Hypsize const thmhyp = thm.hypsorder[hypstack.size()-1];
+        // Advance the last hypothesis in the substitution.
+        Hypsize & asshyp = hypstack.back();
+        for (++asshyp; asshyp <= ass.hypcount(); ++asshyp)
+        {
+            if (asshyp < ass.hypcount() &&
+                (ass.hypfloats(asshyp) || ass.hyptypecode(asshyp) != thm.hyptypecode(thmhyp)))
+                continue; // Skip floating hypothesis.
+            // Copy the last substitution.
+            substack[hypstack.size()] = substack[hypstack.size()-1];
+            if (asshyp == ass.hypcount())
+                return true; // No new substitution
+            if (findsubstitutions
+                (ass.hypRPN(asshyp), ass.hypAST(asshyp),
+                 thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
+                 substack[hypstack.size()]))
+                return true; // New substitution
+        }
+        hypstack.pop_back();
+    }
+    return !hypstack.empty();
+}
+
+bool Environ::addhypmoves(Assptr pthm, Moves & moves,
+                          Stepranges const & stepranges,
+                          Hypsize nfreehyps) const
+{
+    Assertion const & thm = pthm->second;
+    // Hypothesis stack
+    Hypsizes hypstack;
+    // Substitution stack
+    std::vector<Stepranges> substack(thm.nfreehyps() + 1);
+    // Preallocate for efficiency.
+    hypstack.reserve(thm.nfreehyps());
+    // Bound substitutions
+    substack[0] = stepranges;
+    // substack.size() == hypstack.size() + 1
+    do
+    {
+        // std::cout << hypstack;
+        if (thm.allvarsfilled(substack[hypstack.size()]))
+        {
+            Move move(pthm, substack[hypstack.size()]);
+            if (valid(move))
+                // std::cout << move << std::endl,
+                // std::cout << move.substitutions,
+                moves.push_back(move);
+        }
+        else
+        if (hypstack.size() < thm.nfreehyps() &&
+            count_not_eq(hypstack.begin(), hypstack.end(), assertion.hypcount())
+            < nfreehyps)
+        {
+            // Match new hypothesis.
+            hypstack.push_back(-1);
+        }
+    } while (::next(hypstack, substack, assertion, thm));
+
+    return false;
 }
 
 // Try applying the theorem, and add moves if successful.
@@ -216,17 +252,14 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
     if (!findsubstitutions(game.goal().RPN, ast, thm.expRPN, thm.expAST, stepranges))
         return false; // Conclusion mismatch
 
-    // Bound substitutions
-    Move::Substitutions substitutions(stepranges.size());
-    for (Stepranges::size_type i = 1; i < stepranges.size(); ++i)
-        substitutions[i] = Proofsteps(stepranges[i].first,
-                                      stepranges[i].second);
-
     // Move with all bound substitutions
-    Move move(&*iter, substitutions);
-    return size > 0 ? addhardmoves(iter, size, move, moves) :
-        thm.nfreevar > 0 ? addhypmoves(move, moves, stepranges) :
-            addboundmove(move, moves);
+    Move move(&*iter, stepranges);
+    if (size > 0)
+        return thm.nfreevar() > 0 && addhardmoves(&*iter, size, move, moves);
+    else if (thm.nfreevar() > 0)
+        return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
+    else
+        return addboundmove(move, moves);
 }
 
 // Return true if an assertion duplicates a previous one.

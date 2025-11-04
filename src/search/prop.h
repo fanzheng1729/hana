@@ -29,13 +29,13 @@ struct Prop : Environ
     // Allocate a new sub environment constructed from a sub assertion on the heap.
     // Return its address.
     virtual Prop * makeenv(Assertion const & ass) const
-    { return new(std::nothrow) Prop(ass, database, m_maxcount, staged); }
+    { return new(std::nothrow) Prop(ass, database, m_maxmoves, staged); }
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeass(Game const & game) const;
 private:
     // Add a move with free variables. Return false.
     virtual bool addhardmoves
-        (Assiter iter, Proofsize size, Move & move, Moves & moves) const;
+        (Assptr pthm, Proofsize size, Move & move, Moves & moves) const;
     // The CNF of all hypotheses combined
     Hypscnf const hypscnf;
     Atom hypatomcount;

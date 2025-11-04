@@ -99,23 +99,25 @@ struct Substadder : Adder
             result.at(freevars[i].typecode())[stack[i]];
         // Filter move by SAT.
         if (env.valid(move))
+            // std::cout << move << std::endl,
+            // std::cout << move.substitutions,
             moves.push_back(move);
     }
 };
 
 // Add a move with free variables. Return false.
 bool Prop::addhardmoves
-    (Assiter iter, Proofsize size, Move & move, Moves & moves) const
+    (Assptr pthm, Proofsize size, Move & move, Moves & moves) const
 {
 // if (size >= 5)
-// std::cout << "Trying " << iter->first << ' ' << size << std::endl;
-    Assertion const & thm = iter->second;
+// std::cout << "Trying " << pthm->first << ' ' << size << std::endl;
+    Assertion const & thm = pthm->second;
     // Free variables in the theorem to be used
     Expression freevars;
     // Type codes of free variables
     Argtypes types;
     // Preallocate for efficiency.
-    freevars.reserve(thm.nfreevar), types.reserve(thm.nfreevar);
+    freevars.reserve(thm.nfreevar()), types.reserve(thm.nfreevar());
     FOR (Varusage::const_reference var, thm.varusage)
         if (!var.second.back())
             freevars.push_back(var.first), types.push_back(var.first.typecode());
@@ -137,8 +139,8 @@ static Problem::size_type testpropsearch
 {
     // printass(*iter);
     tree.play(maxsize);
-    // if (iter->first == "pm2.61d1")
-    //     tree.navigate();
+    // if (iter->first == "biass")
+        // tree.navigate();
     if (tree.size() > maxsize)
     {
         // printass(*iter);
@@ -161,13 +163,12 @@ static Problem::size_type testpropsearch
         // tree.navigate();
         std::cin.get();
     }
-    else if (iter->first == "elimh_")
+    else if (iter->first == "biluk_")
     {
         Database const & database = tree.root()->game().env().database;
         Printer printer(&database.typecodes());
         verify(tree.proof(), printer, &*iter);
         std::cout << printer.str(indentation(ast(tree.proof())));
-        tree.navigate();
     }
 
     return tree.size();

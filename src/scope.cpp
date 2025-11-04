@@ -117,7 +117,7 @@ Disjvars Scopes::disjvars(Symbol2s const & varsused) const
 
 // Return (# free variables in the hypotheses, total # free variables).
 // varusage should be NOT EMPTY.
-static Hypsizes freevarusage(Varusage const & varusage)
+static Hypsizes nfreevars(Varusage const & varusage)
 {
     Hypsizes result(varusage.begin()->second.size(), 0);
 
@@ -151,9 +151,9 @@ static Hypsizes keyhyps(Hypsizes const & freevaruse)
 struct Hypcomp
 {
     Assertion const & ass;
-    Hypsizes const & v;
     bool operator()(Hypsize i, Hypsize j) const
     {
+        Hypsizes const & v = ass.nfreevars;
         return v[i] > v[j] || v[i] == v[j] && ass.hyplen(i) < ass.hyplen(j);
     }
 };
@@ -173,6 +173,8 @@ void Scopes::completeass(struct Assertion & ass) const
             ass.varusage[var].assign(1, true);
 //std::cout << var << " ";
         }
+
+    bool hasfreevar = false;
 
     for (const_reverse_iterator iter = rbegin(); iter != rend(); ++iter)
     {
@@ -197,7 +199,7 @@ void Scopes::completeass(struct Assertion & ass) const
                 FOR (Symbol3 var, hypexp)
                     if (var)
                     {
-                        ass.nfreevar += vars.insert(var).second;
+                        hasfreevar |= vars.insert(var).second;
                         Bvector & usage = ass.varusage[var];
                         usage.resize(ass.hypcount() + 1);
                         usage.back() = true;
@@ -216,19 +218,17 @@ void Scopes::completeass(struct Assertion & ass) const
     }
     // Find disjoint variable hypotheses
     ass.disjvars = disjvars(vars);
-    if (ass.nfreevar > 0)
+    if (hasfreevar)
     {
-        // Find free variable usage
-        Hypsizes freevaruse(freevarusage(ass.varusage));
+        ass.nfreevars = nfreevars(ass.varusage);
         // Find key hypotheses
-        ass.keyhyps = keyhyps(freevaruse);
+        ass.keyhyps = keyhyps(ass.nfreevars);
         // Sort hypotheses in order of decreasing # free variables
-        freevaruse.pop_back();
         Hypsizes & hypsorder = ass.hypsorder;
         hypsorder.assign(ass.hypcount(), 1);
         hypsorder[0] = 0;
         std::partial_sum(hypsorder.begin(), hypsorder.end(), hypsorder.begin());
-        Hypcomp comp = {ass, freevaruse};
+        Hypcomp comp = {ass};
         std::sort(hypsorder.begin(), hypsorder.end(), comp);
     }
 }

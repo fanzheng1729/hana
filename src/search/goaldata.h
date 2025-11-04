@@ -2,9 +2,11 @@
 #define GOALDATA_H_INCLUDED
 
 #include "game.h"
-#include "goalstat.h"
 #include "../MCTS/MCTS.h"
 #include "../types.h"
+
+// Proof status of a goal
+enum Goalstatus {GOALOPEN = 0, GOALFALSE = -1, GOALNEW = -2};
 
 // Pointer to node in proof search tree
 typedef MCTS<Game>::Nodeptr Nodeptr;

@@ -146,11 +146,6 @@ public:
         {
             if (!*this || n <= m_ptr->children.capacity())
                 return false;
-            if (m_ptr->children.empty())
-            {
-                m_ptr->children.reserve(n);
-                return false;
-            }
             m_ptr->children.reserve(n);
 #ifdef __cpp_lib_incomplete_container_elements
             static_assert(std::is_nothrow_move_constructible<TreeNode>::value,
@@ -159,7 +154,7 @@ public:
                 FOR (Nodeptr child, m_ptr->children)
                     FOR (Nodeptr grand, child.m_ptr->children)
                         grand.m_ptr->parent = child.m_ptr;
-            return true;
+            return !m_ptr->children.empty();
 #endif // __cpp_lib_incomplete_container_elements
             return false;
         }

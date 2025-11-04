@@ -24,7 +24,7 @@ Value Problem::UCBnewstage(Nodeptr p) const
 Eval Problem::evalleaf(Nodeptr p) const
 {
     Game const & game = p->game();
-    if (game.attempt.type == Move::ASS)
+    if (game.attempt.type == Move::THM)
     {
         bool loops(Nodeptr p);
         if (int i = loops(p))
@@ -167,7 +167,7 @@ bool loops(Nodeptr p)
 // Format: ax-mp[!]
 static void printrefname(Nodeptr p)
 {
-    std::cout << p->game().attempt.pass->first;
+    std::cout << p->game().attempt.label();
     if (onlyopenchild(p)) std::cout << '!';
 }
 
@@ -179,7 +179,7 @@ static void printattempt(Nodeptr p)
     case Move::DEFER :
         std::cout << "DEFER(" << p->game().ndefer << ')';
         break;
-    case Move::ASS :
+    case Move::THM :
         printrefname(p);
         break;
     default :
@@ -250,15 +250,18 @@ static void printtheirnode(Nodeptr p)
 
 // Format:
 // Goal score |- ...
-// Env: n hypotheses
+// [Hyps hyo1 hyp2]
 static void printgoal(Nodeptr p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
     Game const & node = p->game();
     std::cout << node.goal().expression();
 
-    std::cout << "Env: ";
-    FOR (Hypiter iter, node.env().assertion.hypiters)
+    Assertion const & ass = node.env().assertion;
+    if (ass.esshypcount() == 0) return;
+
+    std::cout << "Hyps ";
+    FOR (Hypiter iter, ass.hypiters)
         if (!iter->second.floats)
             std::cout << iter->first << ' ';
     std::cout << std::endl;
@@ -267,7 +270,7 @@ static void printgoal(Nodeptr p)
 // Format:
 /**
  | Goal score |- ...
- | Env: hyp1 hyp2
+ | [Hyps hyp1 hyp2]
  | ax-mp score*size=UCB ...
  | DEFER(n) score*size OR
  | min score*size maj score*size
@@ -296,7 +299,7 @@ void Problem::printmainline(Nodeptr p, bool detailed) const
             case Move::DEFER:
                 ++ndefer;
                 continue;
-            case Move::ASS:
+            case Move::THM:
                 std::cout << ++movecount << ".\t";
                 if (ndefer > 0)
                     std::cout << '(' << ndefer << ") ";
@@ -363,7 +366,7 @@ static bool findourchild(Nodeptr & p, strview ass, std::size_t index)
     FOR (Nodeptr child, *p.children())
     {
         Move const & move(child->game().attempt);
-        if (move.type == Move::ASS && move.pass->first == ass && index-- == 0)
+        if (move.type == Move::THM && move.label() == ass && index-- == 0)
             return p = child;
     }
     return false;
@@ -404,7 +407,7 @@ void Problem::navigate(bool detailed) const
     "c * changes to the last node\n"
     "On their turn, c [n] changes to the n-th hypothesis\n"
     "u[p] goes up a level\nh[ome] or t[op] goes to the top level\n"
-    "b[ye] or e[xit] or q[uit] to leave navigation\n";
+    "b[ye] or e[xit] or q[uit] to leave navigation" << std::endl;
 
     std::string token;
     Nodeptr p = root();

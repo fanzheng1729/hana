@@ -25,15 +25,16 @@ struct Adder
 struct Gen
 {
     Gen(Varusage const & varusage, Proofnumber maxcount) :
-        m_varusage(varusage), m_maxcount(maxcount) {}
+        m_varusage(varusage), m_maxmoves(maxcount) {}
     Varusage    const m_varusage;
-    Proofnumber const m_maxcount;
+    Proofnumber const m_maxmoves;
     Syntaxioms  syntaxioms;
     Genresult   mutable genresult;
     Termcounts  mutable termcounts;
 // Return a lower bound of the number of potential substitutions.
     Proofsize substcount(Argtypes const & argtypes, Genstack const & stack) const;
-// Advance the stack. Return true if stack is advanced.
+// Advance the stack and return true if it can be advanced.
+// Clear the stack and return false if it cannot be advanced.
     bool  next(Argtypes const & argtypes, Proofsize size, Genstack & stack) const;
 // Generate all terms of size 1.
     Terms generateupto1(strview type) const;

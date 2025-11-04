@@ -1,7 +1,7 @@
 #ifndef ASS_H_INCLUDED
 #define ASS_H_INCLUDED
 
-#include <algorithm>    // for std::sort
+#include <algorithm>    // for std::sort and std::upper_bound
 #include "types.h"
 
 // An axiom or a theorem.
@@ -18,10 +18,10 @@ struct Assertion
     // Position in tokens
     std::size_t tokenpos;
 // Derived properties:
-    // # free variables
-    Hypsize nfreevar;
     // Map: variable used in statement -> (is used in hyp i, is used in exp)
     Varusage varusage;
+    // (# free variables in hyp i, total # free variables)
+    Hypsizes nfreevars;
     // Indices of key hypotheses: essential ones containing all free variables
     Hypsizes keyhyps;
     // Indices of hypotheses containing most to fewest free variables
@@ -47,6 +47,9 @@ struct Assertion
     bool hypfloats(Hypsize index) const { return hyp(index).floats; }
     // Expression of a hypothesis
     Expression const & hypexp(Hypsize index) const { return hyp(index).expression; }
+    // Typecode of a hypothesis
+    strview hyptypecode(Hypsize index) const
+        { return hypexp(index).empty() ? "" : hypexp(index)[0].c_str; }
     // RPN of a hypothesis
     Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
     // AST of a hypothesis
@@ -99,6 +102,18 @@ struct Assertion
         { return matchhyp(exp) < hypcount(); }
     bool istrivial(Proofsteps const & RPN, strview typecode) const
         { return matchhyp(RPN, typecode) < hypcount(); }
+    // # free variables
+    Hypsize nfreevar() const
+        { return nfreevars.empty() ? 0 : nfreevars.back(); }
+    // # free variables in a hypothesis
+    Hypsize nfreevar(Hypsize index) const
+        { return nfreevars.empty() ? 0 : nfreevars[index]; }
+    // # hypotheses containing free variables
+    Hypsize nfreehyps() const
+    {
+        return hypsorder.rend() -
+        std::upper_bound(hypsorder.rbegin() + 1, hypsorder.rend(), 0);
+    }
     // Remove unnecessary variables.
     Bvector trimvars
         (Bvector const & hypstotrim, Proofsteps const & conclusion) const
@@ -122,6 +137,15 @@ struct Assertion
         for (Hypsize i = 0; i < labels.size(); ++i)
             result += labels[i];
         return result;
+    }
+    // Return true if all variables in the assertion have been substituted.
+    bool allvarsfilled(Stepranges const & stepranges) const
+    {
+        for (Varusage::const_iterator iter = varusage.begin();
+             iter != varusage.end(); ++iter)
+            if (stepranges[iter->first].first == stepranges[iter->first].second)
+                return false;
+        return true;
     }
 // Modifying functions
     // Set the hypotheses, trimming away specified ones.

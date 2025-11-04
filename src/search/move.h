@@ -9,7 +9,7 @@
 // Move in proof search tree
 struct Move
 {
-    enum Type { NONE, ASS, DEFER };
+    enum Type { NONE, THM, DEFER };
     typedef std::vector<Proofsteps> Substitutions;
     union
     {
@@ -18,47 +18,55 @@ struct Move
         // Index of the hypothesis, on their turn
         Hypsize index;
     };
-    // Pointer to the assertion to be used, on our turn
-    Assptr pass;
+    // Pointer to the theorem to be used, on our turn
+    Assptr pthm;
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Essential hypotheses needed, on our turn
     std::vector<Goalptr> hypvec;
     std::vector<Goal2ptr> hypvec2;
-    Move(Type t = NONE) : type(t), pass(NULL) {}
-    // A move applying an assertion, on our turn
+    Move(Type t = NONE) : type(t), pthm(NULL) {}
+    // A move applying a theorem, on our turn
     Move(Assptr ptr, Substitutions const & subst) :
-        type(ASS), pass(ptr), substitutions(subst) {}
+        type(THM), pthm(ptr), substitutions(subst) {}
+    Move(Assptr ptr, Stepranges const & subst) :
+        type(THM), pthm(ptr)
+    {
+        substitutions.resize(subst.size());
+        for (Hypsize i = 1; i < subst.size(); ++i)
+            substitutions[i].assign(subst[i].first, subst[i].second);
+    }
     // A move verifying a hypothesis, on their turn
-    Move(Hypsize i) : index(i), pass(NULL) {}
+    Move(Hypsize i) : index(i), pthm(NULL) {}
     // Expression the attempt of using an assertion proves (must be of type ASS)
     Proofsteps expRPN() const
     {
         Proofsteps result;
         makesubstitution
-        (pass->second.expRPN, result, substitutions,
+        (pthm->second.expRPN, result, substitutions,
             util::mem_fn(&Proofstep::id));
         return result;
     }
+    strview label() const { return pthm->first; }
     strview exptypecode() const
-        { return pass->second.expression[0]; }
+        { return pthm->second.expression[0]; }
     // Hypothesis (must be of type ASS)
     Hypiter hypiter(Hypsize index) const
-        { return pass->second.hypiters[index]; }
+        { return pthm->second.hypiters[index]; }
     strview hyplabel(Hypsize index) const
-        { return pass->second.hyplabel(index); }
+        { return pthm->second.hyplabel(index); }
     bool hypfloats(Hypsize index) const
-        { return pass->second.hypfloats(index); }
+        { return pthm->second.hypfloats(index); }
     Expression const & hypexp(Hypsize index) const
-        { return pass->second.hypexp(index); }
+        { return pthm->second.hypexp(index); }
     strview hyptypecode(Hypsize index) const
-        { return hypexp(index)[0]; }
+        { return pthm->second.hyptypecode(index); }
     // Hypothesis the attempt (must be of type ASS) needs
     Proofsteps hypRPN(Hypsize index) const
     {
         Proofsteps result;
         makesubstitution
-        (pass->second.hypRPN(index), result, substitutions,
+        (pthm->second.hypRPN(index), result, substitutions,
             util::mem_fn(&Proofstep::id));
         return result;
     }
@@ -72,28 +80,20 @@ struct Move
         return i;
     }
     // # of hypotheses the attempt (must be of type ASS) needs
-    Hypsize hypcount() const { return pass->second.hypcount(); }
+    Hypsize hypcount() const { return pthm->second.hypcount(); }
     // # of variables the attempt (must be of type ASS) needs
-    Symbol3s::size_type varcount() const { return pass->second.varcount(); }
+    Symbol3s::size_type varcount() const { return pthm->second.varcount(); }
     // # of essential hypotheses the attempt (must be of type ASS) needs
     Hypsize esshypcount() const { return hypcount() - varcount(); }
-    // Return true if all variables in the assertion have been substituted.
-    bool allvarsfilled() const
-    {
-        FOR (Varusage::const_reference rvar, pass->second.varusage)
-            if (substitutions[rvar.first].empty())
-                return false;
-        return true;
-    }
     // Return true if the assertion applied has no essential hypothesis.
-    bool closes() const { return type == ASS && esshypcount() == 0; }
+    bool closes() const { return type == THM && esshypcount() == 0; }
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
     {
         static const char * const msg[] = {"NONE", "", "DEFER"};
         out << msg[move.type];
-        if (move.type == ASS)
-            out << move.pass->first.c_str;
+        if (move.type == THM)
+            out << move.label().c_str;
         return out;
     }
 };

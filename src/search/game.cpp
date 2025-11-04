@@ -22,10 +22,10 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
 // Return true if a move is legal.
 bool Game::legal(Move const & move, bool ourturn) const
 {
-    if (ourturn && move.type == Move::ASS) // Check if the goal matches.
+    if (ourturn && move.type == Move::THM) // Check if the goal matches.
         return goal().RPN == move.expRPN() &&
                 goal().typecode == move.exptypecode();
-    if (!ourturn && attempt.type == Move::ASS) // Check index bound.
+    if (!ourturn && attempt.type == Move::THM) // Check index bound.
         return move.index < attempt.hypcount();
     return true;
 }
@@ -41,7 +41,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.attempt = move;
         game.ndefer = (move.type == Move::DEFER) * (ndefer + 1);
     }
-    else if (attempt.type == Move::ASS)
+    else if (attempt.type == Move::THM)
     {
         // On thr turn, pick the hypothesis.
         game.goalptr = attempt.hypvec[move.index];
@@ -54,7 +54,7 @@ Game Game::play(Move const & move, bool ourturn) const
 Moves Game::theirmoves() const
 {
 // std::cout << "Finding thr moves ";
-    if (attempt.type == Move::ASS)
+    if (attempt.type == Move::THM)
     {
         Moves result;
         result.reserve(attempt.esshypcount());
@@ -89,7 +89,7 @@ bool Game::writeproof() const
 {
     if (attempt.type == Move::NONE || attempt.type == Move::DEFER)
         return false;
-    // attempt.type == Move::ASS
+    // attempt.type == Move::THM
     if (goaldata().proven())
         return true;
     // Pointers to proofs of hypotheses
@@ -103,7 +103,7 @@ bool Game::writeproof() const
     }
     // The whose proof
     Proofsteps & steps = goaldata().proofsteps;
-    if (!::writeproof(steps, attempt.pass, hyps))
+    if (!::writeproof(steps, attempt.pthm, hyps))
         return false;
     // Verification
     Expression const & exp(verify(steps));
