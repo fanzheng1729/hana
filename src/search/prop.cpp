@@ -172,7 +172,7 @@ static Problem::size_type testpropsearch
 static void printtime(Problem::size_type nodecount, Time time)
 {
     std::cout << nodecount << " nodes / " << time << "s = ";
-    std::cout << nodecount/time << " nps\n";
+    std::cout << nodecount/time << " nps" << std::endl;
 }
 
 // Test propositional proof search. Return 1 iff okay.
