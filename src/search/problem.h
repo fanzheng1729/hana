@@ -15,7 +15,7 @@ inline void addnodeptr(Nodeptr p)
 
 // Problem statement + Proof search tree with loop detection
 // + environment management + UI
-class Problem: public MCTS<Game>
+class Problem : public MCTS<Game>
 {
     // Map: name -> polymorphic sub environments
     typedef std::map<std::string, struct Environ *> Subenvs;
