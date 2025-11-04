@@ -99,6 +99,7 @@ public:
     void printstats() const;
     void printenvs() const;
     void navigate(bool detailed = true) const;
+    void writeproof(const char * const filename) const;
     virtual ~Problem()
     {
         FOR (Subenvs::const_reference subenv, subenvs)

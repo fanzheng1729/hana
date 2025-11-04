@@ -1,3 +1,6 @@
+#include <fstream>
+#include "../proof/analyze.h"
+#include "../database.h"
 #include "goaldata.h"
 #include "../io.h"
 #include "problem.h"
@@ -439,4 +442,13 @@ void Problem::navigate(bool detailed) const
 
     static std::string const hline(50, '-');
     std::cout << hline << std::endl;
+}
+
+void Problem::writeproof(const char * const filename) const
+{
+    Database const & database = root()->game().env().database;
+    Printer printer(&database.typecodes());
+    verify(proof(), printer);
+    std::ofstream out(filename);
+    out << printer.str(indentation(ast(proof())));
 }

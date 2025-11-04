@@ -164,12 +164,7 @@ static Problem::size_type testpropsearch
         std::cin.get();
     }
     else if (iter->first == "biluk_")
-    {
-        Database const & database = tree.root()->game().env().database;
-        Printer printer(&database.typecodes());
-        verify(tree.proof(), printer, &*iter);
-        std::cout << printer.str(indentation(ast(tree.proof())));
-    }
+        tree.writeproof((std::string(iter->first) + ".txt").c_str());
 
     return tree.size();
 }
