@@ -12,7 +12,7 @@ struct Printer
     // Add a proof step.
     bool addstep(Proofstep step, Proofsize index, Expression const & stacktop)
     { return !*this || doaddstep(step, index, stacktop); }
-    // Return proof string for std::cout.
+    // Return proof string for display.
     std::string str(std::vector<Proofsize> const & indentation) const;
 private:
     struct Typecodes const * ptypes;
