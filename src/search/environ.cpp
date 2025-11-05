@@ -203,7 +203,7 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
     Hypsizes hypstack;
     // Substitution stack
     std::vector<Stepranges> substack(thm.nfreehyps() + 1);
-    if (substack.empty())
+    if (substack.empty() || assertion.hypcount() + 1 == 0)
         return false; // size overflow
     // Preallocate for efficiency.
     hypstack.reserve(thm.nfreehyps());
@@ -228,7 +228,7 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
             < nfreehyps)
         {
             // Match new hypothesis.
-            hypstack.push_back(-1);
+            hypstack.push_back(static_cast<Hypsize>(-1));
         }
     } while (::next(hypstack, substack, assertion, thm));
 
