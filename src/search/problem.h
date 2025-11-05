@@ -74,8 +74,8 @@ public:
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
-        if (value(p) == WDL::WIN)
-            p->game().writeproof(), closenodes(p);
+        if (value(p) == WDL::WIN && p->game().writeproof())
+            closenodes(p);
 }
     // Proof of the assertion, if any
     Proofsteps const & proof() const
