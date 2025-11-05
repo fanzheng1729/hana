@@ -68,7 +68,7 @@ public:
             if (other != p && value(other) != WDL::WIN)
             {
                 seteval(other, EvalWIN);
-                backprop(p.parent());
+                backprop(other.parent());
             }
     }
     // Record the proof of proven goals on back propagation.
