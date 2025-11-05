@@ -187,12 +187,12 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
             // Copy the last substitution.
             substack[hypstack.size()] = substack[hypstack.size()-1];
             if (asshyp == ass.hypcount())
-                return delta; // No new substitution
+                return delta; // No new match
             if (findsubstitutions
                 (ass.hypRPN(asshyp), ass.hypAST(asshyp),
                  thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
                  substack[hypstack.size()]))
-                return ++delta; // New substitution
+                return ++delta; // New match
         }
         hypstack.pop_back();
     }
