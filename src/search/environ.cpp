@@ -8,7 +8,6 @@
 #include "problem.h"
 #include "../util/iter.h"
 #include "../util/progress.h"
-#include "../util/util.h"
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.

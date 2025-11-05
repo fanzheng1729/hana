@@ -32,14 +32,6 @@ namespace util
         return std::mismatch(first1, last1, first2);
     }
 #endif // __cpp_lib_robust_nonmodifying_seq_ops
-
-template<class It, class T>
-std::size_t count_not(It begin, It end, T const & value)
-{
-    std::size_t count = 0;
-    while (begin != end) count += (*begin++ != value);
-    return count;
-}
 } // namespace util
 
 #endif // UTIL_H_INCLUDED
