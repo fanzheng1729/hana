@@ -166,7 +166,8 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 }
 
 static int const STACKEMPTY = -2;
-
+// Advance the stack and return the difference in # matched hypotheses.
+// Return STACKEMPTY if stack cannot be advanced.
 static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
                 Assertion const & ass, Assertion const & thm)
 {
