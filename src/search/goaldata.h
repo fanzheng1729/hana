@@ -26,13 +26,15 @@ struct Goaldata
     Goalstatus status;
     // Proof of the expression
     Proofsteps proofsteps;
-    // Set of nodes trying to prove the open goal.
+    // Set of nodes trying to prove the open goal
     Nodeptrs nodeptrs;
+    // Pointer to the different contexts where the goal is evaluated
+    Goal2ptr goal2ptr;
+    // Unnecessary hypothesis of the goal
+    Bvector hypstotrim;
     Goaldata(Goalstatus s, Proofsteps const & steps = Proofsteps()) :
         status(s), proofsteps(steps) {}
     bool proven() const { return !proofsteps.empty(); }
-    // Unnecessary hypothesis of the goal
-    Bvector hypstotrim;
 };
 
 #endif // GOALDATA_H_INCLUDED

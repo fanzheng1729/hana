@@ -24,7 +24,7 @@ struct Move
     Substitutions substitutions;
     // Essential hypotheses needed, on our turn
     std::vector<Goalptr> hypvec;
-    std::vector<Goal2ptr> hypvec2;
+    std::vector<Goaldataptr> hypvec2;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(Assptr ptr, Substitutions const & subst) :
