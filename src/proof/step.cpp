@@ -47,7 +47,6 @@ Proofstep Proofstep::Builder::operator()(strview label) const
 // Write the proof from pointers to proof of hypotheses. Return true if Okay.
 bool writeproof(Proofsteps & dest, Assptr pass, pProofs const & hyps)
 {
-    // Hypotheses
     dest.clear();
     if (hyps.size() != pass->second.hypcount())
     {
