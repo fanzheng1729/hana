@@ -247,8 +247,10 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
                           Stepranges const & stepranges) const
 {
     Assertion const & thm = pthm->second;
-    FOR (Hypsize thmhyp, thm.keyhyps)
+    FOR (Hypsize thmhyp, thm.hypsorder)
     {
+        if (thm.nfreevars[thmhyp] < thm.nfreevar())
+            return false;
 // std::cout << move.label() << ' ' << thm.hyplabel(thmhyp) << ' ';
         for (Hypsize asshyp = 0; asshyp < assertion.hypcount(); ++asshyp)
         {

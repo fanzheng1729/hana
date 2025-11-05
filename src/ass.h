@@ -22,8 +22,6 @@ struct Assertion
     Varusage varusage;
     // (# free variables in hyp i, total # free variables)
     Hypsizes nfreevars;
-    // Indices of key hypotheses: essential ones containing all free variables
-    Hypsizes keyhyps;
     // Indices of hypotheses containing most to fewest free variables
     Hypsizes hypsorder;
     // revPolish of expression, proof steps

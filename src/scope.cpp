@@ -133,21 +133,6 @@ static Hypsizes nfreevars(Varusage const & varusage)
     return result;
 }
 
-// Return the key hypotheses of an assertion.
-// varusage should be NOT EMPTY.
-static Hypsizes keyhyps(Hypsizes const & freevaruse)
-{
-    Hypsizes result(freevaruse);
-
-    Hypsizes::iterator out = result.begin();
-    for (Hypsize i = 0; i < result.size() - 1; ++i)
-        if (result[i] == result.back())
-            *out++ = i;
-    result.erase(out, result.end());
-
-    return result;
-}
-
 struct Hypcomp
 {
     Assertion const & ass;
@@ -221,8 +206,6 @@ void Scopes::completeass(struct Assertion & ass) const
     if (hasfreevar)
     {
         ass.nfreevars = nfreevars(ass.varusage);
-        // Find key hypotheses
-        ass.keyhyps = keyhyps(ass.nfreevars);
         // Sort hypotheses in order of decreasing # free variables
         Hypsizes & hypsorder = ass.hypsorder;
         hypsorder.assign(ass.hypcount(), 1);
