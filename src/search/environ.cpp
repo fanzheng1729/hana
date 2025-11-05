@@ -165,14 +165,19 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     return false;
 }
 
-static bool next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
-                 Assertion const & ass, Assertion const & thm)
+static int const STACKEMPTY = -2;
+
+static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
+                Assertion const & ass, Assertion const & thm)
 {
+    int delta = 0;
     while (!hypstack.empty())
     {
         Hypsize const thmhyp = thm.hypsorder[hypstack.size()-1];
         // Advance the last hypothesis in the substitution.
         Hypsize & asshyp = hypstack.back();
+        if (asshyp < ass.hypcount())
+            --delta; // 1 match removed
         for (++asshyp; asshyp <= ass.hypcount(); ++asshyp)
         {
             if (asshyp < ass.hypcount() &&
@@ -181,22 +186,22 @@ static bool next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
             // Copy the last substitution.
             substack[hypstack.size()] = substack[hypstack.size()-1];
             if (asshyp == ass.hypcount())
-                return true; // No new substitution
+                return delta; // No new substitution
             if (findsubstitutions
                 (ass.hypRPN(asshyp), ass.hypAST(asshyp),
                  thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
                  substack[hypstack.size()]))
-                return true; // New substitution
+                return ++delta; // New substitution
         }
         hypstack.pop_back();
     }
-    return !hypstack.empty();
+    return STACKEMPTY;
 }
 
 // Add Hypothesis-oriented moves. Return false.
 bool Environ::addhypmoves(Assptr pthm, Moves & moves,
                           Stepranges const & stepranges,
-                          Hypsize nfreehyps) const
+                          Hypsize maxfreehyps) const
 {
     Assertion const & thm = pthm->second;
     // Hypothesis stack
@@ -206,10 +211,14 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
     if (substack.empty() || assertion.hypcount() + 1 == 0)
         return false; // size overflow
     // Preallocate for efficiency.
-    hypstack.reserve(thm.nfreehyps());
+    Hypsize const nfreehyps = thm.nfreehyps();
+    hypstack.reserve(nfreehyps);
     // Bound substitutions
     substack[0] = stepranges;
     // substack.size() == hypstack.size() + 1
+    // # matched hypotheses
+    Hypsize matchedhyps = 0;
+    int delta;
     do
     {
         // std::cout << hypstack;
@@ -223,14 +232,14 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
 // std::cin.get();
         }
         else
-        if (hypstack.size() < thm.nfreehyps() &&
-            util::count_not(hypstack.begin(), hypstack.end(), assertion.hypcount())
-            < nfreehyps)
+        if (hypstack.size() < nfreehyps && matchedhyps < maxfreehyps)
         {
             // Match new hypothesis.
             hypstack.push_back(static_cast<Hypsize>(-1));
         }
-    } while (::next(hypstack, substack, assertion, thm));
+        delta = ::next(hypstack, substack, assertion, thm);
+        matchedhyps += delta;
+    } while (delta != STACKEMPTY);
 
     return false;
 }

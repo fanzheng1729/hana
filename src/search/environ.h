@@ -78,7 +78,7 @@ private:
     // Add Hypothesis-oriented moves. Return false.
     bool addhypmoves(Assptr pthm, Moves & moves,
                      Stepranges const & stepranges,
-                     Hypsize nfreehyps) const;
+                     Hypsize maxfreehyps) const;
     bool addhypmoves(Assptr pthm, Moves & moves,
                      Stepranges const & stepranges) const;
     // Add a move with free variables. Return false.
