@@ -175,7 +175,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
     while (!hypstack.empty())
     {
         Hypsize const thmhyp = thm.hypsorder[hypstack.size()-1];
-        // Advance the last hypothesis in the substitution.
+        // Advance the last hypothesis in the stack.
         Hypsize & asshyp = hypstack.back();
         if (asshyp < ass.hypcount())
             --delta; // 1 match removed
