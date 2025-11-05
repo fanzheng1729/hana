@@ -204,7 +204,7 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
     // Substitution stack
     std::vector<Stepranges> substack(thm.nfreehyps() + 1);
     if (substack.empty())
-        return false;
+        return false; // size overflow
     // Preallocate for efficiency.
     hypstack.reserve(thm.nfreehyps());
     // Bound substitutions
