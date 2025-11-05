@@ -59,7 +59,7 @@ public:
         Value const value = minimax(p);
         bool const stuck = (staged & STAGED) && isourturn(p)
                             && value == WDL::LOSS;
-        return stuck ? p->eval() : Eval(value);
+        return stuck ? p->eval() : value;
     }
     // Close all the nodes with p's proven goal.
     void closenodes(Nodeptr p)
