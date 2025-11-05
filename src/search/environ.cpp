@@ -181,7 +181,8 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
         for (++asshyp; asshyp <= ass.hypcount(); ++asshyp)
         {
             if (asshyp < ass.hypcount() &&
-                (ass.hypfloats(asshyp) || ass.hyptypecode(asshyp) != thm.hyptypecode(thmhyp)))
+                (ass.hypfloats(asshyp) ||
+                 ass.hyptypecode(asshyp) != thm.hyptypecode(thmhyp)))
                 continue; // Skip floating hypothesis.
             // Copy the last substitution.
             substack[hypstack.size()] = substack[hypstack.size()-1];
