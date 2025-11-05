@@ -69,11 +69,11 @@ bool _eq(_IterBase const & it1, _IterBase const & it2, Container & p)
 struct _Done
 {
     bool _done;
-    bool & _break;
-    _Done(bool & bbreak) : _done(false), _break(bbreak) {}
+    bool & rbreak;
+    _Done(bool & bbreak) : _done(false), rbreak(bbreak) {}
     void done() { _done = true; }
     operator bool() const { return _done; }
-    ~_Done() { _break |= !_done; }
+    ~_Done() { rbreak |= !_done; }
 };
 } // namespace util
 
