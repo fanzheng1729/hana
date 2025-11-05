@@ -26,6 +26,7 @@ private:
     bool doaddstep(Proofstep step, Proofsize index, Expression const & stacktop);
     bool addstep(Expression const & stacktop, Proofsize index,
                  strview label = "", Symbol2 save = Symbol2());
+    std::string::size_type maxlabellen() const;
 };
 
 #endif // PRINTER_H_INCLUDED

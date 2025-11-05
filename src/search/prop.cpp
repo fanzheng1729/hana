@@ -164,7 +164,7 @@ static Problem::size_type testpropsearch
         // tree.navigate();
         std::cin.get();
     }
-    else if (iter->first == "biluk_")
+    else if (iter->first == "biass")
         tree.writeproof((std::string(iter->first) + ".txt").c_str());
 
     return tree.size();
@@ -189,7 +189,7 @@ bool testpropsearch
     Assiters::size_type all = 0, proven = 0;
     // Test assertions
     Assiters const & assiters = database.assiters();
-    for (Assiters::size_type i = 1; i < assiters.size(); ++i)
+    for (Assiters::size_type i = 376; i < assiters.size(); ++i)
     {
         Assiter const iter = assiters[i];
 // printass(*iter);

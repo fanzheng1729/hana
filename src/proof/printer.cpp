@@ -1,3 +1,4 @@
+#include <algorithm>    // for std::copy
 #include "../ass.h"
 #include "../io.h"
 #include "../typecode.h"
@@ -57,18 +58,45 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
     return false;
 }
 
+std::string::size_type Printer::maxlabellen() const
+{
+    std::string::size_type result = 0;
+
+    FOR (Expression const & step, steps)
+    {
+        if (step.empty())
+            continue;
+        std::string::size_type const len = std::strlen(step[0].c_str);
+        if (result < len)
+            result = len;
+    }
+
+    return result;
+}
+
 std::string Printer::str(std::vector<Proofsize> const & indentation) const
 {
     std::string result;
+    std::string::size_type const spacing = maxlabellen() + 1;
+
     FOR (Expression const & step, steps)
     {
-        // Justification + indentation + expression + tag #
-        (result += strview(step[0])) += '\t';
+        if (unexpected(step.size() < 3, "step", step))
+            return "";
+        // Justification
+        const char * const label = step[0].c_str;
+        result += label;
+        // Spacing
+        result += std::string(spacing - std::strlen(label), ' ');
+        // Indentation
         result += std::string(indentation[step[2]], ' ');
-        for (Expression::size_type i(3); i < step.size(); ++i)
+        // Expression
+        for (Expression::size_type i = 3; i < step.size(); ++i)
             (result += strview(step[i])) += ' ';
+        // tag # (optional)
         if (!step[1].empty())
             ((result += strview(step[1])) += ' ') += util::hex(step[2].id);
+        // Newline
         result += '\n';
     }
 
