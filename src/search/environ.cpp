@@ -174,6 +174,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
     while (!hypstack.empty())
     {
         Hypsize const thmhyp = thm.hypsorder[hypstack.size()-1];
+        strview thmhyptype = thm.hyptypecode(thmhyp);
         // Advance the last hypothesis in the stack.
         Hypsize & asshyp = hypstack.back();
         if (asshyp < ass.hypcount())
@@ -182,7 +183,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
         {
             if (asshyp < ass.hypcount() &&
                 (ass.hypfloats(asshyp) ||
-                 ass.hyptypecode(asshyp) != thm.hyptypecode(thmhyp)))
+                 ass.hyptypecode(asshyp) != thmhyptype))
                 continue; // Skip floating hypothesis.
             // Copy the last substitution.
             substack[hypstack.size()] = substack[hypstack.size()-1];
@@ -253,10 +254,11 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
         if (thm.nfreevars[thmhyp] < thm.nfreevar())
             return false;
 // std::cout << move.label() << ' ' << thm.hyplabel(thmhyp) << ' ';
+        strview thmhyptype = thm.hyptypecode(thmhyp);
         for (Hypsize asshyp = 0; asshyp < assertion.hypcount(); ++asshyp)
         {
             if (assertion.hypfloats(asshyp) ||
-                assertion.hyptypecode(asshyp) != thm.hyptypecode(thmhyp))
+                assertion.hyptypecode(asshyp) != thmhyptype)
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
             Stepranges newsubst(stepranges);
