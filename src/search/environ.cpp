@@ -8,6 +8,7 @@
 #include "problem.h"
 #include "../util/iter.h"
 #include "../util/progress.h"
+#include "../util/util.h"
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
@@ -164,15 +165,6 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     return false;
 }
 
-// Add Hypothesis-oriented moves. Return false.
-template<class It, class T>
-static std::size_t count_not_eq(It begin, It end, T const & value)
-{
-    std::size_t count = 0;
-    while (begin != end) count += (*begin++ != value);
-    return count;
-}
-
 static bool next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
                  Assertion const & ass, Assertion const & thm)
 {
@@ -201,6 +193,7 @@ static bool next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
     return !hypstack.empty();
 }
 
+// Add Hypothesis-oriented moves. Return false.
 bool Environ::addhypmoves(Assptr pthm, Moves & moves,
                           Stepranges const & stepranges,
                           Hypsize nfreehyps) const
@@ -231,7 +224,7 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
         }
         else
         if (hypstack.size() < thm.nfreehyps() &&
-            count_not_eq(hypstack.begin(), hypstack.end(), assertion.hypcount())
+            util::count_not(hypstack.begin(), hypstack.end(), assertion.hypcount())
             < nfreehyps)
         {
             // Match new hypothesis.
