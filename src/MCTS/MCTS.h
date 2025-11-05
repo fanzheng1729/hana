@@ -159,7 +159,7 @@ public:
     }
     // Evaluate the parent. Return {value, sure?}.
     // p should != NULL.
-    virtual Eval evalparent(Nodeptr p) const { return Eval(minimax(p)); }
+    virtual Eval evalparent(Nodeptr p) const { return minimax(p); }
     // Evaluate all the new leaves.
     // p should != NULL.
     void evalnewleaves(Nodeptr p) const
@@ -168,8 +168,9 @@ public:
         {
 // std::cout << i << '\t' << size() << std::endl;
             Nodeptr const child = (*p.children())[i];
+            // Evaluate child.
             if (!child.children()->empty())
-                continue;
+                continue; // child not a leaf
             Eval const eval = evalleaf(child);
             seteval(child, eval);
             if (isourturn(p) && eval == EvalWIN)

@@ -20,7 +20,6 @@ class Problem;
 
 // Size-based score
 inline Value score(Proofsize size) { return 1. / (size + 1); }
-inline Eval eval(Proofsize size) { return Eval(score(size)); }
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
