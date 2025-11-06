@@ -70,7 +70,7 @@ public:
                 seteval(other, EvalWIN);
                 Nodeptr parent = other.parent();
                 if (parent && value(parent) != WDL::WIN)
-                    backprop(other.parent());
+                    backprop(parent);
             }
     }
     // Record the proof of proven goals on back propagation.
