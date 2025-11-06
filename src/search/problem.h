@@ -78,7 +78,7 @@ public:
     {
         Game const & game = p->game();
         if (game.goaldata().proven())
-            seteval(p, EvalWIN); // Cancel effect of backprop.
+            seteval(p, EvalWIN); // Undo seteval in backprop.
         else if (value(p) == WDL::WIN && game.writeproof())
             closenodes(p);
     }
