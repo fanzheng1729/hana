@@ -166,7 +166,6 @@ public:
     {
         for (size_type i = p->index(); i < p.children()->size(); ++i)
         {
-// std::cout << i << '\t' << size() << std::endl;
             Nodeptr const child = (*p.children())[i];
             // Evaluate child.
             if (!child.children()->empty())
@@ -199,16 +198,19 @@ public:
         }
     }
     size_type playcount() const { return m_playcount; }
+    virtual void checkmainline(Nodeptr p) const {}
     // Play out once. Return the value at the root.
     Value playonce()
     {
 // std::cout << playcount() << '\t' << size() << std::endl;
+// std::cout << *root();
+// checkmainline(root());
         Nodeptr p = pickleaf(root());
-// std::cout << "Expanding @" << p << std::endl << *p << std::endl;
+// std::cout << "Expanding " << *p;
         if (size_type const n = expand<&G::moves>(p))
-// std::cout << "Expanded " << n << " new moves" << std::endl;
+// std::cout << "Expanded " << n << " new moves at " << *p,
             evalnewleaves(p);
-// std::cout << "Back propagating." << std::endl;
+// std::cout << "Back propagating from " << *p;
         backprop(p);
         ++m_playcount;
         return value();
@@ -237,7 +239,6 @@ private:
     // Add children. Return # new children.
     size_type addchildren(Nodeptr p, Moves const & moves)
     {
-// if (p->stage() >= 5)
 // std::cout << "Adding " << moves.size() << " moves to " << *p;
         size_type const oldsize = p.children()->size();
         if (p.reserve(oldsize + moves.size()))

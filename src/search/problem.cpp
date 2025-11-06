@@ -208,15 +208,23 @@ static void printourchildren(Nodeptr p, Problem const & tree)
     std::cout << std::endl;
 }
 
-// Format: [STAGE(n)] maj score*size   |- ...
+// Format: (n) if n > 0
+static void printstage(stage_t stage)
+{
+    if (stage)
+        std::cout << '(' << stage << ") ";
+}
+
+// Format: (n) maj score*size   |- ...
 static void printournode(Nodeptr p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
     Goal const & goal = p->game().goal();
     strview hyp = lastmove.hyplabel(lastmove.matchhyp(goal));
-    if (stage)
-        std::cout << "STAGE(" << stage << ") ";
-    std::cout << hyp; printeval(p); std::cout << '\t' << goal.expression();
+    printstage(stage);
+    std::cout << hyp;
+    printeval(p);
+    std::cout << '\t' << p->game().goaldata().proven() << goal.expression();
 }
 
 // Format: DEFER(n) score*size
@@ -257,10 +265,10 @@ static void printtheirnode(Nodeptr p)
 static void printgoal(Nodeptr p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
-    Game const & node = p->game();
-    std::cout << node.goal().expression();
+    Game const & game = p->game();
+    std::cout << game.goaldata().proven() << game.goal().expression();
 
-    Assertion const & ass = node.env().assertion;
+    Assertion const & ass = game.env().assertion;
     if (ass.esshypcount() == 0) return;
 
     std::cout << "Hyps ";
@@ -280,18 +288,17 @@ static void printgoal(Nodeptr p)
 **/
 // n.   (n) ax-mp[!] score*size score*size
 //      maj score*size  |- ...
-void Problem::printmainline(Nodeptr p, bool detailed) const
+void Problem::printmainline(Nodeptr p, size_type detail) const
 {
     printgoal(p);
-
     // Print children.
     static void (*const printfuns[])(Nodeptr)
     = {&printhypsline, &printdeferline};
-    if (detailed)
+    if (detail)
         isourturn(p) ? printourchildren(p, *this) :
             (*printfuns[p->game().attempt.type == Move::DEFER])(p);
 // std::cout << "Children printed" << std::endl;
-    size_type movecount = 0, ndefer = 0;
+    size_type level = 0, ndefer = 0;
     while (p = pickchild(p))
     {
         if (!isourturn(p))
@@ -303,9 +310,8 @@ void Problem::printmainline(Nodeptr p, bool detailed) const
                 ++ndefer;
                 continue;
             case Move::THM:
-                std::cout << ++movecount << ".\t";
-                if (ndefer > 0)
-                    std::cout << '(' << ndefer << ") ";
+                std::cout << ++level << ".\t";
+                printstage(ndefer);
                 ndefer = 0;
                 printtheirnode(p);
                 continue;
@@ -318,6 +324,24 @@ void Problem::printmainline(Nodeptr p, bool detailed) const
         {
             std::cout << '\t';
             printournode(p, (p->stage()) * (staged & STAGED));
+            if (detail > level)
+                printourchildren(p, *this);
+        }
+    }
+}
+
+void Problem::checkmainline(Nodeptr p) const
+{
+    for ( ; p; p = pickchild(p))
+    {
+        if (isourturn(p) && p->game().ndefer == 0
+            && p->game().goaldata().proven() && value(p) != WDL::WIN)
+        {
+            for (Nodeptr q = root(); q && q != p; q = pickchild(q))
+                std::cout << *q;
+            std::cout << *p;
+            // printmainline(p, -1);
+            navigate();
         }
     }
 }

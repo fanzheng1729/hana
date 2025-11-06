@@ -13,6 +13,8 @@ Goaldata & Game::goaldata() const { return goalptr->second; }
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {
     out << game.goal().expression();
+    if (game.goaldata().proven())
+        out << "Proof: " << game.goaldata().proofsteps;
     if (game.attempt.type != Move::NONE)
         out << "Proof attempt (" << game.ndefer << ") "
             << game.attempt << std::endl;
@@ -91,7 +93,9 @@ bool Game::writeproof() const
         return false;
     // attempt.type == Move::THM
     if (goaldata().proven())
-        return true;
+        return false;
+    // Goal is not proven
+// std::cout << "Writing proof: " << goal().expression();
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)

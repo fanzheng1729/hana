@@ -140,6 +140,7 @@ static Problem::size_type testpropsearch
 {
     // printass(*iter);
     tree.play(maxsize);
+    // tree.printstats();
     // if (iter->first == "biass")
         // tree.navigate();
     if (tree.size() > maxsize)
@@ -164,7 +165,7 @@ static Problem::size_type testpropsearch
         // tree.navigate();
         std::cin.get();
     }
-    else if (iter->first == "biass")
+    else if (iter->first == "biass_")
         tree.writeproof((std::string(iter->first) + ".txt").c_str());
 
     return tree.size();
@@ -190,9 +191,12 @@ bool testpropsearch
     // Test assertions
     Assiters const & assiters = database.assiters();
     for (Assiters::size_type i = 1; i < assiters.size(); ++i)
+    // for (Assiters::size_type i = 972; i < 973; ++i)
+    // for (Assiters::size_type i = 1117; i < 1118; ++i)
+    // for (Assiters::size_type i = 1637; i < 1638; ++i)
     {
         Assiter const iter = assiters[i];
-// printass(*iter);
+        // printass(*iter);
         // Skip axioms, trivial and duplicate theorems.
         if (iter->second.type
             & (Asstype::AXIOM + Asstype::TRIVIAL + Asstype::DUPLICATE))

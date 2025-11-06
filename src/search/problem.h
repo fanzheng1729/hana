@@ -68,15 +68,20 @@ public:
             if (other != p && value(other) != WDL::WIN)
             {
                 seteval(other, EvalWIN);
-                backprop(other.parent());
+                Nodeptr parent = other.parent();
+                if (parent && value(parent) != WDL::WIN)
+                    backprop(other.parent());
             }
     }
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
-        if (value(p) == WDL::WIN && p->game().writeproof())
+        Game const & game = p->game();
+        if (game.goaldata().proven())
+            seteval(p, EvalWIN); // Cancel effect of backprop.
+        else if (value(p) == WDL::WIN && game.writeproof())
             closenodes(p);
-}
+    }
     // Proof of the assertion, if any
     Proofsteps const & proof() const
         { return root()->game().goaldata().proofsteps; }
@@ -93,9 +98,10 @@ public:
     // Add a sub environment for the game. Return true iff it is added.
     bool addsubenv(Game const & game);
     // Printing routines. DO NOTHING if ptr is NULL.
-    void printmainline(Nodeptr p, bool detailed = false) const;
-    void printmainline(bool detailed = false) const
-    { printmainline(root(), detailed); }
+    void printmainline(Nodeptr p, size_type detail = 0) const;
+    void printmainline(size_type detail = 0) const
+        { printmainline(root(), detail); }
+    virtual void checkmainline(Nodeptr p) const;
     void printstats() const;
     void printenvs() const;
     void navigate(bool detailed = true) const;
