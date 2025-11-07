@@ -23,6 +23,8 @@ struct Game
         goalptr(pgoal), penv(p), ndefer(defer) {}
     Goal const & goal() const;
     Goaldata & goaldata() const;
+    Proofsteps & proof() const;
+    bool proven() const;
     Environ const & env() const { return *penv; }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
     // Return true if a move is legal.

@@ -9,12 +9,14 @@
 
 Goal const & Game::goal() const { return goalptr->first; }
 Goaldata & Game::goaldata() const { return goalptr->second; }
+Proofsteps & Game::proof() const { return goaldata().proofsteps; }
+bool Game::proven() const { return !proof().empty(); }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {
     out << game.goal().expression();
-    if (game.goaldata().proven())
-        out << "Proof: " << game.goaldata().proofsteps;
+    if (game.proven())
+        out << "Proof: " << game.proof();
     if (game.attempt.type != Move::NONE)
         out << "Proof attempt (" << game.ndefer << ") "
             << game.attempt << std::endl;
@@ -70,7 +72,7 @@ Moves Game::theirmoves() const
 Moves Game::ourmoves(stage_t stage) const
 {
 // std::cout << "Finding moves at stage " << stage << " for " << *this;
-    if (goaldata().proven())
+    if (proven())
         return Moves();
     if (env().staged)
         return env().ourmoves(*this, stage);
@@ -85,7 +87,7 @@ Moves Game::ourmoves(stage_t stage) const
 // Return true if a new proof is written.
 bool Game::writeproof() const
 {
-    if (attempt.type == Move::NONE || goaldata().proven())
+    if (attempt.type == Move::NONE || proven())
         return false;
     // attempt.type == Move::THM, goal not proven
 // std::cout << "Writing proof: " << goal().expression();
@@ -99,16 +101,15 @@ bool Game::writeproof() const
 // std::cout << "Added hyp\n" << *hyps.back();
     }
     // The whose proof
-    Proofsteps & steps = goaldata().proofsteps;
-    if (!::writeproof(steps, attempt.pthm, hyps))
+    if (!::writeproof(proof(), attempt.pthm, hyps))
         return false;
     // Verification
-    Expression const & exp(verify(steps));
+    Expression const & exp(verify(proof()));
     bool const okay = exp == goal().expression();
     if (!okay)
     {
-        std::cerr << "In attempt to use " << attempt << ", the proof steps\n";
-        std::cerr << steps << "proves\n" << exp;
+        std::cerr << "In attempt to use " << attempt << ", the proof\n";
+        std::cerr << proof() << "proves\n" << exp;
         std::cerr << "instead of\n" << goal().expression();
         std::cerr << "Proofs of hypotheses are" << std::endl;
         for (Hypsize i = 0; i < attempt.hypcount(); ++i)
@@ -116,7 +117,7 @@ bool Game::writeproof() const
             Proofsteps const & steps = *hyps[i];
             std::cerr << attempt.hyplabel(i) << '\t' << steps;
         }
-        steps.clear();
+        proof().clear();
     }
     return okay;
 }

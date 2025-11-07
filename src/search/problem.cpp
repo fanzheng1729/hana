@@ -39,7 +39,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     if (!isourturn(p))
         return evaltheirleaf(p);
     // Our leaf
-    if (p.parent() && game.goaldata().proven())
+    if (p.parent() && game.proven())
         return EvalWIN;
     if (!p.parent() && proven(game.goalptr, assertion))
         return EvalWIN;
@@ -227,7 +227,7 @@ static void printournode(Nodeptr p, stage_t stage)
     std::cout << lastmove.hyplabel(lastmove.matchhyp(goal));
     printeval(p);
     std::cout << '\t';
-    std::cout << &strproven[!game.goaldata().proven()];
+    std::cout << &strproven[!game.proven()];
     std::cout << goal.expression();
 }
 
@@ -270,7 +270,7 @@ static void printgoal(Nodeptr p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
     Game const & game = p->game();
-    std::cout << &strproven[!game.goaldata().proven()];
+    std::cout << &strproven[!game.proven()];
     std::cout << game.goal().expression();
 
     Assertion const & ass = game.env().assertion;
@@ -339,7 +339,7 @@ void Problem::checkmainline(Nodeptr p) const
     for ( ; p; p = pickchild(p))
     {
         if (isourturn(p) && p->game().ndefer == 0
-            && p->game().goaldata().proven() && value(p) != WDL::WIN)
+            && p->game().proven() && value(p) != WDL::WIN)
         {
             for (Nodeptr q = root(); q && q != p; q = pickchild(q))
                 std::cout << *q;
