@@ -59,7 +59,7 @@ bool Definition::checkdv() const
         for (++iter2; iter2 != vars.end(); ++iter2)
         {
             Symbol2 var2(iter2->first, iter2->first);
-            if (disjvars.count(Disjvars::value_type(var, var2))
+            if (disjvars.count(std::make_pair(var, var2))
                 != (isdummy(iter->first) || isdummy(iter2->first)))
             {
                 static const char * const dummy[] = {" not", ""};

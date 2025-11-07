@@ -190,7 +190,7 @@ static Typecodes * addsyntax(Typecodes * p, Command const & command)
         return p;
     // Add the type.
     std::pair<Typecodes::iterator, bool> result
-        (p->insert(Typecodes::value_type(type, Typecodes::mapped_type())));
+        (p->insert(std::make_pair(type, Typecodes::mapped_type())));
     if (result.second == false)
     {
         std::cerr << "Type code " << type << " already exists\n";
@@ -245,7 +245,7 @@ static Ctordefns * adddefinition(Ctordefns * p, Command const & command)
     if (unexpected(defn.empty(), "definition", command[0]))
         return p;
     // Add the constructor.
-    if (p->insert(Ctordefns::value_type(ctor, defn)).second == false)
+    if (p->insert(std::make_pair(ctor, defn)).second == false)
         std::cerr << "Constructor " << ctor << " already exists\n";
     return p;
 }
@@ -259,7 +259,7 @@ static Ctordefns * addprimitives(Ctordefns * p, Command const & command)
         if (unexpected(ctor.empty(), "constructor", token))
             return p;
         // Add the constructor.
-        if (p->insert(Ctordefns::value_type(ctor, "")).second == false)
+        if (p->insert(std::make_pair(ctor, "")).second == false)
             std::cerr << "Constructor " << ctor << " already exists\n";
     }
     return p;

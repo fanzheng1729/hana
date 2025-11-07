@@ -108,7 +108,7 @@ Disjvars Scopes::disjvars(Symbol2s const & varsused) const
             {
                 Symbol2s::iterator diter2(diter);
                 for (++diter2; diter2 != dset.end(); ++diter2)
-                    result.insert(Disjvars::value_type(*diter, *diter2));
+                    result.insert(std::make_pair(*diter, *diter2));
             }
         }
 
