@@ -5,7 +5,7 @@
 #include "../io.h"
 #include "problem.h"
 
-static const char cproven[] = "V";
+static const char strproven[] = "V";
 
 // UCB threshold for generating a new batch of moves
 // Change this to turn on staged move generation.
@@ -223,12 +223,11 @@ static void printournode(Nodeptr p, stage_t stage)
     Move const & lastmove = p.parent()->game().attempt;
     Game const & game = p->game();
     Goal const & goal = game.goal();
-    strview hyp = lastmove.hyplabel(lastmove.matchhyp(goal));
     printstage(stage);
-    std::cout << hyp;
+    std::cout << lastmove.hyplabel(lastmove.matchhyp(goal));
     printeval(p);
     std::cout << '\t';
-    std::cout << cproven[!game.goaldata().proven()];
+    std::cout << &strproven[!game.goaldata().proven()];
     std::cout << goal.expression();
 }
 
@@ -271,7 +270,7 @@ static void printgoal(Nodeptr p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
     Game const & game = p->game();
-    std::cout << &cproven[!game.goaldata().proven()];
+    std::cout << &strproven[!game.goaldata().proven()];
     std::cout << game.goal().expression();
 
     Assertion const & ass = game.env().assertion;
