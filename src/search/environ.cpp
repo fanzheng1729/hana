@@ -20,7 +20,7 @@ bool proven(Goalptr p, Assertion const & ass)
     if (i == ass.hypcount())
         return false; // Hypotheses not matched
     // 1-step proof using the matched hypothesis
-    p->second.proofsteps.assign(1, ass.hypiters[i]);
+    p->second.proof.assign(1, ass.hypiters[i]);
     return true;
 }
 
@@ -92,8 +92,7 @@ bool Environ::valid(Move const & move) const
         // Record the goal in the hypotheses of the move.
         hypvec[i] = goalptr;
         // Check if the goal is a hypothesis or already proven.
-        proven(goalptr, assertion);
-        if (status == GOALOPEN || goalptr->second.proven())
+        if (proven(goalptr, assertion) || status == GOALOPEN)
             continue; // Valid goal
         // New goal (status == GOALNEW)
         status = valid(goalptr->first.RPN) ? GOALOPEN : GOALFALSE;
