@@ -219,7 +219,7 @@ static void printstage(stage_t stage)
         std::cout << '(' << stage << ") ";
 }
 
-// Format: (n) maj score*size   |- ...
+// Format: [(n)] maj score*size   [V]|- ...
 static void printournode(Nodeptr p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
@@ -267,7 +267,7 @@ static void printtheirnode(Nodeptr p)
 }
 
 // Format:
-// Goal score |- ...
+// Goal score [V]|- ...
 // [Hyps hyo1 hyp2]
 static void printgoal(Nodeptr p)
 {
@@ -300,11 +300,10 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
 {
     printgoal(p);
     // Print children.
-    static void (*const printfuns[])(Nodeptr)
-    = {&printhypsline, &printdeferline};
+    static void (*const printfn[])(Nodeptr) = {&printhypsline, &printdeferline};
     if (detail)
         isourturn(p) ? printourchildren(p, *this) :
-            (*printfuns[p->game().attempt.type == Move::DEFER])(p);
+            (*printfn[p->game().attempt.type == Move::DEFER])(p);
 // std::cout << "Children printed" << std::endl;
     size_type level = 0, ndefer = 0;
     while (p = pickchild(p))
