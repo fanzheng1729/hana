@@ -7,7 +7,7 @@
 
 std::ostream & operator<<(std::ostream & out, Disjvars const & disjvars)
 {
-    FOR (Disjvars::value_type vars, disjvars)
+    FOR (Disjvars::const_reference vars, disjvars)
         out << vars.first << ' ' << vars.second << '\n';
     return out;
 }
@@ -24,10 +24,9 @@ void printdisjvarserr(Expression const & exp1, Expression const & exp2)
 Disjvars operator &(Disjvars const & disjvars, Varusage const & varusage)
 {
     Disjvars result;
-    FOR (Disjvars::value_type vars, disjvars)
+    FOR (Disjvars::const_reference vars, disjvars)
         if (varusage.count(vars.first) && varusage.count(vars.second))
             result.insert(vars);
-
     return result;
 }
 
