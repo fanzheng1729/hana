@@ -37,17 +37,13 @@ Game Game::play(Move const & move, bool ourturn) const
 {
     Game game(goalptr, penv, ndefer);
 
-    if (ourturn)
+    if (ourturn) // Record the move.
     {
-        // On our turn, record the move.
         game.attempt = move;
         game.ndefer = (move.type == Move::DEFER) * (ndefer + 1);
     }
-    else if (attempt.type == Move::THM)
-    {
-        // On thr turn, pick the hypothesis.
+    else if (attempt.type == Move::THM) // Pick the hypothesis.
         game.goalptr = attempt.hypvec[move.index];
-    }
 
     return game;
 }
