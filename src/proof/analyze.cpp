@@ -31,20 +31,20 @@ static bool addASTnode
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs
-AST ast(Proofsteps const & steps)
+AST ast(Proofsteps const & proof)
 {
     std::vector<Proofsize> stack;
     // Preallocate for efficiency
-    stack.reserve(steps.size());
-    AST tree(steps.size());
+    stack.reserve(proof.size());
+    AST tree(proof.size());
 
-    for (Proofsize i = 0; i < steps.size(); ++i)
+    for (Proofsize i = 0; i < proof.size(); ++i)
     {
-        Proofstep::Type type = steps[i].type;
+        Proofstep::Type type = proof[i].type;
         if (type == Proofstep::HYP)
             stack.push_back(i);
         else if (type == Proofstep::ASS &&
-                 addASTnode(steps[i].pass->second, stack, tree[i]))
+                 addASTnode(proof[i].pass->second, stack, tree[i]))
             continue;
         else return AST();
     }
