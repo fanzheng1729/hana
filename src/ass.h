@@ -25,7 +25,7 @@ struct Assertion
     // Indices of hypotheses containing most to fewest free variables
     Hypsizes hypsorder;
     // revPolish of expression, proof steps
-    Proofsteps expRPN, proofsteps;
+    Proofsteps expRPN, proof;
     // Abstract syntax tree of expression
     AST expAST;
     // Type (propositional, predicate, etc)

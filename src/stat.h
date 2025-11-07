@@ -103,7 +103,7 @@ inline bool isasshard(Assertion const & ass, Syntaxioms const & syntaxioms)
         return false; // Undefined syntax
     // Largest # of syntax axiom in the proof
     Assertions::size_type const proofsymbolnumber
-        (largestsymboldefnumber(ass.proofsteps, syntaxioms));
+        (largestsymboldefnumber(ass.proof, syntaxioms));
     if (proofsymbolnumber == 0)
         return false; // Undefined syntax
     return proofsymbolnumber > symbolnumber;

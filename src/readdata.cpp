@@ -394,7 +394,7 @@ bool Imp::readp(strview label)
     Expression const & exp(verify(proof, &*iterass));
     okay = provesrightthing(label, exp, ass.expression);
     if (okay)
-        ass.proofsteps = proof;
+        ass.proof = proof;
 
     return okay;
 }
