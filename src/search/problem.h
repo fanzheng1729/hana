@@ -26,9 +26,10 @@ class Problem : public MCTS<Game>
 public:
     // The assertion to be proved
     Assertion const & assertion;
-    enum { STAGED = 1 };
+    enum    { STAGED = 1 };
     // Is staged move generation turned on?
-    bool const staged;
+    bool    const staged;
+    static  const Value ALMOSTWIN, ALMOSTLOSS;
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion), staged(env.staged & STAGED),
@@ -78,7 +79,7 @@ public:
     {
         Game const & game = p->game();
         if (game.goaldata().proven())
-            seteval(p, EvalWIN); // Undo seteval in backprop.
+            seteval(p, EvalWIN); // Fix seteval in backprop.
         else if (value(p) == WDL::WIN && game.writeproof())
             closenodes(p);
     }

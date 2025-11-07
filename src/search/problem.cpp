@@ -5,6 +5,10 @@
 #include "../io.h"
 #include "problem.h"
 
+static const char cproven[] = "V";
+const Value Problem::ALMOSTWIN = WDL::WIN - std::numeric_limits<Value>::epsilon();
+const Value Problem::ALMOSTLOSS = -Problem::ALMOSTWIN;
+
 // UCB threshold for generating a new batch of moves
 // Change this to turn on staged move generation.
 Value Problem::UCBnewstage(Nodeptr p) const
@@ -219,12 +223,15 @@ static void printstage(stage_t stage)
 static void printournode(Nodeptr p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
-    Goal const & goal = p->game().goal();
+    Game const & game = p->game();
+    Goal const & goal = game.goal();
     strview hyp = lastmove.hyplabel(lastmove.matchhyp(goal));
     printstage(stage);
     std::cout << hyp;
     printeval(p);
-    std::cout << '\t' << p->game().goaldata().proven() << goal.expression();
+    std::cout << '\t';
+    std::cout << cproven[!game.goaldata().proven()];
+    std::cout << goal.expression();
 }
 
 // Format: DEFER(n) score*size
@@ -266,7 +273,8 @@ static void printgoal(Nodeptr p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
     Game const & game = p->game();
-    std::cout << game.goaldata().proven() << game.goal().expression();
+    std::cout << &cproven[!game.goaldata().proven()];
+    std::cout << game.goal().expression();
 
     Assertion const & ass = game.env().assertion;
     if (ass.esshypcount() == 0) return;
