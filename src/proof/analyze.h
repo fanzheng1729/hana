@@ -4,20 +4,20 @@
 #include "../types.h"
 
 // Return true if a proof has only 1 step using 1 theorem.
-inline bool is1step(Proofsteps const & steps)
+inline bool is1step(Proofsteps const & proof)
 {
-    if (steps.empty()) return false;
+    if (proof.empty()) return false;
     // i = the first ASS step
     Proofsize i = 0;
-    for ( ; i < steps.size() && steps[i].type != Proofstep::ASS; ++i) ;
+    for ( ; i < proof.size() && proof[i].type != Proofstep::ASS; ++i) ;
     // Check if that step is the last one.
-    return i == steps.size() - 1;
+    return i == proof.size() - 1;
 }
 
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs
-AST ast(Proofsteps const & steps);
+AST ast(Proofsteps const & proof);
 
 // Return the indentations of all the subASTs.
 std::vector<Proofsize> indentation(AST const & ast);
