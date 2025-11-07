@@ -85,8 +85,7 @@ public:
     bool hasvar(strview str) const { return varIDmap().count(str); }
     void addvar(strview str)
     {
-        VarIDmap::value_type value(str, varIDmap().size());
-        if (m_varIDmap.insert(value).second)
+        if (m_varIDmap.insert(std::make_pair(str, varIDmap().size())).second)
             m_varvec.push_back(str);
     }
     bool hashyp(strview label) const { return hypotheses().count(label); }
