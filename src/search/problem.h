@@ -5,6 +5,9 @@
 #include "goaldata.h"
 #include "../util/for.h"
 
+static const Value ALMOSTWIN = WDL::WIN - std::numeric_limits<Value>::epsilon();
+static const Value ALMOSTLOSS = -ALMOSTWIN;
+
 // Add node pointer to p's goal data.
 inline void addnodeptr(Nodeptr p)
 {
@@ -26,10 +29,9 @@ class Problem : public MCTS<Game>
 public:
     // The assertion to be proved
     Assertion const & assertion;
-    enum    { STAGED = 1 };
+    enum { STAGED = 1 };
     // Is staged move generation turned on?
-    bool    const staged;
-    static  const Value ALMOSTWIN, ALMOSTLOSS;
+    bool const staged;
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion), staged(env.staged & STAGED),

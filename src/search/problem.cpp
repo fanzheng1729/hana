@@ -6,8 +6,6 @@
 #include "problem.h"
 
 static const char cproven[] = "V";
-const Value Problem::ALMOSTWIN = WDL::WIN - std::numeric_limits<Value>::epsilon();
-const Value Problem::ALMOSTLOSS = -Problem::ALMOSTWIN;
 
 // UCB threshold for generating a new batch of moves
 // Change this to turn on staged move generation.

@@ -89,12 +89,9 @@ Moves Game::ourmoves(stage_t stage) const
 // Return true if a new proof is written.
 bool Game::writeproof() const
 {
-    if (attempt.type == Move::NONE || attempt.type == Move::DEFER)
+    if (attempt.type == Move::NONE || goaldata().proven())
         return false;
-    // attempt.type == Move::THM
-    if (goaldata().proven())
-        return false;
-    // Goal is not proven
+    // attempt.type == Move::THM, goal not proven
 // std::cout << "Writing proof: " << goal().expression();
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());
