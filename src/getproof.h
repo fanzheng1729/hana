@@ -4,7 +4,7 @@
 #include "token.h"
 #include "types.h"
 
-enum Readretval {INCOMPLETE = -1, PROOF_BAD = 0, PROOF_OKAY = 1};
+enum Readretval {INCOMPLETE = -1, PROOFBAD = 0, PROOFOKAY = 1};
 
 struct Tokens;
 

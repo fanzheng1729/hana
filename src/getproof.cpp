@@ -51,7 +51,7 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & proof)
         {
             std::cerr << "Bogus character " << c
                       << " in compressed proof of " << label.c_str << std::endl;
-            return Readretval::PROOF_BAD;
+            return Readretval::PROOFBAD;
         }
 
         proof += token.c_str;
@@ -59,12 +59,12 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & proof)
     }
 
     if (unfinishedstat(tokens, "$p", label))
-        return Readretval::PROOF_BAD;
+        return Readretval::PROOFBAD;
 
     tokens.pop(); // Discard $. token
 
-    Readretval err = proof.empty() ? Readretval::PROOF_BAD :
-                    proof.find('?') != Token::npos ? INCOMPLETE : PROOF_OKAY;
+    Readretval err = proof.empty() ? Readretval::PROOFBAD :
+                    proof.find('?') != Token::npos ? INCOMPLETE : PROOFOKAY;
     return printprooferr(label, err);
 }
 

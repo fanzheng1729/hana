@@ -11,7 +11,7 @@
 typedef std::vector<std::pair<const Symbol3 *, const Symbol3 *> > Substitutions;
 
 // Extract proof steps from a compressed proof.
-Proofsteps compressedproofsteps
+Proofsteps compressed
     (Proofsteps const & labels, Proofnumbers const & proofnumbers)
 {
     Proofsteps result(proofnumbers.size()); // Preallocate for efficiency
@@ -29,7 +29,7 @@ Proofsteps compressedproofsteps
 }
 
 // Extract proof steps from a regular proof.
-Proofsteps regularproofsteps
+Proofsteps regular
     (Proof const & proof,
      Hypotheses const & hypotheses, Assertions const & assertions)
 {
@@ -142,7 +142,7 @@ static bool enoughsavedsteps
 }
 
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(Proofsteps const & steps, Printer & printer, Assptr pthm)
+Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
 {
     strview thlabel = pthm ? pthm->first : "";
 //std::cout << "Verifying " << thlabel << std::endl;
@@ -150,7 +150,7 @@ Expression verify(Proofsteps const & steps, Printer & printer, Assptr pthm)
 
     Substitutions substitutions;
 
-    FOR (Proofstep const & step, steps)
+    FOR (Proofstep const & step, proof)
     {
         switch (step.type)
         {
@@ -184,7 +184,7 @@ Expression verify(Proofsteps const & steps, Printer & printer, Assptr pthm)
             printinproofof(thlabel);
             return Expression();
         }
-        if (!printer.addstep(step, &step - &steps[0], stack.back()))
+        if (!printer.addstep(step, &step - &proof[0], stack.back()))
             return Expression();
     }
 
@@ -208,7 +208,7 @@ Expression verify(Proofsteps const & steps, Printer & printer, Assptr pthm)
 //     Assiter const iter = assertions.find(label);
 //     Assptr const pthm = iter == assertions.end() ? NULL : &*iter;
 
-//     Proofsteps steps(regularproofsteps(proof, hypotheses, assertions));
+//     Proofsteps steps(regular(proof, hypotheses, assertions));
 //     if (steps.empty())
 //     {
 //         std::cout << " in regular proof of " << label << std::endl;

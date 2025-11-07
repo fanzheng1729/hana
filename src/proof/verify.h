@@ -6,10 +6,10 @@
 #include "../util/for.h"
 
 // Extract proof steps from a compressed proof.
-Proofsteps compressedproofsteps
+Proofsteps compressed
     (Proofsteps const & labels, Proofnumbers const & proofnumbers);
 // Extract proof steps from a regular proof.
-Proofsteps regularproofsteps
+Proofsteps regular
     (Proof const & proof,
      Hypotheses const & hypotheses, Assertions const & assertions);
 
@@ -109,11 +109,11 @@ typename std::vector<EXP>::size_type findsubstitutions
 }
 
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(Proofsteps const & steps, Printer & printer, Assptr pthm = 0);
-inline Expression verify(Proofsteps const & steps, Assptr pthm=NULL)
+Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm = 0);
+inline Expression verify(Proofsteps const & proof, Assptr pthm=NULL)
 {
     Printer printer;
-    return verify(steps, printer, pthm);
+    return verify(proof, printer, pthm);
 }
 // Verify a regular proof. The "proof" argument should be a non-empty sequence
 // of valid labels. Return the statement the "proof" proves.
