@@ -46,7 +46,7 @@ bool Environ::checkdisjvars(Move const & move) const
 
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
-        // std::cout << "Checking DV " << move.pass->first;
+        // std::cout << "Checking DV " << move.label();
         // revPolish notation of the expression substituted
         Proofsteps const & RPN1 = move.substitutions[vars.first];
         Proofsteps const & RPN2 = move.substitutions[vars.second];
