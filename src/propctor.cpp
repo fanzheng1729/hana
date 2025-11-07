@@ -378,7 +378,7 @@ bool Propctors::checkpropsat(Assertion const & ass,
 bool Propctors::checkpropsat(Assertions const & assertions,
                              struct Typecodes const & typecodes) const
 {
-    FOR (Assertions::value_type const & rass, assertions)
+    FOR (Assertions::const_reference rass, assertions)
     {
         Assertion const & assertion(rass.second);
         if (assertion.expression.empty())
