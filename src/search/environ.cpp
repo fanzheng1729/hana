@@ -82,26 +82,26 @@ bool Environ::valid(Move const & move) const
         if (move.hypfloats(i))
             continue;
         // Add the essential hypothesis as a goal.
-        Goalptr const goalptr = const_cast<Environ *>(this)
-        ->addgoal(move.hypRPN(i), move.hyptypecode(i), GOALNEW);
-// std::cout << "Validating " << goalptr->first.RPN;
+        Goalptr pgoal = const_cast<Environ *>(this)->addgoal
+            (move.hypRPN(i), move.hyptypecode(i), GOALNEW);
+// std::cout << "Validating " << pgoal->first.RPN;
         // Status of the goal
-        Goalstatus & status = goalptr->second.status;
+        Goalstatus & status = pgoal->second.status;
         if (status == GOALFALSE)
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
-        hypvec[i] = goalptr;
+        hypvec[i] = pgoal;
         // Check if the goal is a hypothesis or already proven.
-        if (proven(goalptr, assertion) || status == GOALOPEN)
+        if (proven(pgoal, assertion) || status == GOALOPEN)
             continue; // Valid
         // New goal (status == GOALNEW)
-        status = valid(goalptr->first.RPN) ? GOALOPEN : GOALFALSE;
+        status = valid(pgoal->first.RPN) ? GOALOPEN : GOALFALSE;
         if (status == GOALFALSE)
             return false; // Refuted
         // Simplify hypotheses needed.
-        goalptr->second.hypstotrim = hypstotrim(goalptr);
-// std::cout << "added " << goalptr << " in " << this;
-// std::cout << ' ' << goalptr->first.RPN << goalptr->second.hypstotrim;
+        pgoal->second.hypstotrim = hypstotrim(pgoal);
+// std::cout << "added " << pgoal << " in " << this;
+// std::cout << ' ' << pgoal->first.RPN << pgoal->second.hypstotrim;
     }
 // std::cout << moves;
 
