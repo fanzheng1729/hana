@@ -28,8 +28,7 @@ bool proven(Goalptr p, Assertion const & ass)
 Goalptr Environ::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
 {
     Goalview goal(RPN, typecode);
-    Goals::iterator iter = goals.insert(Goals::value_type(goal, s)).first;
-    return &*iter;
+    return &*goals.insert(std::make_pair(goal, s)).first;
 }
 // # goals of a given status
 Goals::size_type Environ::countgoal(int status) const
