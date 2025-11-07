@@ -34,19 +34,19 @@ private:
 // Returns proof steps if okay. Otherwise returns {NULL}.
     Proofsteps getlabels(strview label, Hypiters const & hyps);
 // Read a compressed proof. Discard tokens up to and including $.
-    Readretval readcompressedproof
-        (strview label, Hypiters const & hyps, Proofsteps & steps);
+    Readretval readcompressed
+        (strview label, Hypiters const & hyps, Proofsteps & proof);
 // Read a regular proof. Discard tokens up to and including $.
-    Readretval readregularproof(strview label, Proofsteps & steps);
+    Readretval readregular(strview label, Proofsteps & proof);
 // Read a proof. Discard tokens up to and including $.
     Readretval readproof
-        (strview label, Hypiters const & hyps, Proofsteps & steps)
+        (strview label, Hypiters const & hyps, Proofsteps & proof)
     {
         if (m_tokens.front() != "(") // Regular (uncompressed proof)
-            return readregularproof(label, steps);
+            return readregular(label, proof);
         // Compressed proof
         m_tokens.pop();
-        return readcompressedproof(label, hyps, steps);
+        return readcompressed(label, hyps, proof);
     }
 // Add a floating hypothesis. Return true iff okay.
     bool addfloatinghyp(strview label, strview type, strview var);
@@ -181,10 +181,10 @@ static void inactivereferr(strview token, strview label)
 }
 
 // Add a step to a proof.
-static bool operator+=(Proofsteps & steps, Proofstep step)
+static bool operator+=(Proofsteps & proof, Proofstep step)
 {
     if (step.type != Proofstep::NONE)
-        steps.push_back(step);
+        proof.push_back(step);
     return step.type;
 }
 
@@ -259,8 +259,8 @@ Proofsteps Imp::getlabels(strview label, Hypiters const & hyps)
 }
 
 // Read a compressed proof. Discard tokens up to and including $.
-Readretval Imp::readcompressedproof
-    (strview label, Hypiters const & hyps, Proofsteps & steps)
+Readretval Imp::readcompressed
+    (strview label, Hypiters const & hyps, Proofsteps & proof)
 {
     // Get labels
     Proofsteps const & labels(getlabels(label, hyps));
@@ -269,23 +269,23 @@ Readretval Imp::readcompressedproof
 //std::cout << labels.size() << " hypotheses and labels" << std::endl;
 
     // Get proof letters
-    std::string proof;
-    Readretval const okay(getproofletters(label, m_tokens, proof));
+    std::string letters;
+    Readretval const okay(getproofletters(label, m_tokens, letters));
     if (okay != Readretval::PROOFOKAY)
         return okay;
 
     // Get proof numbers
-    Proofnumbers const & proofnumbers(getproofnumbers(label, proof));
+    Proofnumbers const & proofnumbers(getproofnumbers(label, letters));
     if (proofnumbers.empty())
         return Readretval::PROOFBAD;
 
     // Get proof steps
-    steps = compressed(labels, proofnumbers);
+    proof = compressed(labels, proofnumbers);
     return Readretval::PROOFOKAY;
 }
 
 // Read a regular proof. Discard tokens up to and including $.
-Readretval Imp::readregularproof(strview label, Proofsteps & steps)
+Readretval Imp::readregular(strview label, Proofsteps & proof)
 {
     bool incomplete(false);
     strview token;
@@ -297,13 +297,13 @@ Readretval Imp::readregularproof(strview label, Proofsteps & steps)
         if (token == "?")
         {
             incomplete = true;
-            steps.push_back(Proofstep());
+            proof.push_back(Proofstep());
         }
 
         else if (unexpected(token == label, "self-reference in proof of", label))
             return Readretval::PROOFBAD;
 
-        else if (!(steps += getproofstep(token)))
+        else if (!(proof += getproofstep(token)))
         {
             inactivereferr(token, label);
             return Readretval::PROOFBAD;
@@ -316,7 +316,7 @@ Readretval Imp::readregularproof(strview label, Proofsteps & steps)
     m_tokens.pop(); // Discard $. token
 
     Readretval err = incomplete ? Readretval::INCOMPLETE :
-                    steps.empty() ? PROOFBAD : PROOFOKAY;
+                    proof.empty() ? PROOFBAD : PROOFOKAY;
     return printprooferr(label, err);
 }
 

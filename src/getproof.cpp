@@ -40,21 +40,20 @@ static char badletter(strview token)
 
 // Get sequence of letters in a compressed proof (Appendix B).
 // Returns 1 if Okay, 0 on error, -1 if the proof is incomplete.
-Readretval getproofletters(strview label, Tokens & tokens, std::string & proof)
+Readretval getproofletters(strview label, Tokens & tokens, std::string & letters)
 {
     strview token;
 
     while (!tokens.empty() && (token = tokens.front()) != "$.")
     {
-        const char c = badletter(token);
-        if (c)
+        if (const char c = badletter(token))
         {
             std::cerr << "Bogus character " << c
                       << " in compressed proof of " << label.c_str << std::endl;
             return Readretval::PROOFBAD;
         }
 
-        proof += token.c_str;
+        letters += token.c_str;
         tokens.pop();
     }
 
@@ -63,8 +62,8 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & proof)
 
     tokens.pop(); // Discard $. token
 
-    Readretval err = proof.empty() ? Readretval::PROOFBAD :
-                    proof.find('?') != Token::npos ? INCOMPLETE : PROOFOKAY;
+    Readretval err = letters.empty() ? Readretval::PROOFBAD :
+                    letters.find('?') != Token::npos ? INCOMPLETE : PROOFOKAY;
     return printprooferr(label, err);
 }
 
@@ -87,14 +86,14 @@ static bool FMA(Proofnumber & num, int add, strview label)
 
 // Get the raw numbers from compressed proof format.
 // The letter Z is translated as 0 (Appendix B).
-Proofnumbers getproofnumbers(strview label, std::string const & proof)
+Proofnumbers getproofnumbers(strview label, std::string const & letters)
 {
     Proofnumbers result;
-    result.reserve(proof.size()); // Preallocate for efficiency
+    result.reserve(letters.size()); // Preallocate for efficiency
 
     std::size_t num = 0u;
     bool justgotnum(false);
-    FOR (char const c, proof)
+    FOR (char const c, letters)
     {
         if (c <= 'T')
         {
