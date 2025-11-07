@@ -88,16 +88,16 @@ bool Environ::valid(Move const & move) const
         // Status of the goal
         Goalstatus & status = goalptr->second.status;
         if (status == GOALFALSE)
-            return false; // Invalid goal
+            return false; // Refuted
         // Record the goal in the hypotheses of the move.
         hypvec[i] = goalptr;
         // Check if the goal is a hypothesis or already proven.
         if (proven(goalptr, assertion) || status == GOALOPEN)
-            continue; // Valid goal
+            continue; // Valid
         // New goal (status == GOALNEW)
         status = valid(goalptr->first.RPN) ? GOALOPEN : GOALFALSE;
         if (status == GOALFALSE)
-            return false; // Invalid goal
+            return false; // Refuted
         // Simplify hypotheses needed.
         goalptr->second.hypstotrim = hypstotrim(goalptr);
 // std::cout << "added " << goalptr << " in " << this;
