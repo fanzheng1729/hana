@@ -12,12 +12,12 @@
 // If a symbol has no definition, its # is n. Otherwise return 0.
 template<class T>
 Assertions::size_type largestsymboldefnumber
-    (Proofsteps const & proofsteps, T const & definitions,
-     Syntaxioms const & syntaxioms, Assertions::size_type const n)
+    (Proofsteps const & RPN, T const & definitions,
+     Syntaxioms const & syntaxioms, Assertions::size_type n)
 {
     Assertions::size_type result = 1;
 //std::cout << definitions << syntaxioms;
-    FOR (Proofstep step, proofsteps)
+    FOR (Proofstep step, RPN)
     {
 //std::cout << step << ':';
         if (step.type == Proofstep::HYP)
@@ -74,13 +74,13 @@ Assertions::size_type largestsymboldefnumber
     return result;
 }
 
-// Return the largest # of syntax axiom in a proof.
+// Return the largest # of syntax axiom in a revPolish notation.
 inline Assertions::size_type largestsymboldefnumber
-    (Proofsteps const & proofsteps, Syntaxioms const & syntaxioms)
+    (Proofsteps const & RPN, Syntaxioms const & syntaxioms)
 {
     Assertions::size_type result = 0;
 
-    FOR (Proofstep step, proofsteps)
+    FOR (Proofstep step, RPN)
     {
 //std::cout << step << ':';
         if (step.type != Proofstep::ASS)
