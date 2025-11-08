@@ -171,6 +171,7 @@ Bvector Propctors::truthtable(Definitions const & defs, Definition const & def)
     // # arguments of the definition
     Atom const argcount = def.lhs.size() - 1;
     Atom const maxargc  = std::numeric_limits<TTindex>::digits;
+    static const char varallowed[] = " variables allowed";
     if (!is1stle2nd(argcount, maxargc, varfound, varallowed))
         return Bvector();
     // Truth table of the definition
@@ -193,8 +194,7 @@ static bool calc_stack(Bvector const & truthtable, Bvector & stack)
         return false;
     // # arguments
     Atom argcount = util::log2(truthtable.size());
-    static const char varonstack[] = " variables on stack";
-    if (!is1stle2nd(argcount, stack.size(), varallowed, varonstack))
+    if (!is1stle2nd(argcount, stack.size(), varfound, itemonstack))
         return false;
 
     TTindex arg = 0;

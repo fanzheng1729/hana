@@ -52,7 +52,6 @@ bool enoughitemonstack
     (std::size_t hypcount, std::size_t stacksize, strview label)
 {
     static const char hypfound[] = " hypotheses found, ";
-    static const char itemonstack[] = " items on stack";
     bool const okay(is1stle2nd(hypcount, stacksize, hypfound, itemonstack));
     return printinproofof(label, okay);
 }
