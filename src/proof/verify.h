@@ -18,7 +18,7 @@ bool enoughitemonstack
     (std::size_t hypcount, std::size_t stacksize, strview label);
 
 void printunificationfailure
-    (strview thlabel, strview reflabel, Hypothesis const & hyp,
+    (strview label, strview reflabel, Hypothesis const & hyp,
      Expression const & dest, Expression const & stackitem);
 
 // Append a subexpression to an expression.
@@ -110,7 +110,7 @@ typename std::vector<EXP>::size_type findsubstitutions
 
 // Subroutine for proof verification. Verify proof steps.
 Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm = 0);
-inline Expression verify(Proofsteps const & proof, Assptr pthm=NULL)
+inline Expression verify(Proofsteps const & proof, Assptr pthm = NULL)
 {
     Printer printer;
     return verify(proof, printer, pthm);

@@ -40,10 +40,10 @@ Proofsteps regular
     return util::filter(result)((const char *)0) ? Proofsteps() : result;
 }
 
-static bool printinproofof(strview thlabel, bool okay = false)
+static bool printinproofof(strview label, bool okay = false)
 {
     if (!okay)
-        std::cerr << " in proof of theorem " << thlabel << std::endl;
+        std::cerr << " in proof of theorem " << label << std::endl;
     return okay;
 }
 
@@ -57,10 +57,10 @@ bool enoughitemonstack
 }
 
 void printunificationfailure
-    (strview thlabel, strview reflabel, Hypothesis const & hyp,
+    (strview label, strview reflabel, Hypothesis const & hyp,
      Expression const & dest, Expression const & stackitem)
 {
-    std::cout << "In step " << reflabel; printinproofof(thlabel);
+    std::cout << "In step " << reflabel; printinproofof(label);
     std::cout << (hyp.floats ? "floating" : "essential") << " hypothesis ";
     std::cout << hyp.expression << "expanded to\n" << dest;
     std::cout << "does not match stack item\n" << stackitem;
@@ -79,7 +79,7 @@ static void printdisjvarserr
 // Check disjoint variable hypothesis in verifying an assertion reference.
 static bool checkdisjvars
     (Substitutions const & subst, Disjvars const & assdisjvars,
-     Assertion const & theorem)
+     Assertion const & ass)
 {
     FOR (Disjvars::const_reference vars, assdisjvars)
     {
@@ -87,11 +87,11 @@ static bool checkdisjvars
         Substitutions::value_type exp2(subst[vars.second]);
 
         if (!checkdisjvars(exp1.first, exp1.second, exp2.first, exp2.second,
-                           theorem.disjvars, &theorem.varusage))
+                           ass.disjvars, &ass.varusage))
         {
             printdisjvarserr(vars.first, Expression(exp1.first, exp1.second),
                              vars.second, Expression(exp2.first, exp2.second),
-                             theorem.disjvars);
+                             ass.disjvars);
             return false;
         }
     }
@@ -102,26 +102,26 @@ static bool checkdisjvars
 // Subroutine for proof verification. Verify a proof step referencing an
 // assertion (i.e., not a hypothesis).
 static bool verifyassertionref
-    (Assptr pthm, Assptr passref, std::vector<Expression> & stack,
+    (Assptr pass, Assptr passref, std::vector<Expression> & stack,
      Substitutions & substitutions)
 {
-    strview thlabel = pthm ? pthm->first : "";
+    strview label = pass ? pass->first : "";
     Assertion const & assertion = passref->second;
 
     // Find the necessary substitutions.
     prealloc(substitutions, assertion.varusage);
     std::vector<Expression>::size_type const base = findsubstitutions
-        (thlabel,passref->first,passref->second.hypiters,stack,substitutions);
+        (label,passref->first,passref->second.hypiters,stack,substitutions);
     if (base == stack.size())
         return false;
 //std::cout << "Substitutions" << std::endl << substitutions;
 
     // Verify disjoint variable conditions.
-    if (pthm)
-        if (!checkdisjvars(substitutions, assertion.disjvars, pthm->second))
+    if (pass)
+        if (!checkdisjvars(substitutions, assertion.disjvars, pass->second))
         {
             std::cerr << "In step " << passref->first;
-            return printinproofof(thlabel);
+            return printinproofof(label);
         }
 
     // Insert new statement onto stack.
@@ -142,10 +142,10 @@ static bool enoughsavedsteps
 }
 
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
+Expression verify(Proofsteps const & proof, Printer & printer, Assptr pass)
 {
-    strview thlabel = pthm ? pthm->first : "";
-//std::cout << "Verifying " << thlabel << std::endl;
+    strview label = pass ? pass->first : "";
+//std::cout << "Verifying " << label << std::endl;
     std::vector<Expression> stack, savedsteps;
 
     Substitutions substitutions;
@@ -160,12 +160,12 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
             break;
         case Proofstep::THM:
 //std::cout << "Applying assertion: " << step.pass->first << '\n';
-            if (!verifyassertionref(pthm, step.pass, stack, substitutions))
+            if (!verifyassertionref(pass, step.pass, stack, substitutions))
                 return Expression();
             break;
         case Proofstep::LOAD:
 //std::cout << "Loading saved step " << step.index << std::endl;
-            if (!enoughsavedsteps(step.index, savedsteps.size(), thlabel))
+            if (!enoughsavedsteps(step.index, savedsteps.size(), label))
                 return Expression();
             stack.push_back(savedsteps[step.index]);
             break;
@@ -174,14 +174,14 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
             if (stack.empty())
             {
                 std::cerr << "No step to save";
-                printinproofof(thlabel);
+                printinproofof(label);
                 return Expression();
             }
             savedsteps.push_back(stack.back());
             break;
         default:
             std::cerr << "Invalid step";
-            printinproofof(thlabel);
+            printinproofof(label);
             return Expression();
         }
         if (!printer.addstep(step, &step - &proof[0], stack.back()))
@@ -190,7 +190,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
 
     if (stack.size() != 1)
     {
-        std::cerr << "Proof of theorem " << thlabel << stackszerr << std::endl;
+        std::cerr << "Proof of theorem " << label << stackszerr << std::endl;
         return Expression();
     }
 
@@ -206,7 +206,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
 // {
 //     Assertions const & assertions = database.assertions();
 //     Assiter const iter = assertions.find(label);
-//     Assptr const pthm = iter == assertions.end() ? NULL : &*iter;
+//     Assptr const pass = iter == assertions.end() ? NULL : &*iter;
 
 //     Proofsteps steps(regular(proof, hypotheses, assertions));
 //     if (steps.empty())
@@ -215,7 +215,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
 //         return Expression();
 //     }
 
-//     return verify(steps, pthm);
+//     return verify(steps, pass);
 // }
 
 // Return if "conclusion" == "expression" to be proved.
