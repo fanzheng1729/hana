@@ -10,8 +10,8 @@ static bool matchline(Proofsteps const & steps, int const * & cur,
 {
     for (Proofsize i = 0; i < steps.size(); ++i, ++cur)
     {
-        if (cur >= end || *cur < 0) return false;
-        
+        if (cur >= end || *cur < 0)
+            return false;
         // 0 corresponds to the syntax axiom.
         if (*cur == 0 && steps[i].type != Proofstep::ASS)
             return false;
@@ -27,11 +27,8 @@ static bool matchline(Proofsteps const & steps, int const * & cur,
             substitutions[*cur] = steps[i]; // record it.
         }
         // Otherwise check if it matches the recod.
-        else
-        {
-            if (substitutions[*cur] != steps[i])
-                return false; // mismatch
-        }
+        else if (substitutions[*cur] != steps[i])
+            return false; // mismatch
     }
     return true;
 }
