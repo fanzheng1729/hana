@@ -58,7 +58,7 @@ Moves Game::theirmoves() const
     {
         Moves result;
         result.reserve(attempt.esshypcount());
-// std::cout << "for " << this << ' ' << attempt.pass->first << ": ";
+// std::cout << "for " << attempt.label() << ": ";
         for (Hypsize i = 0; i < attempt.hypcount(); ++i)
             if (!attempt.hypfloats(i))
                 result.push_back(i);
