@@ -10,7 +10,6 @@
 Goal const & Game::goal() const { return goalptr->first; }
 Goaldata & Game::goaldata() const { return goalptr->second; }
 Proofsteps & Game::proof() const { return goaldata().proof; }
-bool Game::proven() const { return !proof().empty(); }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {

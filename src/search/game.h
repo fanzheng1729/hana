@@ -24,7 +24,7 @@ struct Game
     Goal const & goal() const;
     Goaldata & goaldata() const;
     Proofsteps & proof() const;
-    bool proven() const;
+    bool proven() const { return !proof().empty(); }
     Environ const & env() const { return *penv; }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
     // Return true if a move is legal.
