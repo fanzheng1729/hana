@@ -45,13 +45,13 @@ Proofstep Proofstep::Builder::operator()(strview label) const
 }
 
 // Write the proof from pointers to proof of hypotheses. Return true if Okay.
-bool writeproof(Proofsteps & dest, Assptr pass, pProofs const & hyps)
+bool writeproof(Proofsteps & dest, Assptr pthm, pProofs const & hyps)
 {
     dest.clear();
-    if (hyps.size() != pass->second.hypcount())
+    if (hyps.size() != pthm->second.hypcount())
     {
-        std::cerr << "When writing proof using " << pass->first.c_str;
-        std::cerr << ", expected " << pass->second.hypcount() << " hypotheses";
+        std::cerr << "When writing proof using " << pthm->first.c_str;
+        std::cerr << ", expected " << pthm->second.hypcount() << " hypotheses";
         std::cerr << ", but found " << hyps.size() << std::endl;
         return false;
     }
@@ -62,15 +62,15 @@ bool writeproof(Proofsteps & dest, Assptr pass, pProofs const & hyps)
         Proofsteps const * const p = hyps[i];
         if (!p || p->empty())
         {
-            std::cerr << "When writing proof using " << pass->first.c_str;
-            std::cerr << ", hypothesis " << pass->second.hyplabel(i).c_str;
+            std::cerr << "When writing proof using " << pthm->first.c_str;
+            std::cerr << ", hypothesis " << pthm->second.hyplabel(i).c_str;
             std::cerr << " has no proof" << std::endl;
             return false;
         }
         if (p == &dest)
         {
-            std::cerr << "When writing proof using " << pass->first.c_str;
-            std::cerr << ", hypothesis " << pass->second.hyplabel(i).c_str;
+            std::cerr << "When writing proof using " << pthm->first.c_str;
+            std::cerr << ", hypothesis " << pthm->second.hyplabel(i).c_str;
             std::cerr << " is the same as the conclusion" << std::endl;
             return false;
         }
@@ -81,7 +81,7 @@ bool writeproof(Proofsteps & dest, Assptr pass, pProofs const & hyps)
     FOR (Proofsteps const * p, hyps)
         dest += *p;
     // Label of the assertion used
-    dest.push_back(pass);
+    dest.push_back(pthm);
     //std::cout << "Built proof: " << proof;
     return true;
 }
