@@ -5,7 +5,7 @@
 // Find type code from the last step of the RPN.
 static const char * typecode(Proofstep const step)
 {
-    if (step.type != Proofstep::ASS)
+    if (step.type != Proofstep::THM)
         return NULL;
     Expression const & exp = step.pass->second.expression;
     return exp.empty() ? NULL : exp[0].c_str;

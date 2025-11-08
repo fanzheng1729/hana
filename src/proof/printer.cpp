@@ -34,7 +34,7 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
     {
     case Proofstep::HYP:
         return addstep(stacktop, index, step.phyp->first);
-    case Proofstep::ASS:
+    case Proofstep::THM:
         {
             Assertion const & ass(step.pass->second);
             Hypsize const esscount(ass.esshypcount());

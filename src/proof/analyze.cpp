@@ -43,7 +43,7 @@ AST ast(Proofsteps const & proof)
         Proofstep::Type type = proof[i].type;
         if (type == Proofstep::HYP)
             stack.push_back(i);
-        else if (type == Proofstep::ASS &&
+        else if (type == Proofstep::THM &&
                  addASTnode(proof[i].pass->second, stack, tree[i]))
             continue;
         else return AST();
@@ -104,7 +104,7 @@ static bool findsubstitutions
             result[id] = exp.first;// unseen
             return true;
         }
-    case Proofstep::ASS:
+    case Proofstep::THM:
 //std::cout << "Ctor " << tmproot << std::endl;
         if (exproot != tmproot)
             return false;

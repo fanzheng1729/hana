@@ -17,7 +17,7 @@ template<class T> bool skeleton
         result.push_back(root);
 // std::cout << "Result " << result;
         return true;
-    case Proofstep::ASS:
+    case Proofstep::THM:
         {
             Assertion const & ass = root.pass->second;
             if (cansplit(ass)) // Propositional constructor

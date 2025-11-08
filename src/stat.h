@@ -83,7 +83,7 @@ inline Assertions::size_type largestsymboldefnumber
     FOR (Proofstep step, RPN)
     {
 //std::cout << step << ':';
-        if (step.type != Proofstep::ASS)
+        if (step.type != Proofstep::THM)
             continue;
 
         if (syntaxioms.count(strview(step)))

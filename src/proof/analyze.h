@@ -7,9 +7,9 @@
 inline bool is1step(Proofsteps const & proof)
 {
     if (proof.empty()) return false;
-    // i = the first ASS step
+    // i = the first THM step
     Proofsize i = 0;
-    for ( ; i < proof.size() && proof[i].type != Proofstep::ASS; ++i) ;
+    for ( ; i < proof.size() && proof[i].type != Proofstep::THM; ++i) ;
     // Check if that step is the last one.
     return i == proof.size() - 1;
 }

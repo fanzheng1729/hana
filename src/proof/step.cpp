@@ -19,7 +19,7 @@ Proofstep::operator const char*() const
     {
     case HYP:
         return phyp->first.c_str;
-    case ASS:
+    case THM:
         return pass->first.c_str;
     case LOAD: case SAVE:
         std::cerr << proofsteperr << "of type " << type << std::endl;

@@ -140,7 +140,7 @@ struct Proofstep
     typedef std::vector<Expression>::size_type Index;
     enum Type
     {
-        NONE, HYP, ASS, LOAD, SAVE
+        NONE, HYP, THM, LOAD, SAVE
     } type;
     union
     {
@@ -150,7 +150,7 @@ struct Proofstep
     };
     Proofstep(Type t = NONE) : type(t == SAVE ? t : NONE) {}
     Proofstep(Hypptr p) : type(p ? HYP : NONE), phyp(p) {}
-    Proofstep(Assptr p) : type(p ? ASS : NONE), pass(p) {}
+    Proofstep(Assptr p) : type(p ? THM : NONE), pass(p) {}
     Proofstep(Hypiter iter) : type(HYP), phyp(&*iter) {}
     Proofstep(Index i) : type(LOAD), index(i) {}
 // Return hypothesis or assertion pointer of the proof step.
@@ -158,7 +158,7 @@ struct Proofstep
     {
         if (type == HYP)
             return phyp;
-        else if (type == ASS)
+        else if (type == THM)
             return pass;
         return NULL;
     }

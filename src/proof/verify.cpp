@@ -158,7 +158,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pthm)
 //std::cout << "Pushing hypothesis: " << step.phyp->first << '\n';
             stack.push_back(step.phyp->second.expression);
             break;
-        case Proofstep::ASS:
+        case Proofstep::THM:
 //std::cout << "Applying assertion: " << step.pass->first << '\n';
             if (!verifyassertionref(pthm, step.pass, stack, substitutions))
                 return Expression();

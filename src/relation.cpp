@@ -13,7 +13,7 @@ static bool matchline(Proofsteps const & RPN, int const * & cur,
         if (cur >= end || *cur < 0)
             return false;
         // 0 corresponds to the syntax axiom.
-        if (*cur == 0 && RPN[i].type != Proofstep::ASS)
+        if (*cur == 0 && RPN[i].type != Proofstep::THM)
             return false;
         // !0 corresponds to a variable.
         if (*cur != 0 && RPN[i].type != Proofstep::HYP)
