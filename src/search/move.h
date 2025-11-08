@@ -38,7 +38,7 @@ struct Move
     }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
-    // Expression the attempt of using an assertion proves (must be of type ASS)
+    // Expression the attempt of using an assertion proves (must be of type THM)
     Proofsteps expRPN() const
     {
         Proofsteps result;
@@ -50,7 +50,7 @@ struct Move
     strview label() const { return pthm->first; }
     strview exptypecode() const
         { return pthm->second.expression[0]; }
-    // Hypothesis (must be of type ASS)
+    // Hypothesis (must be of type THM)
     Hypiter hypiter(Hypsize index) const
         { return pthm->second.hypiters[index]; }
     strview hyplabel(Hypsize index) const
@@ -61,7 +61,7 @@ struct Move
         { return pthm->second.hypexp(index); }
     strview hyptypecode(Hypsize index) const
         { return pthm->second.hyptypecode(index); }
-    // Hypothesis the attempt (must be of type ASS) needs
+    // Hypothesis the attempt (must be of type THM) needs
     Proofsteps hypRPN(Hypsize index) const
     {
         Proofsteps result;
@@ -79,11 +79,11 @@ struct Move
                 return i;
         return i;
     }
-    // # of hypotheses the attempt (must be of type ASS) needs
+    // # of hypotheses the attempt (must be of type THM) needs
     Hypsize hypcount() const { return pthm->second.hypcount(); }
-    // # of variables the attempt (must be of type ASS) needs
+    // # of variables the attempt (must be of type THM) needs
     Symbol3s::size_type varcount() const { return pthm->second.varcount(); }
-    // # of essential hypotheses the attempt (must be of type ASS) needs
+    // # of essential hypotheses the attempt (must be of type THM) needs
     Hypsize esshypcount() const { return hypcount() - varcount(); }
     // Return true if the assertion applied has no essential hypothesis.
     bool closes() const { return type == THM && esshypcount() == 0; }
