@@ -57,10 +57,10 @@ bool enoughitemonstack
 }
 
 void printunificationfailure
-    (strview label, strview reflabel, Hypothesis const & hyp,
+    (strview label, strview thmlabel, Hypothesis const & hyp,
      Expression const & dest, Expression const & stackitem)
 {
-    std::cout << "In step " << reflabel; printinproofof(label);
+    std::cout << "In step " << thmlabel; printinproofof(label);
     std::cout << (hyp.floats ? "floating" : "essential") << " hypothesis ";
     std::cout << hyp.expression << "expanded to\n" << dest;
     std::cout << "does not match stack item\n" << stackitem;
@@ -101,31 +101,31 @@ static bool checkdisjvars
 
 // Subroutine for proof verification. Verify a proof step referencing an
 // assertion (i.e., not a hypothesis).
-static bool verifyassertionref
-    (Assptr pass, Assptr passref, std::vector<Expression> & stack,
+static bool verifystep
+    (Assptr pass, Assptr pthm, std::vector<Expression> & stack,
      Substitutions & substitutions)
 {
     strview label = pass ? pass->first : "";
-    Assertion const & assertion = passref->second;
+    Assertion const & thm = pthm->second;
 
     // Find the necessary substitutions.
-    prealloc(substitutions, assertion.varusage);
+    prealloc(substitutions, thm.varusage);
     std::vector<Expression>::size_type const base = findsubstitutions
-        (label,passref->first,passref->second.hypiters,stack,substitutions);
+        (label, pthm->first, pthm->second.hypiters, stack, substitutions);
     if (base == stack.size())
         return false;
 //std::cout << "Substitutions" << std::endl << substitutions;
 
     // Verify disjoint variable conditions.
     if (pass)
-        if (!checkdisjvars(substitutions, assertion.disjvars, pass->second))
+        if (!checkdisjvars(substitutions, thm.disjvars, pass->second))
         {
-            std::cerr << "In step " << passref->first;
+            std::cerr << "In step " << pthm->first;
             return printinproofof(label);
         }
 
     // Insert new statement onto stack.
-    makesubstitution(assertion.expression, stack.back(), substitutions,
+    makesubstitution(thm.expression, stack.back(), substitutions,
         util::mem_fn(&Symbol3::id));
     // Remove hypotheses from stack.
     stack.erase(stack.begin() + base, stack.end() - 1);
@@ -160,7 +160,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pass)
             break;
         case Proofstep::THM:
 //std::cout << "Applying assertion: " << step.pass->first << '\n';
-            if (!verifyassertionref(pass, step.pass, stack, substitutions))
+            if (!verifystep(pass, step.pass, stack, substitutions))
                 return Expression();
             break;
         case Proofstep::LOAD:

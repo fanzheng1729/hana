@@ -18,7 +18,7 @@ bool enoughitemonstack
     (std::size_t hypcount, std::size_t stacksize, strview label);
 
 void printunificationfailure
-    (strview label, strview reflabel, Hypothesis const & hyp,
+    (strview label, strview thmlabel, Hypothesis const & hyp,
      Expression const & dest, Expression const & stackitem);
 
 // Append a subexpression to an expression.
@@ -60,7 +60,7 @@ void makesubstitution
 // Return the size of the stack if not okay.
 template<class HYPS, class EXP, class SUB>
 typename std::vector<EXP>::size_type findsubstitutions
-    (strview label, strview reflabel, HYPS const & hypotheses,
+    (strview label, strview thmlabel, HYPS const & hypotheses,
      std::vector<EXP> & stack, std::vector<SUB> & substitutions)
 {
     typename HYPS::size_type const hypcount = hypotheses.size();
@@ -81,7 +81,7 @@ typename std::vector<EXP>::size_type findsubstitutions
             // Floating hypothesis of the referenced assertion
             if (hypothesis.expression[0] != stack[base + i][0])
             {
-                printunificationfailure(label, reflabel, hypothesis,
+                printunificationfailure(label, thmlabel, hypothesis,
                                         hypothesis.expression, stack[base + i]);
                 return stack.size();
             }
@@ -98,7 +98,7 @@ typename std::vector<EXP>::size_type findsubstitutions
                 util::mem_fn(&Symbol3::id));
             if (dest != stack[base + i])
             {
-                printunificationfailure(label, reflabel, hypothesis,
+                printunificationfailure(label, thmlabel, hypothesis,
                                         dest, stack[base + i]);
                 return stack.size();
             }
