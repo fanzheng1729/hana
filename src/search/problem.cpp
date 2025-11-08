@@ -344,7 +344,6 @@ void Problem::checkmainline(Nodeptr p) const
             for (Nodeptr q = root(); q && q != p; q = pickchild(q))
                 std::cout << *q;
             std::cout << *p;
-            // printmainline(p, -1);
             navigate();
         }
     }
