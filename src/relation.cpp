@@ -5,29 +5,29 @@
 #include "util/for.h"
 
 // Return true if RPN matches pattern.
-static bool matchline(Proofsteps const & steps, int const * & cur,
+static bool matchline(Proofsteps const & RPN, int const * & cur,
                       int const * end, Proofsteps & substitutions)
 {
-    for (Proofsize i = 0; i < steps.size(); ++i, ++cur)
+    for (Proofsize i = 0; i < RPN.size(); ++i, ++cur)
     {
         if (cur >= end || *cur < 0)
             return false;
         // 0 corresponds to the syntax axiom.
-        if (*cur == 0 && steps[i].type != Proofstep::ASS)
+        if (*cur == 0 && RPN[i].type != Proofstep::ASS)
             return false;
         // !0 corresponds to a variable.
-        if (*cur != 0 && steps[i].type != Proofstep::HYP)
+        if (*cur != 0 && RPN[i].type != Proofstep::HYP)
             return false;
 
         if (substitutions[*cur].type == Proofstep::NONE)
         {
             // A new step
-            if (util::filter(substitutions)(steps[i]))
+            if (util::filter(substitutions)(RPN[i]))
                 return false; // seen before.
-            substitutions[*cur] = steps[i]; // record it.
+            substitutions[*cur] = RPN[i]; // record it.
         }
         // Otherwise check if it matches the recod.
-        else if (substitutions[*cur] != steps[i])
+        else if (substitutions[*cur] != RPN[i])
             return false; // mismatch
     }
     return true;
