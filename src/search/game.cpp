@@ -7,8 +7,8 @@
 #include "../util/iter.h"
 #include "../proof/write.h"
 
-Goal const & Game::goal() const { return goalptr->first; }
-Goaldata & Game::goaldata() const { return goalptr->second; }
+Goal const & Game::goal() const { return pgoal->first; }
+Goaldata & Game::goaldata() const { return pgoal->second; }
 Proofsteps & Game::proof() const { return goaldata().proof; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
@@ -36,7 +36,7 @@ bool Game::legal(Move const & move, bool ourturn) const
 // Play a move.
 Game Game::play(Move const & move, bool ourturn) const
 {
-    Game game(goalptr, penv, ndefer);
+    Game game(pgoal, penv, ndefer);
 
     if (ourturn) // Record the move.
     {
@@ -44,7 +44,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.ndefer = (move.type == Move::DEFER) * (ndefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
-        game.goalptr = attempt.hypvec[move.index];
+        game.pgoal = attempt.hypvec[move.index];
 
     return game;
 }

@@ -12,15 +12,15 @@ struct Game
     typedef ::Move Move;
     typedef ::Moves Moves;
     // Pointer to rev Polish of expression to be proved
-    Goalptr goalptr;
+    Goalptr pgoal;
     // Pointer to the current environment
     Environ * penv;
     // # defers to the game
     stage_t ndefer;
     // Proof attempt made, on their turn
     Move attempt;
-    Game(Goalptr pgoal = NULL, Environ * p = NULL, stage_t defer = 0) :
-        goalptr(pgoal), penv(p), ndefer(defer) {}
+    Game(Goalptr goalptr = NULL, Environ * envptr = NULL, stage_t defer = 0) :
+        pgoal(goalptr), penv(envptr), ndefer(defer) {}
     Goal const & goal() const;
     Goaldata & goaldata() const;
     Proofsteps & proof() const;

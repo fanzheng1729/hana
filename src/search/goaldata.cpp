@@ -5,7 +5,7 @@ bool Goalptrs::haschildren(Nodeptr p) const
 {
     FOR (Nodeptr const child, *p.children())
     {
-        Goalptr const childgoal = child->game().goalptr;
+        Goalptr const childgoal = child->game().pgoal;
         if (childgoal->second.proven())
             continue;
         if (!count(childgoal))
@@ -20,7 +20,7 @@ Goalptr Goalptrs::saturate()
         FOR (Nodeptr const pnode, pgoal->second.nodeptrs)
         {
             Nodeptr const parent = pnode.parent();
-            Goalptr const newgoal = parent->game().goalptr;
+            Goalptr const newgoal = parent->game().pgoal;
             if (newgoal->second.proven())
                 continue;
             if (haschildren(parent))

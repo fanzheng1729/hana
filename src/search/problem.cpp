@@ -41,7 +41,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     // Our leaf
     if (p.parent() && game.proven())
         return EvalWIN;
-    if (!p.parent() && proven(game.goalptr, assertion))
+    if (!p.parent() && proven(game.pgoal, assertion))
         return EvalWIN;
 
     return game.env().evalourleaf(game);
@@ -134,7 +134,7 @@ static Nodeptr loops(Goalptr pgoal, Nodeptr pnode)
     while (true)
     {
         Game const & game = pnode->game();
-        if (game.ndefer == 0 && pgoal == game.goalptr)
+        if (game.ndefer == 0 && pgoal == game.pgoal)
             return pnode;
         if (Nodeptr const parent = pnode.parent())
             pnode = parent.parent();
