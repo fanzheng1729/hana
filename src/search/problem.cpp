@@ -473,6 +473,7 @@ void Problem::navigate(bool detailed) const
 
 void Problem::writeproof(const char * const filename) const
 {
+    if (proof().empty()) return;
     Database const & database = root()->game().env().database;
     Printer printer(&database.typecodes());
     verify(proof(), printer);
