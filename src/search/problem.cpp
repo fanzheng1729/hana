@@ -100,32 +100,6 @@ bool Problem::addenv(Game const & game)
 
 typedef Problem::Nodeptr Nodeptr;
 
-static Nodeptr onlyopenchild(Nodeptr p)
-{
-    if (Problem::isourturn(p)) return Nodeptr();
-
-    Nodeptr result;
-    bool hasopenchild = false;
-    FOR (Nodeptr child, *p.children())
-    {
-        if (Problem::value(child) == WDL::WIN) continue;
-        // Open child found.
-        if (hasopenchild) return Nodeptr();
-        // 1 open child
-        result = child;
-        hasopenchild = true;
-    }
-    return result;
-}
-
-// Move to the only open child of a node. Return true if it exists.
-static bool gotoonlyopenchild(Nodeptr & p)
-{
-    if (Nodeptr child = onlyopenchild(p))
-        return p = child;
-    return false;
-}
-
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
@@ -166,6 +140,32 @@ bool loops(Nodeptr p)
         FOR (Nodeptr const pnewnode, pnewgoal->second.nodeptrs)
             if (pnewnode.isancestorof(p))
                 return true;
+    return false;
+}
+
+static Nodeptr onlyopenchild(Nodeptr p)
+{
+    if (Problem::isourturn(p)) return Nodeptr();
+
+    Nodeptr result;
+    bool hasopenchild = false;
+    FOR (Nodeptr child, *p.children())
+    {
+        if (Problem::value(child) == WDL::WIN) continue;
+        // Open child found.
+        if (hasopenchild) return Nodeptr();
+        // 1 open child
+        result = child;
+        hasopenchild = true;
+    }
+    return result;
+}
+
+// Move to the only open child of a node. Return true if it exists.
+static bool gotoonlyopenchild(Nodeptr & p)
+{
+    if (Nodeptr child = onlyopenchild(p))
+        return p = child;
     return false;
 }
 
