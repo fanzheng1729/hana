@@ -98,6 +98,12 @@ bool Problem::addenv(Game const & game)
     return false;
 }
 
+// Add a goal. Return its pointer.
+Goal2ptr Problem::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
+{
+    return NULL;
+}
+
 typedef Problem::Nodeptr Nodeptr;
 
 // If goal appears as the goal of a node or its ancestors,
