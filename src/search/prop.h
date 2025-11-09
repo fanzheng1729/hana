@@ -26,7 +26,7 @@ struct Prop : Environ
     virtual bool valid(Proofsteps const & goal) const;
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goalptr pgoal) const;
-    // Allocate a new sub environment constructed from a sub assertion on the heap.
+    // Allocate a new environment constructed from an assertion on the heap.
     // Return its address.
     virtual Prop * makeenv(Assertion const & ass) const
     { return new(std::nothrow) Prop(ass, database, m_maxmoves, staged); }

@@ -70,29 +70,29 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Add a sub environment for the game. Return true if it is added.
-bool Problem::addsubenv(Game const & game)
+// Add a environment for the game. Return true if it is added.
+bool Problem::addenv(Game const & game)
 {
 // std::cout << "Adding subenv for " << &game << std::endl;
-    // Game's sub environment pointer
+    // Game's environment pointer
     Environ * & penv = const_cast<Environ * &>(game.penv);
-    // Name of sub environment
+    // Name of environment
     std::string const & label
     (penv->assertion.hypslabel(game.goaldata().hypstotrim));
-    // Try add the sub environment.
-    std::pair<Subenvs::iterator, bool> const result
-    = subenvs.insert(std::pair<strview, Environ *>(label, NULL));
-    // If it already exists, set the game's sub environment pointer.
+    // Try add the environment.
+    std::pair<Environs::iterator, bool> const result
+    = environs.insert(std::pair<strview, Environ *>(label, NULL));
+    // If it already exists, set the game's environment pointer.
     if (!result.second)
         return !(penv = result.first->second);
-    // Iterator to the sub environment
-    Subenvs::iterator const enviter = result.first;
+    // Iterator to the environment
+    Environs::iterator const enviter = result.first;
     // Add the simplified assertion.
-    Assertion & newass = subassertions[enviter->first];
+    Assertion & newass = assertions[enviter->first];
     if (unexpected(!newass.expression.empty(), "Duplicated label", label))
         return false;
     Assertion const & ass = penv->makeass(game);
-    // Add the new sub environment.
+    // Add the new environment.
     if (Environ * const pnewenv = penv->makeenv(newass = ass))
         return (penv = enviter->second = pnewenv)->pProb = this;
     return false;
@@ -362,8 +362,8 @@ void Problem::printstats() const
 // One environment a line
 void Problem::printenvs() const
 {
-    FOR (Subenvs::const_reference renv, subenvs)
-        std::cout << renv.first << std::endl;
+    FOR (Environs::const_reference env, environs)
+        std::cout << env.first << std::endl;
 }
 
 // Move up to the parent. Return true if successful.

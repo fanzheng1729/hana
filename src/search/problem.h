@@ -20,12 +20,12 @@ inline void addnodeptr(Nodeptr p)
 // + environment management + UI
 class Problem : public MCTS<Game>
 {
-    // Map: name -> polymorphic sub environments
-    typedef std::map<std::string, struct Environ *> Subenvs;
-    // Assertions corresponding to sub environments
-    Assertions subassertions;
-    // Polymorphic sub environments
-    Subenvs subenvs;
+    // Map: name -> polymorphic environments
+    typedef std::map<std::string, struct Environ *> Environs;
+    // Assertions corresponding to environments
+    Assertions assertions;
+    // Polymorphic environments
+    Environs environs;
 public:
     // The assertion to be proved
     Assertion const & assertion;
@@ -40,7 +40,7 @@ public:
         if (assertion.expression.empty()) return;
         // Add the root environment.
         Environ * const penv = new Env(env);
-        (subenvs[assertion.hypslabel()] = penv)->pProb = this;
+        (environs[assertion.hypslabel()] = penv)->pProb = this;
         // Add the goal.
         Goalptr const pgoal = penv
         ->addgoal(assertion.expRPN, assertion.expression[0], GOALOPEN);
@@ -91,14 +91,14 @@ public:
     Goals::size_type countgoal(int status) const
     {
         Goals::size_type n = 0;
-        FOR (Subenvs::const_reference subenv, subenvs)
+        FOR (Environs::const_reference subenv, environs)
             n += subenv.second->countgoal(status);
         return n;
     }
-    // # sub environments
-    Subenvs::size_type countenvs() const { return subenvs.size(); }
-    // Add a sub environment for the game. Return true iff it is added.
-    bool addsubenv(Game const & game);
+    // # environments
+    Environs::size_type countenvs() const { return environs.size(); }
+    // Add a environment for the game. Return true iff it is added.
+    bool addenv(Game const & game);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
@@ -110,7 +110,7 @@ public:
     void writeproof(const char * const filename) const;
     virtual ~Problem()
     {
-        FOR (Subenvs::const_reference subenv, subenvs)
+        FOR (Environs::const_reference subenv, environs)
             delete subenv.second;
     }
 };

@@ -51,7 +51,7 @@ struct Environ : protected Gen
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
-    // Allocate a new sub environment constructed from a sub assertion on the heap.
+    // Allocate a new environment constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeenv(Assertion const &) const { return NULL; };
     // Return the simplified assertion for the goal of the game to hold.

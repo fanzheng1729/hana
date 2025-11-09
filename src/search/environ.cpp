@@ -138,7 +138,8 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 Eval Environ::evalourleaf(Game const & game) const
 {
     if (game.ndefer == 0 && !game.goaldata().hypstotrim.empty())
-        pProb->addsubenv(game); // Simplify non-defer leaf by trimming hyps.
+        // Simplify non-defer leaf by trimming hyps.
+        pProb->addenv(game);
     return score(game.env().hypslen + game.goal().size() + game.ndefer);
 }
 
