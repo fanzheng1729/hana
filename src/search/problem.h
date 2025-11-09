@@ -20,12 +20,14 @@ inline void addnodeptr(Nodeptr p)
 // + environment management + UI
 class Problem : public MCTS<Game>
 {
-    // Map: name -> polymorphic environments
-    typedef std::map<std::string, struct Environ *> Environs;
-    // Assertions corresponding to environments
+    // Assertions corresponding to contexts
     Assertions assertions;
-    // Polymorphic environments
+    // Map: name -> polymorphic contexts
+    typedef std::map<std::string, struct Environ *> Environs;
+    // Polymorphic contexts
     Environs environs;
+    // Map: goal -> context -> evaluation
+    Goals2 goals;
 public:
     // The assertion to be proved
     Assertion const & assertion;
@@ -95,7 +97,7 @@ public:
             n += subenv.second->countgoal(status);
         return n;
     }
-    // # environments
+    // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a environment for the game. Return true iff it is added.
     bool addenv(Game const & game);
