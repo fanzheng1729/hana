@@ -85,7 +85,7 @@ public:
         else if (value(p) == WDL::WIN && game.writeproof())
             closenodes(p);
     }
-    // Proof of the assertion, if any
+    // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // # goals of a given status
     Goals::size_type countgoal(int status) const
