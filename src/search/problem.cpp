@@ -143,6 +143,8 @@ bool loops(Nodeptr p)
     return false;
 }
 
+// Return the only open child of p.
+// Return NULL if p has 0 or at least 2 open children.
 static Nodeptr onlyopenchild(Nodeptr p)
 {
     if (Problem::isourturn(p)) return Nodeptr();
