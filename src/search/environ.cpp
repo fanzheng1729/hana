@@ -90,7 +90,7 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
         hypvec[i] = pgoal;
-        // Check if the goal is a hypothesis or already proven.
+        // Check if the goal has been validated.
         if (proven(pgoal, assertion) || status == GOALOPEN)
             continue; // Valid
         // New goal (status == GOALNEW)
