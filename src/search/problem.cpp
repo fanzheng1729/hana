@@ -89,7 +89,7 @@ bool Problem::addenv(Game const & game)
     Environs::iterator const enviter = result.first;
     // Add the simplified assertion.
     Assertion & newass = assertions[enviter->first];
-    if (unexpected(!newass.expression.empty(), "Duplicated label", label))
+    if (unexpected(!newass.expression.empty(), "Duplicate label", label))
         return false;
     Assertion const & ass = penv->makeass(game);
     // Add the new environment.
