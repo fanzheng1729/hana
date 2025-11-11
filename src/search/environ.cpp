@@ -39,25 +39,26 @@ Goals::size_type Environ::countgoal(int status) const
     return n;
 }
 
+static Symbol3s symbolset(Proofsteps const & RPN)
+{
+    Symbol3s set;
+    std::transform(RPN.begin(), RPN.end(), end_inserter(set),
+                   util::mem_fn(&Proofstep::symbol));
+    set.erase(Symbol3());
+    return set;
+}
+
 // Return true if a move satisfies disjoint variable hypotheses.
 bool Environ::checkdisjvars(Move const & move) const
 {
     if (!move.pthm) return false;
 
+// std::cout << "Checking DV " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
-        // std::cout << "Checking DV " << move.label();
-        // revPolish notation of the expression substituted
-        Proofsteps const & RPN1 = move.substitutions[vars.first];
-        Proofsteps const & RPN2 = move.substitutions[vars.second];
-        // Variables in the two substitutions
-        Symbol3s set1, set2;
-        std::transform
-        (RPN1.begin(), RPN1.end(), end_inserter(set1), util::mem_fn(&Proofstep::symbol));
-        std::transform
-        (RPN2.begin(), RPN2.end(), end_inserter(set2), util::mem_fn(&Proofstep::symbol));
-        // Erase empty variable.
-        set1.erase(Symbol3()), set2.erase(Symbol3());
+// std::cout << "Checking " << vars.first << ' ' << vars.second << std::endl;
+        Symbol3s const & set1(symbolset(move.substitutions[vars.first]));
+        Symbol3s const & set2(symbolset(move.substitutions[vars.second]));
         // Check disjoint variable hypothesis.
         if (!::checkdisjvars(set1, set2, assertion.disjvars, &assertion.varusage, false))
             return false;
