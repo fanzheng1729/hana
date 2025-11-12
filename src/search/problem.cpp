@@ -71,7 +71,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 }
 
 // Add a environment for the game.
-Environ * Problem::addenv(Environ * penv, Bvector const & hypstotrim)
+Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
     // Name of environment
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
