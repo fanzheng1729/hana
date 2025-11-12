@@ -73,9 +73,32 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 // Add a environment for the game. Return true if it is added.
 bool Problem::addenv(Game const & game, Bvector const & hypstotrim)
 {
-// std::cout << "Adding subenv for " << &game << std::endl;
     // Game's environment pointer
     Environ * & penv = const_cast<Environ * &>(game.penv);
+    // Name of environment
+    std::string const & label(penv->assertion.hypslabel(hypstotrim));
+    // Try add the environment.
+    std::pair<Environs::iterator, bool> const result
+    = environs.insert(std::pair<strview, Environ *>(label, NULL));
+    // If it already exists, set the game's environment pointer.
+    if (!result.second)
+        return !(penv = result.first->second);
+    // Iterator to the environment
+    Environs::iterator const enviter = result.first;
+    // Add the simplified assertion.
+    Assertion & newass = assertions[enviter->first];
+    if (unexpected(!newass.expression.empty(), "Duplicate label", label))
+        return false;
+    Assertion const & ass = penv->makeass(hypstotrim);
+    if (ass.expression.empty())
+        return false;
+    // Add the new environment.
+    if (Environ * const pnewenv = penv->makeenv(newass = ass))
+        return (penv = enviter->second = pnewenv)->pProb = this;
+    return false;
+}
+bool Problem::addenv(Environ * & penv, Bvector const & hypstotrim)
+{
     // Name of environment
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the environment.
