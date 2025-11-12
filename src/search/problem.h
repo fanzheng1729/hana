@@ -100,7 +100,7 @@ public:
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a environment for the game. Return true iff it is added.
-    bool addenv(Game const & game);
+    bool addenv(Game const & game, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goal2ptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
