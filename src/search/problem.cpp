@@ -91,6 +91,8 @@ bool Problem::addenv(Game const & game, Bvector const & hypstotrim)
     if (unexpected(!newass.expression.empty(), "Duplicate label", label))
         return false;
     Assertion const & ass = penv->makeass(game);
+    if (ass.expression.empty())
+        return false;
     // Add the new environment.
     if (Environ * const pnewenv = penv->makeenv(newass = ass))
         return (penv = enviter->second = pnewenv)->pProb = this;
