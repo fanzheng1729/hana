@@ -8,8 +8,8 @@ namespace util
 #if __cplusplus >= 201103L
     using std::none_of;
 #else
-    template<class II, class Pred>
-    bool none_of(II first, II last, Pred pred)
+    template<class II, class P>
+    bool none_of(II first, II last, P pred)
     {
         return std::find_if(first, last, pred) == last;
     }
