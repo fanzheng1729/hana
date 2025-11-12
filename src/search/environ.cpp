@@ -39,7 +39,7 @@ Goals::size_type Environ::countgoal(int status) const
     return n;
 }
 
-static Symbol3s symbolset(Proofsteps const & RPN)
+static Symbol3s symbols(Proofsteps const & RPN)
 {
     Symbol3s set;
     std::transform(RPN.begin(), RPN.end(), end_inserter(set),
@@ -51,15 +51,14 @@ static Symbol3s symbolset(Proofsteps const & RPN)
 // Return true if a move satisfies disjoint variable hypotheses.
 bool Environ::checkdisjvars(Move const & move) const
 {
-    if (!move.pthm) return false;
-
+    if (!move.pthm)
+        return false;
 // std::cout << "Checking DV " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
 // std::cout << "Checking " << vars.first << ' ' << vars.second << std::endl;
-        Symbol3s const & set1(symbolset(move.substitutions[vars.first]));
-        Symbol3s const & set2(symbolset(move.substitutions[vars.second]));
-        // Check disjoint variable hypothesis.
+        Symbol3s const & set1(symbols(move.substitutions[vars.first]));
+        Symbol3s const & set2(symbols(move.substitutions[vars.second]));
         if (!::checkdisjvars(set1, set2, assertion.disjvars, &assertion.varusage, false))
             return false;
     }
