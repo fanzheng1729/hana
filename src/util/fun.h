@@ -1,8 +1,9 @@
 #ifndef FUN_H_INCLUDED
 #define FUN_H_INCLUDED
 
-#include <cstddef>
+#include <cstddef>      // for NULL
 #include <functional>
+#include <utility>      // for std::forward
 
 namespace util
 {
@@ -48,19 +49,19 @@ namespace util
 #endif // __cplusplus >= 201103L
 
 #ifdef __cpp_lib_not_fn
-    template<class Pred>
-    auto not1(Pred const & pred) { return std::not_fn(pred); }
+    template<class P>
+    auto not1(P && pred) { return std::not_fn(std::forward(pred)); }
 #else
-    template<class Pred>
+    template<class P>
     struct not_fn_t
     {
-        not_fn_t(Pred p) : pred(p) {}
-        template<class Arg> bool operator()(Arg arg) { return !pred(arg); }
+        not_fn_t(P p) : pred(p) {}
+        template<class Arg> bool operator()(Arg const & x) { return !pred(x); }
     private:
-        Pred pred;
+        P pred;
     }; // struct not_fn_t
-    template<class Pred>
-    not_fn_t<Pred> not1(Pred pred) { return not_fn_t<Pred>(pred); }
+    template<class P>
+    not_fn_t<P> not1(P pred) { return not_fn_t<P>(pred); }
 #endif // __cpp_lib_not_fn
 
     struct identity { template<class T> T operator()(T x) const { return x; }};
