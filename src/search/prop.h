@@ -31,7 +31,7 @@ struct Prop : Environ
     virtual Prop * makeenv(Assertion const & ass) const
     { return new(std::nothrow) Prop(ass, database, m_maxmoves, staged); }
     // Return the simplified assertion for the goal of the game to hold.
-    virtual Assertion makeass(Game const & game) const;
+    virtual Assertion makeass(Bvector const & hypstotrim) const;
 private:
     // Add a move with free variables. Return false.
     virtual bool addhardmoves

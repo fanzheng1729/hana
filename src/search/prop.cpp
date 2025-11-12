@@ -69,9 +69,8 @@ Bvector Prop::hypstotrim(Goalptr pgoal) const
 }
 
 // Return the simplified assertion for the goal of the game to hold.
-Assertion Prop::makeass(Game const & game) const
+Assertion Prop::makeass(Bvector const & hypstotrim) const
 {
-    Bvector const & hypstotrim = game.goaldata().hypstotrim;
     Assertion result;
     result.number = assertion.number;
     result.sethyps(assertion, hypstotrim);

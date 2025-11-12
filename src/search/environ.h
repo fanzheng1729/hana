@@ -55,7 +55,7 @@ struct Environ : protected Gen
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeenv(Assertion const &) const { return NULL; };
     // Return the simplified assertion for the goal of the game to hold.
-    virtual Assertion makeass(Game const &) const { return Assertion(); }
+    virtual Assertion makeass(Bvector const &) const { return Assertion(); }
     // Database to be used
     Database const & database;
     // The assertion to be proved
