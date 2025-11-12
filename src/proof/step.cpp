@@ -5,7 +5,7 @@
 static const char proofsteperr[] = "Invalid proof step ";
 
 // Return symbol of the variable.
-Symbol3 Proofstep::symbol() const
+Symbol3 Proofstep::var() const
 {
     if (type != HYP) return Symbol3();
     Hypothesis const & hyp = phyp->second;

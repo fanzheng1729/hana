@@ -43,7 +43,7 @@ static Symbol3s symbolset(Proofsteps const & RPN)
 {
     Symbol3s set;
     std::transform(RPN.begin(), RPN.end(), end_inserter(set),
-                   util::mem_fn(&Proofstep::symbol));
+                   util::mem_fn(&Proofstep::var));
     set.erase(Symbol3());
     return set;
 }

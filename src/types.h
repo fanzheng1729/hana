@@ -163,9 +163,9 @@ struct Proofstep
         return NULL;
     }
 // Return symbol of the variable.
-    Symbol3 symbol() const;
+    Symbol3 var() const;
 // Return id of the variable.
-    Symbol2::ID id() const { return symbol().id; }
+    Symbol2::ID id() const { return var().id; }
 // Return name of the proof step.
     operator const char *() const;
     struct Builder
