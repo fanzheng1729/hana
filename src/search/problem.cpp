@@ -80,7 +80,7 @@ Environ * Problem::addenv(Environ * & penv, Bvector const & hypstotrim)
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
     // If it already exists, set the game's environment pointer.
     if (!result.second)
-        return penv = result.first->second;
+        return result.first->second;
     // Iterator to the environment
     Environs::iterator const enviter = result.first;
     // Add the simplified assertion.
@@ -92,7 +92,7 @@ Environ * Problem::addenv(Environ * & penv, Bvector const & hypstotrim)
         return NULL;
     // Add the new environment.
     if (Environ * const pnewenv = penv->makeenv(newass = ass))
-        return (penv = enviter->second = pnewenv)->pProb = this, pnewenv;
+        return (enviter->second = pnewenv)->pProb = this, pnewenv;
     return NULL;
 }
 
