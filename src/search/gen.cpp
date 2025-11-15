@@ -43,9 +43,14 @@ Proofsize Gen::substcount(Argtypes const & argtypes, Genstack const & stack) con
     {
         // Type of the substitution
         strview type = argtypes[i];
-        // Index of the substitution
-        Terms::size_type index = stack[i];
-        count *= termcounts[type][genresult[type][index].size()];
+        // Multiplier
+        Proofsize mul = termcounts[type][genresult[type][stack[i]].size()];
+
+        static const Proofsize max = -1;
+        if (count > max / mul)
+            return max;
+        else
+            count *= mul;
     }
     return count;
 }
