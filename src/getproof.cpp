@@ -87,7 +87,7 @@ Proofnumbers getproofnumbers(strview label, std::string const & letters)
     {
         if (c <= 'T')
         {
-            if (!FMA<20>(num, c - ('A' - 1)))
+            if (!FMA(num, 20u, c - ('A' - 1)))
             {
                 printoverflowerr(label);
                 return Proofnumbers();
@@ -99,7 +99,7 @@ Proofnumbers getproofnumbers(strview label, std::string const & letters)
         }
         else if (c <= 'Y')
         {
-            if (!FMA<5>(num, c - 'T'))
+            if (!FMA(num, 5u, c - 'T'))
             {
                 printoverflowerr(label);
                 return Proofnumbers();
