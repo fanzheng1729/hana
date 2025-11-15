@@ -1,7 +1,8 @@
 #include <cctype>       // for std::isupper
 #include <iostream>
-#include "getproof.h"   // for Readretval
+#include "getproof.h"   // for ReadStatus
 #include "token.h"
+#include "util/FMA.h"
 #include "util/for.h"
 
 // Determine if there is no more token before finishing a statement.
@@ -14,7 +15,7 @@ bool unfinishedstat(Tokens const & tokens, strview stattype, strview label)
 }
 
 // Print error message (if any) in the proof of label.
-Readretval printprooferr(strview label, Readretval err)
+ReadStatus printprooferr(strview label, ReadStatus err)
 {
     static const char * const prefix[] = {"Warning: incomplete", "Error: no"};
     if (err != 1)
@@ -40,7 +41,7 @@ static char badletter(strview token)
 
 // Get sequence of letters in a compressed proof (Appendix B).
 // Returns 1 if Okay, 0 on error, -1 if the proof is incomplete.
-Readretval getproofletters(strview label, Tokens & tokens, std::string & letters)
+ReadStatus getproofletters(strview label, Tokens & tokens, std::string & letters)
 {
     strview token;
 
@@ -50,7 +51,7 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & letters
         {
             std::cerr << "Bogus character " << c
                       << " in compressed proof of " << label.c_str << std::endl;
-            return Readretval::PROOFBAD;
+            return ReadStatus::PROOFBAD;
         }
 
         letters += token.c_str;
@@ -58,24 +59,13 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & letters
     }
 
     if (unfinishedstat(tokens, "$p", label))
-        return Readretval::PROOFBAD;
+        return ReadStatus::PROOFBAD;
 
     tokens.pop(); // Discard $. token
 
-    Readretval err = letters.empty() ? Readretval::PROOFBAD :
+    ReadStatus err = letters.empty() ? ReadStatus::PROOFBAD :
                     letters.find('?') != Token::npos ? INCOMPLETE : PROOFOKAY;
     return printprooferr(label, err);
-}
-
-// Subroutine for calculating proof number. Returns true iff okay.
-template<unsigned MUL>
-static bool FMA(Proofnumber & num, int add)
-{
-    static const Proofnumber size_max = -1;
-    if (num > size_max / MUL || MUL * num > size_max - add)
-        return false;
-    num = MUL * num + add;
-    return true;
 }
 
 static void printoverflowerr(strview label)

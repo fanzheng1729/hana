@@ -17,7 +17,7 @@ class Imp
 private:
 // Read rest of expression after its type.
 // Discard tokens up to and including the terminator.
-    Readretval readexprest
+    ReadStatus readexprest
         (char type, strview label, char const * terminator, Expression & exp);
 // Read an expression from the token stream.
 // Discard tokens up to and including the terminator.
@@ -34,12 +34,12 @@ private:
 // Returns proof steps if okay. Otherwise returns {NULL}.
     Proofsteps getlabels(strview label, Hypiters const & hyps);
 // Read a compressed proof. Discard tokens up to and including $.
-    Readretval readcompressed
+    ReadStatus readcompressed
         (strview label, Hypiters const & hyps, Proofsteps & proof);
 // Read a regular proof. Discard tokens up to and including $.
-    Readretval readregular(strview label, Proofsteps & proof);
+    ReadStatus readregular(strview label, Proofsteps & proof);
 // Read a proof. Discard tokens up to and including $.
-    Readretval readproof
+    ReadStatus readproof
         (strview label, Hypiters const & hyps, Proofsteps & proof)
     {
         if (m_tokens.front() != "(") // Regular (uncompressed proof)
@@ -76,7 +76,7 @@ public:
 
 // Read rest of expression after its type.
 // Discard tokens up to and including the terminator.
-Readretval Imp::readexprest
+ReadStatus Imp::readexprest
     (char type, strview label, char const * terminator, Expression & exp)
 {
     strview token;
@@ -93,18 +93,18 @@ Readretval Imp::readexprest
             std::cerr << " token " << token;
             std::cerr << " found which is not a constant or variable in an";
             std::cerr << " active $f statement" << std::endl;
-            return Readretval::PROOFBAD;
+            return ReadStatus::PROOFBAD;
         }
 
         exp.push_back(Symbol3(token, phyp ? m_database.varid(token) : 0, phyp));
     }
 
     if (unfinishedstat(m_tokens, "$" + type, label))
-        return Readretval::PROOFBAD;
+        return ReadStatus::PROOFBAD;
 
     m_tokens.pop(); // Discard terminator token
 
-    return Readretval::PROOFOKAY;
+    return ReadStatus::PROOFOKAY;
 }
 
 // Read an expression from the token stream.
@@ -259,33 +259,33 @@ Proofsteps Imp::getlabels(strview label, Hypiters const & hyps)
 }
 
 // Read a compressed proof. Discard tokens up to and including $.
-Readretval Imp::readcompressed
+ReadStatus Imp::readcompressed
     (strview label, Hypiters const & hyps, Proofsteps & proof)
 {
     // Get labels
     Proofsteps const & labels(getlabels(label, hyps));
     if (!labels.empty() && !labels[0])
-        return Readretval::PROOFBAD;
+        return ReadStatus::PROOFBAD;
 //std::cout << labels.size() << " hypotheses and labels" << std::endl;
 
     // Get proof letters
     std::string letters;
-    Readretval const okay(getproofletters(label, m_tokens, letters));
-    if (okay != Readretval::PROOFOKAY)
+    ReadStatus const okay(getproofletters(label, m_tokens, letters));
+    if (okay != ReadStatus::PROOFOKAY)
         return okay;
 
     // Get proof numbers
     Proofnumbers const & proofnumbers(getproofnumbers(label, letters));
     if (proofnumbers.empty())
-        return Readretval::PROOFBAD;
+        return ReadStatus::PROOFBAD;
 
     // Get proof steps
     proof = compressed(labels, proofnumbers);
-    return Readretval::PROOFOKAY;
+    return ReadStatus::PROOFOKAY;
 }
 
 // Read a regular proof. Discard tokens up to and including $.
-Readretval Imp::readregular(strview label, Proofsteps & proof)
+ReadStatus Imp::readregular(strview label, Proofsteps & proof)
 {
     bool incomplete(false);
     strview token;
@@ -301,21 +301,21 @@ Readretval Imp::readregular(strview label, Proofsteps & proof)
         }
 
         else if (unexpected(token == label, "self-reference in proof of", label))
-            return Readretval::PROOFBAD;
+            return ReadStatus::PROOFBAD;
 
         else if (!(proof += getproofstep(token)))
         {
             inactivereferr(token, label);
-            return Readretval::PROOFBAD;
+            return ReadStatus::PROOFBAD;
         }
     }
 
     if (unfinishedstat(m_tokens, "$p", label))
-        return Readretval::PROOFBAD;
+        return ReadStatus::PROOFBAD;
 
     m_tokens.pop(); // Discard $. token
 
-    Readretval err = incomplete ? Readretval::INCOMPLETE :
+    ReadStatus err = incomplete ? ReadStatus::INCOMPLETE :
                     proof.empty() ? PROOFBAD : PROOFOKAY;
     return printprooferr(label, err);
 }
@@ -387,8 +387,8 @@ bool Imp::readp(strview label)
     // Get proof steps
     Proofsteps proof;
     int okay = readproof(label, ass.hypiters, proof);
-    if (okay != Readretval::PROOFOKAY)
-        return okay == Readretval::INCOMPLETE;
+    if (okay != ReadStatus::PROOFOKAY)
+        return okay == ReadStatus::INCOMPLETE;
 
     // Verify proof steps
     Expression const & exp(verify(proof, &*iterass));

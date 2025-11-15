@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-enum Readretval {INCOMPLETE = -1, PROOFBAD = 0, PROOFOKAY = 1};
+enum ReadStatus {INCOMPLETE = -1, PROOFBAD = 0, PROOFOKAY = 1};
 
 struct Tokens;
 
@@ -11,10 +11,10 @@ struct Tokens;
 bool unfinishedstat(Tokens const & tokens, strview stattype, strview label);
 
 // Print error message (if any) in the proof of label.
-Readretval printprooferr(strview label, Readretval err);
+ReadStatus printprooferr(strview label, ReadStatus err);
 
 // Get sequence of letters in a compressed proof (Appendix B).
-Readretval getproofletters(strview label, Tokens & tokens, std::string & proof);
+ReadStatus getproofletters(strview label, Tokens & tokens, std::string & proof);
 
 // Get the raw numbers from compressed proof format.
 // The letter Z is translated as 0 (Appendix B).
