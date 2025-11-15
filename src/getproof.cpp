@@ -69,19 +69,19 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & letters
 
 // Subroutine for calculating proof number. Returns true iff okay.
 template<unsigned MUL>
-static bool FMA(Proofnumber & num, int add, strview label)
+static bool FMA(Proofnumber & num, int add)
 {
     static const Proofnumber size_max = -1;
-
     if (num > size_max / MUL || MUL * num > size_max - add)
-    {
-        std::cerr << "Overflow computing numbers in compressed proof of "
-                  << label.c_str << std::endl;
         return false;
-    }
-
     num = MUL * num + add;
     return true;
+}
+
+static void printoverflowerr(strview label)
+{
+    std::cerr << "Overflow computing numbers in compressed proof of ";
+    std::cerr << label.c_str << std::endl;
 }
 
 // Get the raw numbers from compressed proof format.
@@ -91,14 +91,17 @@ Proofnumbers getproofnumbers(strview label, std::string const & letters)
     Proofnumbers result;
     result.reserve(letters.size()); // Preallocate for efficiency
 
-    std::size_t num = 0u;
-    bool justgotnum(false);
+    Proofnumber num = 0u;
+    bool justgotnum = false;
     FOR (char const c, letters)
     {
         if (c <= 'T')
         {
-            if (!FMA<20>(num, c - ('A' - 1), label))
+            if (!FMA<20>(num, c - ('A' - 1)))
+            {
+                printoverflowerr(label);
                 return Proofnumbers();
+            }
 
             result.push_back(num);
             num = 0u;
@@ -106,8 +109,11 @@ Proofnumbers getproofnumbers(strview label, std::string const & letters)
         }
         else if (c <= 'Y')
         {
-            if (!FMA<5>(num, c - 'T', label))
+            if (!FMA<5>(num, c - 'T'))
+            {
+                printoverflowerr(label);
                 return Proofnumbers();
+            }
 
             justgotnum = false;
         }
