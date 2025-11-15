@@ -68,7 +68,7 @@ Readretval getproofletters(strview label, Tokens & tokens, std::string & letters
 }
 
 // Subroutine for calculating proof number. Returns true iff okay.
-template<Proofnumber MUL>
+template<unsigned MUL>
 static bool FMA(Proofnumber & num, int add, strview label)
 {
     static const Proofnumber size_max = -1;

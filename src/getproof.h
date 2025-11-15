@@ -1,7 +1,6 @@
 #ifndef GETPROOF_H_INCLUDED
 #define GETPROOF_H_INCLUDED
 
-#include "token.h"
 #include "types.h"
 
 enum Readretval {INCOMPLETE = -1, PROOFBAD = 0, PROOFOKAY = 1};
