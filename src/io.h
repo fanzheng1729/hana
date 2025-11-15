@@ -40,12 +40,8 @@ std::ostream & operator<<(std::ostream & out, const std::map<Key, T> & map)
 {
     for (typename std::map<Key, T>::const_iterator
          iter(map.begin()); iter != map.end(); ++iter)
-    {
         out << iter->first << ' ';
-    }
-    out << std::endl;
-
-    return out;
+    return out << std::endl;
 }
 template<class Key>
 std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
@@ -100,7 +96,7 @@ inline bool askyn(const char * question)
 {
     std::string const & answer(ask(question));
     if (answer.empty()) return false;
-    unsigned char const c(answer[0]);
+    unsigned char const c = answer[0];
     return std::tolower(c) == 'y';
 }
 

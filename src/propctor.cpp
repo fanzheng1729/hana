@@ -1,5 +1,4 @@
 #include <algorithm>    // for std::find
-#include <limits>
 #include "ass.h"
 #include "io.h"
 #include "proof/analyze.h"

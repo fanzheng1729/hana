@@ -4,7 +4,6 @@
 #include <algorithm>    // for std::copy and std::..._element
 #include <cmath>        // for std::sqrt
 #include <iostream>
-#include <limits>
 #include "statnode.h"
 #include "tree.h"
 #include "../util/arith.h"
