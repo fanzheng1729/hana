@@ -18,9 +18,9 @@ bool unfinishedstat(Tokens const & tokens, strview stattype, strview label)
 ReadStatus printprooferr(strview label, ReadStatus err)
 {
     static const char * const prefix[] = {"Warning: incomplete", "Error: no"};
-    if (err != 1)
-        std::cerr << prefix[err + 1] << " proof for theorem "
-                  << label.c_str << std::endl;
+    if (err != ReadStatus::PROOFOKAY)
+        std::cerr << prefix[err + 1] << " proof for theorem ",
+        std::cerr << label.c_str << std::endl;
     return err;
 }
 
@@ -63,7 +63,7 @@ ReadStatus getproofletters(strview label, Tokens & tokens, std::string & letters
 
     tokens.pop(); // Discard $. token
 
-    ReadStatus err = letters.empty() ? ReadStatus::PROOFBAD :
+    ReadStatus err= letters.empty() ? ReadStatus::PROOFBAD :
                     letters.find('?') != Token::npos ? INCOMPLETE : PROOFOKAY;
     return printprooferr(label, err);
 }
