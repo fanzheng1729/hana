@@ -3,6 +3,8 @@
 
 #include <limits>
 
+namespace util
+{
 template<class T, class U>
 static bool FMA(T & num, U mul, int add)
 {
@@ -14,5 +16,6 @@ static bool FMA(T & num, U mul, int add)
     num = mul * num + add;
     return true;
 }
+} // namespace util
 
 #endif // FMA_H_INCLUDED

@@ -1,6 +1,7 @@
 #include "gen.h"
 #include "../io.h"
 #include "../syntaxiom.h"
+#include "../util/FMA.h"
 #include "../util/for.h"
 #include "../util/iter.h"
 
@@ -45,12 +46,8 @@ Proofsize Gen::substcount(Argtypes const & argtypes, Genstack const & stack) con
         strview type = argtypes[i];
         // Multiplier
         Proofsize mul = termcounts[type][genresult[type][stack[i]].size()];
-
-        static const Proofsize max = -1;
-        if (count > max / mul)
-            return max;
-        else
-            count *= mul;
+        if (!util::FMA(count, mul, 0))
+            return static_cast<Proofsize>(-1);
     }
     return count;
 }
