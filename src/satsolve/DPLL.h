@@ -8,7 +8,7 @@ typedef int sLiteral;
 // Translation from unsigned to signed literals
 inline sLiteral sliteral(Literal lit)
 {
-    sLiteral atom = static_cast<sLiteral>(lit / 2) + 1;
+    sLiteral const atom = static_cast<sLiteral>(lit / 2) + 1;
     return lit % 2 ? -atom : atom;
 }
 // A list of signed literals
@@ -34,13 +34,13 @@ bool checkUnitClauses();
  * Executes the DPLL (Davis�Putnam�Logemann�Loveland) algorithm, performing a full search
  * for a model (interpretation) which satisfies the formula given as a CNF clause set.
  */
-bool doDPLL();
+bool DPLL();
 
 class DPLL_solver : public Satsolver
 {
 public:
     DPLL_solver(CNFClauses const & cnf) : Satsolver(cnf) { parseInput(cnf); }
-    bool sat() const { return checkUnitClauses() && doDPLL(); }
+    bool sat() const { return checkUnitClauses() && DPLL(); }
 };
 
 #endif // DPLL_H_INCLUDED

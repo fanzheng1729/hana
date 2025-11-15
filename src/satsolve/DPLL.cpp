@@ -309,7 +309,7 @@ sLiteral getNextDecisionLiteral() {
  * Executes the DPLL (Davis–Putnam–Logemann–Loveland) algorithm, performing a full search
  * for a model (interpretation) which satisfies the formula given as a CNF clause set.
  */
-bool doDPLL() {
+bool DPLL() {
 	// DPLL algorithm
 	while (true) {
 		while (propagateGivesConflict()) {
