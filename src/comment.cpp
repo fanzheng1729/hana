@@ -21,11 +21,11 @@ static Token firsttoken(std::string const & str)
 // Classify comments ($4.4.2 and 4.4.3).
 std::vector<strview> Comments::operator[](strview type) const
 {
-    std::vector<strview> result;
+    std::vector<strview> texts;
     FOR (const_reference comment, *this)
         if (firsttoken(comment.text) == type)
-            result.push_back(comment.text);
-    return result;
+            texts.push_back(comment.text);
+    return texts;
 }
 
 static void commenterr(const char * badstring, std::string const & comment)
@@ -37,17 +37,17 @@ static void commenterr(const char * badstring, std::string const & comment)
 // Read and return a comment. Return "" on failure ($4.1.2).
 std::string comment(std::ifstream & in)
 {
-    std::stringstream result;//("", std::ios_base::ate);
+    std::stringstream out;//("", std::ios_base::ate);
 
     while (in.good())
     {
         // Read up to '$'. Skip if the next char is '$'. Otherwise in fails.
-        in.get(*result.rdbuf(), '$');
+        in.get(*out.rdbuf(), '$');
 
         // Eat '$' in the stream.
         if (in.eof() || in.bad() || (in.clear(), in.get(), !in.good()))
         {
-            std::cerr << "Unclosed comment" << result.str() << std::endl;
+            std::cerr << "Unclosed comment" << out.str() << std::endl;
             return "";
         }
 
@@ -55,7 +55,7 @@ std::string comment(std::ifstream & in)
         char c(in.get());
         if (c == '(')
         {
-            commenterr("$(", result.str());
+            commenterr("$(", out.str());
             return "";
         }
 
@@ -63,35 +63,35 @@ std::string comment(std::ifstream & in)
         {
             // the last char read
             char last = 0;
-            result.seekg(-1, std::ios::end);
-            result >> last;
+            out.seekg(-1, std::ios::end);
+            out >> last;
 
             if (std::strchr(mmws, last) == NULL)
             {
-                commenterr("...$)", result.str());
+                commenterr("...$)", out.str());
                 return "";
             }
 
             // The token begins with "$)". Check if it ends here.
             if (in.eof())
-                return result.str();
+                return out.str();
             if (!in.good())
                 return "";
 
             // the next char to read
             if (std::strchr(mmws, in.peek()) == NULL)
             {
-                commenterr("$)...", result.str());
+                commenterr("$)...", out.str());
                 return "";
             }
 
             // "$)" is legal.
-            return result.str();
+            return out.str();
         }
 
         // "$" followed by other chars
-        result.seekg(0, std::ios::end);
-        result << '$' << c;
+        out.seekg(0, std::ios::end);
+        out << '$' << c;
     }
 
     return "";
@@ -151,16 +151,14 @@ Commands::Commands(std::vector<strview> const & comments)
 // Classify comments ($4.4.3).
 Commands Commands::operator[](strview type) const
 {
-    Commands result;
-
+    Commands commands;
     FOR (const_reference command, *this)
         if (!command.empty() && command[0] == type)
         {
-            result.resize(result.size() + 1);
-            result.back().assign(command.begin() + 1, command.end());
+            commands.push_back(Command());
+            commands.back().assign(command.begin() + 1, command.end());
         }
-
-    return result;
+    return commands;
 }
 
 // Return the unquoted word. Return "" if it is not quoted.
@@ -191,23 +189,17 @@ static Typecodes * addsyntax(Typecodes * p, Command const & command)
     // Add the type.
     std::pair<Typecodes::iterator, bool> result
         (p->insert(std::make_pair(type, Typecodes::mapped_type())));
-    if (result.second == false)
-    {
-        std::cerr << "Type code " << type << " already exists\n";
+    if (unexpected(!result.second, "duplicate type code", type))
         return p;
-    }
     // No as type.
     if (command.size() == 1)
         return p;
     // Add the as type.
     std::string const & astype(unquote(command.back()));
-    if (unexpected(astype.empty(), "type code", command.back()))
+    if (unexpected(astype.empty(), "as-type code", command.back()))
         return p;
-    if (p->count(astype) == 0)
-    {
-        std::cerr << "Type code " << astype << " does not exist\n";
+    if (unexpected(!p->count(astype), "as-type code", astype))
         return p;
-    }
     result.first->second.first = astype;
     return p;
 }
