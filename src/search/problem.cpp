@@ -479,9 +479,9 @@ void Problem::navigate(bool detailed) const
 
 void Problem::writeproof(const char * const filename) const
 {
-    if (proof().empty()) return;
-    Database const & database = root()->game().env().database;
-    Printer printer(&database.typecodes());
+    if (proof().empty())
+        return;
+    Printer printer(&root()->game().env().database.typecodes());
     verify(proof(), printer);
     std::ofstream out(filename);
     out << printer.str(indentation(ast(proof())));
