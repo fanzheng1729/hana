@@ -12,7 +12,7 @@
 // Return the first token in a string, or "" if there is not any.
 static Token firsttoken(std::string const & str)
 {
-    std::string::size_type const begin(str.find_first_not_of(mmws));
+    std::string::size_type const begin = str.find_first_not_of(mmws);
     return begin == std::string::npos ? "" :
         str.substr(begin, str.find_first_of(mmws, begin) - begin);
 }
