@@ -1,8 +1,8 @@
 #ifndef ASS_H_INCLUDED
 #define ASS_H_INCLUDED
 
-#include <algorithm>    // for std::sort and std::upper_bound
-#include <numeric>      // for std::accumulate
+#include <algorithm>// for std::sort and std::upper_bound
+#include <numeric>  // for std::accumulate
 #include "types.h"
 
 // An axiom or a theorem.
