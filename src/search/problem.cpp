@@ -452,6 +452,7 @@ void Problem::navigate(bool detailed) const
 //std::cout << isourturn(node) << ' ' << &node.value() << std::endl;
         std::cin.clear();
         std::cout << "> ";
+
         std::cin >> token;
         switch (token[0])
         {
