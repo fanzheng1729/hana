@@ -484,6 +484,7 @@ void Problem::writeproof(const char * const filename) const
 
     Printer printer(&root()->game().env().database.typecodes());
     verify(proof(), printer);
+
     std::ofstream out(filename);
     out << printer.str(indentation(ast(proof())));
 }
