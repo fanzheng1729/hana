@@ -2,6 +2,7 @@
 #define ASS_H_INCLUDED
 
 #include <algorithm>    // for std::sort and std::upper_bound
+#include <numeric>      // for std::accumulate
 #include "types.h"
 
 // An axiom or a theorem.
@@ -131,10 +132,7 @@ struct Assertion
                 labels.push_back(delim + std::string(hypiters[i]->first));
 
         std::sort(labels.begin(), labels.end());
-        std::string result;
-        for (Hypsize i = 0; i < labels.size(); ++i)
-            result += labels[i];
-        return result;
+        return std::accumulate(labels.begin(), labels.end(), std::string());
     }
     // Return true if all variables in the assertion have been substituted.
     bool allvarsfilled(Stepranges const & stepranges) const
