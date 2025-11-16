@@ -40,11 +40,11 @@ public:
     Syntaxioms const & syntaxioms() const { return m_syntaxioms; }
     Syntaxioms primitivesyntaxioms() const
     {
-        Syntaxioms result;
-        FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
-            if (!definitions().count(syntaxiom.first))
-                result.insert(syntaxiom);
-        return result;
+        Syntaxioms axioms;
+        FOR (Syntaxioms::const_reference axiom, syntaxioms())
+            if (!definitions().count(axiom.first))
+                axioms.insert(axiom);
+        return axioms;
     }
     Commentinfo const & commentinfo() const { return m_commentinfo; }
     Ctordefns const & ctordefns() const { return commentinfo().ctordefns; }
@@ -58,11 +58,11 @@ public:
     }
     Relations relations(unsigned mask, unsigned pattern) const
     {
-        Relations result;
+        Relations rels;
         FOR (Relationmap::const_reference relation, relations())
             if ((relation.first & mask) == pattern)
-                result.insert(relation.second.begin(), relation.second.end());
-        return result;
+                rels.insert(relation.second.begin(), relation.second.end());
+        return rels;
     }
     Relations equalities() const
     { return relations(Relations::EQUIVALENCE, Relations::EQUIVALENCE); }
