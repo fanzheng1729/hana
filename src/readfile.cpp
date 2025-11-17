@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <cctype>
+#include <cctype>       // for std::isprint
 #include <fstream>
 #include <iostream>
 #include <locale>
@@ -22,6 +22,7 @@ static Token nexttoken(std::istream & in)
 {
     if (!in.good())
         return Token();
+
     Token token;
     in >> token;
 
