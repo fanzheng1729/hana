@@ -1,3 +1,4 @@
+#include <cctype>   // for std::tolower
 #include <fstream>
 #include "../proof/analyze.h"
 #include "../database.h"
@@ -454,7 +455,8 @@ void Problem::navigate(bool detailed) const
         std::cout << "> ";
 
         std::cin >> token;
-        switch (token[0])
+        unsigned char const c = token[0];
+        switch (std::tolower(c))
         {
         case 'b': case 'e': case 'q':
             return;
