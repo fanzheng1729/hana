@@ -363,7 +363,7 @@ void Problem::printstats() const
     std::cout << playcount() << " plays, " << size() << " nodes, ";
     for (int i = WDL::WIN; i >= WDL::LOSS; --i)
         std::cout << countgoal(i) << s[WDL::WIN - i];
-    std::cout << countenvs() << " environs " << std::endl;
+    std::cout << countenvs() << " contexts " << std::endl;
 }
 
 // One environment a line
