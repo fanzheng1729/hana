@@ -366,7 +366,7 @@ void Problem::printstats() const
     std::cout << countenvs() << " contexts " << std::endl;
 }
 
-// One environment a line
+// One context a line
 void Problem::printenvs() const
 {
     FOR (Environs::const_reference env, environs)
