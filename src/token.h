@@ -1,7 +1,7 @@
 #ifndef TOKEN_H_INCLUDED
 #define TOKEN_H_INCLUDED
 
-#include <cctype>
+#include <cctype>           // for std::isalnum
 #include <deque>
 #include "util/strview.h"
 #include "util/util.h"      // for util::none_of
