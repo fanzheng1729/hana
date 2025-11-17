@@ -369,8 +369,7 @@ void Problem::printstats() const
 // One environment a line
 void Problem::printenvs() const
 {
-    FOR (Environs::const_reference env, environs)
-        std::cout << env.first << std::endl;
+    std::cout << environs;
 }
 
 // Move up to the parent. Return true if successful.
@@ -393,8 +392,7 @@ static bool gototheirchild(Nodeptr & p)
     std::cin >> i;
 
     Problem::Children const & children(*p.children());
-    if (i >= children.size()) return false;
-    return p = children[i];
+    return i >= children.size() ? Nodeptr() : (p = children[i]);
 }
 
 // Move to the child with given assertion and index. Return true if successful.
@@ -402,7 +400,7 @@ static bool findourchild(Nodeptr & p, strview ass, std::size_t index)
 {
     FOR (Nodeptr child, *p.children())
     {
-        Move const & move(child->game().attempt);
+        Move const & move = child->game().attempt;
         if (move.type == Move::THM && move.label() == ass && index-- == 0)
             return p = child;
     }
@@ -412,7 +410,8 @@ static bool findourchild(Nodeptr & p, strview ass, std::size_t index)
 // Input the assertion and the index and move to the child. Return true if successful.
 static bool gotoourchild(Nodeptr & p)
 {
-    if (p.children()->empty()) return false;
+    if (p.children()->empty())
+        return false;
 
     std::string token;
     std::cin >> token;

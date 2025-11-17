@@ -23,7 +23,7 @@ class Problem : public MCTS<Game>
     // Assertions corresponding to contexts
     Assertions assertions;
     // Map: name -> polymorphic contexts
-    typedef std::map<std::string, struct Environ *> Environs;
+    typedef std::map<std::string, Environ *> Environs;
     // Polymorphic contexts
     Environs environs;
     // Map: goal -> context -> evaluation
