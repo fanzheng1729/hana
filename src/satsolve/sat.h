@@ -67,7 +67,7 @@ struct Satsolver
                     if (atom == 0)
                         // All models tried
                         return false;
-                } while(model[--atom] == CNFTRUE);
+                } while (model[--atom] == CNFTRUE);
             }
         }
     }

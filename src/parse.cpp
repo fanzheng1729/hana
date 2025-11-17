@@ -200,7 +200,7 @@ Substframe::Subexpends const & RPNmap
                 stack.pop_back();
                 if (stack.empty()) break;
             }
-        } while(!stack.empty());
+        } while (!stack.empty());
     }
 
     return result;
