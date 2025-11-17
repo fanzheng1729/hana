@@ -369,7 +369,8 @@ void Problem::printstats() const
 // One environment a line
 void Problem::printenvs() const
 {
-    std::cout << environs;
+    FOR (Environs::const_reference env, environs)
+        std::cout << env.first << std::endl;
 }
 
 // Move up to the parent. Return true if successful.
