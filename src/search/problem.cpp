@@ -450,7 +450,7 @@ void Problem::navigate(bool detailed) const
     Nodeptr p = root();
     while (true)
     {
-//std::cout << isourturn(node) << ' ' << &node.value() << std::endl;
+// std::cout << isourturn(node) << ' ' << &node.value() << std::endl;
         std::cin.clear();
         std::cout << "> ";
 
