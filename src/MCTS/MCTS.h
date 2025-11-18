@@ -64,7 +64,9 @@ public:
     bool issure() const { return issure(root()); }
     static Value value(Nodeptr p) { return p->eval().value; }
     Value value() const { return value(root()); }
+protected:
     static void seteval(Nodeptr p, Eval eval) { if (p) p->seteval(eval); }
+public:
     static bool isourturn(Nodeptr p) { return p->isourturn();}
     // Return true if value of x < value of y.
     static bool compvalue(Nodeptr x, Nodeptr y) { return value(x) < value(y); }
