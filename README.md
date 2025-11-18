@@ -7,101 +7,54 @@ Recently there has been a spur of interest in proving mathematical theorems usin
 Currently this project focuses on the part of the metamath database (set.mm) on propositional logic. Of the 1843 propositional theorems in the database, 1766 can be solved under 32k nodes, reaching an accuracy of 95.8%. Noteably, this algorithm does **not** use neural networks. Running single-threaded on a CPU, the whole process takes about 30s.
 
 Sample proof of the associative law of equivalence, found by the program at a budget of 128k nodes:
-
-biimp          |- ( ( $\phi$ <-> $\psi$ ) -> ( $\phi$ -> $\psi$ ) ) 
-
-com12         |- ( $\phi$ -> ( ( $\phi$ <-> $\psi$ ) -> $\psi$ ) ) 
-
-pm5.1im       |- ( $\phi$ -> ( $\psi$ -> ( $\phi$ <-> $\psi$ ) ) ) 
-
-impbid       |- ( $\phi$ -> ( ( $\phi$ <-> $\psi$ ) <-> $\psi$ ) ) 
-
-bibi1d      |- ( $\phi$ -> ( ( ( $\phi$ <-> $\psi$ ) <-> $\chi$ ) <-> ( $\psi$ <-> $\chi$ ) ) ) 
-
-biimpcd    |- ( ( ( $\phi$ <-> $\psi$ ) <-> $\chi$ ) -> ( $\phi$ -> ( $\psi$ <-> $\chi$ ) ) ) 
-
-biimpr        |- ( ( $\psi$ <-> $\chi$ ) -> ( $\chi$ -> $\psi$ ) ) 
-
-com12        |- ( $\chi$ -> ( ( $\psi$ <-> $\chi$ ) -> $\psi$ ) ) 
-
-biimpr       |- ( ( $\phi$ <-> $\psi$ ) -> ( $\psi$ -> $\phi$ ) ) 
-
-syl9r       |- ( ( $\phi$ <-> $\psi$ ) -> ( $\chi$ -> ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) ) ) 
-
-2a1           |- ( $\phi$ -> ( -. $\chi$ -> ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) ) ) 
-
-simplim         |- ( -. ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) -> ( $\psi$ <-> $\chi$ ) ) 
-
-biimpcd        |- ( $\psi$ -> ( -. ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) -> $\chi$ ) ) 
-
-con1d         |- ( $\psi$ -> ( -. $\chi$ -> ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) ) ) 
-
-pm5.21ni     |- ( -. ( -. $\chi$ -> ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) ) -> ( $\phi$ <-> $\psi$ ) ) 
-
-con1i       |- ( -. ( $\phi$ <-> $\psi$ ) -> ( -. $\chi$ -> ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) ) ) 
-
-bija       |- ( ( ( $\phi$ <-> $\psi$ ) <-> $\chi$ ) -> ( ( $\psi$ <-> $\chi$ ) -> $\phi$ ) ) 
-
-impbid    |- ( ( ( $\phi$ <-> $\psi$ ) <-> $\chi$ ) -> ( $\phi$ <-> ( $\psi$ <-> $\chi$ ) ) ) 
-
-bicom      |- ( ( $\phi$ <-> $\psi$ ) <-> ( $\psi$ <-> $\phi$ ) ) 
-
-pm5.1im         |- ( $\psi$ -> ( $\phi$ -> ( $\psi$ <-> $\phi$ ) ) ) 
-
-com12          |- ( $\phi$ -> ( $\psi$ -> ( $\psi$ <-> $\phi$ ) ) ) 
-
-biimpr          |- ( ( $\psi$ <-> $\phi$ ) -> ( $\phi$ -> $\psi$ ) ) 
-
-com12          |- ( $\phi$ -> ( ( $\psi$ <-> $\phi$ ) -> $\psi$ ) ) 
-
-impbid        |- ( $\phi$ -> ( $\psi$ <-> ( $\psi$ <-> $\phi$ ) ) ) 
-
-bibi1d       |- ( $\phi$ -> ( ( $\psi$ <-> $\chi$ ) <-> ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) ) ) 
-
-biimpd      |- ( $\phi$ -> ( ( $\psi$ <-> $\chi$ ) -> ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) ) ) 
-
-simplim             |- ( -. ( ( $\psi$ <-> $\phi$ ) -> $\chi$ ) -> ( $\psi$ <-> $\phi$ ) ) 
-
-biimpcd            |- ( $\psi$ -> ( -. ( ( $\psi$ <-> $\phi$ ) -> $\chi$ ) -> $\phi$ ) ) 
-
-con1d             |- ( $\psi$ -> ( -. $\phi$ -> ( ( $\psi$ <-> $\phi$ ) -> $\chi$ ) ) ) 
-
-com3r            |- ( ( $\psi$ <-> $\phi$ ) -> ( $\psi$ -> ( -. $\phi$ -> $\chi$ ) ) ) 
-
-2a1              |- ( $\chi$ -> ( $\psi$ -> ( -. $\phi$ -> $\chi$ ) ) ) 
-
-pm5.21ni        |- ( -. ( $\psi$ -> ( -. $\phi$ -> $\chi$ ) ) -> ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) ) 
-
-con1i          |- ( -. ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) -> ( $\psi$ -> ( -. $\phi$ -> $\chi$ ) ) ) 
-
-com3r         |- ( -. $\phi$ -> ( -. ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) -> ( $\psi$ -> $\chi$ ) ) ) 
-
-ax-1                 |- ( $\psi$ -> ( -. $\phi$ -> $\psi$ ) ) 
-
-pm2.24               |- ( $\phi$ -> ( -. $\phi$ -> $\psi$ ) ) 
-
-pm5.21ni            |- ( -. ( -. $\phi$ -> $\psi$ ) -> ( $\psi$ <-> $\phi$ ) ) 
-
-con1i              |- ( -. ( $\psi$ <-> $\phi$ ) -> ( -. $\phi$ -> $\psi$ ) ) 
-
-a1d               |- ( -. ( $\psi$ <-> $\phi$ ) -> ( $\chi$ -> ( -. $\phi$ -> $\psi$ ) ) ) 
-
-con1i            |- ( -. ( $\chi$ -> ( -. $\phi$ -> $\psi$ ) ) -> ( $\psi$ <-> $\phi$ ) ) 
-
-simplim          |- ( -. ( $\chi$ -> ( -. $\phi$ -> $\psi$ ) ) -> $\chi$ ) 
-
-2thd            |- ( -. ( $\chi$ -> ( -. $\phi$ -> $\psi$ ) ) -> ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) ) 
-
-con1i          |- ( -. ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) -> ( $\chi$ -> ( -. $\phi$ -> $\psi$ ) ) ) 
-
-com3r         |- ( -. $\phi$ -> ( -. ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) -> ( $\chi$ -> $\psi$ ) ) ) 
-
-impbidd      |- ( -. $\phi$ -> ( -. ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) -> ( $\psi$ <-> $\chi$ ) ) ) 
-
-con1d       |- ( -. $\phi$ -> ( -. ( $\psi$ <-> $\chi$ ) -> ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) ) ) 
-
-bija       |- ( ( $\phi$ <-> ( $\psi$ <-> $\chi$ ) ) -> ( ( $\psi$ <-> $\phi$ ) <-> $\chi$ ) ) 
-
-syl5bb    |- ( ( $\phi$ <-> ( $\psi$ <-> $\chi$ ) ) -> ( ( $\phi$ <-> $\psi$ ) <-> $\chi$ ) ) 
-
-impbii   |- ( ( ( $\phi$ <-> $\psi$ ) <-> $\chi$ ) <-> ( $\phi$ <-> ( $\psi$ <-> $\chi$ ) ) ) 
+```
+biimp          |- ( ( ph <-> ps ) -> ( ph -> ps ) ) 
+com12         |- ( ph -> ( ( ph <-> ps ) -> ps ) ) 
+pm5.1im       |- ( ph -> ( ps -> ( ph <-> ps ) ) ) 
+impbid       |- ( ph -> ( ( ph <-> ps ) <-> ps ) ) 
+bibi1d      |- ( ph -> ( ( ( ph <-> ps ) <-> ch ) <-> ( ps <-> ch ) ) ) 
+biimpcd    |- ( ( ( ph <-> ps ) <-> ch ) -> ( ph -> ( ps <-> ch ) ) ) 
+biimpr        |- ( ( ps <-> ch ) -> ( ch -> ps ) ) 
+com12        |- ( ch -> ( ( ps <-> ch ) -> ps ) ) 
+biimpr       |- ( ( ph <-> ps ) -> ( ps -> ph ) ) 
+syl9r       |- ( ( ph <-> ps ) -> ( ch -> ( ( ps <-> ch ) -> ph ) ) ) 
+2a1           |- ( ph -> ( -. ch -> ( ( ps <-> ch ) -> ph ) ) ) 
+simplim         |- ( -. ( ( ps <-> ch ) -> ph ) -> ( ps <-> ch ) ) 
+biimpcd        |- ( ps -> ( -. ( ( ps <-> ch ) -> ph ) -> ch ) ) 
+con1d         |- ( ps -> ( -. ch -> ( ( ps <-> ch ) -> ph ) ) ) 
+pm5.21ni     |- ( -. ( -. ch -> ( ( ps <-> ch ) -> ph ) ) -> ( ph <-> ps ) ) 
+con1i       |- ( -. ( ph <-> ps ) -> ( -. ch -> ( ( ps <-> ch ) -> ph ) ) ) 
+bija       |- ( ( ( ph <-> ps ) <-> ch ) -> ( ( ps <-> ch ) -> ph ) ) 
+impbid    |- ( ( ( ph <-> ps ) <-> ch ) -> ( ph <-> ( ps <-> ch ) ) ) 
+bicom      |- ( ( ph <-> ps ) <-> ( ps <-> ph ) ) 
+pm5.1im         |- ( ps -> ( ph -> ( ps <-> ph ) ) ) 
+com12          |- ( ph -> ( ps -> ( ps <-> ph ) ) ) 
+biimpr          |- ( ( ps <-> ph ) -> ( ph -> ps ) ) 
+com12          |- ( ph -> ( ( ps <-> ph ) -> ps ) ) 
+impbid        |- ( ph -> ( ps <-> ( ps <-> ph ) ) ) 
+bibi1d       |- ( ph -> ( ( ps <-> ch ) <-> ( ( ps <-> ph ) <-> ch ) ) ) 
+biimpd      |- ( ph -> ( ( ps <-> ch ) -> ( ( ps <-> ph ) <-> ch ) ) ) 
+simplim             |- ( -. ( ( ps <-> ph ) -> ch ) -> ( ps <-> ph ) ) 
+biimpcd            |- ( ps -> ( -. ( ( ps <-> ph ) -> ch ) -> ph ) ) 
+con1d             |- ( ps -> ( -. ph -> ( ( ps <-> ph ) -> ch ) ) ) 
+com3r            |- ( ( ps <-> ph ) -> ( ps -> ( -. ph -> ch ) ) ) 
+2a1              |- ( ch -> ( ps -> ( -. ph -> ch ) ) ) 
+pm5.21ni        |- ( -. ( ps -> ( -. ph -> ch ) ) -> ( ( ps <-> ph ) <-> ch ) ) 
+con1i          |- ( -. ( ( ps <-> ph ) <-> ch ) -> ( ps -> ( -. ph -> ch ) ) ) 
+com3r         |- ( -. ph -> ( -. ( ( ps <-> ph ) <-> ch ) -> ( ps -> ch ) ) ) 
+ax-1                 |- ( ps -> ( -. ph -> ps ) ) 
+pm2.24               |- ( ph -> ( -. ph -> ps ) ) 
+pm5.21ni            |- ( -. ( -. ph -> ps ) -> ( ps <-> ph ) ) 
+con1i              |- ( -. ( ps <-> ph ) -> ( -. ph -> ps ) ) 
+a1d               |- ( -. ( ps <-> ph ) -> ( ch -> ( -. ph -> ps ) ) ) 
+con1i            |- ( -. ( ch -> ( -. ph -> ps ) ) -> ( ps <-> ph ) ) 
+simplim          |- ( -. ( ch -> ( -. ph -> ps ) ) -> ch ) 
+2thd            |- ( -. ( ch -> ( -. ph -> ps ) ) -> ( ( ps <-> ph ) <-> ch ) ) 
+con1i          |- ( -. ( ( ps <-> ph ) <-> ch ) -> ( ch -> ( -. ph -> ps ) ) ) 
+com3r         |- ( -. ph -> ( -. ( ( ps <-> ph ) <-> ch ) -> ( ch -> ps ) ) ) 
+impbidd      |- ( -. ph -> ( -. ( ( ps <-> ph ) <-> ch ) -> ( ps <-> ch ) ) ) 
+con1d       |- ( -. ph -> ( -. ( ps <-> ch ) -> ( ( ps <-> ph ) <-> ch ) ) ) 
+bija       |- ( ( ph <-> ( ps <-> ch ) ) -> ( ( ps <-> ph ) <-> ch ) ) 
+syl5bb    |- ( ( ph <-> ( ps <-> ch ) ) -> ( ( ph <-> ps ) <-> ch ) ) 
+impbii   |- ( ( ( ph <-> ps ) <-> ch ) <-> ( ph <-> ( ps <-> ch ) ) ) 
+```
