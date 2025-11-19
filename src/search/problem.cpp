@@ -92,9 +92,12 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     if (ass.expression.empty())
         return NULL;
     // Add the new environment.
-    if (Environ * const pnewenv = penv->makeenv(newass = ass))
-        return (enviter->second = pnewenv)->pProb = this, pnewenv;
-    return NULL;
+    Environ * const pnewenv = penv->makeenv(newass = ass);
+    if (pnewenv)
+    {
+        (enviter->second = pnewenv)->pProb = this;
+    }
+    return pnewenv;
 }
 
 // Add a goal. Return its pointer.
