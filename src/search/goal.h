@@ -31,8 +31,11 @@ typedef std::map<Goal, Goaldata> Goals;
 // Pointer to a goal
 typedef Goals::pointer Goalptr;
 
+// Proof search context
+struct Environ;
+
 // Map: context -> evaluation
-typedef std::map<struct Environ const *, Goaldata> Goaldatas;
+typedef std::map<Environ const *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> Goals2;

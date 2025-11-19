@@ -25,7 +25,7 @@ inline Value score(Proofsize size) { return 1. / (size + 1); }
 // If so, record its proof and return true.
 bool proven(Goalptr p, Assertion const & ass);
 
-// Proof search environment
+// Proof search context
 struct Environ : protected Gen
 {
     Environ(Assertion const & ass, Database const & db,
