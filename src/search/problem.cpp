@@ -71,31 +71,31 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Add a environment for the game.
+// Add a context for the game.
 Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
-    // Name of environment
+    // Name of context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
-    // Try add the environment.
+    // Try add the context.
     std::pair<Environs::iterator, bool> const result
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
-    // If it already exists, set the game's environment pointer.
+    // Iterator to the context
+    Environs::iterator const newenviter = result.first;
+    // If it already exists, set the game's context pointer.
     if (!result.second)
-        return result.first->second;
-    // Iterator to the environment
-    Environs::iterator const enviter = result.first;
-    // Add the simplified assertion.
-    Assertion & newass = assertions[enviter->first];
+        return newenviter->second;
+    // If it does not exist, add the simplified assertion.
+    Assertion & newass = assertions[newenviter->first];
     if (unexpected(!newass.expression.empty(), "Duplicate label", label))
         return NULL;
     Assertion const & ass = penv->makeass(hypstotrim);
     if (ass.expression.empty())
         return NULL;
-    // Add the new environment.
+    // Add the new context.
     Environ * const pnewenv = penv->makeenv(newass = ass);
     if (pnewenv)
     {
-        (enviter->second = pnewenv)->pProb = this;
+        (newenviter->second = pnewenv)->pProb = this;
     }
     return pnewenv;
 }
