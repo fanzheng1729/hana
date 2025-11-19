@@ -43,10 +43,12 @@ public:
         if (assertion.expression.empty()) return;
         // Add the root environment.
         Environ * const penv = new Env(env);
-        (environs[assertion.hypslabel()] = penv)->pProb = this;
+        penv->pProb = this;
+        strview label = environs.insert
+        (std::make_pair(assertion.hypslabel().c_str(), penv)).first->first;
         // Add the goal.
-        Goalptr const pgoal = penv
-        ->addgoal(assertion.expRPN, assertion.expression[0], GOALOPEN);
+        strview type = assertion.expression[0];
+        Goalptr pgoal = penv->addgoal(assertion.expRPN, type, GOALOPEN);
         // Fix the root node.
         const_cast<Game &>(root()->game()) = Game(pgoal, penv);
         addnodeptr(root());
