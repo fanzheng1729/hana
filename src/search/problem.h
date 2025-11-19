@@ -1,6 +1,7 @@
 #ifndef PROBLEM_H_INCLUDED
 #define PROBLEM_H_INCLUDED
 
+#include "../DAG.h"
 #include "environ.h"
 #include "goaldata.h"
 #include "../util/for.h"
@@ -24,8 +25,8 @@ class Problem : public MCTS<Game>
     Assertions assertions;
     // Map: name -> polymorphic contexts
     typedef std::map<std::string, Environ *> Environs;
-    // Polymorphic contexts
-    Environs environs;
+    // DAG of polymorphic contexts
+    DAG<Environs> environs;
     // Map: goal -> context -> evaluation
     Goals2 goals;
 public:
