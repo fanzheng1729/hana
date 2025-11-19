@@ -79,10 +79,10 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     // Name of new context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the context.
-    std::pair<Environs::iterator, bool> const result
+    std::pair<Environs::iterator, bool> result
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
     // Iterator to the new context
-    Environs::iterator const newenviter = result.first;
+    Environs::iterator newenviter = result.first;
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;
