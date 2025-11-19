@@ -79,7 +79,7 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     // Try add the context.
     std::pair<Environs::iterator, bool> const result
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
-    // Iterator to the context
+    // Iterator to the new context
     Environs::iterator const newenviter = result.first;
     // If it already exists, set the game's context pointer.
     if (!result.second)
