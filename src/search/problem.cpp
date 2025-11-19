@@ -74,7 +74,9 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 // Add a context for the game.
 Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
-    // Name of context
+    // Iterator to the old context
+    Environs::const_iterator enviter = environs.find(penv->label);
+    // Name of new context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result
