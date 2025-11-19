@@ -139,7 +139,7 @@ Eval Environ::evalourleaf(Game const & game) const
 {
     if (game.ndefer == 0 && !game.goaldata().hypstotrim.empty())
     if (Environ * const pnewenv =
-        pProb->addenv(game.penv, game.goaldata().hypstotrim))
+        pProb->addenv(&game.env(), game.goaldata().hypstotrim))
         const_cast<Game &>(game).penv = pnewenv;
     return score(game.env().hypslen + game.goal().size() + game.ndefer);
 }

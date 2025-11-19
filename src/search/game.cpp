@@ -89,7 +89,7 @@ bool Game::writeproof() const
     if (attempt.type == Move::NONE || proven())
         return false;
     // attempt.type == Move::THM, goal not proven
-    if (!penv->checkdisjvars(attempt))
+    if (!env().checkdisjvars(attempt))
         return false;
 // std::cout << "Writing proof: " << goal().expression();
     // Pointers to proofs of hypotheses
