@@ -96,6 +96,7 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     if (pnewenv)
     {
         (newenviter->second = pnewenv)->pProb = this;
+        pnewenv->label = newenviter->first;
     }
     return pnewenv;
 }
