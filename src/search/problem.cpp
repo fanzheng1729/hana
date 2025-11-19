@@ -71,11 +71,17 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
+static void printenvDAGerr(const char * env1, const char * env2)
+{
+    std::cerr << "Loop detected when linking context\n" << env1;
+    std::cerr << "\nto context\n" << env2 << std::endl;
+}
+
 // Add a context for the game.
 Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
     // Iterator to the old context
-    Environs::const_iterator enviter = environs.find(penv->label);
+    Environs::iterator enviter = environs.find(penv->label);
     // Name of new context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the context.
@@ -83,6 +89,9 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
     // Iterator to the new context
     Environs::iterator newenviter = result.first;
+    if (!environs.linked(enviter, newenviter) &&
+        !environs.link(enviter, newenviter))
+        printenvDAGerr(enviter->first.c_str(), newenviter->first.c_str());
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;

@@ -11,15 +11,19 @@
 template<class Carrier>
 struct DAG : Carrier
 {
-    typedef typename Carrier::value_type value_type;
-    struct iterator : Carrier::iterator
+    typedef typename Carrier::const_iterator    const_iterator;
+    typedef typename Carrier::iterator          iterator;
+    typedef typename Carrier::value_type        value_type;
+    typedef std::vector<const_iterator> iterators;
+    typedef std::pair<const_iterator, const_iterator> Edge;
+    struct Edgecomp
     {
-        iterator(typename Carrier::iterator it) : Carrier::iterator(it) {}
-        friend bool operator<(iterator it1, iterator it2) { return *it1<*it2; }
+        bool operator()(Edge x, Edge y) const
+        {
+            return *x.first < *y.first || *x.first == *y.first && *x.second < *y.second;
+        }
     };
-    typedef std::vector<iterator> iterators;
-    typedef std::pair<iterator, iterator> Edge;
-    typedef std::set<Edge> Edges;
+    typedef std::set<Edge, Edgecomp> Edges;
     void clear()
     {
         Carrier::clear();
@@ -34,8 +38,8 @@ struct DAG : Carrier
             toporder.push_back(result.first);
         return result;
     }
-    // Add an edge. Returns if edge is added.
-    bool link(iterator from, iterator to)
+    // Add an edge. Returns true if edge is added.
+    bool link(const_iterator from, const_iterator to)
     {
         if (from == to || linked(from, to) || reachable(to, from))
             return false; // Self loop or cycle not allowed
@@ -50,24 +54,24 @@ struct DAG : Carrier
         return true;
     }
     // Return true if an edge exists.
-    bool linked(iterator from, iterator to) const
+    bool linked(const_iterator from, const_iterator to) const
     {
         return edges.count(Edge(from, to));
     }
     // Return true if a node reaches the other.
-    bool reachable(iterator from, iterator to) const
+    bool reachable(const_iterator from, const_iterator to) const
     {
         return reaches.count(Edge(from, to));
     }
     // Return the set of nodes reachable to a node.
-    iterators reachesfrom(iterator to) const
+    iterators reachesfrom(const_iterator to) const
     {
         Edge minedge(to, this->begin());
         Edge maxedge(to, --this->end());
         typename Edges::iterator begin
-            (std::lower_bound(rreaches.begin(), rreaches.end(), minedge));
+            = std::lower_bound(rreaches.begin(), rreaches.end(), minedge, Edgecomp());
         typename Edges::iterator end
-            (std::upper_bound(rreaches.begin(), rreaches.end(), maxedge));
+            = std::upper_bound(rreaches.begin(), rreaches.end(), maxedge, Edgecomp());
 
         iterators result;
         // Preallocate for efficiency
@@ -77,14 +81,14 @@ struct DAG : Carrier
         return result;
     }
     // Return the set of nodes reachable from a node.
-    iterators reachesto(iterator from) const
+    iterators reachesto(const_iterator from) const
     {
         Edge minedge(from, this->begin());
         Edge maxedge(from, --this->end());
         typename Edges::iterator begin
-            (std::lower_bound(reaches.begin(), reaches.end(), minedge));
+            = std::lower_bound(reaches.begin(), reaches.end(), minedge, Edgecomp());
         typename Edges::iterator end
-            (std::upper_bound(reaches.begin(), reaches.end(), maxedge));
+            = std::upper_bound(reaches.begin(), reaches.end(), maxedge, Edgecomp());
 
         iterators result;
         // Preallocate for efficiency
@@ -99,7 +103,7 @@ private:
     typedef typename iterators::iterator orderiter;
     // Reorder two nodes in the topological order.
     // from and to are iterators to distinct elements in the set.
-    bool reorder(iterator from, iterator to)
+    bool reorder(const_iterator from, const_iterator to)
     {
         orderiter fromiter = std::find(toporder.begin(), toporder.end(), from);
         if (fromiter == toporder.end())
@@ -134,7 +138,7 @@ private:
         return true;
     }
     // Add reachability brought by the new edge.
-    void addreaches(iterator from, iterator to)
+    void addreaches(const_iterator from, const_iterator to)
     {
         if (reachable(from, to))
             return; // already reachable
@@ -143,8 +147,8 @@ private:
         src.push_back(from);
         iterators dst = reachesto(to);
         dst.push_back(to);
-        FOR (iterator iter, src)
-            FOR (iterator iter2, dst)
+        FOR (const_iterator iter, src)
+            FOR (const_iterator iter2, dst)
             {
                 reaches.insert(Edge(iter, iter2));
                 rreaches.insert(Edge(iter2, iter));
