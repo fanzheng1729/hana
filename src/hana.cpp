@@ -103,10 +103,10 @@ int main(int argc, char * argv[])
     if (!testpropsearch(database, maxsize, parameters))
         return EXIT_FAILURE;
 // Uncomment these lines if you want to output to a file.
-    // std::ofstream out("result2.txt");
-    // std::basic_streambuf<char> * sb(std::cout.rdbuf(out.rdbuf()));
-    // if (!testpropsearch(database, maxsize, parameters))
-    //     return EXIT_FAILURE;
-    // std::cout.rdbuf(sb);
+    // std::ofstream out("result.txt");
+    // std::streambuf * coutbuf = std::cout.rdbuf(out.rdbuf());
+    // bool const okay = testpropsearch(database, maxsize, parameters);
+    // std::cout.rdbuf(coutbuf);
+    // return okay ? EXIT_SUCCESS : EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
