@@ -82,6 +82,8 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
     // Iterator to the old context
     Environs::iterator enviter = environs.find(penv->label);
+    if (unexpected(enviter == environs.end(), "label", penv->label))
+        return NULL;
     // Name of new context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the context.
