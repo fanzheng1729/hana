@@ -44,8 +44,8 @@ public:
         // Add the root environment.
         Environ * const penv = new Env(env);
         penv->pProb = this;
-        Environs::const_iterator const enviter = environs.insert
-        (std::make_pair(assertion.hypslabel().c_str(), penv)).first;
+        penv->label = environs.insert
+        (std::make_pair(assertion.hypslabel().c_str(), penv)).first->first;
         // Add the goal.
         strview type = assertion.expression[0];
         Goalptr pgoal = penv->addgoal(assertion.expRPN, type, GOALOPEN);

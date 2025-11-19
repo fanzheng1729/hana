@@ -15,7 +15,7 @@ typedef std::vector<Move> Moves;
 // Game state in proof search tree
 struct Game;
 // Problem statement + Proof search tree with loop detection
-// + environment management + UI
+// + context management + UI
 class Problem;
 
 // Size-based score
@@ -51,12 +51,14 @@ struct Environ : protected Gen
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
-    // Allocate a new environment constructed from an assertion on the heap.
+    // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeenv(Assertion const &) const { return NULL; };
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeass(Bvector const &) const { return Assertion(); }
-    // Database to be used
+    // Label of the context
+    strview label;
+    // Database used
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
