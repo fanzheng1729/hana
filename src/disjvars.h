@@ -20,14 +20,14 @@ bool checkDV
      Varusage const * varusage, bool verbose = true);
 template<class It> bool checkDV
     (std::pair<It, It> exp1, std::pair<It, It> exp2, Disjvars const & DV,
-     Varusage const * varusage)
+     Varusage const & varusage)
 {
     Symbol3s set1, set2;
     std::remove_copy_if(exp1.first, exp1.second,
                         end_inserter(set1), util::not1(id));
     std::remove_copy_if(exp2.first, exp2.second,
                         end_inserter(set2), util::not1(id));
-    if (!checkDV(set1, set2, DV, varusage))
+    if (!checkDV(set1, set2, DV, &varusage))
     {
         Expression const expression1(exp1.first, exp1.second);
         Expression const expression2(exp2.first, exp2.second);

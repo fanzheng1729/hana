@@ -85,7 +85,7 @@ static bool checkDV
         Substitutions::value_type exp1(subst[vars.first]);
         Substitutions::value_type exp2(subst[vars.second]);
 
-        if (!checkDV(exp1, exp2, ass.disjvars, &ass.varusage))
+        if (!checkDV(exp1, exp2, ass.disjvars, ass.varusage))
         {
             printdisjvarserr(vars.first, Expression(exp1.first, exp1.second),
                              vars.second, Expression(exp2.first, exp2.second),
