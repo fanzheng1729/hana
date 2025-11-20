@@ -44,7 +44,11 @@ Game Game::play(Move const & move, bool ourturn) const
         game.ndefer = (move.type == Move::DEFER) * (ndefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
+    {
         game.pgoal = attempt.hypvec[move.index];
+        if (Environ * pnewenv = game.goaldata().pnewenv)
+            game.penv = pnewenv;
+    }
 
     return game;
 }

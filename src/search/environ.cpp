@@ -139,9 +139,6 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 // Evaluate leaf games, and record the proof if proven.
 Eval Environ::evalourleaf(Game const & game) const
 {
-    if (game.ndefer == 0)
-    if (game.goaldata().pnewenv)
-        const_cast<Game &>(game).penv = game.goaldata().pnewenv;
     return score(game.env().hypslen + game.goal().size() + game.ndefer);
 }
 
