@@ -56,7 +56,8 @@ bool Environ::checkDV(Move const & move) const
 // std::cout << "Checking DV of move " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
-// std::cout << "Checking " << vars.first << ' ' << vars.second << std::endl;
+// std::cout << vars.first << ":\t" << move.substitutions[vars.first];
+// std::cout << vars.second << ":\t" << move.substitutions[vars.second];
         Symbol3s const & set1(symbols(move.substitutions[vars.first]));
         Symbol3s const & set2(symbols(move.substitutions[vars.second]));
         if (!::checkDV(set1, set2, assertion.disjvars, &assertion.varusage, false))
