@@ -101,8 +101,9 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         // Simplify hypotheses needed.
         pgoal->second.hypstotrim = hypstotrim(pgoal);
-// std::cout << "added " << pgoal << " in " << this;
-// std::cout << ' ' << pgoal->first.RPN << pgoal->second.hypstotrim;
+        pgoal->second.pnewenv = pProb->addenv(this, pgoal->second.hypstotrim);
+// std::cout << pgoal->first.RPN << label << "\n->\n";
+// std::cout << pgoal->second.pnewenv ? pgoal->second.pnewenv->label : strview();
     }
 // std::cout << moves;
 
@@ -139,9 +140,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 // Evaluate leaf games, and record the proof if proven.
 Eval Environ::evalourleaf(Game const & game) const
 {
-    if (game.ndefer == 0 && !game.goaldata().hypstotrim.empty())
-    if (Environ * pnew = pProb->addenv(&game.env(), game.goaldata().hypstotrim))
-        const_cast<Game &>(game).penv = pnew;
+    if (game.ndefer == 0)
+    if (game.goaldata().pnewenv)
+        const_cast<Game &>(game).penv = game.goaldata().pnewenv;
     return score(game.env().hypslen + game.goal().size() + game.ndefer);
 }
 

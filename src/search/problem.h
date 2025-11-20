@@ -102,7 +102,8 @@ public:
     }
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
-    // Add a context for the game.
+    // Add a context for the game. Return pointer to the new context.
+    // Return NULL if not okay.
     Environ * addenv(Environ const * penv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goal2ptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);

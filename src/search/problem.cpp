@@ -77,9 +77,12 @@ static void printenvDAGerr(const char * env1, const char * env2)
     std::cerr << "\nto context\n" << env2 << std::endl;
 }
 
-// Add a context for the game.
+// Add a context for the game. Return pointer to the new context.
+// Return NULL if not okay.
 Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
+    if (hypstotrim.empty())
+        return NULL;
     // Iterator to the old context
     Environs::iterator enviter = environs.find(penv->label);
     if (unexpected(enviter == environs.end(), "label", penv->label))
