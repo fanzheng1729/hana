@@ -82,10 +82,6 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
         return NULL;
-    // Iterator to the old context
-    Environs::iterator enviter = environs.find(penv->label);
-    if (unexpected(enviter == environs.end(), "label", penv->label))
-        return NULL;
     // Name of new context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the context.
@@ -93,9 +89,9 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
     // Iterator to the new context
     Environs::iterator newenviter = result.first;
-    if (!environs.linked(enviter, newenviter) &&
-        !environs.link(enviter, newenviter))
-        printDAGcycle(enviter->first.c_str(), newenviter->first.c_str());
+    if (!environs.linked(penv->enviter, newenviter) &&
+        !environs.link(penv->enviter, newenviter))
+        printDAGcycle(penv->enviter->first.c_str(), newenviter->first.c_str());
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;
@@ -111,7 +107,7 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     if (pnewenv)
     {
         (newenviter->second = pnewenv)->pProb = this;
-        pnewenv->label = newenviter->first;
+        pnewenv->enviter = newenviter;
     }
     return pnewenv;
 }

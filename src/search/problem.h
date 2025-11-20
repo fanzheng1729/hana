@@ -39,15 +39,15 @@ public:
         MCTS(Game(), params)
     {
         if (assertion.expression.empty()) return;
-        // Add the root environment.
+        // Root environment
         Environ * const penv = new Env(env);
         penv->pProb = this;
-        penv->label = environs.insert
-        (std::make_pair(assertion.hypslabel().c_str(), penv)).first->first;
-        // Add the goal.
+        penv->enviter = environs.insert
+        (std::make_pair(assertion.hypslabel().c_str(), penv)).first;
+        // Root goal
         strview type = assertion.expression[0];
         Goalptr pgoal = penv->addgoal(assertion.expRPN, type, GOALOPEN);
-        // Fix the root node.
+        // Root node
         const_cast<Game &>(root()->game()) = Game(pgoal, penv);
         addnodeptr(root());
     }
