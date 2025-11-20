@@ -16,14 +16,14 @@ struct DAG : Carrier
     typedef typename Carrier::value_type        value_type;
     typedef std::vector<const_iterator> iterators;
     typedef std::pair<const_iterator, const_iterator> Edge;
-    struct Edgecomp
+    struct EdgeComp
     {
         bool operator()(Edge x, Edge y) const
         {
             return *x.first < *y.first || *x.first == *y.first && *x.second < *y.second;
         }
     };
-    typedef std::set<Edge, Edgecomp> Edges;
+    typedef std::set<Edge, EdgeComp> Edges;
     void clear()
     {
         Carrier::clear();
@@ -69,9 +69,9 @@ struct DAG : Carrier
         Edge minedge(to, this->begin());
         Edge maxedge(to, --this->end());
         typename Edges::iterator begin
-            = std::lower_bound(rreaches.begin(), rreaches.end(), minedge, Edgecomp());
+            = std::lower_bound(rreaches.begin(), rreaches.end(), minedge, EdgeComp());
         typename Edges::iterator end
-            = std::upper_bound(rreaches.begin(), rreaches.end(), maxedge, Edgecomp());
+            = std::upper_bound(rreaches.begin(), rreaches.end(), maxedge, EdgeComp());
 
         iterators result;
         // Preallocate for efficiency
@@ -86,9 +86,9 @@ struct DAG : Carrier
         Edge minedge(from, this->begin());
         Edge maxedge(from, --this->end());
         typename Edges::iterator begin
-            = std::lower_bound(reaches.begin(), reaches.end(), minedge, Edgecomp());
+            = std::lower_bound(reaches.begin(), reaches.end(), minedge, EdgeComp());
         typename Edges::iterator end
-            = std::upper_bound(reaches.begin(), reaches.end(), maxedge, Edgecomp());
+            = std::upper_bound(reaches.begin(), reaches.end(), maxedge, EdgeComp());
 
         iterators result;
         // Preallocate for efficiency
