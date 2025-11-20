@@ -21,7 +21,7 @@ bool checkDV
 template<class It>
 bool checkdisjvars
     (It begin1, It end1, It begin2, It end2, Disjvars const & DV,
-     Varusage const * varusage = NULL)
+     Varusage const * varusage)
 {
     Symbol3s set1, set2;
     std::remove_copy_if(begin1, end1,
