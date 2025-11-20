@@ -61,7 +61,7 @@ bool Environ::checkDV(Move const & move) const
 // std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
         Symbol3s const & set1(symbols(RPN1));
         Symbol3s const & set2(symbols(RPN2));
-        if (!::checkDV(set1, set2, assertion.disjvars, &assertion.varusage, false))
+        if (!::checkDV(set1, set2, assertion.disjvars, assertion.varusage, false))
             return false;
     }
 

@@ -73,7 +73,7 @@ static bool operator<(Varusage::const_reference var1, Symbol3 var2)
 // Return true if non-dummy variables in two expressions are disjoint.
 bool checkDV
     (Symbol3s const & set1, Symbol3s const & set2, Disjvars const & DV,
-     Varusage const * varusage, bool verbose = true)
+     Varusage const & varusage, bool verbose = true)
 {
     // Check if two expressions share a common variable.
     if (!is_disjoint(set1.begin(), set1.end(), set2.begin(), set2.end()))
@@ -84,7 +84,5 @@ bool checkDV
     }
 
     // Check disjoint variable hypotheses on variables used in the statement.
-    return varusage ?
-            checkDV(set1 & *varusage, set2 & *varusage, DV, verbose) :
-            checkDV(set1, set2, DV, verbose);
+    return checkDV(set1 & varusage, set2 & varusage, DV, verbose);
 }
