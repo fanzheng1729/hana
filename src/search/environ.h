@@ -44,7 +44,7 @@ struct Environ : protected Gen
     // Return true if a goal is valid.
     virtual bool valid(Proofsteps const & goal) const { return !goal.empty(); }
     // Return true if a move satisfies disjoint variable hypotheses.
-    bool checkdisjvars(Move const & move) const;
+    bool checkDV(Move const & move) const;
     // Return true if all hypotheses of a move are valid.
     bool valid(Move const & move) const;
     // Moves generated at a given stage

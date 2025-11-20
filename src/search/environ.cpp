@@ -49,7 +49,7 @@ static Symbol3s symbols(Proofsteps const & RPN)
 }
 
 // Return true if a move satisfies disjoint variable hypotheses.
-bool Environ::checkdisjvars(Move const & move) const
+bool Environ::checkDV(Move const & move) const
 {
     if (!move.pthm)
         return false;
@@ -69,7 +69,7 @@ bool Environ::checkdisjvars(Move const & move) const
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
-    if (!checkdisjvars(move))
+    if (!checkDV(move))
         return false;
 
     // Vector of the hypotheses of the move.
@@ -150,7 +150,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
     if (move.closes())
     {
-        if (checkdisjvars(move))
+        if (checkDV(move))
             return moves.assign(1, move), true;
         else
             return false;
