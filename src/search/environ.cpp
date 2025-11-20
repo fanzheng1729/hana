@@ -100,8 +100,7 @@ bool Environ::valid(Move const & move) const
         if (status == GOALFALSE)
             return false; // Refuted
         // Simplify hypotheses needed.
-        pgoal->second.hypstotrim = hypstotrim(pgoal);
-        pgoal->second.pnewenv = pProb->addenv(this, pgoal->second.hypstotrim);
+        pgoal->second.pnewenv = pProb->addenv(this, hypstotrim(pgoal));
 // std::cout << pgoal->first.RPN << label << "\n->\n";
 // std::cout << pgoal->second.pnewenv ? pgoal->second.pnewenv->label : strview();
     }

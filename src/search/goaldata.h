@@ -30,8 +30,6 @@ struct Goaldata
     Nodeptrs nodeptrs;
     // Pointer to the different contexts where the goal is evaluated
     Goal2ptr goal2ptr;
-    // Unnecessary hypotheses of the goal
-    Bvector hypstotrim;
     // New context after trimming unnecessary hypotheses
     Environ * pnewenv;
     Goaldata(Goalstatus s) : status(s), goal2ptr(NULL), pnewenv(NULL) {}
