@@ -73,7 +73,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 
 static void printenvDAGerr(const char * env1, const char * env2)
 {
-    std::cerr << "Loop detected when linking context\n" << env1;
+    std::cerr << "cycle formed when linking context\n" << env1;
     std::cerr << "\nto context\n" << env2 << std::endl;
 }
 
