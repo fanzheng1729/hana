@@ -53,7 +53,7 @@ bool Environ::checkDV(Move const & move) const
 {
     if (!move.pthm)
         return false;
-// std::cout << "Checking DV " << move.label() << std::endl;
+// std::cout << "Checking DV of move " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
 // std::cout << "Checking " << vars.first << ' ' << vars.second << std::endl;
