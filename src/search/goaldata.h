@@ -15,7 +15,10 @@ typedef std::set<Nodeptr> Nodeptrs;
 
 struct Goalptrs : std::set<Goalptr>
 {
+    // Return true if all open children of p are present.
     bool haschildren(Nodeptr p) const;
+    // Return pointer to a new goal implied by the existing goals.
+    // Return NULL if there is no such goal.
     Goalptr saturate();
 };
 

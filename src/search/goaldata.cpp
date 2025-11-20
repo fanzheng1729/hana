@@ -1,6 +1,6 @@
 #include "goaldata.h"
 
-// Check if all p's open children are present.
+// Return true if all open children of p are present.
 bool Goalptrs::haschildren(Nodeptr p) const
 {
     FOR (Nodeptr const child, *p.children())
@@ -14,6 +14,8 @@ bool Goalptrs::haschildren(Nodeptr p) const
     return true;
 }
 
+// Return pointer to a new goal implied by the existing goals.
+// Return NULL if there is no such goal.
 Goalptr Goalptrs::saturate()
 {
     FOR (Goalptr const pgoal, *this)
