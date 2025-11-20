@@ -59,7 +59,7 @@ bool Environ::checkDV(Move const & move) const
 // std::cout << "Checking " << vars.first << ' ' << vars.second << std::endl;
         Symbol3s const & set1(symbols(move.substitutions[vars.first]));
         Symbol3s const & set2(symbols(move.substitutions[vars.second]));
-        if (!::checkdisjvars(set1, set2, assertion.disjvars, &assertion.varusage, false))
+        if (!::checkDV(set1, set2, assertion.disjvars, &assertion.varusage, false))
             return false;
     }
 

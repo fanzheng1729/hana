@@ -13,7 +13,7 @@ std::ostream & operator<<(std::ostream & out, Disjvars const & disjvars)
 }
 
 // Print disjoint variable hypothesis violation error.
-void printdisjvarserr(Expression const & exp1, Expression const & exp2)
+void printDVerr(Expression const & exp1, Expression const & exp2)
 {
     std::cerr << "Expression\n" << exp1 << "and ";
     std::cerr << "Expression\n" << exp2;
@@ -31,23 +31,23 @@ Disjvars operator &(Disjvars const & disjvars, Varusage const & varusage)
 }
 
 // Return true if two variables satisfy the disjoint variable hypothesis.
-static bool checkdisjvars
-    (strview var1, strview var2, Disjvars const & disjvars)
+static bool checkDV
+    (strview var1, strview var2, Disjvars const & DV)
 {
     if (var1 == var2) return false;
-    if (disjvars.count(std::make_pair(var1, var2)) > 0) return true;
-    if (disjvars.count(std::make_pair(var2, var1)) > 0) return true;
+    if (DV.count(std::make_pair(var1, var2)) > 0) return true;
+    if (DV.count(std::make_pair(var2, var1)) > 0) return true;
     return false;
 }
 
 // Return true if two sets satisfy the disjoint variable hypothesis.
-static bool checkdisjvars
+static bool checkDV
     (Symbol3s const & set1, Symbol3s const & set2,
-     Disjvars const & disjvars, bool verbose = true)
+     Disjvars const & DV, bool verbose = true)
 {
     FOR (Symbol3 var1, set1)
         FOR (Symbol3 var2, set2)
-            if (!checkdisjvars(var1, var2, disjvars))
+            if (!checkDV(var1, var2, DV))
             {
                 if (verbose)
                 {
@@ -71,10 +71,9 @@ static bool operator<(Varusage::const_reference var1, Symbol3 var2)
 }
 
 // Return true if non-dummy variables in two expressions are disjoint.
-bool checkdisjvars
-    (Symbol3s const & set1, Symbol3s const & set2,
-     Disjvars const & disjvars, Varusage const * varusage,
-     bool verbose = true)
+bool checkDV
+    (Symbol3s const & set1, Symbol3s const & set2, Disjvars const & DV,
+     Varusage const * varusage, bool verbose = true)
 {
     // Check if two expressions share a common variable.
     if (!is_disjoint(set1.begin(), set1.end(), set2.begin(), set2.end()))
@@ -85,7 +84,7 @@ bool checkdisjvars
     }
 
     // Check disjoint variable hypotheses on variables used in the statement.
-    return checkdisjvars(varusage ? set1 & *varusage : set1,
-                         varusage ? set2 & *varusage : set2,
-                         disjvars, verbose);
+    return varusage ?
+            checkDV(set1 & *varusage, set2 & *varusage, DV, verbose) :
+            checkDV(set1, set2, DV, verbose);
 }
