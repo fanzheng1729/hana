@@ -71,10 +71,9 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-static void printenvDAGerr(const char * env1, const char * env2)
+static void printDAGcycle(const char * env1, const char * env2)
 {
-    std::cerr << "cycle formed when linking context\n" << env1;
-    std::cerr << "\nto context\n" << env2 << std::endl;
+    std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
 }
 
 // Add a context for the game. Return pointer to the new context.
@@ -96,7 +95,7 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     Environs::iterator newenviter = result.first;
     if (!environs.linked(enviter, newenviter) &&
         !environs.link(enviter, newenviter))
-        printenvDAGerr(enviter->first.c_str(), newenviter->first.c_str());
+        printDAGcycle(enviter->first.c_str(), newenviter->first.c_str());
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;

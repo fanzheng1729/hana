@@ -102,7 +102,7 @@ bool Environ::valid(Move const & move) const
         // New context for the child
         pgoal->second.pnewenv = pProb->addenv(this, hypstotrim(pgoal));
 // std::cout << pgoal->first.RPN << label << "\n->\n";
-// std::cout << pgoal->second.pnewenv ? pgoal->second.pnewenv->label : strview();
+// std::cout << (pgoal->second.pnewenv ? pgoal->second.pnewenv->label : "");
     }
 // std::cout << moves;
 
