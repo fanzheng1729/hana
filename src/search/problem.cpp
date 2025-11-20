@@ -33,7 +33,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     if (game.attempt.type == Move::THM)
     {
         bool loops(Nodeptr p);
-        if (int i = loops(p))
+        if (loops(p))
             return EvalLOSS;
     }
 
