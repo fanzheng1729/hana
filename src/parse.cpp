@@ -64,7 +64,7 @@ static bool nextnewvar(Expiter & expbegin, Expiter expend,
 }
 
 // Return true if two substitution frames satisfy the disjoint variable hypothesis.
-static bool checkdisjvars
+static bool checkDV
     (Substframe const * pframe1, Substframe const * pframe2,
      Assertion const & ass)
 {
@@ -79,11 +79,10 @@ static bool checkdisjvars
 }
 
 // Return true if substitutions for disjoint vars2 satisfy disjoint vars1.
-static bool checkdisjvars
-    (Substack const & stack, Disjvars const & disjvars,
-     Assertion const & ass)
+static bool checkDV
+    (Substack const & stack, Disjvars const & DV, Assertion const & ass)
 {
-    FOR (Disjvars::const_reference vars, disjvars)
+    FOR (Disjvars::const_reference vars, DV)
     {
         Substframe const * pframe1 = findframe(vars.first, stack);
         if (!pframe1)
@@ -96,7 +95,7 @@ static bool checkdisjvars
         if (!*pframe2)
             return false; // bad frame
         // Now check the two substitutions for disjoint variable constraints.
-        if (!checkdisjvars(pframe1, pframe2, ass))
+        if (!checkDV(pframe1, pframe2, ass))
             return false;
     }
 
@@ -235,7 +234,7 @@ static bool nextsubframe
     if (!nextnewvar(iter1, expend, iter2, pattern.end(), stack))
     {
 //std::cout << "No more variable found" << std::endl;
-        if (iter2 == pattern.end() && checkdisjvars(stack, syntaxiom.disjvars, ass))
+        if (iter2 == pattern.end() && checkDV(stack, syntaxiom.disjvars, ass))
         {
             // exp contains the pattern.
             pProofs const & hyps = pproofsfromstack(syntaxiom, stack);
