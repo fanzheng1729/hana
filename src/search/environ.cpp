@@ -24,6 +24,35 @@ bool proven(Goalptr p, Assertion const & ass)
     return true;
 }
 
+static Symbol3s symbols(Proofsteps const & RPN)
+{
+    Symbol3s set;
+    std::transform(RPN.begin(), RPN.end(), end_inserter(set),
+                   util::mem_fn(&Proofstep::var));
+    set.erase(Symbol3());
+    return set;
+}
+
+// Return true if a move satisfies disjoint variable hypotheses.
+bool checkDV(Move const & move, Assertion const & ass)
+{
+    if (!move.pthm)
+        return false;
+// std::cout << "Checking DV of move " << move.label() << std::endl;
+    FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
+    {
+        const Proofsteps & RPN1 = move.substitutions[vars.first];
+        const Proofsteps & RPN2 = move.substitutions[vars.second];
+// std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
+        const Symbol3s & set1(symbols(RPN1));
+        const Symbol3s & set2(symbols(RPN2));
+        if (!::checkDV(set1, set2, ass.disjvars, ass.varusage, false))
+            return false;
+    }
+
+    return true;
+}
+
 // Add a goal. Return its pointer.
 Goalptr Environ::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
 {
@@ -39,39 +68,10 @@ Goals::size_type Environ::countgoal(int status) const
     return n;
 }
 
-static Symbol3s symbols(Proofsteps const & RPN)
-{
-    Symbol3s set;
-    std::transform(RPN.begin(), RPN.end(), end_inserter(set),
-                   util::mem_fn(&Proofstep::var));
-    set.erase(Symbol3());
-    return set;
-}
-
-// Return true if a move satisfies disjoint variable hypotheses.
-bool Environ::checkDV(Move const & move) const
-{
-    if (!move.pthm)
-        return false;
-// std::cout << "Checking DV of move " << move.label() << std::endl;
-    FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
-    {
-        const Proofsteps & RPN1 = move.substitutions[vars.first];
-        const Proofsteps & RPN2 = move.substitutions[vars.second];
-// std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
-        const Symbol3s & set1(symbols(RPN1));
-        const Symbol3s & set2(symbols(RPN2));
-        if (!::checkDV(set1, set2, assertion.disjvars, assertion.varusage, false))
-            return false;
-    }
-
-    return true;
-}
-
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
-    if (!checkDV(move))
+    if (!::checkDV(move, assertion))
         return false;
 
     // Vector of the hypotheses of the move.
@@ -142,7 +142,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
     if (move.closes())
     {
-        if (checkDV(move))
+        if (::checkDV(move, assertion))
             return moves.assign(1, move), true;
         else
             return false;

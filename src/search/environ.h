@@ -25,6 +25,9 @@ inline Value score(Proofsize size) { return 1. / (size + 1); }
 // If so, record its proof and return true.
 bool proven(Goalptr p, Assertion const & ass);
 
+// Return true if a move satisfies disjoint variable hypotheses.
+bool checkDV(Move const & move, Assertion const & ass);
+
 // Proof search context
 struct Environ : protected Gen
 {
@@ -43,8 +46,6 @@ struct Environ : protected Gen
     virtual Bvector hypstotrim(Goalptr p) const { return Bvector(0 && p); }
     // Return true if a goal is valid.
     virtual bool valid(Proofsteps const & goal) const { return !goal.empty(); }
-    // Return true if a move satisfies disjoint variable hypotheses.
-    bool checkDV(Move const & move) const;
     // Return true if all hypotheses of a move are valid.
     bool valid(Move const & move) const;
     // Moves generated at a given stage
