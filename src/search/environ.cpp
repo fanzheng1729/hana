@@ -140,9 +140,8 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 Eval Environ::evalourleaf(Game const & game) const
 {
     if (game.ndefer == 0 && !game.goaldata().hypstotrim.empty())
-    if (Environ * const pnewenv =
-        pProb->addenv(&game.env(), game.goaldata().hypstotrim))
-        const_cast<Game &>(game).penv = pnewenv;
+    if (Environ * pnew = pProb->addenv(&game.env(), game.goaldata().hypstotrim))
+        const_cast<Game &>(game).penv = pnew;
     return score(game.env().hypslen + game.goal().size() + game.ndefer);
 }
 
