@@ -68,10 +68,9 @@ static bool checkDV
     (Substframe const * pframe1, Substframe const * pframe2,
      Assertion const & ass)
 {
-    bool const okay
-    = checkdisjvars(pframe1->begin, pframe1->itersub->first,
-                    pframe2->begin, pframe2->itersub->first,
-                    ass.disjvars, &ass.varusage);
+    Subexp exp1(pframe1->begin, pframe1->itersub->first);
+    Subexp exp2(pframe2->begin, pframe2->itersub->first);
+    bool okay = checkDV(exp1, exp2, ass.disjvars, &ass.varusage);
     if (!okay)
         std::cerr << "in substitutions for " << pframe1->var
                   << " and " << pframe2->var << std::endl;
