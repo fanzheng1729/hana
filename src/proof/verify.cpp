@@ -68,11 +68,12 @@ void printunificationfailure
 
 static void printdisjvarserr
     (strview var1,Expression const & exp1,strview var2,Expression const & exp2,
-     Disjvars const & disjvars)
+     Disjvars const & DV)
 {
     std::cerr << "The substitutions\n" << var1 << ":\t" << exp1;
     std::cerr << var2 << ":\t" << exp2;
-    std::cerr << "violate disjoint variable hypothesis in:\n" << disjvars;
+    std::cerr << "violate disjoint variable hypothesis\n";
+    std::cerr << "Disjoint variable hypotheses of the assertion:\n" << DV;
 }
 
 // Check disjoint variable hypothesis in verifying an assertion reference.
