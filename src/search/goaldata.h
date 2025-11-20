@@ -34,8 +34,7 @@ struct Goaldata
     Bvector hypstotrim;
     // New context after trimming unnecessary hypotheses
     Environ * pnewenv;
-    Goaldata(Goalstatus s, Proofsteps const & steps = Proofsteps()) :
-        status(s), proof(steps) {}
+    Goaldata(Goalstatus s) : status(s) {}
     bool proven() const { return !proof.empty(); }
 };
 
