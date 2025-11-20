@@ -128,7 +128,7 @@ typedef Problem::Nodeptr Nodeptr;
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
-static Nodeptr loops(Goalptr pgoal, Nodeptr pnode)
+static Nodeptr cycles(Goalptr pgoal, Nodeptr pnode)
 {
     while (true)
     {
@@ -156,7 +156,7 @@ bool loops(Nodeptr p)
         Goalptr const pgoal = move.hypvec[i];
         if (pgoal->second.proven())
             continue;
-        if (loops(pgoal, p.parent()))
+        if (cycles(pgoal, p.parent()))
             return true;
         allgoals.insert(pgoal);
     }
