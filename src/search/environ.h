@@ -50,7 +50,10 @@ struct Environ : protected Gen
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Evaluate leaf games, and record the proof if proven.
-    virtual Eval evalourleaf(Game const & game) const;
+    virtual Eval evalourleaf(Game const & game) const
+    {
+        return score(game.env().hypslen + game.goal().size() + game.ndefer);
+    }
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeenv(Assertion const &) const { return NULL; };

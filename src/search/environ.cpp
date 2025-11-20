@@ -136,12 +136,6 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     return moves;
 }
 
-// Evaluate leaf games, and record the proof if proven.
-Eval Environ::evalourleaf(Game const & game) const
-{
-    return score(game.env().hypslen + game.goal().size() + game.ndefer);
-}
-
 // Add a move with only bound substitutions.
 // Return true if it has no essential hypotheses.
 bool Environ::addboundmove(Move const & move, Moves & moves) const
