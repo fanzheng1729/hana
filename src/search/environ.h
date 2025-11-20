@@ -26,7 +26,7 @@ inline Value score(Proofsize size) { return 1. / (size + 1); }
 bool proven(Goalptr p, Assertion const & ass);
 
 // Return true if a move satisfies disjoint variable hypotheses.
-bool checkDV(Move const & move, Assertion const & ass);
+bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
 
 // Proof search context
 struct Environ : protected Gen
