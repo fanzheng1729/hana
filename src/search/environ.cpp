@@ -56,8 +56,8 @@ bool Environ::checkDV(Move const & move) const
 // std::cout << "Checking DV of move " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
     {
-        const Proofsteps & RPN1(move.substitutions[vars.first]);
-        const Proofsteps & RPN2(move.substitutions[vars.second]);
+        const Proofsteps & RPN1 = move.substitutions[vars.first];
+        const Proofsteps & RPN2 = move.substitutions[vars.second];
 // std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
         const Symbol3s & set1(symbols(RPN1));
         const Symbol3s & set2(symbols(RPN2));
