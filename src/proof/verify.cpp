@@ -60,28 +60,26 @@ void printunificationfailure
     (strview label, strview thmlabel, Hypothesis const & hyp,
      Expression const & dest, Expression const & stackitem)
 {
-    std::cout << "In step " << thmlabel; printinproofof(label);
-    std::cout << (hyp.floats ? "floating" : "essential") << " hypothesis ";
-    std::cout << hyp.expression << "expanded to\n" << dest;
-    std::cout << "does not match stack item\n" << stackitem;
+    std::cerr << "In step " << thmlabel; printinproofof(label);
+    std::cerr << (hyp.floats ? "floating" : "essential") << " hypothesis ";
+    std::cerr << hyp.expression << "expanded to\n" << dest;
+    std::cerr << "does not match stack item\n" << stackitem;
 }
 
 static void printdisjvarserr
     (strview var1,Expression const & exp1,strview var2,Expression const & exp2,
      Disjvars const & disjvars)
 {
-    std::cerr << "The substitutions\n" << var1 << ":\t" << exp1
-              << var2 << ":\t" << exp2
-              << "violate disjoint variable hypothesis.\n"
-              << "The theorem's disjoint variable hypotheses:\n" << disjvars;
+    std::cerr << "The substitutions\n" << var1 << ":\t" << exp1;
+    std::cerr << var2 << ":\t" << exp2;
+    std::cerr << "violate disjoint variable hypothesis in:\n" << disjvars;
 }
 
 // Check disjoint variable hypothesis in verifying an assertion reference.
-static bool checkdisjvars
-    (Substitutions const & subst, Disjvars const & assdisjvars,
-     Assertion const & ass)
+static bool checkDV
+    (Substitutions const & subst, Disjvars const & thmDV, Assertion const & ass)
 {
-    FOR (Disjvars::const_reference vars, assdisjvars)
+    FOR (Disjvars::const_reference vars, thmDV)
     {
         Substitutions::value_type exp1(subst[vars.first]);
         Substitutions::value_type exp2(subst[vars.second]);
@@ -118,7 +116,7 @@ static bool verifystep
 
     // Verify disjoint variable conditions.
     if (pass)
-        if (!checkdisjvars(substitutions, thm.disjvars, pass->second))
+        if (!checkDV(substitutions, thm.disjvars, pass->second))
         {
             std::cerr << "In step " << pthm->first;
             return printinproofof(label);
