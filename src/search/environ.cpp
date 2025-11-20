@@ -46,7 +46,7 @@ bool checkDV(Move const & move, Assertion const & ass)
 // std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
         const Symbol3s & set1(symbols(RPN1));
         const Symbol3s & set2(symbols(RPN2));
-        if (!::checkDV(set1, set2, ass.disjvars, ass.varusage, false))
+        if (!checkDV(set1, set2, ass.disjvars, ass.varusage, false))
             return false;
     }
 
@@ -71,7 +71,7 @@ Goals::size_type Environ::countgoal(int status) const
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
-    if (!::checkDV(move, assertion))
+    if (!checkDV(move, assertion))
         return false;
 
     // Vector of the hypotheses of the move.
@@ -142,7 +142,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
     if (move.closes())
     {
-        if (::checkDV(move, assertion))
+        if (checkDV(move, assertion))
             return moves.assign(1, move), true;
         else
             return false;
