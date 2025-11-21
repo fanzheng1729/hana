@@ -13,12 +13,9 @@ bool Prop::valid(Proofsteps const & goal) const
 {
     CNFClauses cnf(hypscnf.first);
     Atom natom = hypatomcount;
-    if (!database.propctors().addclause(goal, assertion.hypiters, cnf, natom))
-    {
-        std::cerr << "CNF validation failure with vars " << m_varusage;
+    if (unexpected(!database.propctors().addclause(goal, assertion.hypiters, cnf, natom),
+        "Bad CNF in context", label()))
         return false;
-    }
-
     cnf.closeoff((natom - 1) * 2 + 1);
     return !cnf.sat();
 }
