@@ -62,10 +62,9 @@ public:
     // p should != NULL.
     virtual Eval evalparent(Nodeptr p) const
     {
-        Value const value = minimax(p);
-        bool const stuck = (staged & STAGED) && isourturn(p)
-                            && value == WDL::LOSS;
-        return stuck ? p->eval() : value;
+        Value const v = minimax(p);
+        bool const stuck = (staged & STAGED) && isourturn(p) && v == WDL::LOSS;
+        return stuck ? p->eval() : v;
     }
     // Close all the nodes with p's proven goal.
     void closenodes(Nodeptr p)
