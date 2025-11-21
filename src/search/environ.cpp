@@ -67,6 +67,14 @@ Goals::size_type Environ::countgoal(int status) const
         n += (goal.second.status == status);
     return n;
 }
+// # proven goals
+Goals::size_type Environ::countproof() const
+{
+    Goals::size_type n = 0;
+    FOR (Goals::const_reference goal, goals)
+        n += goal.second.proven();
+    return n;
+}
 
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
@@ -288,7 +296,7 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
     // Move with all bound substitutions
     Move move(&*iter, stepranges);
     if (size > 0)
-        return thm.nfreevar() > 0 && addhardmoves(&*iter, size, move, moves);
+        return thm.nfreevar() > 0 && addhardmoves(move.pthm, size, move, moves);
     else if (thm.nfreevar() > 0)
         return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
     else

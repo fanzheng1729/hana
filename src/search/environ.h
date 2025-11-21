@@ -42,6 +42,8 @@ struct Environ : protected Gen
     Goalptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
     // # goals of a given status
     Goals::size_type countgoal(int status) const;
+    // # proven goals
+    Goals::size_type countproof() const;
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.

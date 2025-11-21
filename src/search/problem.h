@@ -98,6 +98,14 @@ public:
             n += subenv.second->countgoal(status);
         return n;
     }
+    // # proven goals
+    Goals::size_type countproof() const
+    {
+        Goals::size_type n = 0;
+        FOR (Environs::const_reference subenv, environs)
+            n += subenv.second->countproof();
+        return n;
+    }
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a context for the game. Return pointer to the new context.
