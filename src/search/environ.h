@@ -50,18 +50,14 @@ struct Environ : protected Gen
     virtual Bvector hypstotrim(Goalptr p) const { return Bvector(0 && p); }
     // Determine status of a goal.
     virtual Goalstatus valid(Proofsteps const & goal) const
-    {
-        return goal.empty() ? GOALFALSE : GOALOPEN;
-    }
+    { return goal.empty() ? GOALFALSE : GOALOPEN; }
     // Return true if all hypotheses of a move are valid.
     bool valid(Move const & move) const;
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
-    {
-        return score(game.env().hypslen + game.goal().size() + game.ndefer);
-    }
+    { return score(game.env().hypslen + game.goal().size() + game.ndefer); }
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeenv(Assertion const &) const { return NULL; };
