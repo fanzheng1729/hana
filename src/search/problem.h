@@ -82,10 +82,9 @@ public:
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
-        Game const & game = p->game();
-        if (game.proven())
+        if (p->game().proven())
             seteval(p, EvalWIN); // Fix seteval in backprop.
-        else if (value(p) == WDL::WIN && game.writeproof())
+        else if (value(p) == WDL::WIN && p->game().writeproof())
             closenodes(p);
     }
     // Proof of the assertion, if not empty
