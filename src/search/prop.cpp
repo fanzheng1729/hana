@@ -60,13 +60,10 @@ Bvector Prop::hypstotrim(Goalptr pgoal) const
         ntotrim += result[i] = !cnf2.sat();
     }
 
-    if (ntotrim > 0)
-    {
-        assertion.trimvars(result, pgoal->first.RPN);
-        return result;
-    }
-    else
+    if (ntotrim == 0)
         return Bvector();
+    assertion.trimvars(result, pgoal->first.RPN);
+    return result;
 }
 
 // Return the simplified assertion for the goal of the game to hold.
