@@ -22,8 +22,8 @@ struct Prop : Environ
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.type & Asstype::PROPOSITIONAL; }
-    // Return true if a goal is valid.
-    virtual bool valid(Proofsteps const & goal) const;
+    // Determine status of a goal.
+    virtual Goalstatus valid(Proofsteps const & goal) const;
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goalptr pgoal) const;
     // Allocate a new environment constructed from an assertion on the heap.

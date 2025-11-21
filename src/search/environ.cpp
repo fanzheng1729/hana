@@ -104,8 +104,7 @@ bool Environ::valid(Move const & move) const
         if (proven(pgoal, assertion) || status >= GOALOPEN)
             continue; // Valid
         // New goal (status == GOALNEW)
-        status = valid(pgoal->first.RPN) ? GOALOPEN : GOALFALSE;
-        if (status == GOALFALSE)
+        if ((status = valid(pgoal->first.RPN)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
         pgoal->second.pnewenv = pProb->addenv(this, hypstotrim(pgoal));

@@ -48,8 +48,11 @@ struct Environ : protected Gen
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
     virtual Bvector hypstotrim(Goalptr p) const { return Bvector(0 && p); }
-    // Return true if a goal is valid.
-    virtual bool valid(Proofsteps const & goal) const { return !goal.empty(); }
+    // Determine status of a goal.
+    virtual Goalstatus valid(Proofsteps const & goal) const
+    {
+        return goal.empty() ? GOALFALSE : GOALOPEN;
+    }
     // Return true if all hypotheses of a move are valid.
     bool valid(Move const & move) const;
     // Moves generated at a given stage

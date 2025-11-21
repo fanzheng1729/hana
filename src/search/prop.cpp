@@ -8,18 +8,20 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
-// Return true if a goal is valid.
-bool Prop::valid(Proofsteps const & goal) const
+// Determine status of a goal.
+Goalstatus Prop::valid(Proofsteps const & goal) const
 {
     CNFClauses cnf(hypscnf.first);
     Atom natom = hypatomcount;
+    // Add hypotheses.
     if (!database.propctors().addclause(goal, assertion.hypiters, cnf, natom))
     {
         std::cerr << "Bad CNF from\n" << goal << "in " << label() << std::endl;
-        return false;
+        return GOALFALSE;
     }
+    // Negate conclusion.
     cnf.closeoff((natom - 1) * 2 + 1);
-    return !cnf.sat();
+    return cnf.sat() ? GOALFALSE : GOALTRUE;
 }
 
 // Return the hypotheses of a goal to trim.
