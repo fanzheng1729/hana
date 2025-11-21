@@ -6,7 +6,7 @@
 #include "../types.h"
 
 // Proof status of a goal
-enum Goalstatus {GOALOPEN = 0, GOALFALSE = -1, GOALNEW = -2};
+enum Goalstatus {GOALNEW = -2, GOALFALSE, GOALOPEN, GOALTRUE};
 
 // Pointer to node in proof search tree
 typedef MCTS<Game>::Nodeptr Nodeptr;
