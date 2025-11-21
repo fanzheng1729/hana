@@ -374,8 +374,9 @@ void Problem::checkmainline(Nodeptr p) const
 // Format: n nodes, x V, y ?, z X in m contests
 void Problem::printstats() const
 {
-    static const char * const s[] = {" V, ", " ?, ", " X in "};
     std::cout << playcount() << " plays, " << size() << " nodes, ";
+    std::cout << countproof() << '/';
+    static const char * const s[] = {" V, ", " ?, ", " X in "};
     for (int i = WDL::WIN; i >= WDL::LOSS; --i)
         std::cout << countgoal(i) << s[WDL::WIN - i];
     std::cout << countenvs() << " contexts " << std::endl;
