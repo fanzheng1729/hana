@@ -118,7 +118,11 @@ public:
         { printmainline(root(), detail); }
     virtual void checkmainline(Nodeptr p) const;
     void printstats() const;
-    void printenvs() const;
+    void printenvs() const
+    {
+        FOR (Environs::const_reference env, environs)
+            env.second->printstats();
+    }
     void navigate(bool detailed = true) const;
     void writeproof(const char * const filename) const;
     virtual ~Problem()

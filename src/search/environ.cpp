@@ -60,6 +60,7 @@ Goalptr Environ::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
     Goalview goal(RPN, typecode);
     return &*goals.insert(std::make_pair(goal, s)).first;
 }
+
 // # goals of a given status
 Goals::size_type Environ::countgoal(int status) const
 {
@@ -69,6 +70,7 @@ Goals::size_type Environ::countgoal(int status) const
 // std::cout << label() << " has status " << status << ' ' << n << std::endl;
     return n;
 }
+
 // # proven goals
 Goals::size_type Environ::countproof() const
 {
@@ -78,6 +80,7 @@ Goals::size_type Environ::countproof() const
 // std::cout << label() << " has proof " << n << std::endl;
     return n;
 }
+
 // Printing utilities
 static const char * const s[] = {"true", "open", "false", "new"};
 void Environ::printgoal() const
@@ -94,6 +97,14 @@ void Environ::printgoal(int status) const
     FOR (Goals::const_reference goal, goals)
         if (goal.second.status == status)
             std::cout << goal.first.expression();
+}
+void Environ::printstats() const
+{
+    std::cout << countproof() << '/';
+    static const char * const s[] = {" V, ", " ?, ", " X in "};
+    for (int i = GOALTRUE; i >= GOALFALSE; --i)
+        std::cout << countgoal(i) << s[GOALTRUE - i];
+    std::cout << label() << std::endl;
 }
 
 // Return true if all hypotheses of a move are valid.

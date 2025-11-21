@@ -371,23 +371,16 @@ void Problem::checkmainline(Nodeptr p) const
     }
 }
 
-// Format: n nodes, x V, y ?, z X in m contests
+// Format: n nodes, x V, y ?, z X in m contexts
 void Problem::printstats() const
 {
     std::cout << playcount() << " plays, " << size() << " nodes, ";
     std::cout << countproof() << '/';
     static const char * const s[] = {" V, ", " ?, ", " X in "};
-    for (int i = WDL::WIN; i >= WDL::LOSS; --i)
-        std::cout << countgoal(i) << s[WDL::WIN - i];
+    for (int i = GOALTRUE; i >= GOALFALSE; --i)
+        std::cout << countgoal(i) << s[GOALTRUE - i];
     std::cout << countenvs() << " contexts " << std::endl;
     unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
-}
-
-// One context a line
-void Problem::printenvs() const
-{
-    FOR (Environs::const_reference env, environs)
-        std::cout << env.first << std::endl;
 }
 
 // Move up to the parent. Return true if successful.
