@@ -112,11 +112,8 @@ bool Environ::valid(Move const & move) const
 {
     if (!checkDV(move, assertion))
         return false;
-
-    // Vector of the hypotheses of the move.
-    std::vector<Goalptr> & hypvec = const_cast<Move &>(move).hypvec;
     // Record the hypotheses.
-    hypvec.resize(move.hypcount());
+    move.hypvec.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
         if (move.hypfloats(i))
@@ -130,7 +127,7 @@ bool Environ::valid(Move const & move) const
         if (status == GOALFALSE)
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
-        hypvec[i] = pgoal;
+        move.hypvec[i] = pgoal;
         // Check if the goal has been validated.
         if (proven(pgoal, assertion) || status >= GOALOPEN)
             continue; // Valid
