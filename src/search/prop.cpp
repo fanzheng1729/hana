@@ -135,10 +135,10 @@ bool Prop::addhardmoves
 static Problem::size_type testpropsearch
     (Assiter iter, Problem & tree, Problem::size_type maxsize)
 {
-    printass(*iter);
+    // printass(*iter);
     tree.play(maxsize);
-    tree.printstats();
-    std::cin.get();
+    // tree.printstats();
+    // std::cin.get();
     // if (iter->first == "biass")
         // tree.navigate();
     if (tree.size() > maxsize)

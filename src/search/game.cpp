@@ -109,9 +109,11 @@ bool Game::writeproof() const
     if (!::writeproof(proof(), attempt.pthm, hyps))
         return false;
     // Verification
-    Expression const & exp(verify(proof()));
-    bool const okay = exp == goal().expression();
-    if (!okay)
+    const Expression & exp(verify(proof()));
+    const bool okay = (exp == goal().expression());
+    if (okay)
+        pgoal->second.status = GOALTRUE;
+    else
     {
         std::cerr << "In attempt to use " << attempt << ", the proof\n";
         std::cerr << proof() << "proves\n" << exp;

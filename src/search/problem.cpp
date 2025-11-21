@@ -380,6 +380,7 @@ void Problem::printstats() const
     for (int i = WDL::WIN; i >= WDL::LOSS; --i)
         std::cout << countgoal(i) << s[WDL::WIN - i];
     std::cout << countenvs() << " contexts " << std::endl;
+    unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 
 // One context a line

@@ -21,6 +21,7 @@ bool proven(Goalptr p, Assertion const & ass)
         return false; // Hypotheses not matched
     // 1-step proof using the matched hypothesis
     p->second.proof.assign(1, ass.hypiters[i]);
+    p->second.status = GOALTRUE;
     return true;
 }
 
@@ -65,6 +66,7 @@ Goals::size_type Environ::countgoal(int status) const
     Goals::size_type n = 0;
     FOR (Goals::const_reference goal, goals)
         n += (goal.second.status == status);
+// std::cout << label() << " has status " << status << ' ' << n << std::endl;
     return n;
 }
 // # proven goals
@@ -73,7 +75,25 @@ Goals::size_type Environ::countproof() const
     Goals::size_type n = 0;
     FOR (Goals::const_reference goal, goals)
         n += goal.second.proven();
+// std::cout << label() << " has proof " << n << std::endl;
     return n;
+}
+// Printing utilities
+static const char * const s[] = {"true", "open", "false", "new"};
+void Environ::printgoal() const
+{
+    std::cout << "Goals in " << label() << std::endl;
+    FOR (Goals::const_reference goal, goals)
+        std::cout << s[GOALTRUE - goal.second.status] << '\t',
+        std::cout << goal.first.expression();
+}
+void Environ::printgoal(int status) const
+{
+    std::cout << "Goals with status " << s[GOALTRUE - status];
+    std::cout << " in " << label() << std::endl;
+    FOR (Goals::const_reference goal, goals)
+        if (goal.second.status == status)
+            std::cout << goal.first.expression();
 }
 
 // Return true if all hypotheses of a move are valid.
