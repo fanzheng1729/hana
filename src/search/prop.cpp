@@ -15,7 +15,7 @@ bool Prop::valid(Proofsteps const & goal) const
     Atom natom = hypatomcount;
     if (!database.propctors().addclause(goal, assertion.hypiters, cnf, natom))
     {
-        std::cerr << "Bad CNF from\n" << goal << "in context " << label();
+        std::cerr << "Bad CNF from\n" << goal << "in " << label() << std::endl;
         return false;
     }
     cnf.closeoff((natom - 1) * 2 + 1);
