@@ -69,6 +69,8 @@ protected:
     static void setwin (Nodeptr p) { if (p) p->seteval(EvalWIN); }
     static void setdraw(Nodeptr p) { if (p) p->seteval(EvalDRAW); }
     static void setloss(Nodeptr p) { if (p) p->seteval(EvalLOSS); }
+    static void setalmostwin (Nodeptr p) { if (p) p->seteval(ALMOSTWIN); }
+    static void setalmostloss(Nodeptr p) { if (p) p->seteval(ALMOSTLOSS); }
 public:
     static bool isourturn(Nodeptr p) { return p->isourturn();}
     // Return true if value of x < value of y.

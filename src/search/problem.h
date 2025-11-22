@@ -6,9 +6,6 @@
 #include "goaldata.h"
 #include "../util/for.h"
 
-static const Value ALMOSTWIN = WDL::WIN - std::numeric_limits<Value>::epsilon();
-static const Value ALMOSTLOSS = -ALMOSTWIN;
-
 // Add node pointer to p's goal data.
 inline void addnodeptr(Nodeptr p)
 {

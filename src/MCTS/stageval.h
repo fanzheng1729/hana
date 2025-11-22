@@ -10,6 +10,10 @@ typedef double Value;
 
 // Predefined game values
 enum    WDL { LOSS = -1, DRAW = 0, WIN = 1 };
+static  const Value ALMOSTWIN = WDL::WIN - std::numeric_limits<Value>::epsilon();
+static  const Value ALMOSTLOSS = -ALMOSTWIN;
+
+// Return true if the game ends with value v.
 inline  bool issure(Value v)
     { return v == WDL::WIN || v == WDL::LOSS; }
 
