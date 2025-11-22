@@ -72,7 +72,7 @@ public:
         FOR (Nodeptr other, p->game().goaldata().nodeptrs)
             if (other != p && !other->won())
             {
-                seteval(other, EvalWIN);
+                setwin(other);
                 Nodeptr parent = other.parent();
                 if (parent && !parent->won())
                     backprop(parent);
@@ -82,7 +82,7 @@ public:
     virtual void backpropcallback(Nodeptr p)
     {
         if (p->game().proven())
-            seteval(p, EvalWIN); // Fix seteval in backprop.
+            setwin(p); // Fix seteval in backprop.
         else if (p->won() && p->game().writeproof())
             closenodes(p);
     }

@@ -66,6 +66,9 @@ public:
     Value value() const { return value(root()); }
 protected:
     static void seteval(Nodeptr p, Eval eval) { if (p) p->seteval(eval); }
+    static void setwin (Nodeptr p) { if (p) p->seteval(EvalWIN); }
+    static void setdraw(Nodeptr p) { if (p) p->seteval(EvalDRAW); }
+    static void setloss(Nodeptr p) { if (p) p->seteval(EvalLOSS); }
 public:
     static bool isourturn(Nodeptr p) { return p->isourturn();}
     // Return true if value of x < value of y.
@@ -172,7 +175,7 @@ public:
             if (!child.children()->empty())
                 continue; // child not a leaf
             Eval const eval = evalleaf(child);
-            seteval(child, eval);
+            child->seteval(eval);
             if (isourturn(p) && eval == EvalWIN)
                 break;
             if (!isourturn(p) && eval == EvalLOSS)
@@ -194,7 +197,7 @@ public:
         for ( ; p; p = p.parent())
         {
 // std::cout << "Back prop to " << *p;
-            seteval(p, evaluate(p));
+            p->seteval(evaluate(p));
             backpropcallback(p);
         }
     }
@@ -220,7 +223,7 @@ public:
     void play(size_type maxsize)
     {
         if (empty() || issure()) return;
-        seteval(root(), evalleaf(root()));
+        root()->seteval(evalleaf(root()));
         for ( ; !issure(); playonce())
         {
             if (size() > maxsize) break;
