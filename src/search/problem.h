@@ -9,9 +9,8 @@
 // Add node pointer to p's goal data.
 inline void addnodeptr(Nodeptr p)
 {
-    Goaldata & goaldata = p->game().goaldata();
-    if (!goaldata.proven())
-        goaldata.nodeptrs.insert(p);
+    if (!p->game().proven())
+        p->game().goaldata().nodeptrs.insert(p);
 }
 
 // Problem statement + Proof search tree with loop detection
