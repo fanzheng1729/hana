@@ -44,6 +44,9 @@ public:
     template<class T>
     NodeBase(T const & game) : State<G>(game) {}
     Eval eval() const { return *this; }
+    bool won() const { return *this == EvalWIN; }
+    bool drawn() const { return *this == EvalDRAW; }
+    bool lost() const { return *this == EvalLOSS; }
     friend std::ostream & operator<<(std::ostream & out, NodeBase const & node)
     {
         out << "Eval: " << node.value << &"*\t"[!node.sure];

@@ -70,11 +70,11 @@ public:
     void closenodes(Nodeptr p)
     {
         FOR (Nodeptr other, p->game().goaldata().nodeptrs)
-            if (other != p && value(other) != WDL::WIN)
+            if (other != p && !other->won())
             {
                 seteval(other, EvalWIN);
                 Nodeptr parent = other.parent();
-                if (parent && value(parent) != WDL::WIN)
+                if (parent && !parent->won())
                     backprop(parent);
             }
     }
@@ -83,7 +83,7 @@ public:
     {
         if (p->game().proven())
             seteval(p, EvalWIN); // Fix seteval in backprop.
-        else if (value(p) == WDL::WIN && p->game().writeproof())
+        else if (p->won() && p->game().writeproof())
             closenodes(p);
     }
     // Proof of the assertion, if not empty

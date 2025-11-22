@@ -173,7 +173,7 @@ static Nodeptr onlyopenchild(Nodeptr p)
     bool hasopenchild = false;
     FOR (Nodeptr child, *p.children())
     {
-        if (Problem::value(child) == WDL::WIN) continue;
+        if (child->won()) continue;
         // Open child found.
         if (hasopenchild) return Nodeptr();
         // 1 open child
@@ -361,7 +361,7 @@ void Problem::checkmainline(Nodeptr p) const
     for ( ; p; p = pickchild(p))
     {
         if (isourturn(p) && p->game().ndefer == 0
-            && p->game().proven() && value(p) != WDL::WIN)
+            && p->game().proven() && !p->won())
         {
             for (Nodeptr q = root(); q && q != p; q = pickchild(q))
                 std::cout << *q;
