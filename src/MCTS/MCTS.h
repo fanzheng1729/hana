@@ -66,19 +66,19 @@ public:
     Value value() const { return value(root()); }
 protected:
     static void seteval(Nodeptr p, Eval eval) { if (p) p->seteval(eval); }
-    static void setwin (Nodeptr p) { if (p) p->seteval(EvalWIN); }
-    static void setdraw(Nodeptr p) { if (p) p->seteval(EvalDRAW); }
-    static void setloss(Nodeptr p) { if (p) p->seteval(EvalLOSS); }
-    static void setalmostwin (Nodeptr p) { if (p) p->seteval(ALMOSTWIN); }
-    static void setalmostloss(Nodeptr p) { if (p) p->seteval(ALMOSTLOSS); }
+    static void setwin (Nodeptr p) { seteval(p, EvalWIN); }
+    static void setdraw(Nodeptr p) { seteval(p, EvalDRAW); }
+    static void setloss(Nodeptr p) { seteval(p, EvalLOSS); }
+    static void setalmostwin (Nodeptr p) { seteval(p, ALMOSTWIN); }
+    static void setalmostloss(Nodeptr p) { seteval(p, ALMOSTLOSS); }
 public:
     static bool isourturn(Nodeptr p) { return p->isourturn();}
-    // Return true if value of x < value of y.
+    // True if value of x < value of y
     static bool compvalue(Nodeptr x, Nodeptr y) { return value(x) < value(y); }
-    // Return the UCB bonus term
+    // Visit count based UCB bonus
     Value UCBbonus(bool ourturn, size_type parent, size_type self) const
     { return sqrt[ourturn][util::log2(parent)] / std::sqrt(self); }
-    // Compute the upper confidence bound.
+    // Upper confidence bound
     Value UCB(Nodeptr p) const
     {
         Value const v = value(p);
