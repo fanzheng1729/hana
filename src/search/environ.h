@@ -98,7 +98,7 @@ private:
     // Add a move with free variables. Return false.
     virtual bool addhardmoves
         (Assptr pthm, Proofsize size, Move & move, Moves & moves) const
-        { return !pthm && size == 0 && &move && &moves; }
+        { return pthm && !pthm && size && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
     // Return true if a move closes the goal.
     bool trythm(Game const & game, AST const & ast, Assiter iter,
