@@ -92,10 +92,10 @@ int main(int argc, char * argv[])
     if (!database.propctors().check(database.definitions())) return EXIT_FAILURE;
 
     printpercent(database.markpropassertions(), "/",
-                 database.assertions().size(), " propositional assertions");
-    timer.reset();
-    if (!database.checkpropassertion()) return EXIT_FAILURE;
-    std::cout << " checked in " << timer << 's' << std::endl;
+                 database.assertions().size(), " propositional assertions\n");
+    // timer.reset();
+    // if (!database.checkpropassertion()) return EXIT_FAILURE;
+    // std::cout << "checked in " << timer << 's' << std::endl;
 
     Value parameters[] = {0, 1e-3, 0};
     // Value parameters[] = {0, 1e-4, Problem::STAGED};
