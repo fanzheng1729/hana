@@ -120,49 +120,6 @@ Goal2ptr Problem::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s
 
 typedef Problem::Nodeptr Nodeptr;
 
-// If goal appears as the goal of a node or its ancestors,
-// return the pointer of the ancestor.
-// This check is necessary to prevent self-assignment in writeproof().
-static Nodeptr cycles(Goalptr pgoal, Nodeptr pnode)
-{
-    while (true)
-    {
-        Game const & game = pnode->game();
-        if (game.ndefer == 0 && pgoal == game.pgoal)
-            return pnode;
-        if (Nodeptr const parent = pnode.parent())
-            pnode = parent.parent();
-        else break;
-    }
-    return Nodeptr();
-}
-
-// Return true if ptr duplicates upstream goals.
-bool loops(Nodeptr p)
-{
-    Move const & move = p->game().attempt;
-    // All the goals necessary to prove p
-    Goalptrs allgoals;
-    // Check if any of the hypotheses appears in a parent node.
-    for (Hypsize i = 0; i < move.hypcount(); ++i)
-    {
-        if (move.hypfloats(i))
-            continue;
-        Goalptr const pgoal = move.hypvec[i];
-        if (pgoal->second.proven())
-            continue;
-        if (cycles(pgoal, p.parent()))
-            return true;
-        allgoals.insert(pgoal);
-    }
-    // Check if these hypotheses combined prove a parent node.
-    while (Goalptr const pnewgoal = allgoals.saturate())
-        FOR (Nodeptr const pnewnode, pnewgoal->second.nodeptrs)
-            if (pnewnode.isancestorof(p))
-                return true;
-    return false;
-}
-
 // Return the only open child of p.
 // Return NULL if p has 0 or at least 2 open children.
 static Nodeptr onlyopenchild(Nodeptr p)

@@ -29,35 +29,4 @@ struct Goaldata
     bool proven() const { return !proof.empty(); }
 };
 
-// Set of goal pointers
-struct Goalptrs : std::set<Goalptr>
-{
-    // Return true if all open children of p are present.
-    bool haschildren(Nodeptr p) const
-    {
-        FOR (Nodeptr const child, *p.children())
-        {
-            if (child->game().proven()) continue;
-            if (!count(child->game().pgoal)) return false;
-        }
-        return true;
-    }
-    // Return pointer to a new goal implied by the existing goals.
-    // Return NULL if there is no such goal.
-    Goalptr saturate()
-    {
-        FOR (Goalptr const pgoal, *this)
-            FOR (Nodeptr const pnode, pgoal->second.nodeptrs)
-            {
-                Nodeptr const parent = pnode.parent();
-                if (parent->game().proven())
-                    continue;
-                Goalptr const newgoal = parent->game().pgoal;
-                if (haschildren(parent) && insert(newgoal).second)
-                    return newgoal;
-            }
-        return Goalptr();
-    }
-};
-
 #endif // GOALDATA_H_INCLUDED
