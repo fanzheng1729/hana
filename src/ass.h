@@ -126,10 +126,14 @@ struct Assertion
     std::string hypslabel(Bvector const & hypstotrim = Bvector()) const
     {
         static char const delim = '~';
+        // Preallocate for efficiency.
         std::vector<std::string> labels;
-        for (Hypsize i = 0; i < hypiters.size(); ++i)
-            if (!(i < hypstotrim.size() && hypstotrim[i]))
+        labels.reserve(hypiters.size());
+        for (Hypsize i = 0; i < hypstotrim.size(); ++i)
+            if (!hypstotrim[i])
                 labels.push_back(delim + std::string(hypiters[i]->first));
+        for (Hypsize i = hypstotrim.size(); i < hypiters.size(); ++i)
+            labels.push_back(delim + std::string(hypiters[i]->first));
 
         std::sort(labels.begin(), labels.end());
         return std::accumulate(labels.begin(), labels.end(), std::string());
