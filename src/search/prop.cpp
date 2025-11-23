@@ -208,7 +208,7 @@ bool testpropsearch
         // Skip false theorems.
         Prop prop(iter->second, database, maxsize, parameters[2]);
         if (unexpected(!prop.valid(iter->second.expRPN), "false theorem", iter->first))
-            continue;
+            break;
 
         // Try search proof.
         Problem tree(prop, parameters);
