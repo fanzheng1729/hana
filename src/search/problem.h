@@ -43,6 +43,7 @@ public:
         // Root goal
         strview type = assertion.expression[0];
         Goalptr pgoal = penv->addgoal(assertion.expRPN, type, GOALOPEN);
+        pgoal->second.pnewenv = addenv(penv, penv->hypstotrim(pgoal));
         // Root node
         *root() = Game(pgoal, penv);
         addnodeptr(root());
