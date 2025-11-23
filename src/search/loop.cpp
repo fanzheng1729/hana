@@ -29,8 +29,10 @@ struct Goalptrs : std::set<Goalptr>
     {
         FOR (Nodeptr const child, *p.children())
         {
-            if (child->game().proven()) continue;
-            if (!count(child->game().pgoal)) return false;
+            if (child->game().proven())
+                continue;
+            if (!count(child->game().pgoal))
+                return false;
         }
         return true;
     }
