@@ -211,9 +211,8 @@ bool testpropsearch
             break;
 
         // Try search proof.
-        Problem tree(prop, parameters);
-
         ++all;
+        Problem tree(prop, parameters);
         Problem::size_type const n = testpropsearch(iter, tree, maxsize);
         if (n == 0)
         {
