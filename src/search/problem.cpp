@@ -6,8 +6,6 @@
 #include "../io.h"
 #include "problem.h"
 
-static const char strproven[] = "V";
-
 // UCB threshold for generating a new batch of moves
 // Change this to turn on staged move generation.
 Value Problem::UCBnewstage(Nodeptr p) const
@@ -117,6 +115,8 @@ Goal2ptr Problem::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s
 {
     return NULL;
 }
+
+static const char strproven[] = "V";
 
 // Return the only open child of p.
 // Return NULL if p has 0 or at least 2 open children.
