@@ -33,7 +33,6 @@ typedef Goals::pointer Goalptr;
 
 // Proof search context
 struct Environ;
-
 // Map: context -> evaluation
 typedef std::map<Environ const *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
