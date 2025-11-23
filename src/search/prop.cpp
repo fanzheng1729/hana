@@ -155,13 +155,12 @@ static Problem::size_type testpropsearch
         tree.printmainline();
         return 0;
     }
-    else
-    if (!provesrightthing(iter->first, verify(tree.proof(), &*iter),
-                            iter->second.expression))
+    else if (!provesrightthing(iter->first, verify(tree.proof(), &*iter),
+                                iter->second.expression))
     {
         std::cerr << "Wrong proof: " << tree.proof();
         // tree.navigate();
-        std::cin.get();
+        return 0;
     }
     else if (iter->first == "biass_")
         tree.writeproof((std::string(iter->first) + ".txt").c_str());
