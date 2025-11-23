@@ -44,7 +44,7 @@ public:
         strview type = assertion.expression[0];
         Goalptr pgoal = penv->addgoal(assertion.expRPN, type, GOALOPEN);
         // Root node
-        const_cast<Game &>(root()->game()) = Game(pgoal, penv);
+        *root() = Game(pgoal, penv);
         addnodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
