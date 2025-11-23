@@ -1,6 +1,4 @@
-#include "problem.h"
-
-typedef Problem::Nodeptr Nodeptr;
+#include "goaldata.h"
 
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
