@@ -2,6 +2,7 @@
 #define GOALDATA_H_INCLUDED
 
 #include "game.h"
+#include "goalstat.h"
 #include "../MCTS/MCTS.h"
 #include "../types.h"
 #include "../util/for.h"
@@ -11,8 +12,6 @@ typedef MCTS<Game>::Nodeptr Nodeptr;
 // Set of nodes in proof search tree
 typedef std::set<Nodeptr> Nodeptrs;
 
-// Proof status of a goal
-enum Goalstatus {GOALNEW = -2, GOALFALSE, GOALOPEN, GOALTRUE};
 // Data associated with the goal
 struct Goaldata
 {

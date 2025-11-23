@@ -2,9 +2,9 @@
 #define ENVIRON_H_INCLUDED
 
 #include "../ass.h"
+#include "game.h"
 #include "gen.h"
-#include "goal.h"
-#include "goaldata.h"
+#include "goalstat.h"
 #include "../MCTS/stageval.h"
 
 class Database;
