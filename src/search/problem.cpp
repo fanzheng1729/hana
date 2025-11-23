@@ -116,8 +116,6 @@ Goal2ptr Problem::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s
     return NULL;
 }
 
-static const char strproven[] = "V";
-
 // Return the only open child of p.
 // Return NULL if p has 0 or at least 2 open children.
 static Nodeptr onlyopenchild(Nodeptr p)
@@ -145,6 +143,8 @@ static bool gotoonlyopenchild(Nodeptr & p)
         return p = child;
     return false;
 }
+
+static const char strproven[] = "V";
 
 // Format: ax-mp[!]
 static void printrefname(Nodeptr p)
