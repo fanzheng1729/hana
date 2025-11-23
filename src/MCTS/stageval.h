@@ -3,9 +3,7 @@
 
 #include <cstddef> // for std::size_t
 
-// Stage
 typedef std::size_t stage_t;
-// Value
 typedef double Value;
 
 // Predefined game values
