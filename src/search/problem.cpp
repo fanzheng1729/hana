@@ -118,8 +118,6 @@ Goal2ptr Problem::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s
     return NULL;
 }
 
-typedef Problem::Nodeptr Nodeptr;
-
 // Return the only open child of p.
 // Return NULL if p has 0 or at least 2 open children.
 static Nodeptr onlyopenchild(Nodeptr p)
