@@ -35,7 +35,7 @@ public:
         MCTS(Game(), params)
     {
         if (assertion.expression.empty()) return;
-        // Root environment
+        // Root context
         Environ * const penv = new Env(env);
         penv->pProb = this;
         penv->enviter = environs.insert
