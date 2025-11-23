@@ -151,22 +151,15 @@ static Problem::size_type testpropsearch
     }
     else if (unexpected(tree.empty(), "empty tree for", iter->first))
         return 0;
-    else if (tree.value() != 1)
-    {
-        std::cerr << "Prop search returned " << tree.value() << "\n";
-        tree.printmainline();
-        return 0;
-    }
-    else if (!provesrightthing(iter->first, verify(tree.proof(), &*iter),
-                                iter->second.expression))
-    {
-        std::cerr << "Wrong proof: " << tree.proof();
-        // tree.navigate();
-        return 0;
-    }
+    else if (unexpected(tree.value() != 1, "game value", tree.value()))
+        return tree.printmainline(), 0;
+    else if (unexpected(!checkconclusion(iter->first,
+                                         verify(tree.proof(), &*iter),
+                                         iter->second.expression),
+                        "wrong proof", tree.proof()))
+        return tree.navigate(), 0;
     else if (iter->first == "biass_")
         tree.writeproof((std::string(iter->first) + ".txt").c_str());
-
     return tree.size();
 }
 

@@ -217,7 +217,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pass)
 // }
 
 // Return if "conclusion" == "expression" to be proved.
-bool provesrightthing
+bool checkconclusion
     (strview label, Expression const & conclusion, Expression const & expression)
 {
     if (conclusion == expression)

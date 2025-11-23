@@ -123,7 +123,7 @@ inline Expression verify(Proofsteps const & proof, Assptr pthm = NULL)
 //      Proof const & proof, Hypotheses const & hypotheses);
 
 // Return if "conclusion" == "expression" to be proved.
-bool provesrightthing
+bool checkconclusion
     (strview label,
      Expression const & conclusion, Expression const & expression);
 
