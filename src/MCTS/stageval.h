@@ -28,11 +28,9 @@ inline  bool operator==(Eval x, Eval y)
 inline  bool operator!=(Eval x, Eval y)
     { return !(x == y); }
 
-// Position lost
+// Predefined evaluations
 static  Eval const EvalLOSS  = Eval(WDL::LOSS,  true);
-// Position drawn
 static  Eval const EvalDRAW  = Eval(WDL::DRAW,  true);
-// Position won
 static  Eval const EvalWIN   = Eval(WDL::WIN,   true);
 
 #endif // STAGEVAL_H_INCLUDED
