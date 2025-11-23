@@ -200,13 +200,17 @@ bool testpropsearch
             & (Asstype::AXIOM + Asstype::TRIVIAL + Asstype::DUPLICATE))
             continue;
 
-        // Skip non propositional theorems
+        // Skip non propositional theorems.
         static const Prop prop1(assiters[1]->second, database, 0);
         if (!(prop1.ontopic(iter->second)))
             continue;
 
-        // Try search proof.
+        // Skip false theorems.
         Prop prop(iter->second, database, maxsize, parameters[2]);
+        if (unexpected(!prop.valid(iter->second.expRPN), "false theorem", iter->first))
+            continue;
+
+        // Try search proof.
         Problem tree(prop, parameters);
 
         ++all;
