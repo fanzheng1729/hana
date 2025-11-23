@@ -149,6 +149,8 @@ static Problem::size_type testpropsearch
         // tree.printenvs();
         // tree.navigate();
     }
+    else if (unexpected(tree.empty(), "empty tree for", iter->first))
+        return 0;
     else if (tree.value() != 1)
     {
         std::cerr << "Prop search returned " << tree.value() << "\n";
@@ -204,13 +206,9 @@ bool testpropsearch
         if (!(prop1.ontopic(iter->second)))
             continue;
 
-        // Skip false theorems.
-        Prop prop(iter->second, database, maxsize, parameters[2]);
-        if (unexpected(!prop.valid(iter->second.expRPN), "false theorem", iter->first))
-            break;
-
         // Try search proof.
         ++all;
+        Prop prop(iter->second, database, maxsize, parameters[2]);
         Problem tree(prop, parameters);
         Problem::size_type const n = testpropsearch(iter, tree, maxsize);
         if (n == 0)

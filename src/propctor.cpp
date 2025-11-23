@@ -273,7 +273,7 @@ bool Propctors::addclause
      CNFClauses & cnf, Atom & natom) const
 {
     AST const & tree(ast(RPN));
-    if (unexpected(tree.empty(), "corrupt proof tree when adding CNF from", RPN))
+    if (unexpected(tree.empty(), "bad proof tree when adding CNF of", RPN))
         return false;
 
     std::vector<Literal> literals(RPN.size());

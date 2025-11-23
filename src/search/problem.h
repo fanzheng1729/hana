@@ -14,7 +14,7 @@ inline void addnodeptr(Nodeptr p)
 }
 
 // Problem statement + Proof search tree with loop detection
-// + environment management + UI
+// + context management + UI
 class Problem : public MCTS<Game>
 {
     // Assertions corresponding to contexts
@@ -34,7 +34,8 @@ public:
         assertion(env.assertion), staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
-        if (assertion.expression.empty()) return;
+        Goalstatus const status = env.valid(assertion.expRPN);
+        if (status == GOALFALSE) return;
         // Root context
         Environ * const penv = new Env(env);
         penv->pProb = this;
@@ -42,7 +43,7 @@ public:
         (std::make_pair(assertion.hypslabel().c_str(), penv)).first;
         // Root goal
         strview type = assertion.expression[0];
-        Goalptr pgoal = penv->addgoal(assertion.expRPN, type, GOALOPEN);
+        Goalptr pgoal = penv->addgoal(assertion.expRPN, type, status);
         pgoal->second.pnewenv = addenv(penv, penv->hypstotrim(pgoal));
         // Root node
         *root() = Game(pgoal, penv);
