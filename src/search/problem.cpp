@@ -71,7 +71,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-static void printDAGcycle(const char * env1, const char * env2)
+static void printDAGcycle(strview env1, strview env2)
 {
     std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
 }
@@ -85,13 +85,13 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     // Name of new context
     std::string const & label(penv->assertion.hypslabel(hypstotrim));
     // Try add the context.
-    std::pair<Environs::iterator, bool> result
+    std::pair<Environs::iterator, bool> const result
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
     // Iterator to the new context
-    Environs::iterator newenviter = result.first;
+    Environs::iterator const newenviter = result.first;
     if (!environs.linked(penv->enviter, newenviter) &&
         !environs.link(penv->enviter, newenviter))
-        printDAGcycle(penv->enviter->first.c_str(), newenviter->first.c_str());
+        printDAGcycle(penv->enviter->first, newenviter->first);
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;
