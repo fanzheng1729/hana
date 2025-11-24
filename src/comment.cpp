@@ -225,8 +225,8 @@ Typecodes::Typecodes(struct Commands const & syntax, Commands const & bound)
 
 static Ctordefns * adddefinition(Ctordefns * p, Command const & command)
 {
-    if (unexpected(command.size() != 3
-                   || command[1] != "for", "command", command))
+    if (unexpected(command.size() != 3 ||
+                    command[1] != "for", "command", command))
         return p;
     // Get the constructor.
     std::string const & ctor(unquote(command[2]));
