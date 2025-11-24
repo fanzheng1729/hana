@@ -113,8 +113,10 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 }
 
 // Add a goal. Return its pointer.
-Goalenvptr Problem::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
+Goalenvptr Problem::addgoal
+    (Proofsteps const & RPN, strview typecode, Environ const * penv, Goalstatus s)
 {
+    Goalview const goal(RPN, typecode);
     return NULL;
 }
 

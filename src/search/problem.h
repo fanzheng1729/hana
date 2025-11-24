@@ -109,7 +109,8 @@ public:
     // Return NULL if not okay.
     Environ * addenv(Environ const * penv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
-    Goalenvptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
+    Goalenvptr addgoal
+        (Proofsteps const & RPN, strview typecode, Environ const * penv, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
