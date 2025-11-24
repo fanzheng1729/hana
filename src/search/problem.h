@@ -54,7 +54,7 @@ public:
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
         strview type = assertion.expression[0];
-        Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
+        Goalptr pGoal = pEnv->addGoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addGoal(assertion.expRPN, type, pEnv, status);
         Environ * const pNewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal)) : NULL);

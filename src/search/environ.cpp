@@ -53,7 +53,7 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 }
 
 // Add a goal. Return its pointer.
-Goalptr Environ::addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
+Goalptr Environ::addGoal(Proofsteps const & RPN, strview typecode, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);
     return &*goals.insert(std::make_pair(goal, s)).first;

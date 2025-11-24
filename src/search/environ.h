@@ -39,7 +39,7 @@ struct Environ : protected Gen
         Gen(ass.varusage, maxsize) {}
     Problem const & prob() const { return *pProb; }
     // Add a goal. Return its pointer.
-    Goalptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
+    Goalptr addGoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
     // # goals of a given status
     Goals::size_type countgoal(int status) const;
     // # proven goals
