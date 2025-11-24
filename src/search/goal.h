@@ -35,9 +35,6 @@ typedef Goals::pointer Goalptr;
 typedef std::map<struct Environ const *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
 
-// Add a simplified context.
-Goaldataptr addsimpenv(Goaldataptr pGoaldata, Environ const * penv);
-
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> Goalenvs;
 typedef Goalenvs::pointer BigGoalptr;

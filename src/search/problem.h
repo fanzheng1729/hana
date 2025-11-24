@@ -13,6 +13,9 @@ inline void addnodeptr(Nodeptr p)
         p->game().goaldata().nodeptrs.insert(p);
 }
 
+// Add a simplified context.
+Goaldataptr addsimpenv(Goaldataptr pGoaldata, Environ const * penv);
+
 // Problem statement + Proof search tree with loop detection
 // + context management + UI
 class Problem : public MCTS<Game>
