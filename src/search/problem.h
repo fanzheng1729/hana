@@ -47,7 +47,8 @@ public:
         Environ * const pNewEnv = pGoal->second.pNewEnv
                                 = addenv(pEnv, pEnv->hypstotrim(pGoal));
         // Root node
-        *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
+        if (pNewEnv) pEnv = pNewEnv;
+        *root() = Game(pGoal, pEnv);
         addnodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
