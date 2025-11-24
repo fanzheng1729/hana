@@ -30,7 +30,7 @@ Definition::Definition(Assertions::const_reference rass) : pdef(NULL)
     // Index of beginning of RHS
     Proofsize const defbegin = lhsend + 1;
 
-    if (unexpected(tree.back().size() != 2, "\tnon-binary root", expRPN.back()))
+    if (unexpected(tree.back().size() != 2, "non-binary root", expRPN.back()))
         return;
 
     // Check if LHS = (var, ..., var, syntax to be defined).
