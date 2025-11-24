@@ -13,12 +13,12 @@ inline void addnodeptr(Nodeptr p)
         p->game().goaldata().nodeptrs.insert(p);
 }
 
-// Add a simplified context.
+// Add a simplified context. Return its pointer.
 inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv)
 {
-    if (!pGoaldata) return NULL;
+    if (!pGoaldata || !pEnv) return pGoaldata;
     BigGoalptr const pBigGoal = pGoaldata->second.pBigGoal;
-    if (!pBigGoal)  return NULL;
+    if (!pBigGoal) return pGoaldata;
     Goaldata goaldata(pGoaldata->second.status);
     goaldata.pBigGoal = pBigGoal;
     Goaldatas::value_type const value(pEnv, goaldata);
