@@ -23,8 +23,8 @@ struct Goaldata
     // Pointer to the different contexts where the goal is evaluated
     BigGoalptr pBigGoal;
     // New context after trimming unnecessary hypotheses
-    Environ * pnewenv;
-    Goaldata(Goalstatus s) : status(s), pBigGoal(NULL), pnewenv(NULL) {}
+    Environ * pNewEnv;
+    Goaldata(Goalstatus s) : status(s), pBigGoal(NULL), pNewEnv(NULL) {}
     bool proven() const { return !proof.empty(); }
 };
 
