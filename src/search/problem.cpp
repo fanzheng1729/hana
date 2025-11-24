@@ -117,10 +117,10 @@ Goaldataptr Problem::addgoal
     (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);
-    BigGoalptr pGoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
-    Goaldatas & goaldatas = pGoal->second;
+    BigGoalptr pBigGoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
+    Goaldatas & goaldatas = pBigGoal->second;
     Goaldataptr pGoaldata = &*goaldatas.insert(std::make_pair(pEnv, s)).first;
-    pGoaldata->second.pBigGoal = pGoal;
+    pGoaldata->second.pBigGoal = pBigGoal;
     return pGoaldata;
 }
 
