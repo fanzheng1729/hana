@@ -3,15 +3,15 @@
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
-static Nodeptr cycles(Goalptr pgoal, Nodeptr pnode)
+static Nodeptr cycles(Goalptr pGoal, Nodeptr pNode)
 {
     while (true)
     {
-        Game const & game = pnode->game();
-        if (game.ndefer == 0 && pgoal == game.pgoal)
-            return pnode;
-        if (Nodeptr const parent = pnode.parent())
-            pnode = parent.parent();
+        Game const & game = pNode->game();
+        if (game.ndefer == 0 && pGoal == game.pgoal)
+            return pNode;
+        if (Nodeptr const parent = pNode.parent())
+            pNode = parent.parent();
         else break;
     }
     return Nodeptr();
@@ -38,15 +38,15 @@ struct Goalptrs : std::set<Goalptr>
     // Return NULL if there is no such goal.
     Goalptr saturate()
     {
-        FOR (Goalptr const pgoal, *this)
-            FOR (Nodeptr const pnode, pgoal->second.nodeptrs)
+        FOR (Goalptr const pGoal, *this)
+            FOR (Nodeptr const pNode, pGoal->second.nodeptrs)
             {
-                Nodeptr const parent = pnode.parent();
+                Nodeptr const parent = pNode.parent();
                 if (parent->game().proven())
                     continue;
-                Goalptr const newgoal = parent->game().pgoal;
-                if (haschildren(parent) && insert(newgoal).second)
-                    return newgoal;
+                Goalptr const newGoal = parent->game().pgoal;
+                if (haschildren(parent) && insert(newGoal).second)
+                    return newGoal;
             }
         return Goalptr();
     }
