@@ -46,8 +46,8 @@ Game Game::play(Move const & move, bool ourturn) const
     else if (attempt.type == Move::THM) // Pick the hypothesis.
     {
         game.pGoal = attempt.hypvec[move.index];
-        if (Environ * pNewEnv = game.goaldata().pNewEnv)
-            game.pEnv = pNewEnv;
+        if (Environ * pnewEnv = game.goaldata().pNewEnv)
+            game.pEnv = pnewEnv;
     }
 
     return game;
