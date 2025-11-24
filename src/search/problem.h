@@ -14,7 +14,7 @@ inline void addnodeptr(Nodeptr p)
 }
 
 // Add a simplified context.
-inline Goaldataptr addsimpenv(Goaldataptr pGoaldata, Environ const * pEnv)
+inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv)
 {
     BigGoalptr const pBigGoal = pGoaldata->second.pBigGoal;
     Goaldata goaldata(pGoaldata->second.status);
@@ -59,18 +59,9 @@ public:
         if (status == GOALTRUE)
             pNewEnv = addEnv(pEnv, pEnv->hypstotrim(pGoal));
         pGoal->second.pNewEnv = pNewEnv;
-        Goaldata & goaldata = pGoaldata->second;
-        goaldata.pNewEnv = pNewEnv;
-
+        pGoaldata->second.pNewEnv = pNewEnv;
         if (pNewEnv)
-        {
-            // Simplified goal
-            BigGoalptr const pBigGoal = goaldata.pBigGoal;
-            Goaldata newgoaldata(status);
-            newgoaldata.pBigGoal = pBigGoal;
-            Goaldatas::value_type const value(pNewEnv, newgoaldata);
-            pGoaldata = &*pBigGoal->second.insert(value).first;
-        }
+            pGoaldata = addsimpEnv(pGoaldata, pNewEnv);
         // Root node
         *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
         const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
