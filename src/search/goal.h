@@ -37,7 +37,7 @@ struct Environ;
 typedef std::map<Environ const *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
 // Map: goal -> context -> evaluation
-typedef std::map<Goal, Goaldatas> Goals2;
-typedef Goals2::pointer Goal2ptr;
+typedef std::map<Goal, Goaldatas> Goalenvs;
+typedef Goalenvs::pointer Goalenvptr;
 
 #endif // GOAL_H_INCLUDED

@@ -22,7 +22,7 @@ class Problem : public MCTS<Game>
     // DAG of polymorphic contexts
     DAG<Environs> environs;
     // Map: goal -> context -> evaluation
-    Goals2 goals;
+    Goalenvs goals;
 public:
     // The assertion to be proved
     Assertion const & assertion;
@@ -109,7 +109,7 @@ public:
     // Return NULL if not okay.
     Environ * addenv(Environ const * penv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
-    Goal2ptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
+    Goalenvptr addgoal(Proofsteps const & RPN, strview typecode, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
