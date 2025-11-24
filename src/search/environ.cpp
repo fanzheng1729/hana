@@ -16,7 +16,7 @@ bool proven(Goalptr p, Assertion const & ass)
     if (!p) return false;
     if (p->second.proven()) return true;
     // Match hypotheses of the assertion.
-    Hypsize i = ass.matchhyp(p->first.RPN, p->first.typecode);
+    Hypsize const i = ass.matchhyp(p->first.RPN, p->first.typecode);
     if (i == ass.hypcount()) return false; // No match
     // 1-step proof using the matched hypothesis
     p->second.proof.assign(1, ass.hypiters[i]);
@@ -119,7 +119,7 @@ bool Environ::valid(Move const & move) const
         // Add the essential hypothesis as a goal.
         Goalptr const pGoal = const_cast<Environ *>(this)->addGoal
             (move.hypRPN(i), move.hyptypecode(i), GOALNEW);
-        Goaldataptr const pGoaldata = pProb->addGoal
+        Goaldataptr pGoaldata = pProb->addGoal
             (move.hypRPN(i), move.hyptypecode(i), this, GOALNEW);
 // std::cout << "Validating " << pGoal->first.RPN;
         // Status of the goal
@@ -129,13 +129,17 @@ bool Environ::valid(Move const & move) const
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = pGoal;
         // Check if the goal has been validated.
-        if (proven(pGoal, assertion) || status >= GOALOPEN)
+        if (proven(pGoal, assertion))
+            pGoaldata->second.status = GOALTRUE;
+        if (status >= GOALOPEN)
             continue; // Valid
         // New goal (status == GOALNEW)
-        if ((status = valid(pGoal->first.RPN)) == GOALFALSE)
+        if ((status = pGoaldata->second.status = valid(pGoal->first.RPN)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
-        pGoal->second.pNewEnv = pProb->addEnv(this, hypstotrim(pGoal));
+        Environ * const pnewEnv = pProb->addEnv(this, hypstotrim(pGoal));
+        pGoal->second.pNewEnv = pnewEnv;
+        pGoaldata->second.pNewEnv = pnewEnv;
 // if (pGoal->second.pNewEnv)
 // std::cout << pGoal->first.RPN << label() << "\n->\n",
 // std::cout << (pGoal->second.pNewEnv ? pGoal->second.pNewEnv->label() : "") << std::endl;
