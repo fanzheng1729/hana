@@ -48,7 +48,8 @@ public:
         Environ * pNewEnv = NULL;
         if (status == GOALTRUE)
             pNewEnv = addenv(pEnv, pEnv->hypstotrim(pGoal));
-        pGoal->second.pNewEnv = pGoaldata->second.pNewEnv = pNewEnv;
+        pGoal->second.pNewEnv = pNewEnv;
+        pGoaldata->second.pNewEnv = pNewEnv;
         // Fix root context
         if (pNewEnv)
         {
