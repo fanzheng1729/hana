@@ -198,14 +198,12 @@ static void printstage(stage_t stage)
 static void printournode(Nodeptr p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
-    Game const & game = p->game();
-    Goal const & goal = game.goal();
     printstage(stage);
-    std::cout << lastmove.hyplabel(lastmove.matchhyp(goal));
+    std::cout << lastmove.hyplabel(lastmove.matchhyp(p->game().goal()));
     printeval(p);
     std::cout << '\t';
-    std::cout << &strproven[!game.proven()];
-    std::cout << goal.expression();
+    std::cout << &strproven[!p->game().proven()];
+    std::cout << p->game().goal().expression();
 }
 
 // Format: DEFER(n) score*size
@@ -219,12 +217,11 @@ static void printdeferline(Nodeptr p)
 // Format: min score*size maj score*size
 static void printhypsline(Nodeptr p)
 {
-    Move const & move = p->game().attempt;
     Hypsize i = 0;
     FOR (Nodeptr child, *p.children())
     {
-        while (move.hypfloats(i)) ++i;
-        std::cout << move.hypiter(i++)->first;
+        while (p->game().attempt.hypfloats(i)) ++i;
+        std::cout << p->game().attempt.hypiter(i++)->first;
         printeval(child);
         std::cout << ' ';
     }
@@ -246,11 +243,10 @@ static void printtheirnode(Nodeptr p)
 static void printgoal(Nodeptr p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
-    Game const & game = p->game();
-    std::cout << &strproven[!game.proven()];
-    std::cout << game.goal().expression();
+    std::cout << &strproven[!p->game().proven()];
+    std::cout << p->game().goal().expression();
 
-    Assertion const & ass = game.env().assertion;
+    Assertion const & ass = p->game().env().assertion;
     if (ass.esshypcount() == 0) return;
 
     std::cout << "Hyps ";
@@ -284,8 +280,7 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
     {
         if (!isourturn(p))
         {
-            Move const & move = p->game().attempt;
-            switch (move.type)
+            switch (p->game().attempt.type)
             {
             case Move::DEFER:
                 ++ndefer;
@@ -296,8 +291,8 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
                 ndefer = 0;
                 printtheirnode(p);
                 continue;
-            default:
-                std::cerr << "Bad move" << move << std::endl;
+            case Move::NONE:
+                std::cerr << "Empty move" << std::endl;
                 return;
             }
         }
