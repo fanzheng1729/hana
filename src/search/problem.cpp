@@ -38,7 +38,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     if (!isourturn(p))
         return evaltheirleaf(p);
     // Our leaf
-    if (!game.pgoal || !game.penv)
+    if (!game.pgoal || !game.pEnv)
         return EvalLOSS;
     if (p.parent() && game.proven())
         return EvalWIN;
@@ -78,20 +78,20 @@ static void printDAGcycle(strview env1, strview env2)
 
 // Add a context for the game. Return pointer to the new context.
 // Return NULL if not okay.
-Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
+Environ * Problem::addenv(Environ const * pEnv, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
         return NULL;
     // Name of new context
-    std::string const & label(penv->assertion.hypslabel(hypstotrim));
+    std::string const & label(pEnv->assertion.hypslabel(hypstotrim));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result
     = environs.insert(std::pair<strview, Environ *>(label, NULL));
     // Iterator to the new context
     Environs::iterator const newenviter = result.first;
-    if (!environs.linked(penv->enviter, newenviter) &&
-        !environs.link(penv->enviter, newenviter))
-        printDAGcycle(penv->enviter->first, newenviter->first);
+    if (!environs.linked(pEnv->enviter, newenviter) &&
+        !environs.link(pEnv->enviter, newenviter))
+        printDAGcycle(pEnv->enviter->first, newenviter->first);
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;
@@ -99,11 +99,11 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
     Assertion & newass = assertions[newenviter->first];
     if (unexpected(!newass.expression.empty(), "Duplicate label", label))
         return NULL;
-    Assertion const & ass = penv->makeass(hypstotrim);
+    Assertion const & ass = pEnv->makeass(hypstotrim);
     if (ass.expression.empty())
         return NULL;
     // Add the new context.
-    Environ * const pnewenv = penv->makeenv(newass = ass);
+    Environ * const pnewenv = pEnv->makeenv(newass = ass);
     if (pnewenv)
     {
         (newenviter->second = pnewenv)->pProb = this;
@@ -114,12 +114,12 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 
 // Add a goal. Return its pointer.
 Goaldataptr Problem::addgoal
-    (Proofsteps const & RPN, strview typecode, Environ const * penv, Goalstatus s)
+    (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);
     BigGoalptr pGoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
     Goaldatas & goaldatas = pGoal->second;
-    Goaldataptr pGoaldata = &*goaldatas.insert(std::make_pair(penv, s)).first;
+    Goaldataptr pGoaldata = &*goaldatas.insert(std::make_pair(pEnv, s)).first;
     pGoaldata->second.pBigGoal = pGoal;
     return pGoaldata;
 }

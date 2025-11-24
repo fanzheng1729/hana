@@ -36,7 +36,7 @@ bool Game::legal(Move const & move, bool ourturn) const
 // Play a move.
 Game Game::play(Move const & move, bool ourturn) const
 {
-    Game game(pgoal, penv, ndefer);
+    Game game(pgoal, pEnv, ndefer);
 
     if (ourturn) // Record the move.
     {
@@ -47,7 +47,7 @@ Game Game::play(Move const & move, bool ourturn) const
     {
         game.pgoal = attempt.hypvec[move.index];
         if (Environ * pNewEnv = game.goaldata().pNewEnv)
-            game.penv = pNewEnv;
+            game.pEnv = pNewEnv;
     }
 
     return game;

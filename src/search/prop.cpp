@@ -25,7 +25,7 @@ Goalstatus Prop::valid(Proofsteps const & goal) const
 }
 
 // Return the hypotheses of a goal to trim.
-Bvector Prop::hypstotrim(Goalptr pgoal) const
+Bvector Prop::hypstotrim(Goalptr pGoal) const
 {
     Bvector result(assertion.hypcount(), false);
 
@@ -54,7 +54,7 @@ Bvector Prop::hypstotrim(Goalptr pgoal) const
         Atom natom = cnf2.empty() ? assertion.hypcount() : cnf2.atomcount();
         // Add conclusion.
         database.propctors().addclause
-        (pgoal->first.RPN, assertion.hypiters, cnf2, natom);
+        (pGoal->first.RPN, assertion.hypiters, cnf2, natom);
         // Negate conclusion.
         cnf2.closeoff((natom - 1) * 2 + 1);
         ntotrim += result[i] = !cnf2.sat();
@@ -62,7 +62,7 @@ Bvector Prop::hypstotrim(Goalptr pgoal) const
 
     if (ntotrim == 0)
         return Bvector();
-    assertion.trimvars(result, pgoal->first.RPN);
+    assertion.trimvars(result, pGoal->first.RPN);
     return result;
 }
 

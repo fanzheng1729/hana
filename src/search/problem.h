@@ -37,17 +37,17 @@ public:
         Goalstatus const status = env.valid(assertion.expRPN);
         if (status == GOALFALSE) return;
         // Root context
-        Environ * const penv = new Env(env);
-        penv->pProb = this;
-        penv->enviter = environs.insert
-        (std::make_pair(assertion.hypslabel().c_str(), penv)).first;
+        Environ * const pEnv = new Env(env);
+        pEnv->pProb = this;
+        pEnv->enviter = environs.insert
+        (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
         strview type = assertion.expression[0];
-        Goalptr pGoal = penv->addgoal(assertion.expRPN, type, status);
+        Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
         Environ * const pNewEnv = pGoal->second.pNewEnv
-                                = addenv(penv, penv->hypstotrim(pGoal));
+                                = addenv(pEnv, pEnv->hypstotrim(pGoal));
         // Root node
-        *root() = Game(pGoal, pNewEnv ? pNewEnv : penv);
+        *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
         addnodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
@@ -107,10 +107,10 @@ public:
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a context for the game. Return pointer to the new context.
     // Return NULL if not okay.
-    Environ * addenv(Environ const * penv, Bvector const & hypstotrim);
+    Environ * addenv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goaldataptr addgoal
-        (Proofsteps const & RPN, strview typecode, Environ const * penv, Goalstatus s);
+        (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const

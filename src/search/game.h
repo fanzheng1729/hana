@@ -14,18 +14,18 @@ struct Game
     // Pointer to rev Polish of expression to be proved
     Goalptr pgoal;
     // Pointer to the current environment
-    Environ * penv;
+    Environ * pEnv;
     // # defers to the game
     stage_t ndefer;
     // Proof attempt made, on their turn
     Move attempt;
     Game(Goalptr goalptr = NULL, Environ * envptr = NULL, stage_t defer = 0) :
-        pgoal(goalptr), penv(envptr), ndefer(defer) {}
+        pgoal(goalptr), pEnv(envptr), ndefer(defer) {}
     Goal const & goal() const;
     Goaldata & goaldata() const;
     Proofsteps & proof() const;
     bool proven() const { return !proof().empty(); }
-    Environ const & env() const { return *penv; }
+    Environ const & env() const { return *pEnv; }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
     // Return true if a move is legal.
     bool legal(Move const & move, bool ourturn) const;
