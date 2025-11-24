@@ -78,7 +78,7 @@ static void printDAGcycle(strview env1, strview env2)
 
 // Add a context for the game. Return pointer to the new context.
 // Return NULL if not okay.
-Environ * Problem::addenv(Environ const * pEnv, Bvector const & hypstotrim)
+Environ * Problem::addEnv(Environ const * pEnv, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
         return NULL;

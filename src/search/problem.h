@@ -57,7 +57,7 @@ public:
         Goaldataptr pGoaldata = addgoal(assertion.expRPN, type, pEnv, status);
         Environ * pNewEnv = NULL;
         if (status == GOALTRUE)
-            pNewEnv = addenv(pEnv, pEnv->hypstotrim(pGoal));
+            pNewEnv = addEnv(pEnv, pEnv->hypstotrim(pGoal));
         pGoal->second.pNewEnv = pNewEnv;
         Goaldata & goaldata = pGoaldata->second;
         goaldata.pNewEnv = pNewEnv;
@@ -134,7 +134,7 @@ public:
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a context for the game. Return pointer to the new context.
     // Return NULL if not okay.
-    Environ * addenv(Environ const * pEnv, Bvector const & hypstotrim);
+    Environ * addEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goaldataptr addgoal
         (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s);
