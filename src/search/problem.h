@@ -55,14 +55,16 @@ public:
         if (pNewEnv)
         {
             // Simplified goal
-            BigGoalptr pBigGoal = goaldata.pBigGoal;
+            BigGoalptr const pBigGoal = goaldata.pBigGoal;
             Goaldata newgoaldata(GOALTRUE);
             newgoaldata.pBigGoal = pBigGoal;
-            Goaldatas::value_type value(pNewEnv, newgoaldata);
-            pBigGoal->second.insert(value);
+            Goaldatas::value_type const value(pNewEnv, newgoaldata);
+            pGoaldata = &*pBigGoal->second.insert(value).first;
         }
         // Root node
         *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
+        const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
+        if (root()->game().pEnv != root()->game().pGoaldata->first) throw 1;
         addnodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
