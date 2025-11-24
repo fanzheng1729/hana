@@ -16,7 +16,9 @@ inline void addnodeptr(Nodeptr p)
 // Add a simplified context.
 inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv)
 {
+    if (!pGoaldata) return NULL;
     BigGoalptr const pBigGoal = pGoaldata->second.pBigGoal;
+    if (!pBigGoal)  return NULL;
     Goaldata goaldata(pGoaldata->second.status);
     goaldata.pBigGoal = pBigGoal;
     Goaldatas::value_type const value(pEnv, goaldata);
