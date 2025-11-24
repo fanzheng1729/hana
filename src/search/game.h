@@ -11,7 +11,7 @@ struct Game
 {
     typedef ::Move Move;
     typedef ::Moves Moves;
-    // Pointer to rev Polish of expression to be proved
+    // Pointer to goal to be proven
     Goalptr pGoal;
     // Pointer to the current environment
     Environ * pEnv;
