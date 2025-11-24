@@ -49,14 +49,17 @@ public:
         if (status == GOALTRUE)
             pNewEnv = addenv(pEnv, pEnv->hypstotrim(pGoal));
         pGoal->second.pNewEnv = pNewEnv;
-        pGoaldata->second.pNewEnv = pNewEnv;
-        // Fix root context
+        Goaldata & goaldata = pGoaldata->second;
+        goaldata.pNewEnv = pNewEnv;
+        // New goal
         if (pNewEnv)
         {
-            pEnv = pNewEnv;
+            Goaldata newgoaldata(GOALTRUE);
+            newgoaldata.pBigGoal = goaldata.pBigGoal;
+            goaldata.pBigGoal->second.insert(std::make_pair(pNewEnv, newgoaldata));
         }
         // Root node
-        *root() = Game(pGoal, pEnv);
+        *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
         addnodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
