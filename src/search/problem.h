@@ -45,10 +45,13 @@ public:
         strview type = assertion.expression[0];
         Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addgoal(assertion.expRPN, type, pEnv, status);
-        Environ * const pNewEnv = pGoal->second.pNewEnv
-                                = addenv(pEnv, pEnv->hypstotrim(pGoal));
+        Environ * pNewEnv = addenv(pEnv, pEnv->hypstotrim(pGoal));
+        pGoal->second.pNewEnv = pGoaldata->second.pNewEnv = pNewEnv;
         // Fix root context
-        if (pNewEnv) pEnv = pNewEnv;
+        if (pNewEnv)
+        {
+            pEnv = pNewEnv;
+        }
         // Root node
         *root() = Game(pGoal, pEnv);
         addnodeptr(root());
