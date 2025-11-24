@@ -13,6 +13,7 @@ struct Game
     typedef ::Moves Moves;
     // Pointer to goal to be proven
     Goalptr pGoal;
+    Goaldataptr pGoaldata;
     // Pointer to the current environment
     Environ * pEnv;
     // # defers to the game
