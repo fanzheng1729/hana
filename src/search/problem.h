@@ -44,6 +44,7 @@ public:
         // Root goal
         strview type = assertion.expression[0];
         Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
+        Goaldataptr pGoaldata = addgoal(assertion.expRPN, type, pEnv, status);
         Environ * const pNewEnv = pGoal->second.pNewEnv
                                 = addenv(pEnv, pEnv->hypstotrim(pGoal));
         // Fix root context
