@@ -8,7 +8,7 @@ static Nodeptr cycles(Goalptr pGoal, Nodeptr pNode)
     while (true)
     {
         Game const & game = pNode->game();
-        if (game.ndefer == 0 && pGoal == game.pGoal)
+        if (game.nDefer == 0 && pGoal == game.pGoal)
             return pNode;
         if (Nodeptr const parent = pNode.parent())
             pNode = parent.parent();

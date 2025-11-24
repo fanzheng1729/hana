@@ -65,7 +65,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
         return EvalWIN;
     }
     // value is between WDL::LOSS and WDL::WIN.
-    if (p->game().ndefer == 0)
+    if (p->game().nDefer == 0)
         FOR (Nodeptr child, *p.children())
             addnodeptr(child);
     return Eval(value, false);
@@ -167,7 +167,7 @@ static void printattempt(Nodeptr p)
     switch (p->game().attempt.type)
     {
     case Move::DEFER :
-        std::cout << "DEFER(" << p->game().ndefer << ')';
+        std::cout << "DEFER(" << p->game().nDefer << ')';
         break;
     case Move::THM :
         printrefname(p);
@@ -283,7 +283,7 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
         isourturn(p) ? printourchildren(p, *this) :
             (*printfn[p->game().attempt.type == Move::DEFER])(p);
 // std::cout << "Children printed" << std::endl;
-    size_type level = 0, ndefer = 0;
+    size_type level = 0, nDefer = 0;
     while (p = pickchild(p))
     {
         if (!isourturn(p))
@@ -291,12 +291,12 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
             switch (p->game().attempt.type)
             {
             case Move::DEFER:
-                ++ndefer;
+                ++nDefer;
                 continue;
             case Move::THM:
                 std::cout << ++level << ".\t";
-                printstage(ndefer);
-                ndefer = 0;
+                printstage(nDefer);
+                nDefer = 0;
                 printtheirnode(p);
                 continue;
             case Move::NONE:
@@ -304,7 +304,7 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
                 return;
             }
         }
-        else if (p->game().ndefer == 0)
+        else if (p->game().nDefer == 0)
         {
             std::cout << '\t';
             printournode(p, p->stage() * (staged & STAGED));
@@ -318,7 +318,7 @@ void Problem::checkmainline(Nodeptr p) const
 {
     for ( ; p; p = pickchild(p))
     {
-        if (isourturn(p) && p->game().ndefer == 0
+        if (isourturn(p) && p->game().nDefer == 0
             && p->game().proven() && !p->won())
         {
             for (Nodeptr q = root(); q && q != p; q = pickchild(q))

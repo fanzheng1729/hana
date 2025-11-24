@@ -16,11 +16,11 @@ struct Game
     // Pointer to the current environment
     Environ * pEnv;
     // # defers to the game
-    stage_t ndefer;
+    stage_t nDefer;
     // Proof attempt made, on their turn
     Move attempt;
     Game(Goalptr goalptr = NULL, Environ * envptr = NULL, stage_t defer = 0) :
-        pGoal(goalptr), pEnv(envptr), ndefer(defer) {}
+        pGoal(goalptr), pEnv(envptr), nDefer(defer) {}
     Goal const & goal() const;
     Goaldata & goaldata() const;
     Proofsteps & proof() const;

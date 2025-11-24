@@ -17,7 +17,7 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
     if (game.proven())
         out << "Proof: " << game.proof();
     if (game.attempt.type != Move::NONE)
-        out << "Proof attempt (" << game.ndefer << ") "
+        out << "Proof attempt (" << game.nDefer << ") "
             << game.attempt << std::endl;
     return out;
 }
@@ -36,12 +36,12 @@ bool Game::legal(Move const & move, bool ourturn) const
 // Play a move.
 Game Game::play(Move const & move, bool ourturn) const
 {
-    Game game(pGoal, pEnv, ndefer);
+    Game game(pGoal, pEnv, nDefer);
 
     if (ourturn) // Record the move.
     {
         game.attempt = move;
-        game.ndefer = (move.type == Move::DEFER) * (ndefer + 1);
+        game.nDefer = (move.type == Move::DEFER) * (nDefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
     {
@@ -79,8 +79,8 @@ Moves Game::ourmoves(stage_t stage) const
         return Moves();
     if (env().staged)
         return env().ourmoves(*this, stage);
-// std::cout << "with ndefer " << ndefer << ' ';
-    Moves moves(env().ourmoves(*this, ndefer));
+// std::cout << "with nDefer " << nDefer << ' ';
+    Moves moves(env().ourmoves(*this, nDefer));
     moves.push_back(Move::DEFER);
 
     return moves;
