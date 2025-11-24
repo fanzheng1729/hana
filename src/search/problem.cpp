@@ -117,11 +117,11 @@ Goaldataptr Problem::addgoal
     (Proofsteps const & RPN, strview typecode, Environ const * penv, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);
-    BigGoalptr pgoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
-    Goaldatas & goaldatas = pgoal->second;
-    Goaldataptr pgoaldata = &*goaldatas.insert(std::make_pair(penv, s)).first;
-    pgoaldata->second.pBigGoal = pgoal;
-    return pgoaldata;
+    BigGoalptr pGoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
+    Goaldatas & goaldatas = pGoal->second;
+    Goaldataptr pGoaldata = &*goaldatas.insert(std::make_pair(penv, s)).first;
+    pGoaldata->second.pBigGoal = pGoal;
+    return pGoaldata;
 }
 
 // Return the only open child of p.
