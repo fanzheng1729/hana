@@ -58,14 +58,14 @@ public:
         strview type = assertion.expression[0];
         Goalptr pGoal = pEnv->addGoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addGoal(assertion.expRPN, type, pEnv, status);
-        Environ * const pNewEnv =
+        Environ * const pnewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal)) : NULL);
-        pGoal->second.pNewEnv = pNewEnv;
-        pGoaldata->second.pNewEnv = pNewEnv;
-        if (pNewEnv)
-            pGoaldata = addsimpEnv(pGoaldata, pNewEnv);
+        pGoal->second.pNewEnv = pnewEnv;
+        pGoaldata->second.pNewEnv = pnewEnv;
+        if (pnewEnv)
+            pGoaldata = addsimpEnv(pGoaldata, pnewEnv);
         // Root node
-        *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
+        *root() = Game(pGoal, pnewEnv ? pnewEnv : pEnv);
         const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
         if (root()->game().pEnv != root()->game().pGoaldata->first) throw 1;
         addnodeptr(root());
