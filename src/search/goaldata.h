@@ -21,10 +21,10 @@ struct Goaldata
     // Set of nodes trying to prove the open goal
     Nodeptrs nodeptrs;
     // Pointer to the different contexts where the goal is evaluated
-    Goalenvptr pGoalenv;
+    BigGoalptr pBigGoal;
     // New context after trimming unnecessary hypotheses
     Environ * pnewenv;
-    Goaldata(Goalstatus s) : status(s), pGoalenv(NULL), pnewenv(NULL) {}
+    Goaldata(Goalstatus s) : status(s), pBigGoal(NULL), pnewenv(NULL) {}
     bool proven() const { return !proof.empty(); }
 };
 

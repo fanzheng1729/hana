@@ -113,11 +113,15 @@ Environ * Problem::addenv(Environ const * penv, Bvector const & hypstotrim)
 }
 
 // Add a goal. Return its pointer.
-Goalenvptr Problem::addgoal
+Goaldataptr Problem::addgoal
     (Proofsteps const & RPN, strview typecode, Environ const * penv, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);
-    return NULL;
+    BigGoalptr pgoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
+    Goaldatas & goaldatas = pgoal->second;
+    Goaldataptr pgoaldata = &*goaldatas.insert(std::make_pair(penv, s)).first;
+    pgoaldata->second.pBigGoal = pgoal;
+    return pgoaldata;
 }
 
 // Return the only open child of p.
