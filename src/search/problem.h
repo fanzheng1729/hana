@@ -46,8 +46,9 @@ public:
         Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
         Environ * const pNewEnv = pGoal->second.pNewEnv
                                 = addenv(pEnv, pEnv->hypstotrim(pGoal));
-        // Root node
+        // Fix root context
         if (pNewEnv) pEnv = pNewEnv;
+        // Root node
         *root() = Game(pGoal, pEnv);
         addnodeptr(root());
     }
