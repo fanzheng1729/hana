@@ -14,6 +14,7 @@ inline void addnodeptr(Nodeptr p)
 }
 
 // Add a simplified context. Return its pointer.
+// In case of failure, return pGoaldata.
 inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv)
 {
     if (!pGoaldata || !pEnv) return pGoaldata;
@@ -62,8 +63,7 @@ public:
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal)) : NULL);
         pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
-        if (pnewEnv)
-            pGoaldata = addsimpEnv(pGoaldata, pnewEnv);
+        pGoaldata = addsimpEnv(pGoaldata, pnewEnv);
         // Root node
         *root() = Game(pGoal, pnewEnv ? pnewEnv : pEnv);
         const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
