@@ -54,9 +54,10 @@ public:
         // New goal
         if (pNewEnv)
         {
+            BigGoalptr pBigGoal = goaldata.pBigGoal;
             Goaldata newgoaldata(GOALTRUE);
-            newgoaldata.pBigGoal = goaldata.pBigGoal;
-            goaldata.pBigGoal->second.insert(std::make_pair(pNewEnv, newgoaldata));
+            newgoaldata.pBigGoal = pBigGoal;
+            pBigGoal->second.insert(std::make_pair(pNewEnv, newgoaldata));
         }
         // Root node
         *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
