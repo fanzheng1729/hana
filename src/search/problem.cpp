@@ -113,7 +113,7 @@ Environ * Problem::addEnv(Environ const * pEnv, Bvector const & hypstotrim)
 }
 
 // Add a goal. Return its pointer.
-Goaldataptr Problem::addgoal
+Goaldataptr Problem::addGoal
     (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);

@@ -44,6 +44,7 @@ public:
         assertion(env.assertion), staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
+        if (assertion.expression.empty()) return;
         Goalstatus const status = env.valid(assertion.expRPN);
         if (status == GOALFALSE) return;
         // Root context
@@ -54,7 +55,7 @@ public:
         // Root goal
         strview type = assertion.expression[0];
         Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
-        Goaldataptr pGoaldata = addgoal(assertion.expRPN, type, pEnv, status);
+        Goaldataptr pGoaldata = addGoal(assertion.expRPN, type, pEnv, status);
         Environ * const pNewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal)) : NULL);
         pGoal->second.pNewEnv = pNewEnv;
@@ -126,7 +127,7 @@ public:
     // Return NULL if not okay.
     Environ * addEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
-    Goaldataptr addgoal
+    Goaldataptr addGoal
         (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
