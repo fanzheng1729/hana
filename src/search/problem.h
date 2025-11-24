@@ -56,7 +56,7 @@ public:
         {
             // Simplified goal
             BigGoalptr const pBigGoal = goaldata.pBigGoal;
-            Goaldata newgoaldata(GOALTRUE);
+            Goaldata newgoaldata(status);
             newgoaldata.pBigGoal = pBigGoal;
             Goaldatas::value_type const value(pNewEnv, newgoaldata);
             pGoaldata = &*pBigGoal->second.insert(value).first;
