@@ -13,6 +13,7 @@
 // If so, record its proof and return true.
 bool proven(Goalptr p, Assertion const & ass)
 {
+    if (!p) return false;
     if (p->second.proven()) return true;
     // Match hypotheses of the assertion.
     Hypsize i = ass.matchhyp(p->first.RPN, p->first.typecode);
