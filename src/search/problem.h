@@ -51,9 +51,10 @@ public:
         pGoal->second.pNewEnv = pNewEnv;
         Goaldata & goaldata = pGoaldata->second;
         goaldata.pNewEnv = pNewEnv;
-        // New goal
+
         if (pNewEnv)
         {
+            // Simplified goal
             BigGoalptr pBigGoal = goaldata.pBigGoal;
             Goaldata newgoaldata(GOALTRUE);
             newgoaldata.pBigGoal = pBigGoal;
