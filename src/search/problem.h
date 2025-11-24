@@ -45,7 +45,9 @@ public:
         strview type = assertion.expression[0];
         Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addgoal(assertion.expRPN, type, pEnv, status);
-        Environ * pNewEnv = addenv(pEnv, pEnv->hypstotrim(pGoal));
+        Environ * pNewEnv = NULL;
+        if (status == GOALTRUE)
+            pNewEnv = addenv(pEnv, pEnv->hypstotrim(pGoal));
         pGoal->second.pNewEnv = pGoaldata->second.pNewEnv = pNewEnv;
         // Fix root context
         if (pNewEnv)
