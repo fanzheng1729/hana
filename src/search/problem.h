@@ -58,7 +58,8 @@ public:
             BigGoalptr pBigGoal = goaldata.pBigGoal;
             Goaldata newgoaldata(GOALTRUE);
             newgoaldata.pBigGoal = pBigGoal;
-            pBigGoal->second.insert(std::make_pair(pNewEnv, newgoaldata));
+            Goaldatas::value_type value(pNewEnv, newgoaldata);
+            pBigGoal->second.insert(value);
         }
         // Root node
         *root() = Game(pGoal, pNewEnv ? pNewEnv : pEnv);
