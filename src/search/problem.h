@@ -14,7 +14,14 @@ inline void addnodeptr(Nodeptr p)
 }
 
 // Add a simplified context.
-Goaldataptr addsimpenv(Goaldataptr pGoaldata, Environ const * penv);
+inline Goaldataptr addsimpenv(Goaldataptr pGoaldata, Environ const * pEnv)
+{
+    BigGoalptr const pBigGoal = pGoaldata->second.pBigGoal;
+    Goaldata goaldata(pGoaldata->second.status);
+    goaldata.pBigGoal = pBigGoal;
+    Goaldatas::value_type const value(pEnv, goaldata);
+    return &*pBigGoal->second.insert(value).first;
+}
 
 // Problem statement + Proof search tree with loop detection
 // + context management + UI
