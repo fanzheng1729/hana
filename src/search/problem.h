@@ -55,9 +55,8 @@ public:
         strview type = assertion.expression[0];
         Goalptr pGoal = pEnv->addgoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addgoal(assertion.expRPN, type, pEnv, status);
-        Environ * pNewEnv = NULL;
-        if (status == GOALTRUE)
-            pNewEnv = addEnv(pEnv, pEnv->hypstotrim(pGoal));
+        Environ * const pNewEnv =
+        (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal)) : NULL);
         pGoal->second.pNewEnv = pNewEnv;
         pGoaldata->second.pNewEnv = pNewEnv;
         if (pNewEnv)
