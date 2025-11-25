@@ -36,7 +36,7 @@ bool Game::legal(Move const & move, bool ourturn) const
 // Play a move.
 Game Game::play(Move const & move, bool ourturn) const
 {
-    Game game(pGoal, pEnv, nDefer);
+    Game game(cheapcopy());
 
     if (ourturn) // Record the move.
     {
@@ -46,8 +46,8 @@ Game Game::play(Move const & move, bool ourturn) const
     else if (attempt.type == Move::THM) // Pick the hypothesis.
     {
         game.pGoal = attempt.hypvec[move.index];
-        if (Environ * pnewEnv = game.goaldata().pnewEnv)
-            game.pEnv = pnewEnv;
+        if (game.goaldata().pnewEnv)
+            game.pEnv = game.goaldata().pnewEnv;
     }
 
     return game;

@@ -22,6 +22,15 @@ struct Game
     Move attempt;
     Game(Goalptr goalptr = NULL, Environ * envptr = NULL, stage_t defer = 0) :
         pGoal(goalptr), pEnv(envptr), nDefer(defer) {}
+    Game cheapcopy() const
+    {
+        Game other;
+        other.pGoal = pGoal;
+        other.pGoaldata = pGoaldata;
+        other.pEnv = pEnv;
+        other.nDefer = nDefer;
+        return other;
+    }
     Goal const & goal() const;
     Goaldata & goaldata() const;
     Proofsteps & proof() const;
