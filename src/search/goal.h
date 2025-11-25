@@ -28,8 +28,6 @@ inline bool operator<(Goal const & x, Goal const & y)
 struct Goaldata;
 // Map: goal -> Evaluation
 typedef std::map<Goal, Goaldata> Goals;
-// Pointer to a goal
-typedef Goals::pointer Goalptr;
 
 // Polymorphic context
 struct Environ;
