@@ -7,7 +7,7 @@
 #include "../util/iter.h"
 #include "../proof/write.h"
 
-Goal const & Game::goal() const { return pGoal->first; }
+Goal const & Game::goal() const { return pGoaldata->second.pBigGoal->first; }
 Goaldata & Game::goaldata() const { return pGoal->second; }
 Proofsteps & Game::proof() const { return goaldata().proof; }
 Environ const * Game::pEnv() const { return pGoaldata->first; }
