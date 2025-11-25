@@ -108,7 +108,7 @@ bool Environ::valid(Move const & move) const
     if (!checkDV(move, assertion))
         return false;
     // Record the hypotheses.
-    move.hypvec2.resize(move.hypcount());
+    move.hypvec.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
         if (move.hypfloats(i))
@@ -123,11 +123,11 @@ bool Environ::valid(Move const & move) const
         if (pGoaldata->second.status == GOALFALSE)
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
-        move.hypvec2[i] = pGoaldata;
+        move.hypvec[i] = pGoaldata;
         // Check if the goal has been validated.
         if (proven(pGoaldata, assertion) || pGoaldata->second.status >= GOALOPEN)
         {
-            move.hypvec2[i] = addGoaldata(pGoaldata, pGoaldata->second.pnewEnv);
+            move.hypvec[i] = addGoaldata(pGoaldata, pGoaldata->second.pnewEnv);
             continue; // Valid
         }
         // New goal (status == GOALNEW)
@@ -137,7 +137,7 @@ bool Environ::valid(Move const & move) const
         // New context for the child
         Environ * pnewEnv = pProb->addEnv(this, hypstotrim(newgoal));
         pGoaldata->second.pnewEnv = pnewEnv;
-        move.hypvec2[i] = addGoaldata(pGoaldata, pnewEnv);
+        move.hypvec[i] = addGoaldata(pGoaldata, pnewEnv);
 // if (pnewEnv)
 // std::cout << pGoaldata->second.goal().RPN << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;

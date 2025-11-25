@@ -45,7 +45,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.nDefer = (move.type == Move::DEFER) * (nDefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
-        game.pGoaldata = attempt.hypvec2[move.index];
+        game.pGoaldata = attempt.hypvec[move.index];
 
     return game;
 }
@@ -113,7 +113,7 @@ bool Game::writeproof() const
     {
         hyps[i] = attempt.hypfloats(i) ?
             &attempt.substitutions[attempt.hypexp(i)[1]] :
-            &attempt.hypvec2[i]->second.proof;
+            &attempt.hypvec[i]->second.proof;
 // std::cout << "Added hyp\n" << *hyps.back();
     }
     // The whose proof

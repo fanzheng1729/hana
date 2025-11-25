@@ -64,11 +64,11 @@ bool loops(Nodeptr p)
     {
         if (move.hypfloats(i))
             continue;
-        if (move.hypvec2[i]->second.proven())
+        if (move.hypvec[i]->second.proven())
             continue;
-        if (cycles(move.hypvec2[i], p.parent()))
+        if (cycles(move.hypvec[i], p.parent()))
             return true;
-        allgoals.insert(move.hypvec2[i]);
+        allgoals.insert(move.hypvec[i]);
     }
     // Check if these hypotheses combined prove a parent node.
     while (Goaldataptr const pnewgoal = allgoals.saturate())
