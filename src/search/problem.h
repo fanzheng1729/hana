@@ -85,19 +85,20 @@ public:
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // # goals of a given status
-    Goals::size_type countgoal(int status) const
+    BigGoals::size_type countgoal(int status) const
     {
-        Goals::size_type n = 0;
-        FOR (Environs::const_reference subenv, environs)
-            n += subenv.second->countgoal(status);
+        BigGoals::size_type n = 0;
+        FOR (BigGoals::const_reference goaldatas, goals)
+            n += goaldatas.second.size();
         return n;
     }
     // # proven goals
-    Goals::size_type countproof() const
+    BigGoals::size_type countproof() const
     {
-        Goals::size_type n = 0;
-        FOR (Environs::const_reference subenv, environs)
-            n += subenv.second->countproof();
+        BigGoals::size_type n = 0;
+        FOR (BigGoals::const_reference goaldatas, goals)
+            FOR (Goaldatas::const_reference goaldata, goaldatas.second)
+                n += goaldata.second.proven();
         return n;
     }
     // # contexts
