@@ -124,7 +124,6 @@ bool Environ::valid(Move const & move) const
         if (pGoaldata->second.status == GOALFALSE)
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
-        move.hypvec[i] = pGoal;
         move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
         if (proven(pGoaldata, assertion) || pGoaldata->second.status >= GOALOPEN)
