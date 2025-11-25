@@ -114,8 +114,6 @@ bool Environ::valid(Move const & move) const
         if (move.hypfloats(i))
             continue;
         // Add the essential hypothesis as a goal.
-        Goalptr const pGoal = const_cast<Environ *>(this)->addGoal
-            (move.hypRPN(i), move.hyptypecode(i), GOALNEW);
         Goaldataptr const pGoaldata = pProb->addGoal
             (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->first.RPN;
