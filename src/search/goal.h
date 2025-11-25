@@ -24,13 +24,11 @@ inline bool operator==(Goal const & x, Goal const & y)
 inline bool operator<(Goal const & x, Goal const & y)
     { return x.RPN < y.RPN || x.RPN == y.RPN && x.typecode < y.typecode; }
 
-// Data associated with the goal
-struct Goaldata;
-// Map: goal -> Evaluation
-typedef std::map<Goal, Goaldata> Goals;
 
 // Polymorphic context
 struct Environ;
+// Data associated with the goal
+struct Goaldata;
 // Map: context -> evaluation
 typedef std::map<Environ *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
