@@ -88,6 +88,20 @@ Moves Game::ourmoves(stage_t stage) const
     return moves;
 }
 
+static void writeprooferr
+    (Game const & game, Expression const & exp, pProofs const & hyps)
+{
+    std::cerr << "In attempt to use " << game.attempt << ", the proof\n";
+    std::cerr << game.proof() << "proves\n" << exp;
+    std::cerr << "instead of\n" << game.goal().expression();
+    std::cerr << "Proofs of hypotheses are" << std::endl;
+    for (Hypsize i = 0; i < game.attempt.hypcount(); ++i)
+    {
+        Proofsteps const & steps = *hyps[i];
+        std::cerr << game.attempt.hyplabel(i) << '\t' << steps;
+    }
+}
+
 // Add proof for a node using a theorem.
 // Return true if a new proof is written.
 bool Game::writeproof() const
@@ -120,22 +134,8 @@ bool Game::writeproof() const
     }
     else
     {
-        void writeprooferr(Game const & game, Expression const & exp, pProofs const & hyps);
         writeprooferr(*this, exp, hyps);
         proof().clear();
     }
     return okay;
-}
-
-void writeprooferr(Game const & game, Expression const & exp, pProofs const & hyps)
-{
-    std::cerr << "In attempt to use " << game.attempt << ", the proof\n";
-    std::cerr << game.proof() << "proves\n" << exp;
-    std::cerr << "instead of\n" << game.goal().expression();
-    std::cerr << "Proofs of hypotheses are" << std::endl;
-    for (Hypsize i = 0; i < game.attempt.hypcount(); ++i)
-    {
-        Proofsteps const & steps = *hyps[i];
-        std::cerr << game.attempt.hyplabel(i) << '\t' << steps;
-    }
 }
