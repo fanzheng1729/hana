@@ -65,30 +65,30 @@ bool Environ::valid(Move const & move) const
         if (move.hypfloats(i))
             continue;
         // Add the essential hypothesis as a goal.
-        Goaldataptr const pGoaldata = pProb->addGoal
+        Goaldataptr const pGoal = pProb->addGoal
             (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->first.RPN;
         // Status of the goal
-        if (pGoaldata->second.status == GOALFALSE)
+        if (pGoal->second.status == GOALFALSE)
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
-        move.hypvec[i] = pGoaldata;
+        move.hypvec[i] = pGoal;
         // Check if the goal has been validated.
-        if (proven(pGoaldata, assertion) || pGoaldata->second.status >= GOALOPEN)
+        if (proven(pGoal, assertion) || pGoal->second.status >= GOALOPEN)
         {
-            move.hypvec[i] = addGoaldata(pGoaldata, pGoaldata->second.pnewEnv);
+            move.hypvec[i] = addGoaldata(pGoal, pGoal->second.pnewEnv);
             continue; // Valid
         }
         // New goal (status == GOALNEW)
-        Goal const & newgoal = pGoaldata->second.goal();
-        if ((pGoaldata->second.status = valid(newgoal)) == GOALFALSE)
+        Goal const & newgoal = pGoal->second.goal();
+        if ((pGoal->second.status = valid(newgoal)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
         Environ * pnewEnv = pProb->addEnv(this, hypstotrim(newgoal));
-        pGoaldata->second.pnewEnv = pnewEnv;
-        move.hypvec[i] = addGoaldata(pGoaldata, pnewEnv);
+        pGoal->second.pnewEnv = pnewEnv;
+        move.hypvec[i] = addGoaldata(pGoal, pnewEnv);
 // if (pnewEnv)
-// std::cout << pGoaldata->second.goal().RPN << label() << "\n->\n",
+// std::cout << pGoal->second.goal().RPN << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
     }
 // std::cout << moves;
