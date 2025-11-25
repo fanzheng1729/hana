@@ -11,16 +11,16 @@
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
-bool proven(Goalptr p, Assertion const & ass)
+bool proven(Goalptr pGoal, Goaldataptr pGoaldata, Assertion const & ass)
 {
-    if (!p) return false;
-    if (p->second.proven()) return true;
+    if (!pGoal) return false;
+    if (pGoal->second.proven()) return true;
     // Match hypotheses of the assertion.
-    Hypsize const i = ass.matchhyp(p->first.RPN, p->first.typecode);
+    Hypsize const i = ass.matchhyp(pGoal->first.RPN, pGoal->first.typecode);
     if (i == ass.hypcount()) return false; // No match
     // 1-step proof using the matched hypothesis
-    p->second.proof.assign(1, ass.hypiters[i]);
-    return p->second.status = GOALTRUE;
+    pGoal->second.proof.assign(1, ass.hypiters[i]);
+    return pGoal->second.status = GOALTRUE;
 }
 
 static Symbol3s symbols(Proofsteps const & RPN)
@@ -131,7 +131,7 @@ bool Environ::valid(Move const & move) const
         move.hypvec[i] = pGoal;
         move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
-        if (proven(pGoal, assertion))
+        if (proven(pGoal, pGoaldata, assertion))
             pGoaldata->second.status = GOALTRUE;
         if (status >= GOALOPEN)
         {
