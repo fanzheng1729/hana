@@ -119,9 +119,9 @@ Goaldataptr Problem::addGoal
     Goalview const goal(RPN, typecode);
     BigGoalptr pBigGoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
     Goaldatas & goaldatas = pBigGoal->second;
-    Goaldataptr pGoaldata = &*goaldatas.insert(std::make_pair(pEnv, s)).first;
-    pGoaldata->second.pBigGoal = pBigGoal;
-    return pGoaldata;
+    Goaldataptr pGoal = &*goaldatas.insert(std::make_pair(pEnv, s)).first;
+    pGoal->second.pBigGoal = pBigGoal;
+    return pGoal;
 }
 
 // Return the only open child of p.
