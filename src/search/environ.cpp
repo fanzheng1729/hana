@@ -73,11 +73,7 @@ Goals::size_type Environ::countgoal(int status) const
 // # proven goals
 Goals::size_type Environ::countproof() const
 {
-    Goals::size_type n = 0;
-    FOR (Goals::const_reference goal, goals)
-        n += goal.second.proven();
-// std::cout << label() << " has proof " << n << std::endl;
-    return n;
+    return 0;
 }
 
 // Printing utilities
