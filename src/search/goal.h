@@ -31,12 +31,18 @@ typedef std::map<Goal, Goaldata> Goals;
 // Pointer to a goal
 typedef Goals::pointer Goalptr;
 
+// Polymorphic context
+struct Environ;
 // Map: context -> evaluation
-typedef std::map<struct Environ const *, Goaldata> Goaldatas;
+typedef std::map<Environ const *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
 
+// Add a (pEnv, Goaldata). Return its pointer.
+// In case of failure, return pGoaldata.
+inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv);
+
 // Map: goal -> context -> evaluation
-typedef std::map<Goal, Goaldatas> Goalenvs;
-typedef Goalenvs::pointer BigGoalptr;
+typedef std::map<Goal, Goaldatas> BigGoals;
+typedef BigGoals::pointer BigGoalptr;
 
 #endif // GOAL_H_INCLUDED

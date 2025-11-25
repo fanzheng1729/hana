@@ -13,7 +13,7 @@ inline void addNodeptr(Nodeptr p)
         p->game().goaldata().nodeptrs.insert(p);
 }
 
-// Add a simplified context. Return its pointer.
+// Add a (pEnv, Goaldata). Return its pointer.
 // In case of failure, return pGoaldata.
 inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv)
 {
@@ -34,7 +34,7 @@ class Problem : public MCTS<Game>
     // DAG of polymorphic contexts
     DAG<Environs> environs;
     // Map: goal -> context -> evaluation
-    Goalenvs goals;
+    BigGoals goals;
 public:
     // The assertion to be proved
     Assertion const & assertion;
