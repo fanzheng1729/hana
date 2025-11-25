@@ -89,7 +89,8 @@ public:
     {
         BigGoals::size_type n = 0;
         FOR (BigGoals::const_reference goaldatas, goals)
-            n += goaldatas.second.size();
+            FOR (Goaldatas::const_reference goaldata, goaldatas.second)
+                n += (goaldata.second.status == status);
         return n;
     }
     // # proven goals
