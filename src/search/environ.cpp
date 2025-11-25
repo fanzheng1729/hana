@@ -112,6 +112,7 @@ bool Environ::valid(Move const & move) const
         return false;
     // Record the hypotheses.
     move.hypvec.resize(move.hypcount());
+    move.hypvec2.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
         if (move.hypfloats(i))
@@ -128,6 +129,7 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = pGoal;
+        move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
         if (proven(pGoal, assertion))
             pGoaldata->second.status = GOALTRUE;
