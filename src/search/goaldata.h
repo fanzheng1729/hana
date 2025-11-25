@@ -27,6 +27,7 @@ struct Goaldata
     Goaldata(Goalstatus s, BigGoalptr bigGoalptr = NULL) :
         status(s), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
     bool proven() const { return !proof.empty(); }
+    Goal const & goal() const { return pBigGoal->first; }
 };
 
 // Add a (pEnv, Goaldata). Return its pointer.
