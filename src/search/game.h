@@ -24,7 +24,6 @@ struct Game
     Game cheapcopy() const
     {
         Game other;
-        other.pGoal = pGoal;
         other.pGoaldata = pGoaldata;
         other.nDefer = nDefer;
         return other;
