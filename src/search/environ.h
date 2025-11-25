@@ -74,8 +74,6 @@ protected:
     Problem * pProb;
     friend Problem;
 private:
-    // Map: goal -> Evaluation
-    Goals goals;
 // private methods
     // Add a move with only bound substitutions.
     // Return true if it has no essential hypotheses.
