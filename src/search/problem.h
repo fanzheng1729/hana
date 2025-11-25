@@ -38,7 +38,7 @@ public:
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
         strview type = assertion.expression[0];
-        Goaldataptr pGoal = addGoal(assertion.expRPN, type, pEnv, status);
+        Goalptr pGoal = addGoal(assertion.expRPN, type, pEnv, status);
         Environ * const pnewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal())) : NULL);
         pGoal->second.pnewEnv = pnewEnv;
@@ -108,7 +108,7 @@ public:
     // Return NULL if not okay.
     Environ * addEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
-    Goaldataptr addGoal
+    Goalptr addGoal
         (Proofsteps const & RPN, strview typecode, Environ * pEnv, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;

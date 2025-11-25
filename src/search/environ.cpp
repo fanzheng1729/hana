@@ -11,7 +11,7 @@
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
-bool proven(Goaldataptr p, Assertion const & ass)
+bool proven(Goalptr p, Assertion const & ass)
 {
     if (!p) return false;
     if (p->second.proven()) return true;
@@ -65,7 +65,7 @@ bool Environ::valid(Move const & move) const
         if (move.hypfloats(i))
             continue;
         // Add the essential hypothesis as a goal.
-        Goaldataptr const pGoal = pProb->addGoal
+        Goalptr const pGoal = pProb->addGoal
             (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->first.RPN;
         // Status of the goal

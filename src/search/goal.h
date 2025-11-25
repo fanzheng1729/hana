@@ -31,7 +31,7 @@ struct Environ;
 struct Goaldata;
 // Map: context -> evaluation
 typedef std::map<Environ *, Goaldata> Goaldatas;
-typedef Goaldatas::pointer Goaldataptr;
+typedef Goaldatas::pointer Goalptr;
 
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> BigGoals;
