@@ -143,12 +143,11 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         // New context for the child
         Environ * const pnewEnv = pProb->addEnv(this, hypstotrim(pGoal->first));
-        pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
         move.hypvec2[i] = addGoaldata(pGoaldata, pnewEnv);
-// if (pGoal->second.pnewEnv)
-// std::cout << pGoal->first.RPN << label() << "\n->\n",
-// std::cout << (pGoal->second.pnewEnv ? pGoal->second.pnewEnv->label() : "") << std::endl;
+// if (pnewEnv)
+// std::cout << pGoaldata->second.goal().RPN << label() << "\n->\n",
+// std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
     }
 // std::cout << moves;
 

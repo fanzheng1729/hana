@@ -41,7 +41,6 @@ public:
         Goaldataptr pGoaldata = addGoal(assertion.expRPN, type, pEnv, status);
         Environ * const pnewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoaldata->second.goal())) : NULL);
-        pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
         pGoaldata = addGoaldata(pGoaldata, pnewEnv);
         // Root node

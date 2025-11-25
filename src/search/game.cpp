@@ -112,19 +112,25 @@ bool Game::writeproof() const
     const Expression & exp(verify(proof()));
     const bool okay = (exp == goal().expression());
     if (okay)
-        pGoal->second.status = GOALTRUE;
+        pGoal->second.status = pGoaldata->second.status = GOALTRUE;
     else
     {
-        std::cerr << "In attempt to use " << attempt << ", the proof\n";
-        std::cerr << proof() << "proves\n" << exp;
-        std::cerr << "instead of\n" << goal().expression();
-        std::cerr << "Proofs of hypotheses are" << std::endl;
-        for (Hypsize i = 0; i < attempt.hypcount(); ++i)
-        {
-            Proofsteps const & steps = *hyps[i];
-            std::cerr << attempt.hyplabel(i) << '\t' << steps;
-        }
+        void writeprooferr(Game const & game, Expression const & exp, pProofs const & hyps);
+        writeprooferr(*this, exp, hyps);
         proof().clear();
     }
     return okay;
+}
+
+void writeprooferr(Game const & game, Expression const & exp, pProofs const & hyps)
+{
+    std::cerr << "In attempt to use " << game.attempt << ", the proof\n";
+    std::cerr << game.proof() << "proves\n" << exp;
+    std::cerr << "instead of\n" << game.goal().expression();
+    std::cerr << "Proofs of hypotheses are" << std::endl;
+    for (Hypsize i = 0; i < game.attempt.hypcount(); ++i)
+    {
+        Proofsteps const & steps = *hyps[i];
+        std::cerr << game.attempt.hyplabel(i) << '\t' << steps;
+    }
 }
