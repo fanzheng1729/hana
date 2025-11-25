@@ -64,9 +64,9 @@ bool loops(Nodeptr p)
     {
         if (move.hypfloats(i))
             continue;
-        Goalptr const pGoal = move.hypvec[i];
         if (move.hypvec2[i]->second.proven())
             continue;
+        Goalptr const pGoal = move.hypvec[i];
         if (cycles(pGoal, p.parent()))
             return true;
         allgoals.insert(pGoal);
