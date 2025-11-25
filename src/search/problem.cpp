@@ -38,7 +38,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     if (!isourturn(p))
         return evaltheirleaf(p);
     // Our leaf
-    if (!game.pGoal || !game.pEnv)
+    if (!game.pGoal || !game.pGoaldata || !game.pGoaldata->first)
         return EvalLOSS;
     if (p.parent() && game.proven())
         return EvalWIN;

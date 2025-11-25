@@ -22,12 +22,12 @@ struct Game
     Move attempt;
     Game(Goalptr goalptr = NULL, Environ * envptr = NULL) :
         pGoal(goalptr), pEnv(envptr), nDefer(0) {}
+    // Does not copy the attempt.
     Game cheapcopy() const
     {
         Game other;
         other.pGoal = pGoal;
         other.pGoaldata = pGoaldata;
-        other.pEnv = pEnv;
         other.nDefer = nDefer;
         return other;
     }
