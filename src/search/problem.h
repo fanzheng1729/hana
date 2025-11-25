@@ -65,7 +65,7 @@ public:
     // Close all the nodes with p's proven goal.
     void closenodes(Nodeptr p)
     {
-        FOR (Nodeptr const other, p->game().goaldata().nodeptrs)
+        FOR (Nodeptr const other, p->game().goaldata2().nodeptrs)
             if (other != p && !other->won())
             {
                 setwin(other);
