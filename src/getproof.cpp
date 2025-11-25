@@ -68,7 +68,7 @@ ReadStatus getproofletters(strview label, Tokens & tokens, std::string & letters
     return printprooferr(label, err);
 }
 
-static void printoverflowerr(strview label)
+static void overflowerr(strview label)
 {
     std::cerr << "Overflow computing numbers in compressed proof of ";
     std::cerr << label.c_str << std::endl;
@@ -89,7 +89,7 @@ Proofnumbers getproofnumbers(strview label, std::string const & letters)
         {
             if (!util::FMA(num, 20u, c - ('A' - 1)))
             {
-                printoverflowerr(label);
+                overflowerr(label);
                 return Proofnumbers();
             }
 
@@ -101,7 +101,7 @@ Proofnumbers getproofnumbers(strview label, std::string const & letters)
         {
             if (!util::FMA(num, 5u, c - 'T'))
             {
-                printoverflowerr(label);
+                overflowerr(label);
                 return Proofnumbers();
             }
 
