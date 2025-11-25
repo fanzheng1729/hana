@@ -28,7 +28,8 @@ public:
         MCTS(Game(), params)
     {
         if (assertion.expression.empty()) return;
-        Goalstatus const status = env.valid(assertion.expRPN);
+        Goalview const goal(assertion.expRPN, assertion.expression[0]);
+        Goalstatus const status = env.valid(goal);
         if (status == GOALFALSE) return;
         // Root context
         Environ * pEnv = new Env(env);

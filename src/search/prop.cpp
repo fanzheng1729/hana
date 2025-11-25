@@ -9,14 +9,15 @@
 #include "../util/timer.h"
 
 // Determine status of a goal.
-Goalstatus Prop::valid(Proofsteps const & goal) const
+Goalstatus Prop::valid(Goal const & goal) const
 {
+    Proofsteps const & RPN = goal.RPN;
     CNFClauses cnf(hypscnf.first);
     Atom natom = hypatomcount;
     // Add hypotheses.
-    if (!database.propctors().addclause(goal, assertion.hypiters, cnf, natom))
+    if (!database.propctors().addclause(RPN, assertion.hypiters, cnf, natom))
     {
-        std::cerr << "Bad CNF from\n" << goal << "in " << label() << std::endl;
+        std::cerr << "Bad CNF from\n" << RPN << "in " << label() << std::endl;
         return GOALFALSE;
     }
     // Negate conclusion.
