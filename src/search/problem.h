@@ -71,7 +71,9 @@ public:
                 if (parent && !parent->won())
                     backprop(parent);
             }
+        // closemorenodes(p);
     }
+    void closemorenodes(Nodeptr p);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
