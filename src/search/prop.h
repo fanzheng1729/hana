@@ -25,7 +25,7 @@ struct Prop : Environ
     // Determine status of a goal.
     virtual Goalstatus valid(Proofsteps const & goal) const;
     // Return the hypotheses of a goal to trim.
-    virtual Bvector hypstotrim(Goalptr pGoal) const;
+    virtual Bvector hypstotrim(Goal const & goal) const;
     // Allocate a new environment constructed from an assertion on the heap.
     // Return its address.
     virtual Prop * makeenv(Assertion const & ass) const

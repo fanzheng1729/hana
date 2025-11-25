@@ -142,7 +142,7 @@ bool Environ::valid(Move const & move) const
         if ((status = pGoaldata->second.status = valid(pGoal->first.RPN)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
-        Environ * const pnewEnv = pProb->addEnv(this, hypstotrim(pGoal));
+        Environ * const pnewEnv = pProb->addEnv(this, hypstotrim(pGoal->first));
         pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
         move.hypvec2[i] = addGoaldata(pGoaldata, pnewEnv);

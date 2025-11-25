@@ -51,7 +51,8 @@ struct Environ : protected Gen
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
-    virtual Bvector hypstotrim(Goalptr p) const { return Bvector(0 && p); }
+    virtual Bvector hypstotrim(Goal const & goal) const
+    { return Bvector(0 && &goal); }
     // Determine status of a goal.
     virtual Goalstatus valid(Proofsteps const & goal) const
     { return goal.empty() ? GOALFALSE : GOALOPEN; }
