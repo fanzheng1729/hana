@@ -450,7 +450,7 @@ void Problem::navigate(bool detailed) const
 
 void Problem::writeproof(const char * const filename) const
 {
-    if (proof().empty() || !filename)
+    if (proof().empty() || !root()->game().pEnv() || !filename)
         return;
 
     Printer printer(&root()->game().env().database.typecodes());
