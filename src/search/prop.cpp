@@ -172,8 +172,7 @@ static void printtime(Problem::size_type nodes, Time time)
 
 // Test propositional proof search. Return 1 iff okay.
 bool testpropsearch
-    (Database const & database, std::size_t maxsize,
-     double const parameters[3])
+    (Database const & database, std::size_t maxsize, double const parameters[3])
 {
     std::cout << "Testing propositional proof search";
     Progress progress(std::cerr);

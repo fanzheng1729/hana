@@ -1,7 +1,7 @@
+#include <cstddef>  // for std::size_t
+
 class Database;
-class Problem;
 
 // Test propositional proof search. Return 1 iff okay.
 bool testpropsearch
-    (Database const & database, Problem::size_type maxsize,
-     double const parameters[3]);
+    (Database const & database, std::size_t maxsize, double const parameters[3]);
