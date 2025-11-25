@@ -18,11 +18,10 @@ inline void addNodeptr(Nodeptr p)
 inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv)
 {
     if (!pGoaldata || !pEnv) return pGoaldata;
-    BigGoalptr const pBigGoal = pGoaldata->second.pBigGoal;
+    Goaldata const & goaldata = pGoaldata->second;
+    BigGoalptr const pBigGoal = goaldata.pBigGoal;
     if (!pBigGoal) return pGoaldata;
-    Goaldata goaldata(pGoaldata->second.status);
-    goaldata.pBigGoal = pBigGoal;
-    Goaldatas::value_type const value(pEnv, goaldata);
+    Goaldatas::value_type value(pEnv, Goaldata(goaldata.status, pBigGoal));
     return &*pBigGoal->second.insert(value).first;
 }
 

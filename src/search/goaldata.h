@@ -24,7 +24,8 @@ struct Goaldata
     BigGoalptr pBigGoal;
     // New context after trimming unnecessary hypotheses
     Environ * pnewEnv;
-    Goaldata(Goalstatus s) : status(s), pBigGoal(NULL), pnewEnv(NULL) {}
+    Goaldata(Goalstatus s, BigGoalptr bigGoalptr = NULL) :
+        status(s), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
     bool proven() const { return !proof.empty(); }
 };
 
