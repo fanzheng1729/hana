@@ -129,7 +129,6 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = pGoal;
-        move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
         if (proven(pGoal, assertion))
             pGoaldata->second.status = GOALTRUE;
@@ -142,6 +141,7 @@ bool Environ::valid(Move const & move) const
         Environ * const pnewEnv = pProb->addEnv(this, hypstotrim(pGoal));
         pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
+        move.hypvec2[i] = pGoaldata;
 // if (pGoal->second.pnewEnv)
 // std::cout << pGoal->first.RPN << label() << "\n->\n",
 // std::cout << (pGoal->second.pnewEnv ? pGoal->second.pnewEnv->label() : "") << std::endl;
