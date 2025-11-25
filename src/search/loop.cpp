@@ -65,7 +65,7 @@ bool loops(Nodeptr p)
         if (move.hypfloats(i))
             continue;
         Goalptr const pGoal = move.hypvec[i];
-        if (pGoal->second.proven())
+        if (move.hypvec2[i]->second.proven())
             continue;
         if (cycles(pGoal, p.parent()))
             return true;
