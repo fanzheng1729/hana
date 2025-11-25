@@ -108,7 +108,6 @@ bool Environ::valid(Move const & move) const
     if (!checkDV(move, assertion))
         return false;
     // Record the hypotheses.
-    move.hypvec.resize(move.hypcount());
     move.hypvec2.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
