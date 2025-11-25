@@ -40,7 +40,7 @@ public:
         Goalptr pGoal = pEnv->addGoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addGoal(assertion.expRPN, type, pEnv, status);
         Environ * const pnewEnv =
-        (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal->first)) : NULL);
+        (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoaldata->second.goal())) : NULL);
         pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
         pGoaldata = addGoaldata(pGoaldata, pnewEnv);
