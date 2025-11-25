@@ -45,8 +45,9 @@ inline Goaldataptr addGoaldata(Goaldataptr pGoaldata, Environ * pEnv)
 // Add node pointer to p's goal data.
 inline void addNodeptr(Nodeptr p)
 {
-    if (!p->game().proven())
-        p->game().goaldata().nodeptrs.insert(p);
+    if (p->game().proven()) return;
+    p->game().goaldata().nodeptrs.insert(p);
+    p->game().goaldata2().nodeptrs.insert(p);
 }
 
 #endif // GOALDATA_H_INCLUDED
