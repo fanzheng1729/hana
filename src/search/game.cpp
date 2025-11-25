@@ -47,8 +47,7 @@ Game Game::play(Move const & move, bool ourturn) const
     {
         game.pGoal = attempt.hypvec[move.index];
         game.pGoaldata = attempt.hypvec2[move.index];
-        if (game.goaldata().pnewEnv)
-            game.pEnv = game.goaldata().pnewEnv;
+        game.pEnv = game.pGoaldata->first;
     }
 
     return game;

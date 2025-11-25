@@ -34,7 +34,7 @@ typedef Goals::pointer Goalptr;
 // Polymorphic context
 struct Environ;
 // Map: context -> evaluation
-typedef std::map<Environ const *, Goaldata> Goaldatas;
+typedef std::map<Environ *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
 
 // Map: goal -> context -> evaluation

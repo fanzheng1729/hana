@@ -114,7 +114,7 @@ Environ * Problem::addEnv(Environ const * pEnv, Bvector const & hypstotrim)
 
 // Add a goal. Return its pointer.
 Goaldataptr Problem::addGoal
-    (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s)
+    (Proofsteps const & RPN, strview typecode, Environ * pEnv, Goalstatus s)
 {
     Goalview const goal(RPN, typecode);
     BigGoalptr pBigGoal = &*goals.insert(std::make_pair(goal, Goaldatas())).first;

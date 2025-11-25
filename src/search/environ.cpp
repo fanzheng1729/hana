@@ -121,7 +121,7 @@ bool Environ::valid(Move const & move) const
         Goalptr const pGoal = const_cast<Environ *>(this)->addGoal
             (move.hypRPN(i), move.hyptypecode(i), GOALNEW);
         Goaldataptr const pGoaldata = pProb->addGoal
-            (move.hypRPN(i), move.hyptypecode(i), this, GOALNEW);
+            (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->first.RPN;
         // Status of the goal
         Goalstatus & status = pGoal->second.status;
@@ -129,11 +129,15 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = pGoal;
+        move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
         if (proven(pGoal, assertion))
             pGoaldata->second.status = GOALTRUE;
         if (status >= GOALOPEN)
+        {
+            move.hypvec2[i] = addGoaldata(pGoaldata, pGoaldata->second.pnewEnv);
             continue; // Valid
+        }
         // New goal (status == GOALNEW)
         if ((status = pGoaldata->second.status = valid(pGoal->first.RPN)) == GOALFALSE)
             return false; // Refuted

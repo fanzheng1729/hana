@@ -110,7 +110,7 @@ public:
     Environ * addEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goaldataptr addGoal
-        (Proofsteps const & RPN, strview typecode, Environ const * pEnv, Goalstatus s);
+        (Proofsteps const & RPN, strview typecode, Environ * pEnv, Goalstatus s);
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const

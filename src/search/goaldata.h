@@ -31,7 +31,7 @@ struct Goaldata
 
 // Add a (pEnv, Goaldata). Return its pointer.
 // In case of failure, return pGoaldata.
-inline Goaldataptr addGoaldata(Goaldataptr pGoaldata, Environ const * pEnv)
+inline Goaldataptr addGoaldata(Goaldataptr pGoaldata, Environ * pEnv)
 {
     if (!pGoaldata || !pEnv) return pGoaldata;
     Goaldata const & goaldata = pGoaldata->second;
