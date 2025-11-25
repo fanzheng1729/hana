@@ -71,9 +71,9 @@ bool loops(Nodeptr p)
         allgoals.insert(move.hypvec[i]);
     }
     // Check if these hypotheses combined prove a parent node.
-    while (Goalptr const pnewgoal = allgoals.saturate())
-        FOR (Nodeptr const pnewnode, pnewgoal->second.nodeptrs)
-            if (pnewnode.isancestorof(p))
+    while (Goalptr const pGoal = allgoals.saturate())
+        FOR (Nodeptr const pnewNode, pGoal->second.nodeptrs)
+            if (pnewNode.isancestorof(p))
                 return true;
     return false;
 }
