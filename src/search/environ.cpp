@@ -88,7 +88,7 @@ bool Environ::valid(Move const & move) const
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = addGoaldata(pGoal, pnewEnv);
 // if (pnewEnv)
-// std::cout << pGoal->second.goal().RPN << label() << "\n->\n",
+// std::cout << pGoal->second.goal().expression() << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
     }
 // std::cout << moves;
