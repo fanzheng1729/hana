@@ -37,8 +37,7 @@ public:
         pEnv->enviter = environs.insert
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
-        strview type = assertion.expression[0];
-        Goalptr pGoal = addGoal(assertion.expRPN, type, pEnv, status);
+        Goalptr pGoal = addGoal(goal, pEnv, status);
         Environ * const pnewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal())) : NULL);
         pGoal->second.pnewEnv = pnewEnv;
@@ -107,8 +106,10 @@ public:
     // Return NULL if not okay.
     Environ * addEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
+    Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s);
     Goalptr addGoal
-        (Proofsteps const & RPN, strview typecode, Environ * pEnv, Goalstatus s);
+        (Proofsteps const & RPN, strview type, Environ * pEnv, Goalstatus s)
+    { return addGoal(Goalview(RPN, type), pEnv, s); }
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
