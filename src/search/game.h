@@ -12,7 +12,6 @@ struct Game
     typedef ::Move Move;
     typedef ::Moves Moves;
     // Pointer to goal to be proven
-    Goalptr pGoal;
     Goaldataptr pGoaldata;
     // # defers to the game
     stage_t nDefer;
