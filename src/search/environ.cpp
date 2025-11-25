@@ -108,12 +108,11 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     Assiters::size_type limit = std::min(assvec.size(), prob().assertion.number);
     for (Assiters::size_type i = 1; i < limit; ++i)
     {
-        Assiter const iter = assvec[i];
-        Assertion const & ass = iter->second;
+        Assertion const & ass = assvec[i]->second;
         if ((ass.type & Asstype::USELESS) || !ontopic(ass))
             continue; // Skip non propositional theorems.
         if (stage == 0 || (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-            if (trythm(game, tree, iter, stage, moves))
+            if (trythm(game, tree, assvec[i], stage, moves))
                 break; // Move closes the goal.
     }
 // if (stage >= 5)
