@@ -29,9 +29,11 @@ struct Game
         other.nDefer = nDefer;
         return other;
     }
-    Goal const & goal() const;
     Goaldata & goaldata() const;
+    Goaldata & goaldata2() const;
+    Goal const & goal() const;
     Proofsteps & proof() const;
+    Proofsteps & proof2() const;
     bool proven() const { return !proof().empty(); }
     Environ const * pEnv() const;
     Environ const & env() const { return *pEnv(); }
