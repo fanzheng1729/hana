@@ -32,7 +32,7 @@ public:
         Goalstatus const status = env.valid(goal);
         if (status == GOALFALSE) return;
         // Root context
-        Environ * pEnv = new Env(env);
+        Environ * const pEnv = new Env(env);
         pEnv->pProb = this;
         pEnv->enviter = environs.insert
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
@@ -42,9 +42,8 @@ public:
         Environ * const pnewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal())) : NULL);
         pGoal->second.pnewEnv = pnewEnv;
-        pGoal = addGoaldata(pGoal, pnewEnv);
         // Root node
-        *root() = Game(pGoal);
+        *root() = Game(addGoaldata(pGoal, pnewEnv));
         addNodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
