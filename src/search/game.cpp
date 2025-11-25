@@ -7,10 +7,9 @@
 #include "../util/iter.h"
 #include "../proof/write.h"
 
-Goaldata & Game::goaldata() const { return pGoal->second; }
-Goaldata & Game::goaldata2() const { return pGoaldata->second; }
-Goal const & Game::goal() const { return goaldata2().pBigGoal->first; }
-Proofsteps & Game::proof() const { return goaldata2().proof; }
+Goaldata & Game::goaldata() const { return pGoaldata->second; }
+Goal const & Game::goal() const { return goaldata().pBigGoal->first; }
+Proofsteps & Game::proof() const { return goaldata().proof; }
 Environ const * Game::pEnv() const { return pGoaldata->first; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)

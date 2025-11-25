@@ -30,7 +30,6 @@ struct Game
         return other;
     }
     Goaldata & goaldata() const;
-    Goaldata & goaldata2() const;
     Goal const & goal() const;
     Proofsteps & proof() const;
     bool proven() const { return !proof().empty(); }
