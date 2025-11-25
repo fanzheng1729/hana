@@ -34,7 +34,7 @@ struct Game
     Goal const & goal() const;
     Proofsteps & proof() const;
     Proofsteps & proof2() const;
-    bool proven() const { return !proof().empty(); }
+    bool proven() const { return !proof2().empty(); }
     Environ const * pEnv() const;
     Environ const & env() const { return *pEnv(); }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);

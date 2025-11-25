@@ -135,7 +135,7 @@ bool Game::writeproof() const
     else
     {
         writeprooferr(*this, exp, hyps);
-        proof().clear();
+        proof2().clear();
     }
     return okay;
 }
