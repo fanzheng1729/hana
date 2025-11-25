@@ -7,7 +7,7 @@
 #include "../util/for.h"
 
 // Add node pointer to p's goal data.
-inline void addnodeptr(Nodeptr p)
+inline void addNodeptr(Nodeptr p)
 {
     if (!p->game().proven())
         p->game().goaldata().nodeptrs.insert(p);
@@ -68,7 +68,7 @@ public:
         *root() = Game(pGoal, pnewEnv ? pnewEnv : pEnv);
         const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
         if (root()->game().pEnv != root()->game().pGoaldata->first) throw 1;
-        addnodeptr(root());
+        addNodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
