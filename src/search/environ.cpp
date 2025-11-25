@@ -13,14 +13,14 @@
 // If so, record its proof and return true.
 bool proven(Goalptr pGoal, Goaldataptr pGoaldata, Assertion const & ass)
 {
-    if (!pGoal || !pGoaldata) return false;
+    if (!pGoaldata) return false;
     if (pGoaldata->second.proven()) return true;
     // Match hypotheses of the assertion.
     Hypsize const i = ass.matchhyp(pGoal->first.RPN, pGoal->first.typecode);
     if (i == ass.hypcount()) return false; // No match
     // 1-step proof using the matched hypothesis
     pGoaldata->second.proof.assign(1, ass.hypiters[i]);
-    return pGoal->second.status = pGoaldata->second.status = GOALTRUE;
+    return pGoaldata->second.status = GOALTRUE;
 }
 
 static Symbol3s symbols(Proofsteps const & RPN)
