@@ -33,7 +33,7 @@ struct Environ : protected Gen
 {
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
-        database(db), assertion(ass), staged(isstaged), hypslen(ass.hypslen()),
+        database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
         Gen(ass.varusage, maxsize) {}
     Problem const & prob() const { return *pProb; }
     // Return true if an assertion is on topic.
@@ -63,10 +63,10 @@ struct Environ : protected Gen
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
-    // Is staged move generation turned on?
-    bool const staged;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
+    // Is staged move generation turned on?
+    bool const staged;
 protected:
     // Pointer to the problem
     Problem * pProb;
