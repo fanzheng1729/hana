@@ -10,15 +10,14 @@
 Goaldata & Game::goaldata() const { return pGoal->second; }
 Goaldata & Game::goaldata2() const { return pGoaldata->second; }
 Goal const & Game::goal() const { return goaldata2().pBigGoal->first; }
-Proofsteps & Game::proof() const { return goaldata().proof; }
-Proofsteps & Game::proof2() const { return goaldata2().proof; }
+Proofsteps & Game::proof() const { return goaldata2().proof; }
 Environ const * Game::pEnv() const { return pGoaldata->first; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {
     out << game.goal().expression();
     if (game.proven())
-        out << "Proof: " << game.proof2();
+        out << "Proof: " << game.proof();
     if (game.attempt.type != Move::NONE)
         out << "Proof attempt (" << game.nDefer << ") "
             << game.attempt << std::endl;
@@ -92,7 +91,7 @@ static void writeprooferr
     (Game const & game, Expression const & exp, pProofs const & hyps)
 {
     std::cerr << "In attempt to use " << game.attempt << ", the proof\n";
-    std::cerr << game.proof2() << "proves\n" << exp;
+    std::cerr << game.proof() << "proves\n" << exp;
     std::cerr << "instead of\n" << game.goal().expression();
     std::cerr << "Proofs of hypotheses are" << std::endl;
     for (Hypsize i = 0; i < game.attempt.hypcount(); ++i)
@@ -122,17 +121,17 @@ bool Game::writeproof() const
 // std::cout << "Added hyp\n" << *hyps.back();
     }
     // The whose proof
-    if (!::writeproof(proof2(), attempt.pthm, hyps))
+    if (!::writeproof(proof(), attempt.pthm, hyps))
         return false;
     // Verification
-    const Expression & exp(verify(proof2()));
+    const Expression & exp(verify(proof()));
     const bool okay = (exp == goal().expression());
     if (okay)
         pGoal->second.status = pGoaldata->second.status = GOALTRUE;
     else
     {
         writeprooferr(*this, exp, hyps);
-        proof2().clear();
+        proof().clear();
     }
     return okay;
 }
