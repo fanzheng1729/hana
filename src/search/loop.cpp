@@ -8,7 +8,7 @@ static Nodeptr cycles(Goaldataptr pGoal, Nodeptr pNode)
     while (true)
     {
         Game const & game = pNode->game();
-        if (game.nDefer == 0 && pGoal == game.pGoaldata)
+        if (game.nDefer == 0 && pGoal == game.pGoal)
             return pNode;
         if (Nodeptr const parent = pNode.parent())
             pNode = parent.parent();
@@ -29,7 +29,7 @@ struct Goaldataptrs : std::set<Goaldataptr>
         {
             if (child->game().proven())
                 continue;
-            if (!count(child->game().pGoaldata))
+            if (!count(child->game().pGoal))
                 return false;
         }
         return true;
@@ -44,7 +44,7 @@ struct Goaldataptrs : std::set<Goaldataptr>
                 Nodeptr const parent = pNode.parent();
                 if (parent->game().proven())
                     continue;
-                Goaldataptr const newGoal = parent->game().pGoaldata;
+                Goaldataptr const newGoal = parent->game().pGoal;
                 if (haschildren(parent) && insert(newGoal).second)
                     return newGoal;
             }

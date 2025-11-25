@@ -12,17 +12,17 @@ struct Game
     typedef ::Move Move;
     typedef ::Moves Moves;
     // Pointer to goal to be proven
-    Goaldataptr pGoaldata;
+    Goaldataptr pGoal;
     // # defers to the game
     stage_t nDefer;
     // Proof attempt made, on their turn
     Move attempt;
-    Game(Goaldataptr p = NULL) : pGoaldata(p), nDefer(0) {}
+    Game(Goaldataptr p = NULL) : pGoal(p), nDefer(0) {}
     // Does not copy the attempt.
     Game cheapcopy() const
     {
         Game other;
-        other.pGoaldata = pGoaldata;
+        other.pGoal = pGoal;
         other.nDefer = nDefer;
         return other;
     }

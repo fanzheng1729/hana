@@ -7,10 +7,10 @@
 #include "../util/iter.h"
 #include "../proof/write.h"
 
-Goaldata & Game::goaldata() const { return pGoaldata->second; }
+Goaldata & Game::goaldata() const { return pGoal->second; }
 Goal const & Game::goal() const { return goaldata().pBigGoal->first; }
 Proofsteps & Game::proof() const { return goaldata().proof; }
-Environ const * Game::pEnv() const { return pGoaldata->first; }
+Environ const * Game::pEnv() const { return pGoal->first; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {
@@ -45,7 +45,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.nDefer = (move.type == Move::DEFER) * (nDefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
-        game.pGoaldata = attempt.hypvec[move.index];
+        game.pGoal = attempt.hypvec[move.index];
 
     return game;
 }
@@ -123,7 +123,7 @@ bool Game::writeproof() const
     const Expression & exp(verify(proof()));
     const bool okay = (exp == goal().expression());
     if (okay)
-        pGoaldata->second.status = GOALTRUE;
+        pGoal->second.status = GOALTRUE;
     else
     {
         writeprooferr(*this, exp, hyps);
