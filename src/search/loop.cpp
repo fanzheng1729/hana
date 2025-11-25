@@ -90,6 +90,7 @@ bool loops(Nodeptr p)
     Move const & move = p->game().attempt;
     // All the goals necessary to prove p
     Goalptrs allgoals;
+    Goaldataptrs allgoals2;
     // Check if any of the hypotheses appears in a parent node.
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
@@ -100,9 +101,10 @@ bool loops(Nodeptr p)
         if (cycles(move.hypvec2[i], p.parent()))
             return true;
         allgoals.insert(move.hypvec[i]);
+        allgoals2.insert(move.hypvec2[i]);
     }
     // Check if these hypotheses combined prove a parent node.
-    while (Goalptr const pnewgoal = allgoals.saturate())
+    while (Goaldataptr const pnewgoal = allgoals2.saturate())
         FOR (Nodeptr const pnewnode, pnewgoal->second.nodeptrs)
             if (pnewnode.isancestorof(p))
                 return true;
