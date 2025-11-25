@@ -69,32 +69,6 @@ Goals::size_type Environ::countproof() const
     return 0;
 }
 
-// Printing utilities
-static const char * const s[] = {"true", "open", "false", "new"};
-void Environ::printgoal() const
-{
-    std::cout << "Goals in " << label() << std::endl;
-    FOR (Goals::const_reference goal, goals)
-        std::cout << s[GOALTRUE - goal.second.status] << '\t',
-        std::cout << goal.first.expression();
-}
-void Environ::printgoal(int status) const
-{
-    std::cout << "Goals with status " << s[GOALTRUE - status];
-    std::cout << " in " << label() << std::endl;
-    FOR (Goals::const_reference goal, goals)
-        if (goal.second.status == status)
-            std::cout << goal.first.expression();
-}
-void Environ::printstats() const
-{
-    std::cout << countproof() << '/';
-    static const char * const s[] = {" V, ", " ?, ", " X in "};
-    for (int i = GOALTRUE; i >= GOALFALSE; --i)
-        std::cout << countgoal(i) << s[GOALTRUE - i];
-    std::cout << label() << std::endl;
-}
-
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {

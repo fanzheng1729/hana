@@ -117,7 +117,7 @@ public:
     void printenvs() const
     {
         FOR (Environs::const_reference env, environs)
-            env.second->printstats();
+            std::cout << env.first << std::endl;
     }
     void navigate(bool detailed = true) const;
     void writeproof(const char * const filename) const;

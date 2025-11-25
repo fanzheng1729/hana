@@ -42,10 +42,6 @@ struct Environ : protected Gen
     Goals::size_type countgoal(int status) const;
     // # proven goals
     Goals::size_type countproof() const;
-    // Printing utilities
-    void printgoal() const;
-    void printgoal(int status) const;
-    void printstats() const;
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
