@@ -6,13 +6,6 @@
 #include "goaldata.h"
 #include "../util/for.h"
 
-// Add node pointer to p's goal data.
-inline void addNodeptr(Nodeptr p)
-{
-    if (!p->game().proven())
-        p->game().goaldata().nodeptrs.insert(p);
-}
-
 // Problem statement + Proof search tree with loop detection
 // + context management + UI
 class Problem : public MCTS<Game>
