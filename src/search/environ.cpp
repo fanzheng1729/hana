@@ -91,8 +91,6 @@ bool Environ::valid(Move const & move) const
 // std::cout << pGoal->second.goal().expression() << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
     }
-// std::cout << moves;
-
     return true;
 }
 
