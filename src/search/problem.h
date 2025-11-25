@@ -50,7 +50,7 @@ public:
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal)) : NULL);
         pGoal->second.pnewEnv = pnewEnv;
         pGoaldata->second.pnewEnv = pnewEnv;
-        pGoaldata = addsimpEnv(pGoaldata, pnewEnv);
+        pGoaldata = addGoaldata(pGoaldata, pnewEnv);
         // Root node
         *root() = Game(pGoal, pnewEnv ? pnewEnv : pEnv);
         const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
