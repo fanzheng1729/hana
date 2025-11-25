@@ -37,10 +37,6 @@ struct Environ;
 typedef std::map<Environ const *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goaldataptr;
 
-// Add a (pEnv, Goaldata). Return its pointer.
-// In case of failure, return pGoaldata.
-inline Goaldataptr addsimpEnv(Goaldataptr pGoaldata, Environ const * pEnv);
-
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> BigGoals;
 typedef BigGoals::pointer BigGoalptr;
