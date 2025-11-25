@@ -31,13 +31,13 @@ struct Goaldata
 };
 
 // Add a (pEnv, Goaldata). Return its pointer.
-// In case of failure, return pGoaldata.
-inline Goaldataptr addGoaldata(Goaldataptr pGoaldata, Environ * pEnv)
+// In case of failure, return pGoal.
+inline Goaldataptr addGoaldata(Goaldataptr pGoal, Environ * pEnv)
 {
-    if (!pGoaldata || !pEnv) return pGoaldata;
-    Goaldata const & goaldata = pGoaldata->second;
+    if (!pGoal || !pEnv) return pGoal;
+    Goaldata const & goaldata = pGoal->second;
     BigGoalptr const pBigGoal = goaldata.pBigGoal;
-    if (!pBigGoal) return pGoaldata;
+    if (!pBigGoal) return pGoal;
     Goaldatas::value_type value(pEnv, Goaldata(goaldata.status, pBigGoal));
     return &*pBigGoal->second.insert(value).first;
 }
