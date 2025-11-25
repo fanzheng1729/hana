@@ -17,7 +17,7 @@ struct Game
     stage_t nDefer;
     // Proof attempt made, on their turn
     Move attempt;
-    Game(Goaldataptr goaldataptr = NULL) : pGoaldata(goaldataptr), nDefer(0) {}
+    Game(Goaldataptr p = NULL) : pGoaldata(p), nDefer(0) {}
     // Does not copy the attempt.
     Game cheapcopy() const
     {
