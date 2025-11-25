@@ -8,15 +8,13 @@
 #include "../MCTS/stageval.h"
 
 class Database;
-// Move in proof search tree
-struct Move;
-// List of moves
-typedef std::vector<Move> Moves;
-// Game state in proof search tree
-struct Game;
-// Problem statement + Proof search tree with loop detection
-// + context management + UI
 class Problem;
+// Move in proof search tree
+// struct Move;
+// List of moves
+// typedef std::vector<Move> Moves;
+// Game state in proof search tree
+// struct Game;
 
 // Size-based score
 inline Value score(Proofsize size) { return 1. / (size + 1); }
