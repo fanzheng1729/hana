@@ -298,9 +298,9 @@ Assertions::size_type Database::markduplicate()
     {
         // printass(rass);
         Assertion & ass = rass.second;
-        bool const is = isduplicate(ass, *this);
-        ass.type |= is * Asstype::DUPLICATE;
-        if (is && !ass.expression.empty()
+        bool const isdup = isduplicate(ass, *this);
+        ass.type |= isdup * Asstype::DUPLICATE;
+        if (isdup && !ass.expression.empty()
             && !typecodes().isprimitive(ass.expression[0]))
             ++count;
         progress << ++n/static_cast<Ratio>(assertions().size());

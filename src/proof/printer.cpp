@@ -11,8 +11,8 @@ bool Printer::addstep(Expression const & stacktop, Proofsize index,
     if (stacktop.empty())
         return false;
 
-    if (ptypes->isprimitive(stacktop.front()))
-        return true;
+    if (int const isprim = ptypes->isprimitive(stacktop.front()))
+        return isprim == 1;
 
     stack.push_back(steps.size());
 

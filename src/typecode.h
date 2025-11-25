@@ -10,7 +10,7 @@ struct Typecodes : std::map<std::string, std::pair<std::string, bool> >
 {
     Typecodes() {}
     Typecodes(struct Commands const & syntax, Commands const & bound);
-    // Return true if a type code is primitive. Return -1 if not found.
+    // Return 1 if a type code is primitive. Return -1 if not found.
     int isprimitive(strview typecode) const
     {
         const_iterator const iter(find(typecode));
