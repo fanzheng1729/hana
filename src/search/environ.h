@@ -38,10 +38,6 @@ struct Environ : protected Gen
         database(db), assertion(ass), staged(isstaged), hypslen(ass.hypslen()),
         Gen(ass.varusage, maxsize) {}
     Problem const & prob() const { return *pProb; }
-    // # goals of a given status
-    Goals::size_type countgoal(int status) const;
-    // # proven goals
-    Goals::size_type countproof() const;
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.

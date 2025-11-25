@@ -53,22 +53,6 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
     return true;
 }
 
-// # goals of a given status
-Goals::size_type Environ::countgoal(int status) const
-{
-    Goals::size_type n = 0;
-    FOR (Goals::const_reference goal, goals)
-        n += (goal.second.status == status);
-// std::cout << label() << " has status " << status << ' ' << n << std::endl;
-    return n;
-}
-
-// # proven goals
-Goals::size_type Environ::countproof() const
-{
-    return 0;
-}
-
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
