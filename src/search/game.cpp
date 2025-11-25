@@ -102,11 +102,9 @@ bool Game::writeproof() const
     pProofs hyps(attempt.hypcount());
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)
     {
-        // if (!attempt.hypfloats(i) && attempt.hypvec2[i]->second.proof.empty())
-        //     throw 1;
         hyps[i] = attempt.hypfloats(i) ?
             &attempt.substitutions[attempt.hypexp(i)[1]] :
-            &attempt.hypvec[i]->second.proof;
+            &attempt.hypvec2[i]->second.proof;
 // std::cout << "Added hyp\n" << *hyps.back();
     }
     // The whose proof

@@ -20,6 +20,7 @@ bool proven(Goalptr pGoal, Goaldataptr pGoaldata, Assertion const & ass)
     if (i == ass.hypcount()) return false; // No match
     // 1-step proof using the matched hypothesis
     pGoal->second.proof.assign(1, ass.hypiters[i]);
+    pGoaldata->second.proof.assign(1, ass.hypiters[i]);
     return pGoal->second.status = GOALTRUE;
 }
 
