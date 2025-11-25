@@ -108,15 +108,15 @@ bool Game::writeproof() const
 // std::cout << "Added hyp\n" << *hyps.back();
     }
     // The whose proof
-    if (!::writeproof(proof(), attempt.pthm, hyps))
+    if (!::writeproof(proof2(), attempt.pthm, hyps))
         return false;
     // Verification
-    const Expression & exp(verify(proof()));
+    const Expression & exp(verify(proof2()));
     const bool okay = (exp == goal().expression());
     if (okay)
     {
         pGoal->second.status = pGoaldata->second.status = GOALTRUE;
-        pGoaldata->second.proof = proof();
+        proof() = proof2();
     }
     else
     {
