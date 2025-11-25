@@ -16,6 +16,19 @@ static Nodeptr cycles(Goalptr pGoal, Nodeptr pNode)
     }
     return Nodeptr();
 }
+static Nodeptr cycles(Goaldataptr pGoaldata, Nodeptr pNode)
+{
+    while (true)
+    {
+        Game const & game = pNode->game();
+        if (game.nDefer == 0 && pGoaldata == game.pGoaldata)
+            return pNode;
+        if (Nodeptr const parent = pNode.parent())
+            pNode = parent.parent();
+        else break;
+    }
+    return Nodeptr();
+}
 
 namespace
 {
@@ -66,10 +79,9 @@ bool loops(Nodeptr p)
             continue;
         if (move.hypvec2[i]->second.proven())
             continue;
-        Goalptr const pGoal = move.hypvec[i];
-        if (cycles(pGoal, p.parent()))
+        if (cycles(move.hypvec2[i], p.parent()))
             return true;
-        allgoals.insert(pGoal);
+        allgoals.insert(move.hypvec[i]);
     }
     // Check if these hypotheses combined prove a parent node.
     while (Goalptr const pnewgoal = allgoals.saturate())
