@@ -14,14 +14,12 @@ struct Game
     // Pointer to goal to be proven
     Goalptr pGoal;
     Goaldataptr pGoaldata;
-    // Pointer to the current environment
-    Environ * pEnv;
     // # defers to the game
     stage_t nDefer;
     // Proof attempt made, on their turn
     Move attempt;
-    Game(Goalptr goalptr = NULL, Environ * envptr = NULL) :
-        pGoal(goalptr), pEnv(envptr), nDefer(0) {}
+    Game(Goalptr goalptr = NULL, Goaldataptr goaldataptr = NULL) :
+        pGoal(goalptr), pGoaldata(goaldataptr), nDefer(0) {}
     // Does not copy the attempt.
     Game cheapcopy() const
     {
@@ -35,7 +33,8 @@ struct Game
     Goaldata & goaldata() const;
     Proofsteps & proof() const;
     bool proven() const { return !proof().empty(); }
-    Environ const & env() const;
+    Environ const * pEnv() const;
+    Environ const & env() const { return *pEnv(); }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
     // Return true if a move is legal.
     bool legal(Move const & move, bool ourturn) const;
