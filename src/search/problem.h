@@ -45,9 +45,8 @@ public:
         pGoaldata->second.pnewEnv = pnewEnv;
         pGoaldata = addGoaldata(pGoaldata, pnewEnv);
         // Root node
-        *root() = Game(pGoal, pnewEnv ? pnewEnv : pEnv);
+        *root() = Game(pGoal, pGoaldata->first);
         const_cast<Game &>(root()->game()).pGoaldata = pGoaldata;
-        if (root()->game().pEnv != root()->game().pGoaldata->first) throw 1;
         addNodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
