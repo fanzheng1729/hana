@@ -14,7 +14,7 @@
 bool proven(Goalptr pGoal, Goaldataptr pGoaldata, Assertion const & ass)
 {
     if (!pGoal || !pGoaldata) return false;
-    if (pGoal->second.proven()) return true;
+    if (pGoaldata->second.proven()) return true;
     // Match hypotheses of the assertion.
     Hypsize const i = ass.matchhyp(pGoal->first.RPN, pGoal->first.typecode);
     if (i == ass.hypcount()) return false; // No match
