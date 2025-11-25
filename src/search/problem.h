@@ -38,14 +38,14 @@ public:
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
         strview type = assertion.expression[0];
-        Goalptr pGoal = pEnv->addGoal(assertion.expRPN, type, status);
+        pEnv->addGoal(assertion.expRPN, type, status);
         Goaldataptr pGoaldata = addGoal(assertion.expRPN, type, pEnv, status);
         Environ * const pnewEnv =
         (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoaldata->second.goal())) : NULL);
         pGoaldata->second.pnewEnv = pnewEnv;
         pGoaldata = addGoaldata(pGoaldata, pnewEnv);
         // Root node
-        *root() = Game(pGoal, pGoaldata);
+        *root() = Game(pGoaldata);
         addNodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
