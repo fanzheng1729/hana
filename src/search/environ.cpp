@@ -11,17 +11,17 @@
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
-bool proven(Goaldataptr pGoaldata, Assertion const & ass)
+bool proven(Goaldataptr p, Assertion const & ass)
 {
-    if (!pGoaldata) return false;
-    if (pGoaldata->second.proven()) return true;
+    if (!p) return false;
+    if (p->second.proven()) return true;
     // Match hypotheses of the assertion.
-    Goal const & goal = pGoaldata->second.goal();
+    Goal const & goal = p->second.goal();
     Hypsize const i = ass.matchhyp(goal.RPN, goal.typecode);
     if (i == ass.hypcount()) return false; // No match
     // 1-step proof using the matched hypothesis
-    pGoaldata->second.proof.assign(1, ass.hypiters[i]);
-    return pGoaldata->second.status = GOALTRUE;
+    p->second.proof.assign(1, ass.hypiters[i]);
+    return p->second.status = GOALTRUE;
 }
 
 static Symbol3s symbols(Proofsteps const & RPN)
