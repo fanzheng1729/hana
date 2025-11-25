@@ -45,10 +45,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.nDefer = (move.type == Move::DEFER) * (nDefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
-    {
-        game.pGoal = attempt.hypvec[move.index];
         game.pGoaldata = attempt.hypvec2[move.index];
-    }
 
     return game;
 }
