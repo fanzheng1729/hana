@@ -15,7 +15,7 @@ class Problem : public MCTS<Game>
     // DAG of polymorphic contexts
     DAG<Environs> environs;
     // Map: goal -> context -> evaluation
-    BigGoals goals;
+    Goals goals;
 public:
     // The assertion to be proved
     Assertion const & assertion;
@@ -83,19 +83,19 @@ public:
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // # goals of a given status
-    BigGoals::size_type countgoal(int status) const
+    Goals::size_type countgoal(int status) const
     {
-        BigGoals::size_type n = 0;
-        FOR (BigGoals::const_reference goaldatas, goals)
+        Goals::size_type n = 0;
+        FOR (Goals::const_reference goaldatas, goals)
             FOR (Goaldatas::const_reference goaldata, goaldatas.second)
                 n += (goaldata.second.status == status);
         return n;
     }
     // # proven goals
-    BigGoals::size_type countproof() const
+    Goals::size_type countproof() const
     {
-        BigGoals::size_type n = 0;
-        FOR (BigGoals::const_reference goaldatas, goals)
+        Goals::size_type n = 0;
+        FOR (Goals::const_reference goaldatas, goals)
             FOR (Goaldatas::const_reference goaldata, goaldatas.second)
                 n += goaldata.second.proven();
         return n;

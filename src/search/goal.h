@@ -34,7 +34,7 @@ typedef std::map<Environ *, Goaldata> Goaldatas;
 typedef Goaldatas::pointer Goalptr;
 
 // Map: goal -> context -> evaluation
-typedef std::map<Goal, Goaldatas> BigGoals;
-typedef BigGoals::pointer BigGoalptr;
+typedef std::map<Goal, Goaldatas> Goals;
+typedef Goals::pointer BigGoalptr;
 
 #endif // GOAL_H_INCLUDED
