@@ -127,7 +127,7 @@ bool Environ::valid(Move const & move) const
         move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
         Goalstatus & status = pGoal->second.status;
-        if (proven(pGoal, pGoaldata, assertion) || status >= GOALOPEN)
+        if (proven(pGoal, pGoaldata, assertion) || pGoaldata->second.status >= GOALOPEN)
         {
             move.hypvec2[i] = addGoaldata(pGoaldata, pGoaldata->second.pnewEnv);
             continue; // Valid
