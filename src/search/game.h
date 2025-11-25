@@ -20,8 +20,8 @@ struct Game
     stage_t nDefer;
     // Proof attempt made, on their turn
     Move attempt;
-    Game(Goalptr goalptr = NULL, Environ * envptr = NULL, stage_t defer = 0) :
-        pGoal(goalptr), pEnv(envptr), nDefer(defer) {}
+    Game(Goalptr goalptr = NULL, Environ * envptr = NULL) :
+        pGoal(goalptr), pEnv(envptr), nDefer(0) {}
     Game cheapcopy() const
     {
         Game other;
@@ -35,7 +35,7 @@ struct Game
     Goaldata & goaldata() const;
     Proofsteps & proof() const;
     bool proven() const { return !proof().empty(); }
-    Environ const & env() const { return *pEnv; }
+    Environ const & env() const;
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
     // Return true if a move is legal.
     bool legal(Move const & move, bool ourturn) const;

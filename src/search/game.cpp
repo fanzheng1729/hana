@@ -10,6 +10,7 @@
 Goal const & Game::goal() const { return pGoal->first; }
 Goaldata & Game::goaldata() const { return pGoal->second; }
 Proofsteps & Game::proof() const { return goaldata().proof; }
+Environ const & Game::env() const { return *pEnv; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {
