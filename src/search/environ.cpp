@@ -62,8 +62,7 @@ bool Environ::valid(Move const & move) const
     move.hypvec.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
-        if (move.hypfloats(i))
-            continue;
+        if (move.hypfloats(i)) continue;
         // Add the essential hypothesis as a goal.
         Goalptr const pGoal = pProb->addGoal
         (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
