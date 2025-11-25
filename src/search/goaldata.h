@@ -46,7 +46,6 @@ inline Goaldataptr addGoaldata(Goaldataptr pGoaldata, Environ * pEnv)
 inline void addNodeptr(Nodeptr p)
 {
     if (p->game().proven()) return;
-    p->game().goaldata().nodeptrs.insert(p);
     p->game().goaldata2().nodeptrs.insert(p);
 }
 
