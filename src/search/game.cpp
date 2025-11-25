@@ -112,7 +112,10 @@ bool Game::writeproof() const
     const Expression & exp(verify(proof()));
     const bool okay = (exp == goal().expression());
     if (okay)
+    {
         pGoal->second.status = pGoaldata->second.status = GOALTRUE;
+        pGoaldata->second.proof = proof();
+    }
     else
     {
         void writeprooferr(Game const & game, Expression const & exp, pProofs const & hyps);
