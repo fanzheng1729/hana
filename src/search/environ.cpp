@@ -126,7 +126,6 @@ bool Environ::valid(Move const & move) const
         move.hypvec[i] = pGoal;
         move.hypvec2[i] = pGoaldata;
         // Check if the goal has been validated.
-        Goalstatus & status = pGoal->second.status;
         if (proven(pGoal, pGoaldata, assertion) || pGoaldata->second.status >= GOALOPEN)
         {
             move.hypvec2[i] = addGoaldata(pGoaldata, pGoaldata->second.pnewEnv);
@@ -134,6 +133,7 @@ bool Environ::valid(Move const & move) const
         }
         // New goal (status == GOALNEW)
         Goal const & newgoal = pGoaldata->second.goal();
+        Goalstatus & status = pGoal->second.status;
         if ((status = pGoaldata->second.status = valid(newgoal)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
