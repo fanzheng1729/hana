@@ -86,7 +86,7 @@ bool Environ::valid(Move const & move) const
         if ((status = valid(newgoal)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
-        pnewEnv = pProb->addEnv(this, hypstotrim(newgoal));
+        pnewEnv = pProb->addsubEnv(this, hypstotrim(newgoal));
         move.hypvec[i] = addGoaldata(pGoal, pnewEnv);
 // if (pnewEnv)
 // std::cout << pGoal->second.goal().RPN << label() << "\n->\n",

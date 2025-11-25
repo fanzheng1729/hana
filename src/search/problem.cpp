@@ -76,9 +76,9 @@ static void printDAGcycle(strview env1, strview env2)
     std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
 }
 
-// Add a context for the game. Return pointer to the new context.
+// Add a sub-context for the game. Return pointer to the new context.
 // Return NULL if not okay.
-Environ * Problem::addEnv(Environ const * pEnv, Bvector const & hypstotrim)
+Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
         return NULL;

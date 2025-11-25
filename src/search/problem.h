@@ -38,9 +38,9 @@ public:
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
         Goalptr pGoal = addGoal(goal, pEnv, status);
-        Environ * const pnewEnv =
-        (status == GOALTRUE ? addEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal())) : NULL);
-        pGoal->second.pnewEnv = pnewEnv;
+        Environ * & pnewEnv = pGoal->second.pnewEnv = NULL;
+        if (status == GOALTRUE)
+            pnewEnv = addsubEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal()));
         // Root node
         *root() = Game(addGoaldata(pGoal, pnewEnv));
         addNodeptr(root());
@@ -102,9 +102,9 @@ public:
     }
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
-    // Add a context for the game. Return pointer to the new context.
+    // Add a sub-context for the game. Return pointer to the new context.
     // Return NULL if not okay.
-    Environ * addEnv(Environ const * pEnv, Bvector const & hypstotrim);
+    Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s);
     Goalptr addGoal
