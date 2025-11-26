@@ -260,7 +260,7 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
                      Proofsize size, Moves & moves) const
 {
     Assertion const & thm = iter->second;
-    if (thm.expression.empty() || thm.expression[0] != game.goal().typecode)
+    if (thm.expression.empty() || thm.exptypecode() != game.goal().typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges stepranges;
