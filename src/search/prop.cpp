@@ -19,7 +19,7 @@ Goalstatus Prop::status(Goal const & goal) const
     // Add hypotheses.
     if (!database.propctors().addclause(RPN, assertion.hypiters, cnf, natom))
     {
-        std::cerr << "Bad CNF from\n" << RPN << "in " << label() << std::endl;
+        std::cerr << "Bad CNF from\n" << RPN << "in " << name() << std::endl;
         return GOALFALSE;
     }
     // Negate conclusion.

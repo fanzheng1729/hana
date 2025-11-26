@@ -58,7 +58,7 @@ struct Environ : protected Gen
     virtual Assertion makeAss(Bvector const &) const { return Assertion(); }
     // Iterator to the context
     Environs::const_iterator enviter;
-    strview label() const { return enviter->first; }
+    strview name() const { return enviter->first; }
     // Database used
     Database const & database;
     // The assertion to be proved
