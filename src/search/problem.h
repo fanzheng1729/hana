@@ -24,7 +24,7 @@ public:
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return pProbEnv->enviter; }
     // Iterator to base context
-    Enviter baseEnviter;
+    Enviter const baseEnviter;
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
@@ -38,6 +38,7 @@ public:
         MCTS(Game(), params)
     {
         if (!pProbEnv) return;
+        if (probEnviter() == baseEnviter) return;
         // Root goal
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
