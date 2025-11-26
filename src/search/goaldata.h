@@ -26,14 +26,17 @@ struct Goaldata
     Environ * pnewEnv;
     Goaldata(Goalstatus s, BigGoalptr p = NULL) :
         status(s), pBigGoal(p), pnewEnv(NULL) {}
-    void setproof(Proofsteps const & prf)
-    {
-        if (prf.empty()) return;
-        proof = prf;
-        status = GOALTRUE;
-    }
     bool proven() const { return !proof.empty(); }
     Goal const & goal() const { return pBigGoal->first; }
+private:
+    friend class Problem;
+    // Return true if the proof is set.
+    bool setproof(Proofsteps const & prf)
+    {
+        if (proven() || prf.empty()) return false;
+        proof = prf;
+        return status = GOALTRUE;
+    }
 };
 
 // Add a (pEnv, Goaldata). Return its pointer.

@@ -76,16 +76,15 @@ void Problem::copyPrftosuperEnvs(Game const & game)
         return;
     Environs::const_iterator const to = game.env().enviter;
     if (probEnviter() == to || environs.reachable(probEnviter(), to))
-        return;
+        return; // Skip if the proof holds in the problem context.
     // Loop through all contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
     {
         Environs::const_iterator const from = goaldata.first->enviter;
-        if (!environs.reachable(from, to))
-            continue;
-        // Copy the proof from sub-context.
-        goaldata.second.setproof(game.proof());
-        closenodes(goaldata.second.nodeptrs, Nodeptr());
+        // Copy the proof to super-contexts.
+        if (environs.reachable(from, to) &&
+            goaldata.second.setproof(game.proof()))
+            closenodes(goaldata.second.nodeptrs, Nodeptr());
     }
 }
 
@@ -95,19 +94,12 @@ void Problem::copyPrftoallEnvs(Game const & game)
     if (!game.proven())
         return;
     Environs::const_iterator const to = game.env().enviter;
-    if (probEnviter() != to && !environs.reachable(probEnviter(), to))
-        return;
-    // The proof holds in the problem context.
-    // Loop through all contexts with the same big goal.
-    FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
-    {
-        Environs::const_iterator const from = goaldata.first->enviter;
-        if (from == to)
-            continue;
-        // Copy the proof to sub-context.
-        goaldata.second.setproof(game.proof());
-        closenodes(goaldata.second.nodeptrs, Nodeptr());
-    }
+    if (probEnviter() == to || environs.reachable(probEnviter(), to))
+        // The proof holds in the problem context.
+        // Loop through all contexts with the same big goal.
+        FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
+            if (goaldata.second.setproof(game.proof()))
+                closenodes(goaldata.second.nodeptrs, Nodeptr());
 }
 
 static void DAGerr(strview env1, strview env2)
