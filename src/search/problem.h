@@ -20,7 +20,7 @@ public:
     // The assertion to be proved
     Assertion const & assertion;
     // Pointer to the context of the problem
-    Environ const * pProbEnv;
+    Environ * pProbEnv;
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
