@@ -1,5 +1,5 @@
 #include "../proof/analyze.h"
-#include "../cnf.h"
+#include "../CNF.h"
 #include "../disjvars.h"
 #include "goaldata.h"
 #include "../io.h"

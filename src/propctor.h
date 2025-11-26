@@ -2,7 +2,7 @@
 #define PROPCTOR_H_INCLUDED
 
 #include <iosfwd>
-#include "cnf.h"
+#include "CNF.h"
 #include "def.h"
 #include "util/for.h"
 

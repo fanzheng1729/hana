@@ -1,6 +1,6 @@
 #include <algorithm>    // for and std::min
 #include <iostream>
-#include "../cnf.h"
+#include "../CNF.h"
 #include "../util/arith.h"
 
 static bool checkcnffrom(Bvector const & tt)

@@ -1,5 +1,5 @@
 #include <deque>
-#include "cnf.h"
+#include "CNF.h"
 #include "io.h"
 #include "util/arith.h"
 

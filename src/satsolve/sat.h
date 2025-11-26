@@ -2,7 +2,7 @@
 #define SAT_H_INCLUDED
 
 #include <limits>
-#include "../cnf.h"
+#include "../CNF.h"
 
 struct Satsolver
 {
