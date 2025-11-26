@@ -74,21 +74,24 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 // Propogate proofs from sub Contexts.
 void Problem::propprooffromsubEnv(Nodeptr p)
 {
-    Goaldatas const & goaldatas = p->game().goaldata().pBigGoal->second;
-    Environs::const_iterator to = p->game().env().enviter;
+    Game const & game = p->game();
+    if (!game.proven())
+        return;
+    Goaldatas const & goaldatas = game.goaldata().pBigGoal->second;
+    Environs::const_iterator to = game.env().enviter;
     FOR (Goaldatas::const_reference goaldata, goaldatas)
     {
         Environs::const_iterator from = goaldata.first->enviter;
-        if (!environs.reachable(from, to)) continue;
-        FOR (Nodeptr const other, goaldata.second.nodeptrs)
-            if (!other->won())
-            {
-                std::cout << goaldata.first->label() << "\n->\n" << p->game().env().label();
-                other->game().proof() = p->game().proof();
-                Nodeptr const parent = other.parent();
-                if (parent && !parent->won())
-                    backprop(parent);
-            }
+        if (environs.reachable(from, to))
+            FOR (Nodeptr const other, goaldata.second.nodeptrs)
+                if (!other->won())
+                {
+                    std::cout << from->first << "\n->\n" << to->first;
+                    other->game().proof() = game.proof();
+                    Nodeptr const parent = other.parent();
+                    if (parent && !parent->won())
+                        backprop(parent);
+                }
     }
 }
 
