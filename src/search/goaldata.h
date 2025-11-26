@@ -40,7 +40,7 @@ private:
 };
 
 // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
-inline Goalptr addsimpGoal(Goalptr pGoal, Environ *)
+inline Goalptr addsimpGoal(Goalptr pGoal)
 {
     if (!pGoal) return pGoal;
     Environ * const pEnv = pGoal->second.pnewEnv;

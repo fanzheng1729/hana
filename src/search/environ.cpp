@@ -75,7 +75,7 @@ bool Environ::valid(Move const & move) const
         // Check if the goal has been validated.
         if (proven(pGoal, assertion) || s >= GOALOPEN)
         {
-            move.hypvec[i] = addsimpGoal(pGoal, pnewEnv);
+            move.hypvec[i] = addsimpGoal(pGoal);
             continue; // Valid
         }
         // New goal (s == GOALNEW)
@@ -85,7 +85,7 @@ bool Environ::valid(Move const & move) const
         // New context for the child
         pnewEnv = pProb->addsubEnv(this, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
-        move.hypvec[i] = addsimpGoal(pGoal, pnewEnv);
+        move.hypvec[i] = addsimpGoal(pGoal);
 // if (pnewEnv)
 // std::cout << pGoal->second.goal().expression() << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
