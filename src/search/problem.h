@@ -33,7 +33,7 @@ public:
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL :
             addEnv(env, assertion.hypslabel())),
-        baseEnviter(environs.insert(Environs::value_type("", NULL)).first),
+        baseEnviter(environs.insert(Environs::value_type(hypdelim, NULL)).first),
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
