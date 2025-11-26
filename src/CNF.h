@@ -5,6 +5,7 @@
 #include <vector>
 #include "util/for.h"
 #include "util/filter.h"
+#include "util/tribool.h"
 
 // Atom: P = 0, Q = 1, ... Literal: P = 0, !P = 1, Q = 2, !Q = 3, ...
 typedef std::size_t Atom, Literal;
@@ -16,8 +17,7 @@ typedef std::vector<Literal> CNFClause;
 
 // Satisfaction of a clause
 enum CNFClausesat{UNDECIDED = -2, UNIT = -1, CONTRADICTORY = 0, SATISFIED = 1};
-// Tristate boolean
-enum Tribool {UNKNOWN = -1, FALSE = 0, TRUE = 1};
+
 // Model of an instance
 struct CNFModel : public std::vector<int>
 {
