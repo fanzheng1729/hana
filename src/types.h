@@ -162,6 +162,8 @@ struct Proofstep
             return pass;
         return NULL;
     }
+// Return typecode of the variable.
+    strview typecode() const;
 // Return symbol of the variable.
     Symbol3 var() const;
 // Return id of the variable.

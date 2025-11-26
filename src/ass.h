@@ -37,7 +37,7 @@ struct Assertion
 // Functions:
     // Typecode of the conclusion
     strview exptypecode() const
-        { return expression.empty() ? "" : expression[0].c_str; }
+        { return expression.empty() ? strview() : expression[0]; }
     // # of hypotheses
     Hypsize hypcount() const {return hypiters.size();}
     // # of variables

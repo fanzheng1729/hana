@@ -4,6 +4,22 @@
 
 static const char proofsteperr[] = "Invalid proof step ";
 
+// Return typecode of the variable.
+strview Proofstep::typecode() const
+{
+    switch (type)
+    {
+    case HYP:
+        if (phyp->second.expression.empty()) return "";
+        return phyp->second.expression[0];
+    case THM:
+        if (pass->second.expression.empty()) return "";
+        return pass->second.expression[0];
+    default:
+        return "";
+    }
+}
+
 // Return symbol of the variable.
 Symbol3 Proofstep::var() const
 {
