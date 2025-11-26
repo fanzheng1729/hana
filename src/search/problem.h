@@ -32,17 +32,16 @@ public:
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
-        // Root context
-        Environ * const pEnv = pProbEnv;
-        if (!pEnv) return;
+        if (!pProbEnv) return;
         // Root goal
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
-        Goalptr pGoal = addGoal(goal, pEnv, s);
+        Goalptr pGoal = addGoal(goal, pProbEnv, s);
         Environ * & pnewEnv = pGoal->second.pnewEnv;
         if (s == GOALTRUE)
-            pnewEnv = addsubEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal()));
+            pnewEnv = addsubEnv
+                (pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
         // Root node
         *root() = Game(addGoaldata(pGoal, pnewEnv));
         addNodeptr(root());
