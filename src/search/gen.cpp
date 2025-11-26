@@ -19,7 +19,7 @@ static Argtypes argtypes(Proofsteps const & assRPN)
         Hypothesis const & hyp = assRPN[i].phyp->second;
         if (hyp.expression.empty())
             return Argtypes();
-        result[i] = (hyp.expression[0]);
+        result[i] = hyp.expression[0];
     }
 
     return result;
