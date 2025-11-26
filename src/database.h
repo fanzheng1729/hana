@@ -191,7 +191,7 @@ public:
             bool isprop = largestsymboldefnumber(ass,propctors(),Syntaxioms(),1);
             ass.type |= isprop * Asstype::PROPOSITIONAL;
             if (isprop && !ass.expression.empty() &&
-                !typecodes().isprimitive(ass.expression[0]))
+                typecodes().isprimitive(ass.expression[0]) == FALSE)
                 ++count;
         }
         return count;
