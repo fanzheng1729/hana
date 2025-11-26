@@ -4,6 +4,7 @@
 #include <map>
 #include <utility>
 #include "util/strview.h"
+#include "util/tribool.h"
 
 // Map: type code -> (as type code, or "" if none, is bound type code) ($4.4.3)
 struct Typecodes : std::map<std::string, std::pair<std::string, bool> >
@@ -11,10 +12,11 @@ struct Typecodes : std::map<std::string, std::pair<std::string, bool> >
     Typecodes() {}
     Typecodes(struct Commands const & syntax, Commands const & bound);
     // Return 1 if a type code is primitive. Return -1 if not found.
-    int isprimitive(strview typecode) const
+    Tribool isprimitive(strview typecode) const
     {
         const_iterator const iter(find(typecode));
-        return iter == end() ? -1 : iter->second.first.empty();
+        if (iter == end()) return UNKNOWN;
+        return iter->second.first.empty() ? TRUE : FALSE;
     }
     // Return 1 if a type code can be bound. Return -1 if not found.
     int isbound(strview typecode) const
