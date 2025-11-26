@@ -69,10 +69,10 @@ public:
         if (!p->game().proven()) return;
         closenodes(p->game().goaldata().nodeptrs, p);
         copyPrftoallEnvs(p->game());
-        copyPrftosuperEnv(p->game());
+        copyPrftosuperEnvs(p->game());
     }
     // Copy proofs to super-contexts.
-    void copyPrftosuperEnv(Game const & game);
+    void copyPrftosuperEnvs(Game const & game);
     // Copy proofs that hold in the problem context to all contexts.
     void copyPrftoallEnvs(Game const & game);
     // Record the proof of proven goals on back propagation.

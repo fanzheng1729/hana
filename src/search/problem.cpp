@@ -70,7 +70,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 }
 
 // Copy proofs to super-contexts.
-void Problem::copyPrftosuperEnv(Game const & game)
+void Problem::copyPrftosuperEnvs(Game const & game)
 {
     if (!game.proven())
         return;
