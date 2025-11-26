@@ -382,7 +382,7 @@ bool Propctors::checkpropsat(Assertions const & assertions,
         Assertion const & assertion(rass.second);
         if (assertion.expression.empty())
             return false;
-        if (typecodes.isprimitive(assertion.expression[0]))
+        if (typecodes.isprimitive(assertion.expression[0]) != FALSE)
             continue; // Skip syntax axioms.
         if (!(assertion.type & Asstype::PROPOSITIONAL))
             continue; // Skip non propositional assertions.
