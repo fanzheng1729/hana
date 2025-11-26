@@ -84,16 +84,8 @@ void Problem::copyPrffromsubEnv(Game const & game)
         // Copy the proof from sub-context.
         // std::cout << from->first << "\n->\n" << to->first << std::endl;
         goaldata.second.setproof(game.proof());
-
         // std::cout << goaldata.second.nodeptrs.size() << std::endl;
-        FOR (Nodeptr const other, goaldata.second.nodeptrs)
-            if (!other->won())
-            {
-                setwin(other);
-                Nodeptr const parent = other.parent();
-                if (parent && !parent->won())
-                    backprop(parent);
-            }
+        closenodes(goaldata.second.nodeptrs, Nodeptr());
     }
 }
 
