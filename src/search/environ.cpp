@@ -67,7 +67,6 @@ bool Environ::valid(Move const & move) const
         Goalptr const pGoal = pProb->addGoal
         (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->second.goal().expression();
-        // Status of the goal
         Goalstatus & s = pGoal->second.status;
         if (s == GOALFALSE)
             return false; // Refuted
