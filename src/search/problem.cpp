@@ -76,8 +76,7 @@ void Problem::copyPrffromsubEnv(Game const & game)
         return;
     Environs::const_iterator const to = game.env().enviter;
     // Loop through all contexts with the same big goal.
-    Goaldatas & goaldatas = game.goaldata().pBigGoal->second;
-    FOR (Goaldatas::reference goaldata, goaldatas)
+    FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
     {
         Environs::const_iterator const from = goaldata.first->enviter;
         if (!environs.reachable(from, to))
@@ -95,12 +94,14 @@ void Problem::copyPrffromsubEnv(Game const & game)
 // {
 //     if (!game.proven())
 //         return;
-//     Environs::const_iterator const from = game.env().enviter;
+//     Environs::const_iterator const to = game.env().enviter;
+//     if (!environs.reachable(probEnviter(), to))
+//         return;
 //     // Loop through all contexts with the same big goal.
 //     Goaldatas & goaldatas = game.goaldata().pBigGoal->second;
 //     FOR (Goaldatas::reference goaldata, goaldatas)
 //     {
-//         Environs::const_iterator const to = goaldata.first->enviter;
+//         Environs::const_iterator const from = goaldata.first->enviter;
 //         if (!environs.reachable(from, to))
 //             continue;
 //         // Copy the proof to sub-context.
