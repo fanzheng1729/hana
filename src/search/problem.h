@@ -19,8 +19,9 @@ class Problem : public MCTS<Game>
 public:
     // The assertion to be proved
     Assertion const & assertion;
-    // Pointer to the context of the problem
+    // Problem context
     Environ * pProbEnv;
+    Environ const & probEnv() const { return *pProbEnv; }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
