@@ -73,7 +73,7 @@ public:
                 if (parent && !parent->won())
                     backprop(parent);
             }
-        // propprooffromsubEnv(p);
+        propprooffromsubEnv(p);
     }
     // Propogate proofs from sub Contexts.
     void propprooffromsubEnv(Nodeptr p);
