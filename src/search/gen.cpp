@@ -117,7 +117,7 @@ Terms Gen::generateupto1(strview type) const
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
     {
         Assertion const & ass(syntaxiom.second.assiter->second);
-        if (ass.expRPN.size() == 1 && ass.expression[0] == type)
+        if (ass.expRPN.size() == 1 && ass.exptypecode() == type)
             terms.push_back(ass.expRPN);
     }
 
@@ -151,7 +151,7 @@ bool Gen::generateupto(strview type, Proofsize size) const
     {
         Assertion const & ass = syntaxiom.second.assiter->second;
         if (ass.expRPN.size() <= 1 || ass.expRPN.size() > size ||
-            ass.expression[0] != type)
+            ass.exptypecode() != type)
             continue; // Syntax axiom mismatch
 
         Argtypes const & types = argtypes(ass.expRPN);
