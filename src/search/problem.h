@@ -122,7 +122,13 @@ private:
     }
     friend Environ;
     // Add a goal. Return its pointer.
-    Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s);
+    Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s)
+    {
+        BigGoalptr pBigGoal=&*goals.insert(std::make_pair(goal,Goaldatas())).first;
+        Goalptr pGoal = &*pBigGoal->second.insert(std::make_pair(pEnv, s)).first;
+        pGoal->second.pBigGoal = pBigGoal;
+        return pGoal;
+    }
     Goalptr addGoal
         (Proofsteps const & RPN, strview type, Environ * pEnv, Goalstatus s)
     { return addGoal(Goalview(RPN, type), pEnv, s); }
