@@ -19,10 +19,11 @@ struct Typecodes : std::map<std::string, std::pair<std::string, bool> >
         return iter->second.first.empty() ? TRUE : FALSE;
     }
     // Return 1 if a type code can be bound. Return -1 if not found.
-    int isbound(strview typecode) const
+    Tribool isbound(strview typecode) const
     {
         const_iterator const iter(find(typecode));
-        return iter == end() ? -1 : iter->second.second;
+        if (iter == end()) return UNKNOWN;
+        return iter->second.second ? TRUE : FALSE;
     }
     // Return the normalized type code. Return "" if not found.
     strview normalize(strview typecode) const
