@@ -29,7 +29,7 @@ public:
     {
         if (assertion.expression.empty()) return;
         Goalview const goal(assertion.expRPN, assertion.expression[0]);
-        Goalstatus const status = env.valid(goal);
+        Goalstatus const status = env.status(goal);
         if (status == GOALFALSE) return;
         // Root context
         Environ * const pEnv = new Env(env);

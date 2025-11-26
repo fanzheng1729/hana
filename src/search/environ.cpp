@@ -68,20 +68,20 @@ bool Environ::valid(Move const & move) const
         (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->second.goal().expression();
         // Status of the goal
-        Goalstatus & status = pGoal->second.status;
-        if (status == GOALFALSE)
+        Goalstatus & s = pGoal->second.status;
+        if (s == GOALFALSE)
             return false; // Refuted
         // Simplified context of the goal, if !NULL
         Environ * & pnewEnv = pGoal->second.pnewEnv;
         // Check if the goal has been validated.
-        if (proven(pGoal, assertion) || status >= GOALOPEN)
+        if (proven(pGoal, assertion) || s >= GOALOPEN)
         {
             move.hypvec[i] = addGoaldata(pGoal, pnewEnv);
             continue; // Valid
         }
-        // New goal (status == GOALNEW)
+        // New goal (s == GOALNEW)
         Goal const & goal = pGoal->second.goal();
-        if ((status = valid(goal)) == GOALFALSE)
+        if ((s = status(goal)) == GOALFALSE)
             return false; // Refuted
         // New context for the child
         pnewEnv = pProb->addsubEnv(this, hypstotrim(goal));

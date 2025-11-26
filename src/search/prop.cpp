@@ -9,7 +9,7 @@
 #include "../util/timer.h"
 
 // Determine status of a goal.
-Goalstatus Prop::valid(Goal const & goal) const
+Goalstatus Prop::status(Goal const & goal) const
 {
     if (database.typecodes().isprimitive(goal.typecode))
         return GOALFALSE;

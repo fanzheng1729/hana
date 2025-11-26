@@ -42,7 +42,7 @@ struct Environ : protected Gen
     virtual Bvector hypstotrim(Goal const & goal) const
     { return Bvector(0 && &goal); }
     // Determine status of a goal.
-    virtual Goalstatus valid(Goal const & goal) const
+    virtual Goalstatus status(Goal const & goal) const
     { return goal.RPN.empty() ? GOALFALSE : GOALOPEN; }
     // Return true if all hypotheses of a move are valid.
     bool valid(Move const & move) const;
