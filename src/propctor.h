@@ -49,7 +49,7 @@ struct Propctors : std::map<strview, Propctor>
         (Definitions const & defs, Definitions::const_reference labeldef);
 // Return the truth table of a definition. Return empty Bvector if not okay.
     Bvector truthtable(Definitions const & defs, Definition const & def);
-// Evaluate *iter at arg. Return CNFNONE if not okay.
+// Evaluate *iter at arg. Return UNKNOWN if not okay.
     int calcbool
         (Definitions const & defs, Definition const & def, TTindex arg);
 // Add CNF clauses from reverse Polish notation.

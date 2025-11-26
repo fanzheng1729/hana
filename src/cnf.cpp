@@ -47,7 +47,7 @@ std::pair<CNFClausesat, CNFClause::size_type> CNFclausesat
     {
         switch (model.test(lit))
         {
-        case CNFNONE:
+        case UNKNOWN:
             if (nonefound && lit / 2 != oldatom)
                 // both atoms are NONE
                 return std::make_pair(UNDECIDED, unitindex);
@@ -55,7 +55,7 @@ std::pair<CNFClausesat, CNFClause::size_type> CNFclausesat
             oldatom = lit / 2;
             unitindex = &lit - clause.data();
             continue;
-        case CNFTRUE:
+        case TRUE:
             return std::make_pair(SATISFIED, 0u);
         case FALSE:
             ;

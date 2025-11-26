@@ -17,18 +17,18 @@ typedef std::vector<Literal> CNFClause;
 // Satisfaction of a clause
 enum CNFClausesat{UNDECIDED = -2, UNIT = -1, CONTRADICTORY = 0, SATISFIED = 1};
 // Sense of an individual atom
-enum Tribool {CNFNONE = -1, FALSE = 0, CNFTRUE = 1};
+enum Tribool {UNKNOWN = -1, FALSE = 0, TRUE = 1};
 // Model of an instance
 struct CNFModel : public std::vector<int>
 {
-    CNFModel(size_type const n) : std::vector<int>(n, CNFNONE) {}
+    CNFModel(size_type const n) : std::vector<int>(n, UNKNOWN) {}
     // sense = 0, literal is positive, assign true;
     // sense = 1, literal is negative, assign false.
     void assign(Literal const lit) { (*this)[lit / 2] = !(lit % 2); }
     // Return the sense of a literal.
     int test(Literal const lit) const
     {
-        return (*this)[lit / 2] == CNFNONE ? static_cast<int>(CNFNONE) :
+        return (*this)[lit / 2] == UNKNOWN ? static_cast<int>(UNKNOWN) :
             (*this)[lit / 2] ^ (lit % 2);
     }
 };

@@ -44,7 +44,7 @@ struct Satsolver
             switch (model[atom])
             {
     //std::cout << "Trying atom " << atom << " = " << model[atom] << '\n';
-            case CNFNONE : case FALSE :
+            case UNKNOWN : case FALSE :
                 ++model[atom];
                 // Check if there is a contradiction so far.
                 if (rcnf.okaysofar(model))
@@ -59,15 +59,15 @@ struct Satsolver
                 }
                 // Move to next model.
                 continue;
-            case CNFTRUE:
+            case TRUE:
                 // Un-assign the current atom.
                 do
                 {
-                    model[atom] = CNFNONE;
+                    model[atom] = UNKNOWN;
                     if (atom == 0)
                         // All models tried
                         return false;
-                } while (model[--atom] == CNFTRUE);
+                } while (model[--atom] == TRUE);
             }
         }
     }

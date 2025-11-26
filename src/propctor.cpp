@@ -178,7 +178,7 @@ Bvector Propctors::truthtable(Definitions const & defs, Definition const & def)
     for (TTindex arg = 0; arg < truthtable.size(); ++arg)
     {
         int const value = calcbool(defs, def, arg);
-        if (value == CNFNONE)
+        if (value == UNKNOWN)
             return Bvector();
         truthtable[arg] = value;
     }
@@ -208,7 +208,7 @@ static bool calc_stack(Bvector const & truthtable, Bvector & stack)
     return true;
 }
 
-// Evaluate *iter at arg. Return CNFNONE if not okay.
+// Evaluate *iter at arg. Return UNKNOWN if not okay.
 int Propctors::calcbool
     (Definitions const & defs, Definition const & def, TTindex arg)
 {
@@ -237,17 +237,17 @@ int Propctors::calcbool
                 iterctor = adddef(defs, *iterdf);
             // Definition not found, or truthtable can't be computed
             if (iterctor == end())
-                return CNFNONE;
+                return UNKNOWN;
         }
 
         if (!calc_stack(iterctor->second.truthtable, stack))
-            return CNFNONE;
+            return UNKNOWN;
     }
 
     if (stack.size() != 1)
     {
         std::cerr << "Syntax proof " << rhs << stackszerr << std::endl;
-        return CNFNONE;
+        return UNKNOWN;
     }
 
     return stack[0];

@@ -135,7 +135,7 @@ void parseInput(CNFClauses const & cnf) {
 	// std::cout << "Clauses read" << std::endl;
 	// Initialize the remaining necessary variables
 		// model and backtrack stack
-	model.assign(numVariables + 1, CNFNONE);
+	model.assign(numVariables + 1, UNKNOWN);
 	modelStack.clear();
 	indexOfNextLiteralToPropagate = 0;
 	decisionLevel = 0;
@@ -153,7 +153,7 @@ void parseInput(CNFClauses const & cnf) {
  */
 int currentValueForLiteral(sLiteral literal) {
     return literal >= 0 ? model[literal] :
-        model[-literal] == CNFNONE ? CNFNONE : 1 - model[-literal];
+        model[-literal] == UNKNOWN ? UNKNOWN : 1 - model[-literal];
 }
 
 /**
@@ -233,10 +233,10 @@ bool propagateGivesConflict() {
 			//traverse the clause
 			for (uint k = 0; !isSomeLiteralTrue && k < clause.size(); ++k) {
 				int value = currentValueForLiteral(clause[k]);
-				if (value == CNFTRUE) {
+				if (value == TRUE) {
 					isSomeLiteralTrue = true;
 				}
-				else if (value == CNFNONE) {
+				else if (value == UNKNOWN) {
 					++undefinedLiterals;
 					lastUndefinedLiteral = clause[k];
 				}
@@ -265,7 +265,7 @@ void backtrack() {
 	sLiteral literal = 0;
 	while (modelStack.back() != DECISION_MARK) { // 0 is the  mark
 		literal = modelStack.back();
-		model[var(literal)] = CNFNONE;
+		model[var(literal)] = UNKNOWN;
 		modelStack.pop_back();
 	}
 	// at this point, literal is the last decision
@@ -289,7 +289,7 @@ sLiteral getNextDecisionLiteral() {
 	sLiteral mostActiveVariable = 0; // in case no variable is undefined, it will not be modified
 	for (Atom i = 1; i <= numVariables; ++i) {
 		// check only undefined variables
-		if (model[i] != CNFNONE)
+		if (model[i] != UNKNOWN)
             continue;
         // search for the most active literal
         if (positiveLiteralActivity[i] >= maximumActivity) {
@@ -352,7 +352,7 @@ bool checkUnitClauses() {
 				//  to be found, i.e., the problem is unsatisfiable!
 				return false;
 			}
-			else if (value == CNFNONE) {
+			else if (value == UNKNOWN) {
 				setLiteralToTrue(literal);
 			}
 		}
