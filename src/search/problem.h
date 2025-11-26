@@ -107,6 +107,17 @@ public:
     }
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
+    // Add a context.
+    void addEnv(Environ const & env, strview name)
+    {
+        std::pair<Environs::iterator, bool> const result
+        = environs.insert(Environs::value_type(name, NULL));
+        if (!result.second) return;
+        Environs::iterator const enviter = result.first;
+        Environ * const pnewEnv = new Environ(env);
+        (enviter->second = pnewEnv)->pProb = this;
+        pnewEnv->enviter = enviter;
+    }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if not okay.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
