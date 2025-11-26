@@ -32,11 +32,8 @@ public:
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         // Root context
-        // addEnv<Env>(env, assertion.hypslabel());
-        Environ * const pEnv = new Env(env);
-        pEnv->pProb = this;
-        pEnv->enviter = environs.insert
-        (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
+        Environ * const pEnv = addEnv(env, assertion.hypslabel());
+        if (!pEnv) return;
         // Root goal
         Goalptr pGoal = addGoal(goal, pEnv, s);
         Environ * & pnewEnv = pGoal->second.pnewEnv = NULL;
