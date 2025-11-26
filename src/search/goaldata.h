@@ -39,8 +39,7 @@ private:
     }
 };
 
-// Add a (pEnv, Goaldata). Return its pointer.
-// In case of failure, return pGoal.
+// Add (pEnv, Goaldata). Return its pointer. Return pGoal if unsuccessful.
 inline Goalptr addGoaldata(Goalptr pGoal, Environ * pEnv)
 {
     if (!pGoal || !pEnv) return pGoal;
