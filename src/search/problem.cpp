@@ -105,6 +105,15 @@ static void DAGerr(strview env1, strview env2)
     std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
 }
 
+// Add a goal. Return its pointer.
+Goalptr Problem::addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s)
+{
+    BigGoalptr pBigGoal=&*goals.insert(std::make_pair(goal,Goaldatas())).first;
+    Goalptr pGoal = &*pBigGoal->second.insert(std::make_pair(pEnv, s)).first;
+    pGoal->second.pBigGoal = pBigGoal;
+    return pGoal;
+}
+
 // Add a sub-context with hypotheses trimmed.
 // Return pointer to the new context. Return NULL if unsuccessful.
 Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
@@ -139,15 +148,6 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
         pnewEnv->enviter = newenviter;
     }
     return pnewEnv;
-}
-
-// Add a goal. Return its pointer.
-Goalptr Problem::addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s)
-{
-    BigGoalptr pBigGoal=&*goals.insert(std::make_pair(goal,Goaldatas())).first;
-    Goalptr pGoal = &*pBigGoal->second.insert(std::make_pair(pEnv, s)).first;
-    pGoal->second.pBigGoal = pBigGoal;
-    return pGoal;
 }
 
 // Return the only open child of p.

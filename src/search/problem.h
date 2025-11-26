@@ -121,14 +121,14 @@ private:
         return pEnv;
     }
     friend Environ;
-    // Add a sub-context with hypotheses trimmed.
-    // Return pointer to the new context. Return NULL if unsuccessful.
-    Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s);
     Goalptr addGoal
         (Proofsteps const & RPN, strview type, Environ * pEnv, Goalstatus s)
     { return addGoal(Goalview(RPN, type), pEnv, s); }
+    // Add a sub-context with hypotheses trimmed.
+    // Return pointer to the new context. Return NULL if unsuccessful.
+    Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // close all the nodes except p
     void closenodes(Nodeptrs const & nodeptrs, Nodeptr p)
     {
