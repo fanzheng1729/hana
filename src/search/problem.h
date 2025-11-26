@@ -35,7 +35,7 @@ public:
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         Goalptr pGoal = addGoal(goal, pEnv, s);
-        Environ * & pnewEnv = pGoal->second.pnewEnv = NULL;
+        Environ * & pnewEnv = pGoal->second.pnewEnv;
         if (s == GOALTRUE)
             pnewEnv = addsubEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal()));
         // Root node
