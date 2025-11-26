@@ -11,8 +11,8 @@ bool Printer::addstep(Expression const & stacktop, Proofsize index,
     if (stacktop.empty())
         return false;
 
-    if (int const isprim = ptypes->isprimitive(stacktop.front()))
-        return isprim == 1;
+    if (Tribool const isprim = ptypes->isprimitive(stacktop.front()))
+        return isprim == TRUE;
 
     stack.push_back(steps.size());
 
@@ -48,7 +48,7 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
     case Proofstep::SAVE:
         if (stacktop.empty())
             return false;
-        if (!ptypes->isprimitive(stacktop[0]))
+        if (ptypes->isprimitive(stacktop[0]) == FALSE)
             steps.back()[2] = Symbol2(">=", ++savecount);
         return true;
     default:
