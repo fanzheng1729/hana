@@ -33,6 +33,7 @@ public:
     {
         for (Hypsize i = 0; i < assertion.hypcount(); ++i)
         {
+            if (assertion.hypfloats(i)) continue;
             Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
             Goalptr const pGoal = addGoal(goal, NULL, GOALTRUE);
         }
