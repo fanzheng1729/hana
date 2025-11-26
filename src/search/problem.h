@@ -19,8 +19,8 @@ class Problem : public MCTS<Game>
 public:
     // The assertion to be proved
     Assertion const & assertion;
+    // Is staged move generation used?
     enum { STAGED = 1 };
-    // Is staged move generation turned on?
     bool const staged;
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
