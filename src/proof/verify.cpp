@@ -115,12 +115,11 @@ static bool verifystep
 //std::cout << "Substitutions" << std::endl << substitutions;
 
     // Verify disjoint variable conditions.
-    if (pass)
-        if (!checkDV(substitutions, thm.disjvars, pass->second))
-        {
-            std::cerr << "In step " << pthm->first;
-            return printinproofof(label);
-        }
+    if (pass && !checkDV(substitutions, thm.disjvars, pass->second))
+    {
+        std::cerr << "In step " << pthm->first;
+        return printinproofof(label);
+    }
 
     // Insert new statement onto stack.
     makesubstitution(thm.expression, stack.back(), substitutions,
