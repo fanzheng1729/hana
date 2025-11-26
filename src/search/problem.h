@@ -108,8 +108,7 @@ public:
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a sub-context with hypotheses trimmed.
-    // Return pointer to the new context.
-    // Return NULL if not okay.
+    // Return pointer to the new context. Return NULL if not okay.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s);
