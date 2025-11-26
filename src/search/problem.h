@@ -75,7 +75,7 @@ public:
             }
         copyPrffromsubEnv(p->game());
     }
-    // Copy proofs from sub Contexts.
+    // Copy proofs from sub contexts.
     void copyPrffromsubEnv(Game const & game);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
