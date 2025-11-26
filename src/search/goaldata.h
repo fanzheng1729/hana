@@ -39,10 +39,12 @@ private:
     }
 };
 
-// Add (pEnv, pGoal's data). Return its pointer. Return pGoal if unsuccessful.
-inline Goalptr addGoaldata(Goalptr pGoal, Environ * pEnv)
+// Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
+inline Goalptr addsimpGoal(Goalptr pGoal, Environ *)
 {
-    if (!pGoal || !pEnv) return pGoal;
+    if (!pGoal) return pGoal;
+    Environ * const pEnv = pGoal->second.pnewEnv;
+    if (!pEnv) return pGoal;
     Goaldata const & goaldata = pGoal->second;
     BigGoalptr const pBigGoal = goaldata.pBigGoal;
     if (!pBigGoal) return pGoal;
