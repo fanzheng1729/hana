@@ -131,6 +131,18 @@ private:
     Goalptr addGoal
         (Proofsteps const & RPN, strview type, Environ * pEnv, Goalstatus s)
     { return addGoal(Goalview(RPN, type), pEnv, s); }
+    // close all the nodes except p
+    void closenodes(Nodeptrs const & nodeptrs, Nodeptr p)
+    {
+        FOR (Nodeptr const other, nodeptrs)
+            if (other != p && !other->won())
+            {
+                setwin(other);
+                Nodeptr const parent = other.parent();
+                if (parent && !parent->won())
+                    backprop(parent);
+            }
+    }
 public:
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
