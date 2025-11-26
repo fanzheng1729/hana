@@ -80,12 +80,10 @@ void Problem::copyPrftosuperEnvs(Game const & game)
         return; // Skip if the proof holds in the problem context.
     // Loop through all contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
-    {
         // Copy the proof to super-contexts.
         if (environs.reachable(goaldata.first->enviter, enviter) &&
             goaldata.second.setproof(game.proof()))
             closenodes(goaldata.second.nodeptrs, Nodeptr());
-    }
 }
 
 // Copy proofs that hold in the problem context to all contexts.
