@@ -91,7 +91,7 @@ void Problem::closemorenodes(Nodeptr p)
     }
 }
 
-static void printDAGcycle(strview env1, strview env2)
+static void DAGerr(strview env1, strview env2)
 {
     std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
 }
@@ -111,7 +111,7 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     Environs::iterator const newenviter = result.first;
     if (!environs.linked(pEnv->enviter, newenviter) &&
         !environs.link(pEnv->enviter, newenviter))
-        printDAGcycle(pEnv->enviter->first, newenviter->first);
+        DAGerr(pEnv->enviter->first, newenviter->first);
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newenviter->second;
