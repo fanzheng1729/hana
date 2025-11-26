@@ -5,6 +5,9 @@
 #include <numeric>  // for std::accumulate
 #include "types.h"
 
+// Delimiter used in assertion label
+static char const delim = '~';
+
 // An axiom or a theorem.
 struct Assertion
 {
@@ -125,7 +128,6 @@ struct Assertion
     // Returns a label for a collection of hypotheses.
     std::string hypslabel(Bvector const & hypstotrim = Bvector()) const
     {
-        static char const delim = '~';
         // Preallocate for efficiency.
         std::vector<std::string> labels;
         labels.reserve(hypiters.size());
