@@ -28,6 +28,8 @@ public:
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
+    // Add all hypotheses as proven goals.
+    void addhyps();
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion),
