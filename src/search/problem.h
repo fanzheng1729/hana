@@ -36,6 +36,8 @@ public:
             if (assertion.hypfloats(i)) continue;
             Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
             Goalptr const pGoal = addGoal(goal, NULL, GOALTRUE);
+            // 1-step proof using the hypothesis
+            pGoal->second.proof.assign(1, assertion.hypiters[i]);
         }
     }
     template<class Env>
