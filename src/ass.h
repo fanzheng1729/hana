@@ -54,7 +54,7 @@ struct Assertion
     Expression const & hypexp(Hypsize index) const { return hyp(index).expression; }
     // Typecode of a hypothesis
     strview hyptypecode(Hypsize index) const
-        { return hypexp(index).empty() ? "" : hypexp(index)[0].c_str; }
+        { return hypexp(index).empty() ? strview() : hypexp(index)[0]; }
     // RPN of a hypothesis
     Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
     // AST of a hypothesis
