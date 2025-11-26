@@ -51,10 +51,13 @@ public:
     {
         if (!pProbEnv) return;
         if (probEnviter() == baseEnviter) return;
-        // Root goal
+        // Check root goal.
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
+        // Add hypotheses.
+        addhyps();
+        // Add root goal.
         Goalptr const pGoal = addGoal(goal, pProbEnv, s);
         if (s == GOALTRUE)
             pGoal->second.pnewEnv = addsubEnv
