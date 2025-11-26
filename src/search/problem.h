@@ -34,7 +34,6 @@ public:
         if (s == GOALFALSE) return;
         // Root context
         Environ * const pEnv = addEnv(env, assertion.hypslabel());
-        if (!pEnv) return;
         // Root goal
         Goalptr pGoal = addGoal(goal, pEnv, s);
         Environ * & pnewEnv = pGoal->second.pnewEnv = NULL;
