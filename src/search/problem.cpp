@@ -123,13 +123,13 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     if (ass.expression.empty())
         return NULL;
     // Add the new context.
-    Environ * const pnewenv = pEnv->makeenv(newass = ass);
-    if (pnewenv)
+    Environ * const pnewEnv = pEnv->makeenv(newass = ass);
+    if (pnewEnv)
     {
-        (newenviter->second = pnewenv)->pProb = this;
-        pnewenv->enviter = newenviter;
+        (newenviter->second = pnewEnv)->pProb = this;
+        pnewEnv->enviter = newenviter;
     }
-    return pnewenv;
+    return pnewEnv;
 }
 
 // Add a goal. Return its pointer.
