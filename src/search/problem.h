@@ -20,7 +20,7 @@ public:
     // The assertion to be proved
     Assertion const & assertion;
     // Problem context
-    Environ * pProbEnv;
+    Environ * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return pProbEnv->enviter; }
     // Is staged move generation used?
