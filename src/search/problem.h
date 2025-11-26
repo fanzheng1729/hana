@@ -32,6 +32,7 @@ public:
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         // Root context
+        // addEnv<Env>(env, assertion.hypslabel());
         Environ * const pEnv = new Env(env);
         pEnv->pProb = this;
         pEnv->enviter = environs.insert
@@ -107,7 +108,8 @@ public:
     }
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
-    // Add a context.
+    // Add a context and set up its pointer.
+    // Return NULL if unsuccessful.
     template<class Env>
     void addEnv(Env const & env, strview name)
     {
@@ -120,7 +122,7 @@ public:
         pnewEnv->enviter = enviter;
     }
     // Add a sub-context with hypotheses trimmed.
-    // Return pointer to the new context. Return NULL if not okay.
+    // Return pointer to the new context. Return NULL if unsuccessful.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // Add a goal. Return its pointer.
     Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s);

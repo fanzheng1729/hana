@@ -105,7 +105,7 @@ static void DAGerr(strview env1, strview env2)
 }
 
 // Add a sub-context with hypotheses trimmed.
-// Return pointer to the new context. Return NULL if not okay.
+// Return pointer to the new context. Return NULL if unsuccessful.
 Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
