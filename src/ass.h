@@ -5,10 +5,10 @@
 #include <numeric>  // for std::accumulate
 #include "types.h"
 
-// Delimiter used in assertion label
-static char const delim = '~';
+// Hypothesis label delimiter
+static const std::string delim = "~";
 
-// An axiom or a theorem.
+// An axiom or a theorem
 struct Assertion
 {
 // Essential properties:
