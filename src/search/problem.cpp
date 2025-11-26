@@ -76,6 +76,7 @@ void Problem::copyPrffromsubEnv(Game const & game)
         return;
     Goaldatas & goaldatas = game.goaldata().pBigGoal->second;
     Environs::const_iterator const to = game.env().enviter;
+    // Loop through all contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, goaldatas)
     {
         Environs::const_iterator const from = goaldata.first->enviter;
