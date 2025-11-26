@@ -44,12 +44,11 @@ public:
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         Goalptr pGoal = addGoal(goal, pProbEnv, s);
-        Environ * & pnewEnv = pGoal->second.pnewEnv;
         if (s == GOALTRUE)
-            pnewEnv = addsubEnv
+            pGoal->second.pnewEnv = addsubEnv
                 (pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
         // Root node
-        *root() = Game(addGoaldata(pGoal, pnewEnv));
+        *root() = Game(addGoaldata(pGoal, pGoal->second.pnewEnv));
         addNodeptr(root());
     }
     // UCB threshold for generating a new batch of moves
