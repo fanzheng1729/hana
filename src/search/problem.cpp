@@ -69,12 +69,14 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Copy proofs from sub-contexts.
-void Problem::copyPrffromsubEnv(Game const & game)
+// Copy proofs to super-contexts.
+void Problem::copyPrftosuperEnv(Game const & game)
 {
     if (!game.proven())
         return;
     Environs::const_iterator const to = game.env().enviter;
+    if (probEnviter() == to || environs.reachable(probEnviter(), to))
+        return;
     // Loop through all contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
     {
@@ -82,35 +84,31 @@ void Problem::copyPrffromsubEnv(Game const & game)
         if (!environs.reachable(from, to))
             continue;
         // Copy the proof from sub-context.
-        // std::cout << from->first << "\n->\n" << to->first << std::endl;
         goaldata.second.setproof(game.proof());
-        // std::cout << goaldata.second.nodeptrs.size() << std::endl;
         closenodes(goaldata.second.nodeptrs, Nodeptr());
     }
 }
 
-// Copy proofs to all contexts.
-// void Problem::copyPrftoallEnvs(Game const & game)
-// {
-//     if (!game.proven())
-//         return;
-//     Environs::const_iterator const to = game.env().enviter;
-//     if (!environs.reachable(probEnviter(), to))
-//         return;
-//     // Loop through all contexts with the same big goal.
-//     Goaldatas & goaldatas = game.goaldata().pBigGoal->second;
-//     FOR (Goaldatas::reference goaldata, goaldatas)
-//     {
-//         Environs::const_iterator const from = goaldata.first->enviter;
-//         if (!environs.reachable(from, to))
-//             continue;
-//         // Copy the proof to sub-context.
-//         // std::cout << from->first << "\n->\n" << to->first << std::endl;
-//         goaldata.second.setproof(game.proof());
-//         // std::cout << goaldata.second.nodeptrs.size() << std::endl;
-//         closenodes(goaldata.second.nodeptrs, Nodeptr());
-//     }
-// }
+// Copy proofs that hold in the problem context to all contexts.
+void Problem::copyPrftoallEnvs(Game const & game)
+{
+    if (!game.proven())
+        return;
+    Environs::const_iterator const to = game.env().enviter;
+    if (probEnviter() != to && !environs.reachable(probEnviter(), to))
+        return;
+    // The proof holds in the problem context.
+    // Loop through all contexts with the same big goal.
+    FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
+    {
+        Environs::const_iterator const from = goaldata.first->enviter;
+        if (from == to)
+            continue;
+        // Copy the proof to sub-context.
+        goaldata.second.setproof(game.proof());
+        closenodes(goaldata.second.nodeptrs, Nodeptr());
+    }
+}
 
 static void DAGerr(strview env1, strview env2)
 {

@@ -68,11 +68,12 @@ public:
     {
         if (!p->game().proven()) return;
         closenodes(p->game().goaldata().nodeptrs, p);
-        copyPrffromsubEnv(p->game());
+        copyPrftoallEnvs(p->game());
+        copyPrftosuperEnv(p->game());
     }
-    // Copy proofs from sub-contexts.
-    void copyPrffromsubEnv(Game const & game);
-    // Copy proofs to all contexts.
+    // Copy proofs to super-contexts.
+    void copyPrftosuperEnv(Game const & game);
+    // Copy proofs that hold in the problem context to all contexts.
     void copyPrftoallEnvs(Game const & game);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
