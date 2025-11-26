@@ -188,9 +188,9 @@ public:
         FOR (Assertions::reference r, m_assertions)
         {
             Assertion & ass = r.second;
-            bool is = largestsymboldefnumber(ass,propctors(),Syntaxioms(),1);
-            ass.type |= is * Asstype::PROPOSITIONAL;
-            if (is && !ass.expression.empty() &&
+            bool isprop = largestsymboldefnumber(ass,propctors(),Syntaxioms(),1);
+            ass.type |= isprop * Asstype::PROPOSITIONAL;
+            if (isprop && !ass.expression.empty() &&
                 !typecodes().isprimitive(ass.expression[0]))
                 ++count;
         }
