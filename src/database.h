@@ -190,6 +190,7 @@ public:
             Assertion & ass = r.second;
             bool isprop = largestsymboldefnumber(ass,propctors(),Syntaxioms(),1);
             ass.type |= isprop * Asstype::PROPOSITIONAL;
+            // Check if it is propositional and starts with a non-primitive type code.
             if (isprop && !ass.expression.empty() &&
                 typecodes().isprimitive(ass.expression[0]) == FALSE)
                 ++count;
