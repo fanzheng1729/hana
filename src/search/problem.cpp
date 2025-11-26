@@ -42,8 +42,9 @@ Eval Problem::evalleaf(Nodeptr p) const
         return EvalWIN;
     if (!p.parent() && proven(game.pGoal, assertion))
         return EvalWIN;
-
-    return game.pEnv() ? game.env().evalourleaf(game) : EvalLOSS;
+    if (!game.pEnv())
+        return EvalLOSS;
+    return game.env().evalourleaf(game);
 }
 
 Eval Problem::evaltheirleaf(Nodeptr p) const
@@ -72,17 +73,16 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 // Copy proofs to super-contexts.
 void Problem::copyPrftosuperEnvs(Game const & game)
 {
-    if (!game.proven())
-        return;
-    Environs::const_iterator const to = game.env().enviter;
-    if (probEnviter() == to || environs.reachable(probEnviter(), to))
+    if (!game.proven()) return;
+
+    Enviter const enviter = game.env().enviter;
+    if (probEnviter() == enviter || environs.reachable(probEnviter(), enviter))
         return; // Skip if the proof holds in the problem context.
     // Loop through all contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
     {
-        Environs::const_iterator const from = goaldata.first->enviter;
         // Copy the proof to super-contexts.
-        if (environs.reachable(from, to) &&
+        if (environs.reachable(goaldata.first->enviter, enviter) &&
             goaldata.second.setproof(game.proof()))
             closenodes(goaldata.second.nodeptrs, Nodeptr());
     }
@@ -91,10 +91,10 @@ void Problem::copyPrftosuperEnvs(Game const & game)
 // Copy proofs that hold in the problem context to all contexts.
 void Problem::copyPrftoallEnvs(Game const & game)
 {
-    if (!game.proven())
-        return;
-    Environs::const_iterator const to = game.env().enviter;
-    if (probEnviter() == to || environs.reachable(probEnviter(), to))
+    if (!game.proven()) return;
+
+    Enviter const enviter = game.env().enviter;
+    if (probEnviter() == enviter || environs.reachable(probEnviter(), enviter))
         // The proof holds in the problem context.
         // Loop through all contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
