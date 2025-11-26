@@ -86,9 +86,9 @@ void Problem::propprooffromsubEnv(Nodeptr p)
             continue;
         // Propogate the proof.
         // std::cout << from->first << "\n->\n" << to->first << std::endl;
-        // std::cout << goaldata.second.nodeptrs.size() << std::endl;
         goaldata.second.proof = game.proof();
         goaldata.second.status = GOALTRUE;
+        // std::cout << goaldata.second.nodeptrs.size() << std::endl;
         FOR (Nodeptr const other, goaldata.second.nodeptrs)
             if (!other->won())
             {
