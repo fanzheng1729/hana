@@ -88,6 +88,7 @@ void Problem::propprooffromsubEnv(Nodeptr p)
                 {
                     std::cout << from->first << "\n->\n" << to->first;
                     other->game().proof() = game.proof();
+                    other->game().goaldata().status = GOALTRUE;
                     Nodeptr const parent = other.parent();
                     if (parent && !parent->won())
                         backprop(parent);
