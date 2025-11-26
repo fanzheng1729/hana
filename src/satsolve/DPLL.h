@@ -1,7 +1,7 @@
 #ifndef DPLL_H_INCLUDED
 #define DPLL_H_INCLUDED
 
-#include "sat.h"
+#include "SAT.h"
 
 // signed literal: P = 1, !P = -1, Q = 2, !Q = -2, ...
 typedef int sLiteral;
