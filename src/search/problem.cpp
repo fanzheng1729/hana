@@ -77,19 +77,22 @@ void Problem::propprooffromsubEnv(Nodeptr p)
     Game const & game = p->game();
     if (!game.proven())
         return;
-    Goaldatas const & goaldatas = game.goaldata().pBigGoal->second;
-    Environs::const_iterator to = game.env().enviter;
-    FOR (Goaldatas::const_reference goaldata, goaldatas)
+    Goaldatas & goaldatas = game.goaldata().pBigGoal->second;
+    Environs::const_iterator const to = game.env().enviter;
+    FOR (Goaldatas::reference goaldata, goaldatas)
     {
-        Environs::const_iterator from = goaldata.first->enviter;
+        Environs::const_iterator const from = goaldata.first->enviter;
         if (!environs.reachable(from, to))
             continue;
-
-        std::cout << from->first << "\n->\n" << to->first;
+        // Propogate the proof.
+        // std::cout << from->first << "\n->\n" << to->first << std::endl;
+        // std::cout << goaldata.second.nodeptrs.size() << std::endl;
+        // goaldata.second.proof = game.proof();
+        // goaldata.second.status = GOALTRUE;
         FOR (Nodeptr const other, goaldata.second.nodeptrs)
             if (!other->won())
             {
-                other->game().proof() = game.proof();
+                setwin(other);
                 Nodeptr const parent = other.parent();
                 if (parent && !parent->won())
                     backprop(parent);
