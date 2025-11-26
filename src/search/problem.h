@@ -12,6 +12,7 @@ class Problem : public MCTS<Game>
 {
     // Assertions corresponding to contexts
     Assertions assertions;
+    friend Environ;
     // DAG of polymorphic contexts
     DAG<Environs> environs;
     // Map: goal -> context -> evaluation

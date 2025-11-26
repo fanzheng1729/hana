@@ -37,12 +37,10 @@ static TTindex truthtablesize(Assertion const & ass)
 
     TTindex result = 1;
 
-    FOR (Hypiter iter, ass.hypiters)
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
-        Hypothesis const & hyp = iter->second;
-        if (!hyp.floats ||
-            hyp.expression.empty() || hyp.expression[0] != wff)
-                return 0;
+        if (!ass.hypfloats(i) || ass.hyptypecode(i) != wff)
+            return 0;
         result *= 2;
     }
 
