@@ -71,7 +71,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Copy proofs from sub contexts.
+// Copy proofs from sub-contexts.
 void Problem::copyPrffromsubEnv(Game const & game)
 {
     if (!game.proven())
@@ -83,7 +83,7 @@ void Problem::copyPrffromsubEnv(Game const & game)
         Environs::const_iterator const from = goaldata.first->enviter;
         if (!environs.reachable(from, to))
             continue;
-        // Copy the proof from sub context.
+        // Copy the proof from sub-context.
         // std::cout << from->first << "\n->\n" << to->first << std::endl;
         goaldata.second.setproof(game.proof());
 
