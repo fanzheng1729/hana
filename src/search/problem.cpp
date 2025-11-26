@@ -111,10 +111,10 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     if (hypstotrim.empty())
         return NULL;
     // Name of new context
-    std::string const & label(pEnv->assertion.hypslabel(hypstotrim));
+    std::string const & name(pEnv->assertion.hypslabel(hypstotrim));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result
-    = environs.insert(std::pair<strview, Environ *>(label, NULL));
+    = environs.insert(std::pair<strview, Environ *>(name, NULL));
     // Iterator to the new context
     Environs::iterator const newenviter = result.first;
     if (!environs.linked(pEnv->enviter, newenviter) &&
@@ -125,7 +125,7 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
         return newenviter->second;
     // If it does not exist, add the simplified assertion.
     Assertion & newass = assertions[newenviter->first];
-    if (unexpected(!newass.expression.empty(), "Duplicate label", label))
+    if (unexpected(!newass.expression.empty(), "Duplicate name", name))
         return NULL;
     Assertion const & ass = pEnv->makeAss(hypstotrim);
     if (ass.expression.empty())
