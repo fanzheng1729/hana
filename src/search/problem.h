@@ -108,13 +108,14 @@ public:
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
     // Add a context.
-    void addEnv(Environ const & env, strview name)
+    template<class Env>
+    void addEnv(Env const & env, strview name)
     {
         std::pair<Environs::iterator, bool> const result
         = environs.insert(Environs::value_type(name, NULL));
         if (!result.second) return;
         Environs::iterator const enviter = result.first;
-        Environ * const pnewEnv = new Environ(env);
+        Environ * const pnewEnv = new Env(env);
         (enviter->second = pnewEnv)->pProb = this;
         pnewEnv->enviter = enviter;
     }
