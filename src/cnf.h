@@ -16,7 +16,7 @@ typedef std::vector<Literal> CNFClause;
 
 // Satisfaction of a clause
 enum CNFClausesat{UNDECIDED = -2, UNIT = -1, CONTRADICTORY = 0, SATISFIED = 1};
-// Sense of an individual atom
+// Tristate boolean
 enum Tribool {UNKNOWN = -1, FALSE = 0, TRUE = 1};
 // Model of an instance
 struct CNFModel : public std::vector<int>
