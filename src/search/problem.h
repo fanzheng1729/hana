@@ -105,6 +105,7 @@ public:
     }
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
+private:
     // Add a context and set up its pointer.
     // Return NULL if unsuccessful.
     template<class Env>
@@ -130,6 +131,7 @@ public:
     Goalptr addGoal
         (Proofsteps const & RPN, strview type, Environ * pEnv, Goalstatus s)
     { return addGoal(Goalview(RPN, type), pEnv, s); }
+public:
     // Printing routines. DO NOTHING if ptr is NULL.
     void printmainline(Nodeptr p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
