@@ -111,15 +111,19 @@ public:
     // Add a context and set up its pointer.
     // Return NULL if unsuccessful.
     template<class Env>
-    void addEnv(Env const & env, strview name)
+    Environ * addEnv(Env const & env, strview name)
     {
         std::pair<Environs::iterator, bool> const result
         = environs.insert(Environs::value_type(name, NULL));
-        if (!result.second) return;
+        if (!result.second) return NULL;
         Environs::iterator const enviter = result.first;
         Environ * const pnewEnv = new Env(env);
-        (enviter->second = pnewEnv)->pProb = this;
-        pnewEnv->enviter = enviter;
+        if (pnewEnv)
+        {
+            (enviter->second = pnewEnv)->pProb = this;
+            pnewEnv->enviter = enviter;
+        }
+        return pnewEnv;
     }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
