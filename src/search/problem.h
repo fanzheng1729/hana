@@ -29,7 +29,14 @@ public:
     enum { STAGED = 1 };
     bool const staged;
     // Add all hypotheses as proven goals.
-    void addhyps();
+    void addhyps()
+    {
+        for (Hypsize i = 0; i < assertion.hypcount(); ++i)
+        {
+            Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
+            Goalptr const pGoal = addGoal(goal, NULL, GOALTRUE);
+        }
+    }
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion),
