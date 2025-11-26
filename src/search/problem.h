@@ -23,6 +23,8 @@ public:
     Environ * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return pProbEnv->enviter; }
+    // Iterator to base context
+    Enviter baseEnviter;
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
@@ -31,6 +33,7 @@ public:
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL :
             addEnv(env, assertion.hypslabel())),
+        baseEnviter(environs.insert(Environs::value_type("", NULL)).first),
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
