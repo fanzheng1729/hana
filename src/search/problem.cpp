@@ -38,14 +38,12 @@ Eval Problem::evalleaf(Nodeptr p) const
     if (!isourturn(p))
         return evaltheirleaf(p);
     // Our leaf
-    if (!game.pGoal || !game.pEnv())
-        return EvalLOSS;
     if (p.parent() && game.proven())
         return EvalWIN;
     if (!p.parent() && proven(game.pGoal, assertion))
         return EvalWIN;
 
-    return game.env().evalourleaf(game);
+    return game.pEnv() ? game.env().evalourleaf(game) : EvalLOSS;
 }
 
 Eval Problem::evaltheirleaf(Nodeptr p) const
