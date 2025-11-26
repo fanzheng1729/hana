@@ -29,17 +29,17 @@ public:
     {
         if (assertion.expression.empty()) return;
         Goalview const goal(assertion.expRPN, assertion.expression[0]);
-        Goalstatus const status = env.status(goal);
-        if (status == GOALFALSE) return;
+        Goalstatus const s = env.status(goal);
+        if (s == GOALFALSE) return;
         // Root context
         Environ * const pEnv = new Env(env);
         pEnv->pProb = this;
         pEnv->enviter = environs.insert
         (std::make_pair(assertion.hypslabel().c_str(), pEnv)).first;
         // Root goal
-        Goalptr pGoal = addGoal(goal, pEnv, status);
+        Goalptr pGoal = addGoal(goal, pEnv, s);
         Environ * & pnewEnv = pGoal->second.pnewEnv = NULL;
-        if (status == GOALTRUE)
+        if (s == GOALTRUE)
             pnewEnv = addsubEnv(pEnv, pEnv->hypstotrim(pGoal->second.goal()));
         // Root node
         *root() = Game(addGoaldata(pGoal, pnewEnv));
