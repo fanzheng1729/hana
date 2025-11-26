@@ -73,10 +73,10 @@ public:
                 if (parent && !parent->won())
                     backprop(parent);
             }
-        propprooffromsubEnv(p);
+        propPrffromsubEnv(p);
     }
     // Propogate proofs from sub Contexts.
-    void propprooffromsubEnv(Nodeptr p);
+    void propPrffromsubEnv(Nodeptr p);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
