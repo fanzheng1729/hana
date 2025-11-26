@@ -28,7 +28,7 @@ struct Prop : Environ
     virtual Bvector hypstotrim(Goal const & goal) const;
     // Allocate a new environment constructed from an assertion on the heap.
     // Return its address.
-    virtual Prop * makeenv(Assertion const & ass) const
+    virtual Prop * makeEnv(Assertion const & ass) const
     { return new(std::nothrow) Prop(ass, database, m_maxmoves, staged); }
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeass(Bvector const & hypstotrim) const;

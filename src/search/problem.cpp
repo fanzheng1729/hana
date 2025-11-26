@@ -123,7 +123,7 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     if (ass.expression.empty())
         return NULL;
     // Add the new context.
-    Environ * const pnewEnv = pEnv->makeenv(newass = ass);
+    Environ * const pnewEnv = pEnv->makeEnv(newass = ass);
     if (pnewEnv)
     {
         (newenviter->second = pnewEnv)->pProb = this;
