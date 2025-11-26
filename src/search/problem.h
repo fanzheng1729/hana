@@ -27,12 +27,14 @@ public:
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion),
+        pProbEnv(assertion.expression.empty() ? NULL :
+            addEnv(env, assertion.hypslabel())),
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
-        if (assertion.expression.empty()) return;
         // Root context
-        Environ * const pEnv = addEnv(env, assertion.hypslabel());
+        Environ * const pEnv = pProbEnv;
+        if (!pEnv) return;
         // Root goal
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
