@@ -6,7 +6,7 @@
 #include "types.h"
 
 // Hypothesis label delimiter
-static const std::string delim = "~";
+static const std::string hypdelim = "~";
 
 // An axiom or a theorem
 struct Assertion
@@ -136,9 +136,9 @@ struct Assertion
         labels.reserve(hypiters.size());
         for (Hypsize i = 0; i < hypstotrim.size(); ++i)
             if (!hypstotrim[i])
-                labels.push_back(delim + std::string(hypiters[i]->first));
+                labels.push_back(hypdelim + std::string(hypiters[i]->first));
         for (Hypsize i = hypstotrim.size(); i < hypiters.size(); ++i)
-            labels.push_back(delim + std::string(hypiters[i]->first));
+            labels.push_back(hypdelim + std::string(hypiters[i]->first));
 
         std::sort(labels.begin(), labels.end());
         return std::accumulate(labels.begin(), labels.end(), std::string());
