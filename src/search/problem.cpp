@@ -72,7 +72,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
 }
 
 // Copy proofs from sub Contexts.
-void Problem::copyPfromsubEnv(Game const & game)
+void Problem::copyPrffromsubEnv(Game const & game)
 {
     if (!game.proven())
         return;

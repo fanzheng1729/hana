@@ -73,10 +73,10 @@ public:
                 if (parent && !parent->won())
                     backprop(parent);
             }
-        copyPfromsubEnv(p->game());
+        copyPrffromsubEnv(p->game());
     }
     // Copy proofs from sub Contexts.
-    void copyPfromsubEnv(Game const & game);
+    void copyPrffromsubEnv(Game const & game);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
