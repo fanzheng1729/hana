@@ -43,7 +43,7 @@ public:
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
-        Goalptr pGoal = addGoal(goal, pProbEnv, s);
+        Goalptr const pGoal = addGoal(goal, pProbEnv, s);
         if (s == GOALTRUE)
             pGoal->second.pnewEnv = addsubEnv
                 (pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
