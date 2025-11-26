@@ -70,7 +70,7 @@ static void indentation(ASTiter begin, ASTiter end,
         result[subroot] = level + 1;
         // Recurse to the subAST.
         ASTiter const newend = end - (index - subroot);
-        ASTiter const newbegin = i ? end - (index - (*back)[i-1]): begin;
+        ASTiter const newbegin = i ? end - (index - (*back)[i - 1]): begin;
         indentation(newbegin, newend, result);
     }
 }
