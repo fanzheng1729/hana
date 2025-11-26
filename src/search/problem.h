@@ -73,6 +73,7 @@ public:
             }
         // propprooffromsubEnv(p);
     }
+    // Propogate proofs from sub Contexts.
     void propprooffromsubEnv(Nodeptr p);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)

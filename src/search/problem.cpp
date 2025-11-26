@@ -71,6 +71,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
+// Propogate proofs from sub Contexts.
 void Problem::propprooffromsubEnv(Nodeptr p)
 {
     Goaldatas const & goaldatas = p->game().goaldata().pBigGoal->second;
