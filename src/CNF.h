@@ -81,7 +81,7 @@ struct CNFClauses : public std::vector<CNFClause>
     // Return if the clauses are satisfiable.
     bool sat() const;
     // Map: free atoms -> truth value.
-    // Return the empty vector if not okay.
+    // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom const nfree) const;
 };
 

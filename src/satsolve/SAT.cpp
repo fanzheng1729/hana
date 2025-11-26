@@ -8,7 +8,7 @@ bool CNFClauses::sat() const
 }
 
 // Map: free atoms -> truth value.
-// Return the empty vector if not okay.
+// Return the empty vector if unsuccessful.
 Bvector CNFClauses::truthtable(Atom const nfree) const
 {
     return Solver_used(*this).truthtable(nfree);

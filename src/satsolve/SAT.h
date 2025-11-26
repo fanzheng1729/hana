@@ -9,7 +9,7 @@ struct Satsolver
     CNFClauses const & rcnf;
     Satsolver(CNFClauses const & cnf) : rcnf(cnf) {}
     // Map: free atoms -> truth value.
-    // Return the empty vector if not okay.
+    // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom nfree)
     {
         static Atom const maxnatom = std::numeric_limits<Atom>::digits;
