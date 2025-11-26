@@ -344,7 +344,7 @@ bool checkUnitClauses() {
 		if (scnf[i].size() == 1) {
 			sLiteral literal = scnf[i][0];
 			int value = currentValueForLiteral(literal);
-			if (value == CNFFALSE) {
+			if (value == FALSE) {
 				// This condition will only occur if at least a couple of unit clauses
 				//  exist with opposite literals (p and ¬p, for example). When the first
 				//  unit clause is used to set a value in the model (see the next condition),

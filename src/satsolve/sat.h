@@ -44,7 +44,7 @@ struct Satsolver
             switch (model[atom])
             {
     //std::cout << "Trying atom " << atom << " = " << model[atom] << '\n';
-            case CNFNONE : case CNFFALSE :
+            case CNFNONE : case FALSE :
                 ++model[atom];
                 // Check if there is a contradiction so far.
                 if (rcnf.okaysofar(model))

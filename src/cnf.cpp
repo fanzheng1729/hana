@@ -57,7 +57,7 @@ std::pair<CNFClausesat, CNFClause::size_type> CNFclausesat
             continue;
         case CNFTRUE:
             return std::make_pair(SATISFIED, 0u);
-        case CNFFALSE:
+        case FALSE:
             ;
         }
     }
