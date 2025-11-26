@@ -59,7 +59,7 @@ struct Environ : protected Gen
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeAss(Bvector const &) const { return Assertion(); }
     // Iterator to the context
-    Environs::const_iterator enviter;
+    Enviter enviter;
     strview name() const { return enviter->first; }
     // Database used
     Database const & database;
