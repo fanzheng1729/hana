@@ -100,11 +100,6 @@ void Problem::copyPrftoallEnvs(Game const & game)
                 closenodes(goaldata.second.nodeptrs, Nodeptr());
 }
 
-static void DAGerr(strview env1, strview env2)
-{
-    std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
-}
-
 // Add a goal. Return its pointer.
 Goalptr Problem::addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s)
 {
@@ -112,6 +107,11 @@ Goalptr Problem::addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s)
     Goalptr pGoal = &*pBigGoal->second.insert(std::make_pair(pEnv, s)).first;
     pGoal->second.pBigGoal = pBigGoal;
     return pGoal;
+}
+
+static void DAGerr(strview env1, strview env2)
+{
+    std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
 }
 
 // Add a sub-context with hypotheses trimmed.
