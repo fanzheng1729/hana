@@ -107,19 +107,16 @@ public:
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
 private:
-    // Add a context and set up its pointer.
-    // Return NULL if unsuccessful.
+    // Add and set up a context. Return its pointer.
     template<class Env>
     Environ * addEnv(Env const & env, strview name)
     {
-        std::pair<Environs::iterator, bool> const result
-        = environs.insert(Environs::value_type(name, NULL));
-        if (!result.second) return NULL;
-        Environs::iterator const enviter = result.first;
-        Environ * const pnewEnv = new Env(env);
-        (enviter->second = pnewEnv)->pProb = this;
-        pnewEnv->enviter = enviter;
-        return pnewEnv;
+        Environs::iterator const enviter
+        = environs.insert(Environs::value_type(name, NULL)).first;
+        Environ * const pEnv = new Env(env);
+        (enviter->second = pEnv)->pProb = this;
+        pEnv->enviter = enviter;
+        return pEnv;
     }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
