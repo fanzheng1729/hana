@@ -35,6 +35,9 @@ struct Assertion
     // Type (propositional, predicate, etc)
     unsigned type;
 // Functions:
+    // Typecode of the conclusion
+    strview exptypecode() const
+        { return expression.empty() ? "" : expression[0].c_str; }
     // # of hypotheses
     Hypsize hypcount() const {return hypiters.size();}
     // # of variables
