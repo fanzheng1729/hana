@@ -71,9 +71,9 @@ public:
                 if (parent && !parent->won())
                     backprop(parent);
             }
-        // closemorenodes(p);
+        // propprooffromsubEnv(p);
     }
-    void closemorenodes(Nodeptr p);
+    void propprooffromsubEnv(Nodeptr p);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {

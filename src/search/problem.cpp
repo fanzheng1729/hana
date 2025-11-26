@@ -71,7 +71,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-void Problem::closemorenodes(Nodeptr p)
+void Problem::propprooffromsubEnv(Nodeptr p)
 {
     Goaldatas const & goaldatas = p->game().goaldata().pBigGoal->second;
     Environs::const_iterator to = p->game().env().enviter;
