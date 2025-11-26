@@ -66,16 +66,8 @@ public:
     // Close all the nodes with p's proven goal.
     void closenodes(Nodeptr p)
     {
-        if (!p->game().proven())
-            return;
-        FOR (Nodeptr const other, p->game().goaldata().nodeptrs)
-            if (other != p && !other->won())
-            {
-                setwin(other);
-                Nodeptr const parent = other.parent();
-                if (parent && !parent->won())
-                    backprop(parent);
-            }
+        if (!p->game().proven()) return;
+        closenodes(p->game().goaldata().nodeptrs, p);
         copyPrffromsubEnv(p->game());
     }
     // Copy proofs from sub-contexts.
