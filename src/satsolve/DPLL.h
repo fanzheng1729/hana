@@ -36,10 +36,10 @@ bool checkUnitClauses();
  */
 bool DPLL();
 
-class DPLL_solver : public Satsolver
+class DPLL_solver : public SATsolver
 {
 public:
-    DPLL_solver(CNFClauses const & cnf) : Satsolver(cnf) { parseInput(cnf); }
+    DPLL_solver(CNFClauses const & cnf) : SATsolver(cnf) { parseInput(cnf); }
     bool sat() const { return checkUnitClauses() && DPLL(); }
 };
 

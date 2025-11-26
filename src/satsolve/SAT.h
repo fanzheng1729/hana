@@ -4,10 +4,10 @@
 #include <limits>
 #include "../CNF.h"
 
-struct Satsolver
+struct SATsolver
 {
     CNFClauses const & rcnf;
-    Satsolver(CNFClauses const & cnf) : rcnf(cnf) {}
+    SATsolver(CNFClauses const & cnf) : rcnf(cnf) {}
     // Map: free atoms -> truth value.
     // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom nfree)
