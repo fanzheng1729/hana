@@ -24,7 +24,8 @@ public:
     bool const staged;
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
-        assertion(env.assertion), staged(env.staged & STAGED),
+        assertion(env.assertion),
+        staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
         if (assertion.expression.empty()) return;
