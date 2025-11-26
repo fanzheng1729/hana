@@ -78,7 +78,7 @@ std::cout << var << dummy[isdummy(iter->first)] << " dummy, & "
 bool Definition::checkdummyvar(struct Typecodes const & typecodes) const
 {
     FOR (Varusage::const_reference var, pdef->second.varusage)
-        if (isdummy(var.first) && typecodes.isbound(var.first.typecode()) != 1)
+        if (isdummy(var.first)&&typecodes.isbound(var.first.typecode())!=TRUE)
             return false;
     return true;
 }
