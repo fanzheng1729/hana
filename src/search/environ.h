@@ -65,7 +65,7 @@ struct Environ : protected Gen
     Assertion const & assertion;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
-    // Is staged move generation turned on?
+    // Is staged move generation used?
     bool const staged;
 protected:
     // Pointer to the problem
