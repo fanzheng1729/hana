@@ -32,7 +32,7 @@ std::ostream & operator<<(std::ostream & out, Propctor const & propctor)
 static TTindex truthtablesize(Assertion const & ass)
 {
     static const char wff[] = "wff";
-    if (ass.expression.empty() || ass.expression[0] != wff)
+    if (ass.exptypecode() != wff)
         return 0;
 
     TTindex result = 1;
@@ -380,7 +380,7 @@ bool Propctors::checkpropsat(Assertions const & assertions,
         Assertion const & assertion(rass.second);
         if (assertion.expression.empty())
             return false;
-        if (typecodes.isprimitive(assertion.expression[0]) != FALSE)
+        if (typecodes.isprimitive(assertion.exptypecode()) != FALSE)
             continue; // Skip syntax axioms.
         if (!(assertion.type & Asstype::PROPOSITIONAL))
             continue; // Skip non propositional assertions.
