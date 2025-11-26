@@ -29,7 +29,7 @@ public:
         MCTS(Game(), params)
     {
         if (assertion.expression.empty()) return;
-        Goalview const goal(assertion.expRPN, assertion.expression[0]);
+        Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         // Root context
