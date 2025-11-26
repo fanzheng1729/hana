@@ -12,7 +12,6 @@ class Problem : public MCTS<Game>
 {
     // Assertions corresponding to contexts
     Assertions assertions;
-    friend Environ;
     // DAG of polymorphic contexts
     DAG<Environs> environs;
     // Map: goal -> context -> evaluation
@@ -29,12 +28,12 @@ public:
         MCTS(Game(), params)
     {
         if (assertion.expression.empty()) return;
-        Goalview const goal(assertion.expRPN, assertion.exptypecode());
-        Goalstatus const s = env.status(goal);
-        if (s == GOALFALSE) return;
         // Root context
         Environ * const pEnv = addEnv(env, assertion.hypslabel());
         // Root goal
+        Goalview const goal(assertion.expRPN, assertion.exptypecode());
+        Goalstatus const s = env.status(goal);
+        if (s == GOALFALSE) return;
         Goalptr pGoal = addGoal(goal, pEnv, s);
         Environ * & pnewEnv = pGoal->second.pnewEnv = NULL;
         if (s == GOALTRUE)
@@ -117,6 +116,7 @@ private:
         pEnv->enviter = enviter;
         return pEnv;
     }
+    friend Environ;
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
