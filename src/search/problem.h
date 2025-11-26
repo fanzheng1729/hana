@@ -117,11 +117,8 @@ private:
         if (!result.second) return NULL;
         Environs::iterator const enviter = result.first;
         Environ * const pnewEnv = new Env(env);
-        if (pnewEnv)
-        {
-            (enviter->second = pnewEnv)->pProb = this;
-            pnewEnv->enviter = enviter;
-        }
+        (enviter->second = pnewEnv)->pProb = this;
+        pnewEnv->enviter = enviter;
         return pnewEnv;
     }
     // Add a sub-context with hypotheses trimmed.
