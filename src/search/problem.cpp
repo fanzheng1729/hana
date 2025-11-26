@@ -82,17 +82,18 @@ void Problem::propprooffromsubEnv(Nodeptr p)
     FOR (Goaldatas::const_reference goaldata, goaldatas)
     {
         Environs::const_iterator from = goaldata.first->enviter;
-        if (environs.reachable(from, to))
-            FOR (Nodeptr const other, goaldata.second.nodeptrs)
-                if (!other->won())
-                {
-                    std::cout << from->first << "\n->\n" << to->first;
-                    other->game().proof() = game.proof();
-                    other->game().goaldata().status = GOALTRUE;
-                    Nodeptr const parent = other.parent();
-                    if (parent && !parent->won())
-                        backprop(parent);
-                }
+        if (!environs.reachable(from, to))
+            continue;
+
+        std::cout << from->first << "\n->\n" << to->first;
+        FOR (Nodeptr const other, goaldata.second.nodeptrs)
+            if (!other->won())
+            {
+                other->game().proof() = game.proof();
+                Nodeptr const parent = other.parent();
+                if (parent && !parent->won())
+                    backprop(parent);
+            }
     }
 }
 
