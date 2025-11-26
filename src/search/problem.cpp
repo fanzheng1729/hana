@@ -119,7 +119,7 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     Assertion & newass = assertions[newenviter->first];
     if (unexpected(!newass.expression.empty(), "Duplicate label", label))
         return NULL;
-    Assertion const & ass = pEnv->makeass(hypstotrim);
+    Assertion const & ass = pEnv->makeAss(hypstotrim);
     if (ass.expression.empty())
         return NULL;
     // Add the new context.
