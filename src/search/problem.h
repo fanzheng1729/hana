@@ -66,6 +66,8 @@ public:
     void addhypproofs(Environ * p)
     {
         addhypproofs(p, assertion);
+        if (!envsubProb(p->enviter))
+            addhypproofs(p, p->assertion);
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
