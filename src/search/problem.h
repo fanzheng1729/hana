@@ -42,6 +42,8 @@ public:
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
+        // Add proofs of hypotheses.
+        addhypproofs();
         // Root goal
         Goalptr const pGoal = addGoal(goal, pProbEnv, s);
         if (s == GOALTRUE)
