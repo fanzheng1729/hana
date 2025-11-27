@@ -11,7 +11,7 @@
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
-bool proven(Goalptr p, Assertion const & ass)
+bool proven(Goalptr p, Assertion const &)
 {
     return p && p->second.proven();
 }

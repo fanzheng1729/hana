@@ -21,7 +21,7 @@ inline Value score(Proofsize size) { return 1. / (size + 1); }
 
 // Check if an expression is proven or is a hypothesis.
 // If so, record its proof and return true.
-bool proven(Goalptr p, Assertion const & ass);
+bool proven(Goalptr p, Assertion const &);
 
 // Return true if a move satisfies disjoint variable hypotheses.
 bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
