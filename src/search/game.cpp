@@ -140,9 +140,6 @@ bool Game::writeproof() const
     if (okay)
     {
         goaldata().status = GOALTRUE;
-        if (insubProb)
-            FOR (Goaldatas::reference goaldata, goaldatas())
-                goaldata.second.status = GOALTRUE;
     }
     else
     {
