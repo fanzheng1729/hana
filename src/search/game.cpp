@@ -8,7 +8,7 @@
 #include "../proof/write.h"
 
 Goaldata & Game::goaldata() const { return pGoal->second; }
-Goaldatas const & Game::goaldatas() const { return goaldata().goaldatas(); }
+Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
 Proofsteps & Game::proof() const { return goaldata().proof; }
 Environ const * Game::pEnv() const { return pGoal ? pGoal->first : NULL; }

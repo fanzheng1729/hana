@@ -19,7 +19,7 @@ struct Game
     Move attempt;
     Game(Goalptr p = NULL, stage_t n = 0) : pGoal(p), nDefer(n) {}
     Goaldata & goaldata() const;
-    Goaldatas const & goaldatas() const;
+    Goaldatas & goaldatas() const;
     Goal const & goal() const;
     Proofsteps & proof() const;
     bool proven() const { return pGoal && !proof().empty(); }
