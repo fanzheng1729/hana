@@ -78,6 +78,9 @@ public:
     // Singular extension
     Value singularext(Nodeptr p)
     {
+        if (isourturn(p))
+            return value(p);
+        // Their turn
         Value value = WDL::WIN;
         if (expand<&Game::moves>(p))
         {
