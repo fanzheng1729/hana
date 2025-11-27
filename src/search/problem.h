@@ -111,13 +111,15 @@ public:
     // Copy proof of the game to other contexts.
     void copyproof(Game const & game)
     {
-        if (!game.proven()) return;
-        if (game.env().issubProb()) return;
+        if (!game.proven() || game.env().issubProb()) return;
         // Loop through contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
-            if (game.env().reachablefrom(*goaldata.first))
-                if (goaldata.second.setproof(game.proof()))
-                    closenodesexcept(goaldata.second.nodeptrs);
+            if (game.env().reachablefrom(*goaldata.first) && !goaldata.second.proven())
+            {
+                goaldata.second.getproof(*goaldata.first) = game.proof();
+                goaldata.second.setstatustrue();
+                closenodesexcept(goaldata.second.nodeptrs);
+            }
     }
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
