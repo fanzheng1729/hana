@@ -36,6 +36,11 @@ struct Goaldata
             return status = GOALTRUE;
         if (!p)
             return status;
+        bool reachable(Environ const & from, Environ const & to);
+        FOR (Goaldatas::const_reference goaldata, goaldatas())
+        {
+            //
+        }
         return status;
     }
     void setstatustrue() { status = GOALTRUE; }
