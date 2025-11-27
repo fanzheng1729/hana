@@ -42,8 +42,8 @@ public:
         // Loop through sub-contexts.
         bool reachable(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
-            if (!issubProb(*goaldata.first) &&
-                !goaldata.second.proof.empty() &&
+            if (!goaldata.second.proof.empty() &&
+                !issubProb(*goaldata.first) &&
                 reachable(env, *goaldata.first))
                 return proof = goaldata.second.proof;
         return proof;
