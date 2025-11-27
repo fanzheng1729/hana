@@ -65,13 +65,7 @@ public:
     // Add 1-step proof of all the hypotheses to a context.
     void addhypproofs(Environ * p)
     {
-        for (Hypsize i = 0; i < assertion.hypcount(); ++i)
-        {
-            if (assertion.hypfloats(i)) continue;
-            Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
-            Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
-            pGoal->second.proof.assign(1, assertion.hypiters[i]);
-        }
+        addhypproofs(p, assertion);
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
