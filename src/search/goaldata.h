@@ -43,12 +43,12 @@ private:
 inline Goalptr addsimpGoal(Goalptr pGoal)
 {
     if (!pGoal) return pGoal;
-    Environ * const pEnv = pGoal->second.pnewEnv;
-    if (!pEnv) return pGoal;
+    Environ * const pnewEnv = pGoal->second.pnewEnv;
+    if (!pnewEnv) return pGoal;
     Goaldata const & goaldata = pGoal->second;
     BigGoalptr const pBigGoal = goaldata.pBigGoal;
     if (!pBigGoal) return pGoal;
-    Goaldatas::value_type value(pEnv, Goaldata(goaldata.status, pBigGoal));
+    Goaldatas::value_type value(pnewEnv, Goaldata(goaldata.status, pBigGoal));
     return &*pBigGoal->second.insert(value).first;
 }
 

@@ -76,8 +76,7 @@ void Problem::copyproof(Game const & game)
     if (!game.proven()) return;
 
     Enviter const enviter = game.env().enviter;
-    bool const toall = probEnviter() == enviter
-                        || environs.reachable(probEnviter(), enviter);
+    bool const toall = isEnvsubProb(enviter);
     // Loop through contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
         if (toall || environs.reachable(goaldata.first->enviter, enviter))

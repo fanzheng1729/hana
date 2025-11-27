@@ -23,6 +23,9 @@ public:
     Environ * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return pProbEnv->enviter; }
+    // Return true if the context is a sub-context of the problem context
+    bool isEnvsubProb(Enviter iter) const
+    { return iter == probEnviter() || environs.reachable(probEnviter(), iter); }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
