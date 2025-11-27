@@ -31,7 +31,7 @@ struct Goaldata
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Goalstatus getstatus() const { return status; }
-    Goalstatus & getstatus(struct Environ * p = NULL)
+    Goalstatus & getstatus(struct Environ * p)
     {
         if (proven())
             return status = GOALTRUE;
