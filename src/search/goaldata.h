@@ -30,10 +30,12 @@ struct Goaldata
     bool proven() const { return !getproof().empty(); }
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
-    Goalstatus & getstatus()
+    Goalstatus & getstatus(struct Environ const * p = NULL)
     {
         if (proven())
             return status = GOALTRUE;
+        if (!p)
+            return status;
         return status;
     }
     void setstatustrue() { status = GOALTRUE; }
