@@ -40,9 +40,9 @@ struct Goaldata
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             if (!goaldata.first) continue;
-            if (reachable(*goaldata.first, *p))
-                if (goaldata.second.status == GOALFALSE)
-                    return status = GOALFALSE;
+            if (reachable(*goaldata.first, *p) &&
+                goaldata.second.status == GOALFALSE)
+                return status = GOALFALSE;
         }
         return status;
     }
