@@ -78,7 +78,7 @@ void Problem::copyproof(Game const & game)
     Enviter const enviter = game.env().enviter;
     bool const toall = isEnvsubProb(enviter);
     // Loop through contexts with the same big goal.
-    FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
+    FOR (Goaldatas::reference goaldata, game.goaldatas())
         if (toall || environs.reachable(goaldata.first->enviter, enviter))
             if (goaldata.second.setproof(game.proof()))
                 closenodesexcept(goaldata.second.nodeptrs);
