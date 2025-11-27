@@ -69,7 +69,7 @@ public:
             if (p->assertion.hypfloats(i)) continue;
             Goalview goal(p->assertion.hypRPN(i), p->assertion.hyptypecode(i));
             Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
-            pGoal->second.getproof(*p).assign(1, p->assertion.hypiters[i]);
+            pGoal->second.proofdst(*p).assign(1, p->assertion.hypiters[i]);
         }
     }
     // UCB threshold for generating a new batch of moves
@@ -116,7 +116,7 @@ public:
         FOR (Goaldatas::reference goaldata, game.goaldatas())
             if (game.env().reachablefrom(*goaldata.first) && !goaldata.second.proven())
             {
-                goaldata.second.getproof(*goaldata.first) = game.proof();
+                goaldata.second.proofdst(*goaldata.first) = game.proof();
                 goaldata.second.setstatustrue();
                 closenodesexcept(goaldata.second.nodeptrs());
             }

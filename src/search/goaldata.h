@@ -34,7 +34,7 @@ public:
     Proofsteps const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
     bool proven() const { return !proofsrc().empty(); }
-    Proofsteps & getproof(Environ const & env)
+    Proofsteps & proofdst(Environ const & env)
     {
         bool issubProb(Environ const & env);
         return issubProb(env) ? goaldatas().proof : proof;
