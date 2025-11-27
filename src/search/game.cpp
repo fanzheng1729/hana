@@ -12,6 +12,7 @@ Goaldata & Game::goaldata() const { return pGoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
 Proofsteps & Game::proof() const { return goaldata().proof; }
+bool Game::proven() const { return pGoal && goaldata().proven(); }
 Environ const * Game::pEnv() const { return pGoal ? pGoal->first : NULL; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
@@ -127,7 +128,7 @@ bool Game::writeproof() const
 // std::cout << "Added hyp\n" << *hyps[i];
     }
     // The whole proof
-    Proofsteps & dest = proof();
+    Proofsteps & dest = goaldata().proof;
     if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
     // Verification

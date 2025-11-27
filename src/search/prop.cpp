@@ -185,12 +185,9 @@ bool testpropsearch
     // Test assertions
     Assiters const & assiters = database.assiters();
     for (Assiters::size_type i = 1; i < assiters.size(); ++i)
-    // for (Assiters::size_type i = 972; i < 973; ++i)
-    // for (Assiters::size_type i = 1117; i < 1118; ++i)
-    // for (Assiters::size_type i = 1637; i < 1638; ++i)
     {
         Assiter const iter = assiters[i];
-        // printass(*iter);
+        printass(*iter);
         // Skip axioms, trivial and duplicate theorems.
         if (iter->second.type
             & (Asstype::AXIOM + Asstype::DUPLICATE))
