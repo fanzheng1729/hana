@@ -34,6 +34,9 @@ struct Environ : protected Gen
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
         Gen(ass.varusage, maxsize) {}
     Problem const & prob() const { return *pProb; }
+    // Context relations
+    bool reachablefrom(Environ const & from) const;
+    bool reachableto(Environ const & to) const;
     // Return true if the context is a sub-context of the problem context
     bool issubProb() const;
     // Return true if an assertion is on topic.
