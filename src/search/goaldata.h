@@ -43,8 +43,8 @@ public:
         bool reachable(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
             if (!issubProb(*goaldata.first) &&
-                reachable(env, *goaldata.first) &&
-                !goaldata.second.proof.empty())
+                !goaldata.second.proof.empty() &&
+                reachable(env, *goaldata.first))
                 return proof = goaldata.second.proof;
         return proof;
     }
