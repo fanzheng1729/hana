@@ -20,6 +20,8 @@ class Goaldata
 {
     Goalstatus status;
     Proofsteps proof;
+    // Set of nodes trying to prove the open goal
+    Nodeptrs m_nodeptrs;
 public:
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
@@ -28,9 +30,13 @@ public:
         bool issubProb(Environ const & env);
         return issubProb(env) ? goaldatas().proof : proof;
     }
-    // Set of nodes trying to prove the open goal
-    Nodeptrs m_nodeptrs;
     Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
+    // Add node pointer to p's goal data.
+    friend void addNodeptr(Nodeptr p)
+    {
+        if (p->game().proven()) return;
+        p->game().goaldata().m_nodeptrs.insert(p);
+    }
     // Pointer to the different contexts where the goal is evaluated
     BigGoalptr pBigGoal;
     // New context after trimming unnecessary hypotheses
@@ -81,13 +87,6 @@ inline Goalptr addsimpGoal(Goalptr pGoal)
     if (!pBigGoal) return pGoal;
     Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
     return &*pBigGoal->second.insert(value).first;
-}
-
-// Add node pointer to p's goal data.
-inline void addNodeptr(Nodeptr p)
-{
-    if (p->game().proven()) return;
-    p->game().goaldata().m_nodeptrs.insert(p);
 }
 
 #endif // GOALDATA_H_INCLUDED
