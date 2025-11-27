@@ -109,7 +109,6 @@ public:
         if (!game.proven()) return;
         Enviter const enviter = game.env().enviter;
         if (envsubProb(enviter)) return;
-        // bool const toall = envsubProb(enviter);
         // Loop through contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
             if (environs.reachable(goaldata.first->enviter, enviter))
