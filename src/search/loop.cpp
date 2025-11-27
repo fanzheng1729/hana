@@ -64,7 +64,7 @@ bool loops(Nodeptr p)
     {
         if (move.hypfloats(i))
             continue;
-        if (move.hypvec[i]->second.proven())
+        if (move.hypvec[i]->second.proven(*move.hypvec[i]->first))
             continue;
         if (cycles(move.hypvec[i], p.parent()))
             return true;
