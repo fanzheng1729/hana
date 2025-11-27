@@ -63,6 +63,12 @@ public:
             goals[goal].proof.assign(1, assertion.hypiters[i]);
         }
     }
+    // Add 1-step proof of all the hypotheses to a context.
+    void addhypproofs(Environ * p)
+    {
+        if (!envsubProb(p->enviter))
+            addhypproofs(p, p->assertion);
+    }
     // Add 1-step proof of all the hypotheses of an assertion to a context.
     void addhypproofs(Environ * p, Assertion const & ass)
     {
@@ -73,12 +79,6 @@ public:
             Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
             pGoal->second.proof.assign(1, ass.hypiters[i]);
         }
-    }
-    // Add 1-step proof of all the hypotheses to a context.
-    void addhypproofs(Environ * p)
-    {
-        if (!envsubProb(p->enviter))
-            addhypproofs(p, p->assertion);
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
