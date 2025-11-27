@@ -75,7 +75,7 @@ public:
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(Nodeptr p) const;
-    // Singular extension
+    // Do singular extension. Return the value.
     Value singularext(Nodeptr p)
     {
         if (isourturn(p))
