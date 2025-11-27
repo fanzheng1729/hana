@@ -30,6 +30,7 @@ struct Goaldata
     bool proven() const { return !getproof().empty(); }
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
+    Goalstatus getstatus() const { return status; }
     Goalstatus & getstatus(struct Environ const * p = NULL)
     {
         if (proven())
@@ -55,7 +56,8 @@ private:
     {
         if (proven() || prf.empty()) return false;
         proof = prf;
-        return status = GOALTRUE;
+        setstatustrue();
+        return true;
     }
 };
 

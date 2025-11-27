@@ -135,7 +135,7 @@ public:
         Goals::size_type n = 0;
         FOR (Goals::const_reference goaldatas, goals)
             FOR (Goaldatas::const_reference goaldata, goaldatas.second)
-                n += (goaldata.second.status == status);
+                n += (goaldata.second.getstatus() == status);
         return n;
     }
     // # proven goals
