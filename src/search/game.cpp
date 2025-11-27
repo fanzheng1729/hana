@@ -128,10 +128,8 @@ bool Game::writeproof() const
         }
 // std::cout << "Added hyp\n" << *hyps[i];
     }
-    // Check if the game's context is a sub-context of the problem context.
-    const bool insubProb = env().prob().envsubProb(env().enviter);
     // The whole proof
-    Proofsteps & dest = insubProb ? goaldatas().proof : goaldata().proof;
+    Proofsteps & dest = env().issubProb() ? goaldatas().proof : goaldata().proof;
     if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
     // Verification

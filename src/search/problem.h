@@ -101,11 +101,10 @@ public:
     void copyproof(Game const & game)
     {
         if (!game.proven()) return;
-        Enviter const enviter = game.env().enviter;
-        if (envsubProb(enviter)) return;
+        if (game.env().issubProb()) return;
         // Loop through contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
-            if (environs.reachable(goaldata.first->enviter, enviter))
+            if (environs.reachable(goaldata.first->enviter,game.env().enviter))
                 if (goaldata.second.setproof(game.proof()))
                     closenodesexcept(goaldata.second.nodeptrs);
     }
