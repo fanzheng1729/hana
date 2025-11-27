@@ -30,7 +30,7 @@ struct Goaldata
     Goal const & goal() const { return pBigGoal->first; }
 private:
     friend class Problem;
-    // Return true if the proof is set.
+    // Return true if a new proof is set.
     bool setproof(Proofsteps const & prf)
     {
         if (proven() || prf.empty()) return false;
