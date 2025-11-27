@@ -121,7 +121,7 @@ bool Game::writeproof() const
 // std::cout << "Added hyp\n" << *hyps[i];
     }
     // The whole proof
-    Proofsteps & dest = env().issubProb() ? goaldatas().proof : goaldata().proof;
+    Proofsteps & dest = goaldata().getproof(env());
     if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
     // Verification

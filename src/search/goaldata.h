@@ -22,7 +22,7 @@ struct Goaldata
     Proofsteps proof;
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
-    Proofsteps & getproof(Environ & env)
+    Proofsteps & getproof(Environ const & env)
     {
         bool issubProb(Environ const & env);
         return issubProb(env) ? goaldatas().proof : proof;
