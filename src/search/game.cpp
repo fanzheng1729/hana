@@ -11,7 +11,7 @@
 Goaldata & Game::goaldata() const { return pGoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
-Proofsteps const & Game::proof() const { return goaldata().proofsrc(); }
+Proofsteps const & Game::proof() const { return goaldata().getproof(); }
 bool Game::proven() const { return pGoal && goaldata().proven(); }
 Environ const * Game::pEnv() const { return pGoal ? pGoal->first : NULL; }
 
@@ -117,7 +117,7 @@ bool Game::writeproof() const
         if (attempt.hypfloats(i))
             hyps[i] = &attempt.substitutions[attempt.hypexp(i)[1]];
         else
-            hyps[i] = &attempt.hypvec[i]->second.proofsrc();
+            hyps[i] = &attempt.hypvec[i]->second.getproof();
 // std::cout << "Added hyp\n" << *hyps[i];
     }
     // The whole proof
