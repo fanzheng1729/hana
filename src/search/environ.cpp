@@ -57,6 +57,10 @@ bool Environ::issubProb() const
 {
     return this == &prob().probEnv() || reachablefrom(prob().probEnv());
 }
+bool issubProb(Environ const & env)
+{
+    return env.issubProb();
+}
 
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
