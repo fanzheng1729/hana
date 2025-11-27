@@ -34,8 +34,8 @@ struct Goaldata
     {
         if (proven())
             return status = GOALTRUE;
-        if (!p)
-            return status;
+        if (!p || status != GOALNEW)
+            return status; // No need to evaluate
         bool reachable(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
@@ -68,7 +68,8 @@ inline Goalptr addsimpGoal(Goalptr pGoal)
     Goaldata & goaldata = pGoal->second;
     BigGoalptr const pBigGoal = goaldata.pBigGoal;
     if (!pBigGoal) return pGoal;
-    Goaldatas::value_type value(pnewEnv, Goaldata(goaldata.getstatus(), pBigGoal));
+    Goaldatas::value_type value
+        (pnewEnv, Goaldata(goaldata.getstatus(pGoal->first), pBigGoal));
     return &*pBigGoal->second.insert(value).first;
 }
 
