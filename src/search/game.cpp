@@ -5,6 +5,7 @@
 #include "goaldata.h"
 #include "../io.h"
 #include "../util/iter.h"
+#include "problem.h"
 #include "../proof/write.h"
 
 Goaldata & Game::goaldata() const { return pGoal->second; }
@@ -133,7 +134,11 @@ bool Game::writeproof() const
     const Expression & exp(verify(dest));
     const bool okay = (exp == goal().expression());
     if (okay)
+    {
         pGoal->second.status = GOALTRUE;
+        if (env().prob().envsubProb(env().enviter))
+            goaldatas().proof = dest;
+    }
     else
     {
         writeprooferr(*this, exp, hyps);
