@@ -12,9 +12,7 @@ Goaldata & Game::goaldata() const { return pGoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
 Proofsteps const & Game::proof() const
-{
-    return goaldata().proof;
-}
+{ return goaldatas().proven() ? goaldatas().proof : goaldata().proof; }
 bool Game::proven() const { return pGoal && goaldata().proven(); }
 Environ const * Game::pEnv() const { return pGoal ? pGoal->first : NULL; }
 
