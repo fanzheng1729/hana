@@ -24,7 +24,7 @@ public:
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return pProbEnv->enviter; }
     // Return true if the context is a sub-context of the problem context
-    bool isEnvsubProb(Enviter iter) const
+    bool envsubProb(Enviter iter) const
     { return iter == probEnviter() || environs.reachable(probEnviter(), iter); }
     // Is staged move generation used?
     enum { STAGED = 1 };
@@ -78,7 +78,7 @@ public:
     {
         if (!game.proven()) return;
         Enviter const enviter = game.env().enviter;
-        bool const toall = isEnvsubProb(enviter);
+        bool const toall = envsubProb(enviter);
         // Loop through contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
             if (toall || environs.reachable(goaldata.first->enviter, enviter))
