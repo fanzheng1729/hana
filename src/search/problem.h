@@ -23,9 +23,6 @@ public:
     Environ * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return probEnv().enviter; }
-    // Return true if the context is a sub-context of the problem context
-    bool envsubProb(Enviter iter) const
-    { return iter == probEnviter() || environs.reachable(probEnviter(), iter); }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
@@ -66,7 +63,7 @@ public:
     // Add 1-step proof of all the hypotheses to a context.
     void addhypproofs(Environ * p)
     {
-        if (!p || envsubProb(p->enviter)) return;
+        if (!p || p->issubProb()) return;
         for (Hypsize i = 0; i < p->assertion.hypcount(); ++i)
         {
             if (p->assertion.hypfloats(i)) continue;
