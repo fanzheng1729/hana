@@ -34,7 +34,6 @@ struct Goaldatas : std::map<Environ *, Goaldata>
 {
     // Proof that holds in the problem context
     Proofsteps proof;
-    Goaldatas(Proofsteps const & prf = Proofsteps()) : proof(prf) {}
 };
 typedef Goaldatas::pointer Goalptr;
 
