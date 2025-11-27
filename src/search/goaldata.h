@@ -69,15 +69,6 @@ struct Goaldata
     void setstatustrue() { status = GOALTRUE; }
 private:
     Goalstatus status;
-    friend class Problem;
-    // Return true if a new proof is set.
-    bool setproof(Proofsteps const & prf)
-    {
-        if (proven() || prf.empty()) return false;
-        proof = prf;
-        setstatustrue();
-        return true;
-    }
 };
 
 // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
