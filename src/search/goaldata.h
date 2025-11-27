@@ -49,10 +49,8 @@ struct Goaldata
             if (reachable(*p, *goaldata.first) &&
                 goaldata.second.status == GOALTRUE)
             {
-                Environ * const pdatanewEnv =
-                goaldata.second.pnewEnv ? goaldata.second.pnewEnv : goaldata.first;
-                if (reachable(*pnewEnv2, *pdatanewEnv))
-                    pnewEnv2 = pdatanewEnv;
+                if (reachable(*pnewEnv2, *goaldata.first))
+                    pnewEnv2 = goaldata.first;
                 status = GOALTRUE;
             }
         }
