@@ -34,6 +34,7 @@ struct Goaldata
         if (proven()) status = GOALTRUE;
         return status;
     }
+    void setstatustrue() { status = GOALTRUE; }
 private:
     friend class Problem;
     // Return true if a new proof is set.
