@@ -51,7 +51,18 @@ public:
         *root() = Game(addsimpGoal(pGoal));
         addNodeptr(root());
     }
-    // Add 1-step proof of all the hypotheses of a context.
+    // Add 1-step proof of all the hypotheses of an assertion to a context.
+    void addhypproofs(Environ * p, Assertion const & ass)
+    {
+        for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        {
+            if (ass.hypfloats(i)) continue;
+            Goalview const goal(ass.hypRPN(i), ass.hyptypecode(i));
+            Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
+            pGoal->second.proof.assign(1, ass.hypiters[i]);
+        }
+    }
+    // Add 1-step proof of all the hypotheses to a context.
     void addhypproofs(Environ * p)
     {
         for (Hypsize i = 0; i < assertion.hypcount(); ++i)
