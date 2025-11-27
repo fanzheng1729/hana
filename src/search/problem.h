@@ -108,10 +108,11 @@ public:
     {
         if (!game.proven()) return;
         Enviter const enviter = game.env().enviter;
-        bool const toall = envsubProb(enviter);
+        if (envsubProb(enviter)) return;
+        // bool const toall = envsubProb(enviter);
         // Loop through contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
-            if (toall || environs.reachable(goaldata.first->enviter, enviter))
+            if (environs.reachable(goaldata.first->enviter, enviter))
                 if (goaldata.second.setproof(game.proof()))
                     closenodesexcept(goaldata.second.nodeptrs);
     }
