@@ -22,11 +22,10 @@ struct Goaldata
     Proofsteps proof;
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
-    Proofsteps & getproof(Environ * p)
+    Proofsteps & getproof(Environ & env)
     {
-        if (!p) return proof;
         bool issubProb(Environ const & env);
-        return issubProb(*p) ? goaldatas().proof : proof;
+        return issubProb(env) ? goaldatas().proof : proof;
     }
     // Set of nodes trying to prove the open goal
     Nodeptrs nodeptrs;
