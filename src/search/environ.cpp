@@ -53,10 +53,10 @@ bool Environ::valid(Move const & move) const
         (move.hypRPN(i), move.hyptypecode(i), const_cast<Environ *>(this), GOALNEW);
 // std::cout << "Validating " << pGoal->second.goal().expression();
         Goalstatus & s = pGoal->second.status;
-        if (s == GOALFALSE)
-            return false; // Refuted
         if (pGoal->second.proven())
              s = GOALTRUE;
+        if (s == GOALFALSE)
+            return false; // Refuted
         if (s >= GOALOPEN)// Valid
         {
             move.hypvec[i] = pGoal->second.proven() ? pGoal : addsimpGoal(pGoal);
