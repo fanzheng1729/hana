@@ -87,11 +87,11 @@ public:
         {
             if (!goaldata.first)
                 continue;
-            if (reachable(*goaldata.first, env) &&
-                goaldata.second.status == GOALFALSE)
+            if (goaldata.second.status == GOALFALSE &&
+                reachable(*goaldata.first, env))
                 return status = GOALFALSE;
-            if (reachable(env, *goaldata.first) &&
-                goaldata.second.status == GOALTRUE)
+            if (goaldata.second.status == GOALTRUE &&
+                reachable(env, *goaldata.first))
             {
                 if (reachable(*pnewEnv2, *goaldata.first))
                     pnewEnv2 = goaldata.first;
