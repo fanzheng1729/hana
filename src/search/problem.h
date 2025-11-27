@@ -75,6 +75,17 @@ public:
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(Nodeptr p) const;
+    // Singular extension
+    Value singularext(Nodeptr p)
+    {
+        Value value = WDL::WIN;
+        if (expand<&Game::moves>(p))
+        {
+            evalnewleaves(p);
+            value = minimax(p);
+        }
+        return value;
+    }
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
     virtual Eval evalleaf(Nodeptr p) const;
