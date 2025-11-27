@@ -6,7 +6,6 @@
 #include "gen.h"
 #include "goalstat.h"
 #include "../MCTS/stageval.h"
-#include "../util/tribool.h"
 
 class Database;
 class Problem;
@@ -39,7 +38,7 @@ struct Environ : protected Gen
     bool reachablefrom(Environ const & from) const;
     bool reachableto(Environ const & to) const;
     // Return true if the context is a sub-context of the problem context
-    bool issubProb() const { return m_issubProb == TRUE; }
+    bool issubProb() const { return m_issubProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
@@ -94,8 +93,8 @@ private:
     // Return true if a move closes the goal.
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
-// Cache for issubProb
-    mutable bool m_issubProb;
+    // Cache for issubProb
+    bool m_issubProb;
 };
 
 #endif // ENVIRON_H_INCLUDED
