@@ -23,40 +23,22 @@ public:
     Environ * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return pProbEnv->enviter; }
-    // Iterator to base context
-    Enviter const baseEnviter;
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
-    // Add all hypotheses as proven goals.
-    void addhyps()
-    {
-        for (Hypsize i = 0; i < assertion.hypcount(); ++i)
-        {
-            if (assertion.hypfloats(i)) continue;
-            Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
-            Goalptr const pGoal = addGoal(goal, NULL, GOALTRUE);
-            // 1-step proof using the hypothesis
-            pGoal->second.proof.assign(1, assertion.hypiters[i]);
-        }
-    }
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL :
             addEnv(env, assertion.hypslabel())),
-        baseEnviter(environs.insert(Environs::value_type(hypdelim, NULL)).first),
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
         if (!pProbEnv) return;
-        if (probEnviter() == baseEnviter) return;
         // Check root goal.
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
-        // Add hypotheses.
-        addhyps();
         // Add root goal.
         Goalptr const pGoal = addGoal(goal, pProbEnv, s);
         if (s == GOALTRUE)
