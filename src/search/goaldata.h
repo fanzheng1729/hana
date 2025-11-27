@@ -12,6 +12,9 @@ typedef MCTS<Game>::Nodeptr Nodeptr;
 // Set of nodes in proof search tree
 typedef std::set<Nodeptr> Nodeptrs;
 
+// Polymorphic context
+struct Environ;
+
 // Data associated with the goal
 struct Goaldata
 {
@@ -19,6 +22,12 @@ struct Goaldata
     Proofsteps proof;
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
+    Proofsteps & getproof(Environ * p)
+    {
+        if (!p) return proof;
+        bool issubProb(Environ const & env);
+        return issubProb(*p) ? goaldatas().proof : proof;
+    }
     // Set of nodes trying to prove the open goal
     Nodeptrs nodeptrs;
     // Pointer to the different contexts where the goal is evaluated
@@ -31,7 +40,7 @@ struct Goaldata
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Goalstatus getstatus() const { return status; }
-    Goalstatus & getstatus(struct Environ * p)
+    Goalstatus & getstatus(Environ * p)
     {
         if (proven())
             return status = GOALTRUE;
