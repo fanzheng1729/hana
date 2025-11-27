@@ -34,6 +34,8 @@ struct Environ : protected Gen
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
         Gen(ass.varusage, maxsize) {}
     Problem const & prob() const { return *pProb; }
+    // Return true if the context is a sub-context of the problem context
+    bool issubProb() const;
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.

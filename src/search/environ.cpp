@@ -38,6 +38,13 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
     return true;
 }
 
+// Return true if the context is a sub-context of the problem context
+bool Environ::issubProb() const
+{
+    return enviter == prob().probEnviter()
+        || prob().environs.reachable(prob().probEnviter(), enviter);
+}
+
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {
