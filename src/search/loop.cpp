@@ -39,7 +39,7 @@ struct Goalptrs : std::set<Goalptr>
     Goalptr saturate()
     {
         FOR (Goalptr const pGoal, *this)
-            FOR (Nodeptr const pNode, pGoal->second.nodeptrs)
+            FOR (Nodeptr const pNode, pGoal->second.nodeptrs())
             {
                 Nodeptr const parent = pNode.parent();
                 if (parent->game().proven())
@@ -72,7 +72,7 @@ bool loops(Nodeptr p)
     }
     // Check if these hypotheses combined prove a parent node.
     while (Goalptr const pGoal = allgoals.saturate())
-        FOR (Nodeptr const pnewNode, pGoal->second.nodeptrs)
+        FOR (Nodeptr const pnewNode, pGoal->second.nodeptrs())
             if (pnewNode.isancestorof(p))
                 return true;
     return false;

@@ -105,7 +105,7 @@ public:
     void closenodes(Nodeptr p)
     {
         if (!p->game().proven()) return;
-        closenodesexcept(p->game().goaldata().nodeptrs, p);
+        closenodesexcept(p->game().goaldata().nodeptrs(), p);
         copyproof(p->game());
     }
     // Copy proof of the game to other contexts.
@@ -118,7 +118,7 @@ public:
             {
                 goaldata.second.getproof(*goaldata.first) = game.proof();
                 goaldata.second.setstatustrue();
-                closenodesexcept(goaldata.second.nodeptrs);
+                closenodesexcept(goaldata.second.nodeptrs());
             }
     }
     // Record the proof of proven goals on back propagation.

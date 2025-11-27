@@ -29,7 +29,8 @@ public:
         return issubProb(env) ? goaldatas().proof : proof;
     }
     // Set of nodes trying to prove the open goal
-    Nodeptrs nodeptrs;
+    Nodeptrs m_nodeptrs;
+    Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
     // Pointer to the different contexts where the goal is evaluated
     BigGoalptr pBigGoal;
     // New context after trimming unnecessary hypotheses
@@ -86,7 +87,7 @@ inline Goalptr addsimpGoal(Goalptr pGoal)
 inline void addNodeptr(Nodeptr p)
 {
     if (p->game().proven()) return;
-    p->game().goaldata().nodeptrs.insert(p);
+    p->game().goaldata().m_nodeptrs.insert(p);
 }
 
 #endif // GOALDATA_H_INCLUDED
