@@ -70,34 +70,19 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Copy proofs to super-contexts.
-void Problem::copyPrftosuperEnvs(Game const & game)
+// Copy proof of the game to other contexts.
+void Problem::copyproof(Game const & game)
 {
     if (!game.proven()) return;
 
     Enviter const enviter = game.env().enviter;
-    if (probEnviter() == enviter || environs.reachable(probEnviter(), enviter))
-        return; // Skip if the proof holds in the problem context.
-    // Loop through all contexts with the same big goal.
+    bool const toall = probEnviter() == enviter
+                        || environs.reachable(probEnviter(), enviter);
+    // Loop through contexts with the same big goal.
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
-        // Copy the proof to super-contexts.
-        if (environs.reachable(goaldata.first->enviter, enviter) &&
-            goaldata.second.setproof(game.proof()))
-            closenodes(goaldata.second.nodeptrs, Nodeptr());
-}
-
-// Copy proofs that hold in the problem context to all contexts.
-void Problem::copyPrftoallEnvs(Game const & game)
-{
-    if (!game.proven()) return;
-
-    Enviter const enviter = game.env().enviter;
-    if (probEnviter() == enviter || environs.reachable(probEnviter(), enviter))
-        // The proof holds in the problem context.
-        // Loop through all contexts with the same big goal.
-        FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
+        if (toall || environs.reachable(goaldata.first->enviter, enviter))
             if (goaldata.second.setproof(game.proof()))
-                closenodes(goaldata.second.nodeptrs, Nodeptr());
+                closenodesexcept(goaldata.second.nodeptrs, Nodeptr());
 }
 
 static void DAGerr(strview env1, strview env2)

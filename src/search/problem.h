@@ -67,14 +67,11 @@ public:
     void closenodes(Nodeptr p)
     {
         if (!p->game().proven()) return;
-        closenodes(p->game().goaldata().nodeptrs, p);
-        copyPrftoallEnvs(p->game());
-        copyPrftosuperEnvs(p->game());
+        closenodesexcept(p->game().goaldata().nodeptrs, p);
+        copyproof(p->game());
     }
-    // Copy proofs to super-contexts.
-    void copyPrftosuperEnvs(Game const & game);
-    // Copy proofs that hold in the problem context to all contexts.
-    void copyPrftoallEnvs(Game const & game);
+    // Copy proof of the game to other contexts.
+    void copyproof(Game const & game);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {
@@ -133,7 +130,7 @@ private:
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // close all the nodes except p
-    void closenodes(Nodeptrs const & nodeptrs, Nodeptr p)
+    void closenodesexcept(Nodeptrs const & nodeptrs, Nodeptr p)
     {
         FOR (Nodeptr const other, nodeptrs)
             if (other != p && !other->won())
