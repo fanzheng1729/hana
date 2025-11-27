@@ -40,9 +40,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     // Our leaf
     if (!game.pEnv())
         return EvalLOSS;
-    if (p.parent() && game.proven())
-        return EvalWIN;
-    if (!p.parent() && proven(game.pGoal, assertion))
+    if (game.proven())
         return EvalWIN;
     return game.env().evalourleaf(game);
 }

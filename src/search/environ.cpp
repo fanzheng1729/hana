@@ -9,13 +9,6 @@
 #include "../util/iter.h"
 #include "../util/progress.h"
 
-// Check if an expression is proven or is a hypothesis.
-// If so, record its proof and return true.
-bool proven(Goalptr p, Assertion const &)
-{
-    return p && p->second.proven();
-}
-
 static Symbol3s symbols(Proofsteps const & RPN)
 {
     Symbol3s set;
@@ -63,7 +56,7 @@ bool Environ::valid(Move const & move) const
         if (s == GOALFALSE)
             return false; // Refuted
         // Check if the goal has been validated.
-        if (proven(pGoal, assertion) || s >= GOALOPEN)
+        if (pGoal->second.proven() || s >= GOALOPEN)
         {
             move.hypvec[i] = addsimpGoal(pGoal);
             continue; // Valid
