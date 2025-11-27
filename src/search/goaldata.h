@@ -22,6 +22,8 @@ class Goaldata
     Proofsteps proof;
     // Set of nodes trying to prove the open goal
     Nodeptrs m_nodeptrs;
+    // Pointer to the different contexts where the goal is evaluated
+    BigGoalptr pBigGoal;
 public:
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
@@ -37,8 +39,17 @@ public:
         if (p->game().proven()) return;
         p->game().goaldata().m_nodeptrs.insert(p);
     }
-    // Pointer to the different contexts where the goal is evaluated
-    BigGoalptr pBigGoal;
+    // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
+    friend Goalptr addsimpGoal(Goalptr pGoal)
+    {
+        if (!pGoal) return pGoal;
+        Environ * const pnewEnv = pGoal->second.pnewEnv;
+        if (!pnewEnv) return pGoal;
+        BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
+        if (!pBigGoal) return pGoal;
+        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
+        return &*pBigGoal->second.insert(value).first;
+    }
     // New context after trimming unnecessary hypotheses
     Environ * pnewEnv;
     Goaldata(Goalstatus s, BigGoalptr p = NULL) :
@@ -76,17 +87,5 @@ public:
     }
     void setstatustrue() { status = GOALTRUE; }
 };
-
-// Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
-inline Goalptr addsimpGoal(Goalptr pGoal)
-{
-    if (!pGoal) return pGoal;
-    Environ * const pnewEnv = pGoal->second.pnewEnv;
-    if (!pnewEnv) return pGoal;
-    BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
-    if (!pBigGoal) return pGoal;
-    Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
-    return &*pBigGoal->second.insert(value).first;
-}
 
 #endif // GOALDATA_H_INCLUDED
