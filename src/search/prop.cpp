@@ -193,7 +193,7 @@ bool testpropsearch
         // printass(*iter);
         // Skip axioms, trivial and duplicate theorems.
         if (iter->second.type
-            & (Asstype::AXIOM + Asstype::TRIVIAL + Asstype::DUPLICATE))
+            & (Asstype::AXIOM + Asstype::DUPLICATE))
             continue;
 
         // Skip non propositional theorems.

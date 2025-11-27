@@ -107,6 +107,7 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     {
         (newenviter->second = pnewEnv)->pProb = this;
         pnewEnv->enviter = newenviter;
+        addhypproofs(pnewEnv);
     }
     return pnewEnv;
 }
