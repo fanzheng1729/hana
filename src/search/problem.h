@@ -74,7 +74,17 @@ public:
         copyproof(p->game());
     }
     // Copy proof of the game to other contexts.
-    void copyproof(Game const & game);
+    void copyproof(Game const & game)
+    {
+        if (!game.proven()) return;
+        Enviter const enviter = game.env().enviter;
+        bool const toall = isEnvsubProb(enviter);
+        // Loop through contexts with the same big goal.
+        FOR (Goaldatas::reference goaldata, game.goaldatas())
+            if (toall || environs.reachable(goaldata.first->enviter, enviter))
+                if (goaldata.second.setproof(game.proof()))
+                    closenodesexcept(goaldata.second.nodeptrs);
+    }
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(Nodeptr p)
     {

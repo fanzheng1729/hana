@@ -70,20 +70,6 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Copy proof of the game to other contexts.
-void Problem::copyproof(Game const & game)
-{
-    if (!game.proven()) return;
-
-    Enviter const enviter = game.env().enviter;
-    bool const toall = isEnvsubProb(enviter);
-    // Loop through contexts with the same big goal.
-    FOR (Goaldatas::reference goaldata, game.goaldatas())
-        if (toall || environs.reachable(goaldata.first->enviter, enviter))
-            if (goaldata.second.setproof(game.proof()))
-                closenodesexcept(goaldata.second.nodeptrs);
-}
-
 static void DAGerr(strview env1, strview env2)
 {
     std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
