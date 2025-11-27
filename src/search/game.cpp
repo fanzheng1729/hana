@@ -126,7 +126,7 @@ bool Game::writeproof() const
         }
 // std::cout << "Added hyp\n" << *hyps[i];
     }
-    // The whose proof
+    // The whole proof
     Proofsteps & dest = proof();
     if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
