@@ -39,7 +39,7 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 }
 
 // Context relations
-bool Environ::reachablefrom(Environ const & from) const
+bool Environ::impliedby(Environ const & from) const
 {
     return prob().environs.reachable(from.enviter, enviter);
 }

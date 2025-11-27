@@ -35,7 +35,7 @@ struct Environ : protected Gen
         Gen(ass.varusage, maxsize), m_subProb(true) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
-    bool reachablefrom(Environ const & from) const;
+    bool impliedby(Environ const & from) const;
     bool reachableto(Environ const & to) const;
     // Return true if the context is a sub-context of the problem context
     bool issubProb() const { return m_subProb; }
