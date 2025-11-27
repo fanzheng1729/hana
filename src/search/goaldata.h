@@ -73,11 +73,9 @@ inline Goalptr addsimpGoal(Goalptr pGoal)
     if (!pGoal) return pGoal;
     Environ * const pnewEnv = pGoal->second.pnewEnv;
     if (!pnewEnv) return pGoal;
-    Goaldata & goaldata = pGoal->second;
-    BigGoalptr const pBigGoal = goaldata.pBigGoal;
+    BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
     if (!pBigGoal) return pGoal;
-    Goaldatas::value_type value
-        (pnewEnv, Goaldata(goaldata.getstatus(pGoal->first), pBigGoal));
+    Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
     return &*pBigGoal->second.insert(value).first;
 }
 
