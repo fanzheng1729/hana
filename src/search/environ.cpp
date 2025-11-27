@@ -14,14 +14,7 @@
 bool proven(Goalptr p, Assertion const & ass)
 {
     if (!p) return false;
-    if (p->second.proven()) return true;
-    // Match hypotheses of the assertion.
-    Goal const & goal = p->second.goal();
-    Hypsize const i = ass.matchhyp(goal.RPN, goal.typecode);
-    if (i == ass.hypcount()) return false; // No match
-    // 1-step proof using the matched hypothesis
-    p->second.proof.assign(1, ass.hypiters[i]);
-    return p->second.status = GOALTRUE;
+    return (p->second.proven());
 }
 
 static Symbol3s symbols(Proofsteps const & RPN)
