@@ -62,7 +62,8 @@ bool Environ::valid(Move const & move) const
         }
         // New goal (s == GOALNEW)
         Goal const & goal = pGoal->second.goal();
-        if ((s = status(goal)) == GOALFALSE)
+        s = status(goal);
+        if (s == GOALFALSE)
             return false; // Refuted
         // Simplified context for the child, if !NULL
         Environ * & pnewEnv = pGoal->second.pnewEnv;
