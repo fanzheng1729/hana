@@ -39,7 +39,10 @@ struct Goaldata
         bool reachable(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
-            //
+            if (!goaldata.first) continue;
+            if (reachable(*goaldata.first, *p))
+                if (goaldata.second.status == GOALFALSE)
+                    return status = GOALFALSE;
         }
         return status;
     }
