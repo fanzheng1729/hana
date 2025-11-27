@@ -47,13 +47,7 @@ Eval Problem::evalleaf(Nodeptr p) const
 
 Eval Problem::evaltheirleaf(Nodeptr p) const
 {
-    Value value = WDL::WIN;
-    if (const_cast<Problem *>(this)->expand<&Game::moves>(p))
-    {
-        evalnewleaves(p);
-        value = minimax(p);
-    }
-
+    Value value = const_cast<Problem *>(this)->singularext(p);
     if (value == WDL::WIN)
     {
         if (!p->game().writeproof())
