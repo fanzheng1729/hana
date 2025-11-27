@@ -32,13 +32,13 @@ struct Environ : protected Gen
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
-        Gen(ass.varusage, maxsize), m_issubProb(true) {}
+        Gen(ass.varusage, maxsize), m_subProb(true) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     bool reachablefrom(Environ const & from) const;
     bool reachableto(Environ const & to) const;
     // Return true if the context is a sub-context of the problem context
-    bool issubProb() const { return m_issubProb; }
+    bool issubProb() const { return m_subProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
@@ -94,7 +94,7 @@ private:
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
     // Cache for issubProb
-    bool m_issubProb;
+    bool m_subProb;
 };
 
 #endif // ENVIRON_H_INCLUDED
