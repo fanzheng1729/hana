@@ -40,11 +40,11 @@ public:
         if (issubProb(env)) return proof;
         return proof;
         // Loop through sub-contexts.
-        bool reachable(Environ const & from, Environ const & to);
+        bool hasimplication(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
             if (!goaldata.second.proof.empty() &&
                 !issubProb(*goaldata.first) &&
-                reachable(env, *goaldata.first))
+                hasimplication(env, *goaldata.first))
                 return proof = goaldata.second.proof;
         return proof;
     }
@@ -81,19 +81,19 @@ public:
             return status = GOALTRUE;
         if (status != GOALNEW)
             return status; // No need to evaluate
-        bool reachable(Environ const & from, Environ const & to);
+        bool hasimplication(Environ const & from, Environ const & to);
         Environ * pnewEnv2 = &env;
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             if (!goaldata.first)
                 continue;
             if (goaldata.second.status == GOALFALSE &&
-                reachable(*goaldata.first, env))
+                hasimplication(*goaldata.first, env))
                 return status = GOALFALSE;
             if (goaldata.second.status == GOALTRUE &&
-                reachable(env, *goaldata.first))
+                hasimplication(env, *goaldata.first))
             {
-                if (reachable(*pnewEnv2, *goaldata.first))
+                if (hasimplication(*pnewEnv2, *goaldata.first))
                     pnewEnv2 = goaldata.first;
                 status = GOALTRUE;
             }

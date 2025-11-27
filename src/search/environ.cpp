@@ -47,7 +47,7 @@ bool Environ::implies(Environ const & to) const
 {
     return prob().environs.reachable(enviter, to.enviter);
 }
-bool reachable(Environ const & from, Environ const & to)
+bool hasimplication(Environ const & from, Environ const & to)
 {
     return from.implies(to);
 }
