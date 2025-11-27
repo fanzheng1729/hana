@@ -128,8 +128,9 @@ bool Game::writeproof() const
         }
 // std::cout << "Added hyp\n" << *hyps[i];
     }
+    const bool insubProb = env().prob().envsubProb(env().enviter);
     // The whole proof
-    Proofsteps & dest = goaldata().proof;
+    Proofsteps & dest = insubProb ? goaldatas().proof : goaldata().proof;
     if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
     // Verification
@@ -138,8 +139,8 @@ bool Game::writeproof() const
     if (okay)
     {
         pGoal->second.status = GOALTRUE;
-        if (env().prob().envsubProb(env().enviter))
-            goaldatas().proof = dest;
+        // if (insubProb)
+        //     goaldatas().proof = dest;
     }
     else
     {
