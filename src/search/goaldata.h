@@ -29,6 +29,11 @@ struct Goaldata
     bool proven() const { return !proof.empty() || goaldatas().proven(); }
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
+    Goalstatus & getstatus()
+    {
+        if (proven()) status = GOALTRUE;
+        return status;
+    }
 private:
     friend class Problem;
     // Return true if a new proof is set.
