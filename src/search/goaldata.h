@@ -25,8 +25,15 @@ class Goaldata
     // Pointer to the different contexts where the goal is evaluated
     BigGoalptr pBigGoal;
 public:
+    // New context after trimming unnecessary hypotheses
+    Environ * pnewEnv;
+    Goaldata(Goalstatus s, BigGoalptr p = NULL) :
+        status(s), pBigGoal(p), pnewEnv(NULL) {}
+    Goal const & goal() const { return pBigGoal->first; }
+    Goaldatas & goaldatas() const { return pBigGoal->second; }
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
+    bool proven() const { return !getproof().empty(); }
     Proofsteps & getproof(Environ const & env)
     {
         bool issubProb(Environ const & env);
@@ -50,13 +57,7 @@ public:
         Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
         return &*pBigGoal->second.insert(value).first;
     }
-    // New context after trimming unnecessary hypotheses
-    Environ * pnewEnv;
-    Goaldata(Goalstatus s, BigGoalptr p = NULL) :
-        status(s), pBigGoal(p), pnewEnv(NULL) {}
-    bool proven() const { return !getproof().empty(); }
-    Goal const & goal() const { return pBigGoal->first; }
-    Goaldatas & goaldatas() const { return pBigGoal->second; }
+    void setstatustrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }
     Goalstatus & getstatus(Environ & env)
     {
@@ -85,7 +86,6 @@ public:
             pnewEnv = pnewEnv2;
         return status;
     }
-    void setstatustrue() { status = GOALTRUE; }
 };
 
 #endif // GOALDATA_H_INCLUDED
