@@ -47,6 +47,10 @@ bool Environ::reachableto(Environ const & to) const
 {
     return prob().environs.reachable(enviter, to.enviter);
 }
+bool reachable(Environ const & from, Environ const & to)
+{
+    return from.reachableto(to);
+}
 
 // Return true if the context is a sub-context of the problem context
 bool Environ::issubProb() const
