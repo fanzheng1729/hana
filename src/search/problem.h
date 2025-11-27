@@ -30,7 +30,7 @@ public:
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL :
-            addEnv(env, assertion.hypslabel())),
+            addProbEnv(env, assertion.hypslabel())),
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
@@ -136,9 +136,9 @@ public:
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
 private:
-    // Add and set up a context. Return its pointer.
+    // Add the problem context. Return its pointer.
     template<class Env>
-    Environ * addEnv(Env const & env, strview name)
+    Environ * addProbEnv(Env const & env, strview name)
     {
         Environs::iterator const enviter
         = environs.insert(Environs::value_type(name, NULL)).first;
