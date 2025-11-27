@@ -161,7 +161,6 @@ private:
         Environ * const pEnv = new Env(env);
         (enviter->second = pEnv)->pProb = this;
         pEnv->enviter = enviter;
-        pEnv->m_issubProb = TRUE;
         return pEnv;
     }
     friend Environ;

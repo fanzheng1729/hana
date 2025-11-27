@@ -33,7 +33,7 @@ struct Environ : protected Gen
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
-        Gen(ass.varusage, maxsize), m_issubProb(UNKNOWN) {}
+        Gen(ass.varusage, maxsize), m_issubProb(true) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     bool reachablefrom(Environ const & from) const;
@@ -95,7 +95,7 @@ private:
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
 // Cache for issubProb
-    mutable Tribool m_issubProb;
+    mutable bool m_issubProb;
 };
 
 #endif // ENVIRON_H_INCLUDED
