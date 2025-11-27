@@ -33,6 +33,17 @@ public:
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Proofsteps const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
+    Proofsteps const & proofsrc(Environ const & env)
+    {
+        if (!proofsrc().empty()) return proofsrc();
+        bool issubProb(Environ const & env);
+        if (issubProb(env)) return proofsrc();
+        // Loop through sub-contexts.
+        bool reachable(Environ const & from, Environ const & to);
+        FOR (Goaldatas::const_reference goaldata, goaldatas())
+            if (goaldata.first && reachable(env, *goaldata.first))
+                return proof = goaldata.second.proof;
+    }
     bool proven() const { return !proofsrc().empty(); }
     Proofsteps & proofdst(Environ const & env)
     {
