@@ -31,9 +31,9 @@ public:
         status(s), pBigGoal(p), pnewEnv(NULL) {}
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
-    Proofsteps const & getproof() const
+    Proofsteps const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
-    bool proven() const { return !getproof().empty(); }
+    bool proven() const { return !proofsrc().empty(); }
     Proofsteps & getproof(Environ const & env)
     {
         bool issubProb(Environ const & env);
