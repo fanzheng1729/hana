@@ -43,13 +43,13 @@ bool Environ::impliedby(Environ const & from) const
 {
     return prob().environs.reachable(from.enviter, enviter);
 }
-bool Environ::reachableto(Environ const & to) const
+bool Environ::implies(Environ const & to) const
 {
     return prob().environs.reachable(enviter, to.enviter);
 }
 bool reachable(Environ const & from, Environ const & to)
 {
-    return from.reachableto(to);
+    return from.implies(to);
 }
 
 // Return true if the context is a sub-context of the problem context

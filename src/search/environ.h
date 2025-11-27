@@ -36,7 +36,7 @@ struct Environ : protected Gen
     Problem const & prob() const { return *pProb; }
     // Context relations
     bool impliedby(Environ const & from) const;
-    bool reachableto(Environ const & to) const;
+    bool implies(Environ const & to) const;
     // Return true if the context is a sub-context of the problem context
     bool issubProb() const { return m_subProb; }
     // Return true if an assertion is on topic.
