@@ -31,26 +31,33 @@ struct Goaldata
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Goalstatus getstatus() const { return status; }
-    Goalstatus & getstatus(struct Environ const * p = NULL)
+    Goalstatus & getstatus(struct Environ * p = NULL)
     {
         if (proven())
             return status = GOALTRUE;
         if (!p || status != GOALNEW)
             return status; // No need to evaluate
         bool reachable(Environ const & from, Environ const & to);
+        Environ * pnewEnv2 = p;
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
-            if (!goaldata.first) continue;
+            if (!goaldata.first)
+                continue;
             if (reachable(*goaldata.first, *p) &&
                 goaldata.second.status == GOALFALSE)
                 return status = GOALFALSE;
-            // if (reachable(*p, *goaldata.first) &&
-            //     goaldata.second.status == GOALTRUE)
-            // {
-            //     pnewEnv = goaldata.second.pnewEnv;
-            //     return status = GOALTRUE;
-            // }
+            if (reachable(*p, *goaldata.first) &&
+                goaldata.second.status == GOALTRUE)
+            {
+                Environ * const pdatanewEnv =
+                goaldata.second.pnewEnv ? goaldata.second.pnewEnv : goaldata.first;
+                if (reachable(*pnewEnv2, *pdatanewEnv))
+                    pnewEnv2 = pdatanewEnv;
+                status = GOALTRUE;
+            }
         }
+        if (status == GOALTRUE)
+            pnewEnv = pnewEnv2;
         return status;
     }
     void setstatustrue() { status = GOALTRUE; }
