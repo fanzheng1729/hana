@@ -55,11 +55,10 @@ bool Environ::valid(Move const & move) const
         Goalstatus & s = pGoal->second.status;
         if (s == GOALFALSE)
             return false; // Refuted
-        // Check if the goal has been validated.
-        if (pGoal->second.proven() || s >= GOALOPEN)
+        if (s >= GOALOPEN)// Goal valid
         {
             move.hypvec[i] = addsimpGoal(pGoal);
-            continue; // Valid
+            continue;
         }
         // New goal (s == GOALNEW)
         Goal const & goal = pGoal->second.goal();
