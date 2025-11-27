@@ -138,7 +138,7 @@ bool Game::writeproof() const
     const bool okay = (exp == goal().expression());
     if (okay)
     {
-        pGoal->second.status = GOALTRUE;
+        goaldata().status = GOALTRUE;
         // if (insubProb)
         //     goaldatas().proof = dest;
     }
