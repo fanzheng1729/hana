@@ -75,7 +75,7 @@ public:
     Goalstatus getstatus() const { return status; }
     Goalstatus & getstatus(Environ & env)
     {
-        if (proven())
+        if (proven(env))
             return status = GOALTRUE;
         if (status != GOALNEW)
             return status; // No need to evaluate
