@@ -17,6 +17,8 @@ struct Goaldata
 {
     // Proof of the expression
     Proofsteps proof;
+    Proofsteps const & proofsrc() const
+    { return goaldatas().proven() ? goaldatas().proof : proof; }
     // Set of nodes trying to prove the open goal
     Nodeptrs nodeptrs;
     // Pointer to the different contexts where the goal is evaluated
@@ -25,7 +27,7 @@ struct Goaldata
     Environ * pnewEnv;
     Goaldata(Goalstatus s, BigGoalptr p = NULL) :
         status(s), pBigGoal(p), pnewEnv(NULL) {}
-    bool proven() const { return !proof.empty() || goaldatas().proven(); }
+    bool proven() const { return !proofsrc().empty(); }
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Goalstatus & getstatus()
