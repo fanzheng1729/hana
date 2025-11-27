@@ -40,22 +40,22 @@ struct Goaldata
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Goalstatus getstatus() const { return status; }
-    Goalstatus & getstatus(Environ * p)
+    Goalstatus & getstatus(Environ & env)
     {
         if (proven())
             return status = GOALTRUE;
-        if (!p || status != GOALNEW)
+        if (status != GOALNEW)
             return status; // No need to evaluate
         bool reachable(Environ const & from, Environ const & to);
-        Environ * pnewEnv2 = p;
+        Environ * pnewEnv2 = &env;
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             if (!goaldata.first)
                 continue;
-            if (reachable(*goaldata.first, *p) &&
+            if (reachable(*goaldata.first, env) &&
                 goaldata.second.status == GOALFALSE)
                 return status = GOALFALSE;
-            if (reachable(*p, *goaldata.first) &&
+            if (reachable(env, *goaldata.first) &&
                 goaldata.second.status == GOALTRUE)
             {
                 if (reachable(*pnewEnv2, *goaldata.first))
