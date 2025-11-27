@@ -30,7 +30,10 @@ struct Environ;
 // Data associated with the goal
 struct Goaldata;
 // Map: context -> evaluation
-typedef std::map<Environ *, Goaldata> Goaldatas;
+struct Goaldatas : std::map<Environ *, Goaldata>
+{
+    Proofsteps proof;
+};
 typedef Goaldatas::pointer Goalptr;
 
 // Map: goal -> context -> evaluation
