@@ -15,7 +15,6 @@ typedef std::set<Nodeptr> Nodeptrs;
 // Data associated with the goal
 struct Goaldata
 {
-    Goalstatus status;
     // Proof of the expression
     Proofsteps proof;
     // Set of nodes trying to prove the open goal
@@ -31,11 +30,13 @@ struct Goaldata
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Goalstatus & getstatus()
     {
-        if (proven()) status = GOALTRUE;
+        if (proven())
+            return status = GOALTRUE;
         return status;
     }
     void setstatustrue() { status = GOALTRUE; }
 private:
+    Goalstatus status;
     friend class Problem;
     // Return true if a new proof is set.
     bool setproof(Proofsteps const & prf)
@@ -52,10 +53,10 @@ inline Goalptr addsimpGoal(Goalptr pGoal)
     if (!pGoal) return pGoal;
     Environ * const pnewEnv = pGoal->second.pnewEnv;
     if (!pnewEnv) return pGoal;
-    Goaldata const & goaldata = pGoal->second;
+    Goaldata & goaldata = pGoal->second;
     BigGoalptr const pBigGoal = goaldata.pBigGoal;
     if (!pBigGoal) return pGoal;
-    Goaldatas::value_type value(pnewEnv, Goaldata(goaldata.status, pBigGoal));
+    Goaldatas::value_type value(pnewEnv, Goaldata(goaldata.getstatus(), pBigGoal));
     return &*pBigGoal->second.insert(value).first;
 }
 
