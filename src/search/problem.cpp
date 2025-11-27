@@ -81,7 +81,7 @@ void Problem::copyproof(Game const & game)
     FOR (Goaldatas::reference goaldata, game.goaldata().pBigGoal->second)
         if (toall || environs.reachable(goaldata.first->enviter, enviter))
             if (goaldata.second.setproof(game.proof()))
-                closenodesexcept(goaldata.second.nodeptrs, Nodeptr());
+                closenodesexcept(goaldata.second.nodeptrs);
 }
 
 static void DAGerr(strview env1, strview env2)

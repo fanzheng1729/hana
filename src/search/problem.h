@@ -133,7 +133,7 @@ private:
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // close all the nodes except p
-    void closenodesexcept(Nodeptrs const & nodeptrs, Nodeptr p)
+    void closenodesexcept(Nodeptrs const & nodeptrs, Nodeptr p = Nodeptr())
     {
         FOR (Nodeptr const other, nodeptrs)
             if (other != p && !other->won())
