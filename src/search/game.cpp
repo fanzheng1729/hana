@@ -37,7 +37,7 @@ bool Game::legal(Move const & move, bool ourturn) const
 // Play a move.
 Game Game::play(Move const & move, bool ourturn) const
 {
-    Game game(cheapcopy());
+    Game game(pGoal, nDefer);
 
     if (ourturn) // Record the move.
     {
