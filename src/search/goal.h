@@ -28,7 +28,7 @@ inline bool operator<(Goal const & x, Goal const & y)
 // Polymorphic context
 struct Environ;
 // Data associated with the goal
-struct Goaldata;
+class Goaldata;
 // Map: context -> evaluation
 struct Goaldatas : std::map<Environ *, Goaldata>
 {

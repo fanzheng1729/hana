@@ -69,7 +69,7 @@ public:
             if (p->assertion.hypfloats(i)) continue;
             Goalview goal(p->assertion.hypRPN(i), p->assertion.hyptypecode(i));
             Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
-            pGoal->second.proof.assign(1, p->assertion.hypiters[i]);
+            pGoal->second.getproof(*p).assign(1, p->assertion.hypiters[i]);
         }
     }
     // UCB threshold for generating a new batch of moves

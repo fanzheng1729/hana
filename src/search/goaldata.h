@@ -16,10 +16,11 @@ typedef std::set<Nodeptr> Nodeptrs;
 struct Environ;
 
 // Data associated with the goal
-struct Goaldata
+class Goaldata
 {
-    // Proof of the expression
+    Goalstatus status;
     Proofsteps proof;
+public:
     Proofsteps const & getproof() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
     Proofsteps & getproof(Environ const & env)
@@ -67,8 +68,6 @@ struct Goaldata
         return status;
     }
     void setstatustrue() { status = GOALTRUE; }
-private:
-    Goalstatus status;
 };
 
 // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
