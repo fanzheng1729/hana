@@ -57,7 +57,7 @@ bool Environ::valid(Move const & move) const
             return false; // Refuted
         if (s >= GOALOPEN)// Goal valid
         {
-            move.hypvec[i] = addsimpGoal(pGoal);
+            move.hypvec[i] = pGoal->second.proven() ? pGoal : addsimpGoal(pGoal);
             continue;
         }
         // New goal (s == GOALNEW)
