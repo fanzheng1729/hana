@@ -39,7 +39,7 @@ struct Environ : protected Gen
     bool reachablefrom(Environ const & from) const;
     bool reachableto(Environ const & to) const;
     // Return true if the context is a sub-context of the problem context
-    bool issubProb() const;
+    bool issubProb() const { return m_issubProb == TRUE; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
