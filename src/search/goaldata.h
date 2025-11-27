@@ -45,6 +45,7 @@ public:
                 return proof = goaldata.second.proof;
     }
     bool proven() const { return !proofsrc().empty(); }
+    bool proven(Environ const & env) { return !proofsrc(env).empty(); }
     Proofsteps & proofdst(Environ const & env)
     {
         bool issubProb(Environ const & env);
