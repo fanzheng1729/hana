@@ -44,6 +44,12 @@ struct Goaldata
             if (reachable(*goaldata.first, *p) &&
                 goaldata.second.status == GOALFALSE)
                 return status = GOALFALSE;
+            // if (reachable(*p, *goaldata.first) &&
+            //     goaldata.second.status == GOALTRUE)
+            // {
+            //     pnewEnv = goaldata.second.pnewEnv;
+            //     return status = GOALTRUE;
+            // }
         }
         return status;
     }
