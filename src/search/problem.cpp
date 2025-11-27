@@ -79,15 +79,15 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     std::pair<Environs::iterator, bool> const result
     = environs.insert(std::pair<strview, Environ *>(name, NULL));
     // Iterator to the new context
-    Environs::iterator const newenviter = result.first;
-    if (!environs.linked(pEnv->enviter, newenviter) &&
-        !environs.link(pEnv->enviter, newenviter))
-        DAGerr(pEnv->enviter->first, newenviter->first);
+    Environs::iterator const newEnviter = result.first;
+    if (!environs.linked(pEnv->enviter, newEnviter) &&
+        !environs.link(pEnv->enviter, newEnviter))
+        DAGerr(pEnv->enviter->first, newEnviter->first);
     // If it already exists, set the game's context pointer.
     if (!result.second)
-        return newenviter->second;
+        return newEnviter->second;
     // If it does not exist, add the simplified assertion.
-    Assertion & newass = assertions[newenviter->first];
+    Assertion & newass = assertions[newEnviter->first];
     if (unexpected(!newass.expression.empty(), "Duplicate name", name))
         return NULL;
     Assertion const & ass = pEnv->makeAss(hypstotrim);
@@ -97,8 +97,10 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     Environ * const pnewEnv = pEnv->makeEnv(newass = ass);
     if (pnewEnv)
     {
-        (newenviter->second = pnewEnv)->pProb = this;
-        pnewEnv->enviter = newenviter;
+        (newEnviter->second = pnewEnv)->pProb = this;
+        pnewEnv->enviter = newEnviter;
+        pnewEnv->m_issubProb
+        = environs.reachable(probEnviter(), newEnviter) ? TRUE : FALSE;
         addhypproofs(pnewEnv);
     }
     return pnewEnv;
