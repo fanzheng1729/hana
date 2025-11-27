@@ -55,7 +55,12 @@ bool reachable(Environ const & from, Environ const & to)
 // Return true if the context is a sub-context of the problem context
 bool Environ::issubProb() const
 {
-    return this == &prob().probEnv() || reachablefrom(prob().probEnv());
+    if (m_issubProb != UNKNOWN)
+        return m_issubProb == TRUE;
+
+    if (this == &prob().probEnv() || reachablefrom(prob().probEnv()))
+        return m_issubProb = TRUE;
+    return m_issubProb = FALSE;
 }
 bool issubProb(Environ const & env)
 {

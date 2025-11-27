@@ -37,12 +37,14 @@ public:
     {
         if (!proofsrc().empty()) return proofsrc();
         bool issubProb(Environ const & env);
-        if (issubProb(env)) return proofsrc();
+        if (issubProb(env)) return proof;
+        return proof;
         // Loop through sub-contexts.
         bool reachable(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
             if (goaldata.first && reachable(env, *goaldata.first))
                 return proof = goaldata.second.proof;
+        return proof;
     }
     bool proven() const { return !proofsrc().empty(); }
     bool proven(Environ const & env) { return !proofsrc(env).empty(); }

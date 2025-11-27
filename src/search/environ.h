@@ -6,6 +6,7 @@
 #include "gen.h"
 #include "goalstat.h"
 #include "../MCTS/stageval.h"
+#include "../util/tribool.h"
 
 class Database;
 class Problem;
@@ -32,7 +33,7 @@ struct Environ : protected Gen
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
-        Gen(ass.varusage, maxsize) {}
+        Gen(ass.varusage, maxsize), m_issubProb(UNKNOWN) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     bool reachablefrom(Environ const & from) const;
@@ -93,6 +94,8 @@ private:
     // Return true if a move closes the goal.
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
+// Cache for issubProb
+    mutable Tribool m_issubProb;
 };
 
 #endif // ENVIRON_H_INCLUDED

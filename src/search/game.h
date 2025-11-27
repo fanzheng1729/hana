@@ -22,7 +22,7 @@ struct Game
     Goaldatas & goaldatas() const;
     Goal const & goal() const;
     Proofsteps const & proof() const;
-    bool proven() const;
+    bool proven() const { return !proof().empty(); }
     Environ const * pEnv() const;
     Environ const & env() const { return *pEnv(); }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
