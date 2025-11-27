@@ -21,7 +21,7 @@ struct Game
     Goaldata & goaldata() const;
     Goaldatas & goaldatas() const;
     Goal const & goal() const;
-    Proofsteps & proof() const;
+    Proofsteps const & proof() const;
     bool proven() const;
     Environ const * pEnv() const;
     Environ const & env() const { return *pEnv(); }
