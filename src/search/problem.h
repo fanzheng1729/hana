@@ -22,7 +22,7 @@ public:
     // Problem context
     Environ * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
-    Enviter probEnviter() const { return pProbEnv->enviter; }
+    Enviter probEnviter() const { return probEnv().enviter; }
     // Return true if the context is a sub-context of the problem context
     bool envsubProb(Enviter iter) const
     { return iter == probEnviter() || environs.reachable(probEnviter(), iter); }
@@ -149,7 +149,6 @@ private:
         Environ * const pEnv = new Env(env);
         (enviter->second = pEnv)->pProb = this;
         pEnv->enviter = enviter;
-        addhypproofs(pEnv);
         return pEnv;
     }
     friend Environ;
