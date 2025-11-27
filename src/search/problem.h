@@ -51,6 +51,17 @@ public:
         *root() = Game(addsimpGoal(pGoal));
         addNodeptr(root());
     }
+    // Add 1-step proof of all the hypotheses of a context.
+    void addhypproofs(Environ * p)
+    {
+        for (Hypsize i = 0; i < assertion.hypcount(); ++i)
+        {
+            if (assertion.hypfloats(i)) continue;
+            Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
+            Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
+            pGoal->second.proof.assign(1, assertion.hypiters[i]);
+        }
+    }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(Nodeptr p) const;
@@ -129,16 +140,16 @@ private:
     }
     friend Environ;
     // Add a goal. Return its pointer.
-    Goalptr addGoal(Goalview const & goal, Environ * pEnv, Goalstatus s)
+    Goalptr addGoal(Goalview const & goal, Environ * p, Goalstatus s)
     {
         BigGoalptr const pBigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
         Goaldata const goaldata(s, pBigGoal);
-        return &*pBigGoal->second.insert(std::make_pair(pEnv, goaldata)).first;
+        return &*pBigGoal->second.insert(std::make_pair(p, goaldata)).first;
     }
     Goalptr addGoal
-        (Proofsteps const & RPN, strview type, Environ * pEnv, Goalstatus s)
-    { return addGoal(Goalview(RPN, type), pEnv, s); }
+        (Proofsteps const & RPN, strview type, Environ * p, Goalstatus s)
+    { return addGoal(Goalview(RPN, type), p, s); }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
