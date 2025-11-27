@@ -38,11 +38,11 @@ public:
         MCTS(Game(), params)
     {
         if (!pProbEnv) return;
-        // Check root goal.
+        // Check goal.
         Goalview const goal(assertion.expRPN, assertion.exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
-        // Add root goal.
+        // Root goal
         Goalptr const pGoal = addGoal(goal, pProbEnv, s);
         if (s == GOALTRUE)
             pGoal->second.pnewEnv = addsubEnv
@@ -50,6 +50,16 @@ public:
         // Root node
         *root() = Game(addsimpGoal(pGoal));
         addNodeptr(root());
+    }
+    // Add 1-step proof of all the hypotheses of the problem context.
+    void addhypproofs()
+    {
+        for (Hypsize i = 0; i < assertion.hypcount(); ++i)
+        {
+            if (assertion.hypfloats(i)) continue;
+            Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
+            goals[goal].proof.assign(1, assertion.hypiters[i]);
+        }
     }
     // Add 1-step proof of all the hypotheses of an assertion to a context.
     void addhypproofs(Environ * p, Assertion const & ass)
