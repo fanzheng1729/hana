@@ -26,7 +26,7 @@ struct Goaldata
     Environ * pnewEnv;
     Goaldata(Goalstatus s, BigGoalptr p = NULL) :
         status(s), pBigGoal(p), pnewEnv(NULL) {}
-    bool proven() const { return !proof.empty(); }
+    bool proven() const { return !proof.empty() || goaldatas().proven(); }
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
 private:
