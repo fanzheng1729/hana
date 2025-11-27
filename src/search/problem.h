@@ -77,7 +77,6 @@ public:
     // Add 1-step proof of all the hypotheses to a context.
     void addhypproofs(Environ * p)
     {
-        addhypproofs(p, assertion);
         if (!envsubProb(p->enviter))
             addhypproofs(p, p->assertion);
     }
