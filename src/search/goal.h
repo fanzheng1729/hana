@@ -32,6 +32,7 @@ struct Goaldata;
 // Map: context -> evaluation
 struct Goaldatas : std::map<Environ *, Goaldata>
 {
+    // Proof that holds in the problem context
     Proofsteps proof;
 };
 typedef Goaldatas::pointer Goalptr;
