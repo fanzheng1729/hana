@@ -38,6 +38,16 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
     return true;
 }
 
+// Context relations
+bool Environ::reachablefrom(Environ const & from) const
+{
+    return prob().environs.reachable(from.enviter, enviter);
+}
+bool Environ::reachableto(Environ const & to) const
+{
+    return prob().environs.reachable(enviter, to.enviter);
+}
+
 // Return true if the context is a sub-context of the problem context
 bool Environ::issubProb() const
 {
