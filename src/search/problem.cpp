@@ -64,7 +64,7 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
         return EvalWIN;
     }
     // value is between WDL::LOSS and WDL::WIN.
-    if (p->game().nDefer == 0)
+    if (!p->game().nDefer)
         FOR (Nodeptr child, *p.children())
             addNodeptr(child);
     return Eval(value, false);
