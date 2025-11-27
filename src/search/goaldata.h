@@ -28,7 +28,7 @@ struct Goaldata
         status(s), pBigGoal(p), pnewEnv(NULL) {}
     bool proven() const { return !proof.empty(); }
     Goal const & goal() const { return pBigGoal->first; }
-    Goaldatas const & goaldatas() const { return pBigGoal->second; }
+    Goaldatas & goaldatas() const { return pBigGoal->second; }
 private:
     friend class Problem;
     // Return true if a new proof is set.
