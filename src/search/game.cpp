@@ -112,23 +112,32 @@ bool Game::writeproof() const
     pProofs hyps(attempt.hypcount());
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)
     {
-        hyps[i] = attempt.hypfloats(i) ?
-            &attempt.substitutions[attempt.hypexp(i)[1]] :
-            &attempt.hypvec[i]->second.proof;
-// std::cout << "Added hyp\n" << *hyps.back();
+        if (attempt.hypfloats(i))
+            hyps[i] = &attempt.substitutions[attempt.hypexp(i)[1]];
+        else
+        {
+            Goalptr const pGoal = attempt.hypvec[i];
+            BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
+            if (pBigGoal && pBigGoal->second.proven())
+                hyps[i] = &pBigGoal->second.proof;
+            else
+                hyps[i] = &pGoal->second.proof;
+        }
+// std::cout << "Added hyp\n" << *hyps[i];
     }
     // The whose proof
-    if (!::writeproof(proof(), attempt.pthm, hyps))
+    Proofsteps & dest = proof();
+    if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
     // Verification
-    const Expression & exp(verify(proof()));
+    const Expression & exp(verify(dest));
     const bool okay = (exp == goal().expression());
     if (okay)
         pGoal->second.status = GOALTRUE;
     else
     {
         writeprooferr(*this, exp, hyps);
-        proof().clear();
+        dest.clear();
     }
     return okay;
 }
