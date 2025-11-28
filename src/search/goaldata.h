@@ -16,6 +16,8 @@ typedef std::set<Nodeptr> Nodeptrs;
 struct Environ;
 // Return true if the context is a sub-context of the problem context
 bool issubProb(Environ const & env);
+// Return true if from implies to.
+bool hasimplication(Environ const & from, Environ const & to);
 
 // Data associated with the goal
 class Goaldata
@@ -41,7 +43,6 @@ public:
         if (issubProb(env)) return proof;
         return proof;
         // Loop through sub-contexts.
-        bool hasimplication(Environ const & from, Environ const & to);
         FOR (Goaldatas::const_reference goaldata, goaldatas())
             if (!goaldata.second.proof.empty() &&
                 !issubProb(*goaldata.first) &&
@@ -79,7 +80,7 @@ public:
             return status = GOALTRUE;
         if (status != GOALNEW)
             return status; // No need to evaluate
-        bool hasimplication(Environ const & from, Environ const & to);
+
         Environ * pnewEnv2 = &env;
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
