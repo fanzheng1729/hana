@@ -238,9 +238,9 @@ static void printgoal(Nodeptr p)
     if (ass.esshypcount() == 0) return;
 
     std::cout << "Hyps ";
-    FOR (Hypiter iter, ass.hypiters)
-        if (!iter->second.floats)
-            std::cout << iter->first << ' ';
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        if (!ass.hypfloats(i))
+            std::cout << ass.hyplabel(i) << ' ';
     std::cout << std::endl;
 }
 
