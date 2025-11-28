@@ -38,7 +38,7 @@ struct Environ : protected Gen
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
-        Gen(ass.varusage, maxsize), m_subProb(true) {}
+        Gen(ass.varusage, maxsize), m_subProb(false) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     bool impliedby(Environ const & env) const;
@@ -105,9 +105,11 @@ private:
     typedef std::vector<Environ const *> pEnvs;
     pEnvs psubEnvs;
     pEnvs psupEnvs;
+    // Add env to context relations. Return compEnvs(*this, env).
+    int addEnv(Environ const & env);
 };
 
-// Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not compparable.
+// Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
 int compEnvs(Environ const & x, Environ const & y);
 
 #endif // ENVIRON_H_INCLUDED

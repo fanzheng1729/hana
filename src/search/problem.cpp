@@ -96,9 +96,9 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     if (pnewEnv)
     {
         pnewEnv->pProb = this;
+        pnewEnv->m_subProb = (compEnvs(probEnv(), *pnewEnv) == 1);
         newEnviter->second = pnewEnv;
         pnewEnv->enviter = newEnviter;
-        pnewEnv->m_subProb = probEnv().implies(*pnewEnv);
         addhypproofs(*pnewEnv);
     }
     return pnewEnv;
