@@ -1,5 +1,4 @@
 #include <algorithm>    // for std::remove_copy_if and std::includes
-#include <functional>   // for std::logical_not
 #include "environ.h"
 #include "game.h"
 #include "goaldata.h"

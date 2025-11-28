@@ -1,5 +1,4 @@
 #include <algorithm>    // for std::find_if, std::count_if
-#include <functional>
 #include <vector>
 #include "util/arith.h"
 #include "util/filter.h"
