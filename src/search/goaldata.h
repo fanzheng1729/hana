@@ -100,8 +100,6 @@ public:
                 return status = GOALTRUE;
             }
         }
-        if (status == GOALTRUE)
-            pnewEnv = pnewEnv2;
         return status;
     }
 };
