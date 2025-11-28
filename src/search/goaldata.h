@@ -14,6 +14,8 @@ typedef std::set<Nodeptr> Nodeptrs;
 
 // Polymorphic context
 struct Environ;
+// Return true if the context is a sub-context of the problem context
+bool issubProb(Environ const & env);
 
 // Data associated with the goal
 class Goaldata
@@ -36,7 +38,6 @@ public:
     Proofsteps const & proofsrc(Environ const & env)
     {
         if (!proofsrc().empty()) return proofsrc();
-        bool issubProb(Environ const & env);
         if (issubProb(env)) return proof;
         return proof;
         // Loop through sub-contexts.
@@ -51,10 +52,7 @@ public:
     bool proven() const { return !proofsrc().empty(); }
     bool proven(Environ const & env) { return !proofsrc(env).empty(); }
     Proofsteps & proofdst(Environ const & env)
-    {
-        bool issubProb(Environ const & env);
-        return issubProb(env) ? goaldatas().proof : proof;
-    }
+    { return issubProb(env) ? goaldatas().proof : proof; }
     Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
     // Add node pointer to p's goal data.
     friend void addNodeptr(Nodeptr p)
