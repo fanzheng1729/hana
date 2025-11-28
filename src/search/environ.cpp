@@ -39,10 +39,11 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 }
 
 // Return true if the context is a sub-context of the problem context
-bool issubProb(Environ const & env)
-{
-    return env.issubProb();
-}
+bool issubProb(Environ const & env) { return env.issubProb(); }
+// Return sub-contexts of env.
+pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
+// Return super-contexts of env.
+pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
 // Return true if from implies to.
 bool implies(Environ const & from, Environ const & to)
