@@ -33,12 +33,14 @@ class Goaldata
     Proofsteps proof;
     // Set of nodes trying to prove the open goal
     Nodeptrs m_nodeptrs;
+    // Pointer to the goal
+    Goalptr pGoal;
     // Pointer to the different contexts where the goal is evaluated
     BigGoalptr pBigGoal;
 public:
     // New context after trimming unnecessary hypotheses
     Environ const * pnewEnv;
-    Goaldata(Goalstatus s, BigGoalptr p = NULL) :
+    Goaldata(Goalstatus s, BigGoalptr p) :
         status(s), pBigGoal(p), pnewEnv(NULL) {}
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
