@@ -327,6 +327,12 @@ int Environ::addEnv(Environ const & env) const
     }
 }
 
+// Compare two hypiters by address.
+static int comphypiters(Hypiter x, Hypiter y)
+{
+    return std::less<Hypptr>()(&*x, &*y);
+}
+
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
 int compEnvs(Environ const & x, Environ const & y)
 {

@@ -7,12 +7,6 @@
 #include "goalstat.h"
 #include "../MCTS/stageval.h"
 
-// Compare two hypiters by address.
-inline int comphypiters(Hypiter x, Hypiter y)
-{
-    return std::less<Hypptr>()(&*x, &*y);
-}
-
 class Database;
 class Problem;
 struct Environ;
