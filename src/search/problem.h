@@ -2,7 +2,6 @@
 #define PROBLEM_H_INCLUDED
 
 #include <algorithm>    // for std::sort and std::includes
-#include "../DAG.h"
 #include "environ.h"
 #include "goaldata.h"
 #include "../util/for.h"
