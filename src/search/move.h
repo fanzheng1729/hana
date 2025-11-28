@@ -66,7 +66,7 @@ struct Move
             util::mem_fn(&Proofstep::id));
         return result;
     }
-    // Find the index of hypothesis by expression.
+    // Find the index of hypothesis by goal.
     Hypsize matchhyp(Goal const & goal) const
     {
         Hypsize i = 0;
