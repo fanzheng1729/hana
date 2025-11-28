@@ -1,3 +1,4 @@
+#include <algorithm>    // for std::lower_bound
 #include <iostream>
 #include "database.h"
 #include "getproof.h"

@@ -1,7 +1,6 @@
 #ifndef GOALDATA_H_INCLUDED
 #define GOALDATA_H_INCLUDED
 
-#include <algorithm>    // for std::lower_bound
 #include "game.h"
 #include "goalstat.h"
 #include "../MCTS/MCTS.h"
