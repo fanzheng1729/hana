@@ -1,4 +1,4 @@
-#include <algorithm>    // for std::transform and std::min
+#include <algorithm>    // for std::transform, std::min and std::lower_bound
 #include "../proof/analyze.h"
 #include "../database.h"
 #include "../disjvars.h"
@@ -285,18 +285,26 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
         return addboundmove(move, moves);
 }
 
+// Add an item to an ordered vector if not already present.
+template <typename T>
+static void additeminorder(std::vector<T> & vec, T const & item)
+{
+    typename std::vector<T>::iterator iter =
+        std::lower_bound(vec.begin(), vec.end(), item, std::less<T>());
+    if (iter == vec.end() || *iter != item)
+        vec.insert(iter, item);
+}
+
 // Add env to context relations. Return compEnvs(*this, env).
 int Environ::addEnv(Environ const & env)
 {
-    int cmp = compEnvs(*this, env);
-
-    switch (cmp)
+    switch (compEnvs(*this, env))
     {
     case 1: // Sub-context
-        /* code */
+        additeminorder(psubEnvs, &env);
         return 1;
     case -1: // Super-context
-        /* code */
+        additeminorder(psupEnvs, &env);
         return -1;
     default:
         return 0;
