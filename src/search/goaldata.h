@@ -1,6 +1,7 @@
 #ifndef GOALDATA_H_INCLUDED
 #define GOALDATA_H_INCLUDED
 
+#include <algorithm>    // for std::lower_bound
 #include "game.h"
 #include "goalstat.h"
 #include "../MCTS/MCTS.h"
@@ -90,12 +91,21 @@ public:
 
         // Sub and super contexts of env
         pEnvs const & psubEnvs = subEnvs(env), & psupEnvs = supEnvs(env);
-        
+        pEnvs::const_iterator subiter = psubEnvs.begin();
+        pEnvs::const_iterator const subend = psubEnvs.end();
+        pEnvs::const_iterator supiter = psupEnvs.begin();
+        pEnvs::const_iterator const supend = psupEnvs.end();
+
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             Environ const & other = *goaldata.first;
-            if (goaldata.second.status == GOALFALSE && implies(other, env))
-                return status = GOALFALSE;
+
+            if (goaldata.second.status == GOALFALSE)
+            {
+                if (implies(other, env))
+                    return status = GOALFALSE;
+            }
+
             if (goaldata.second.status == GOALTRUE && implies(env, other))
             {
                 pnewEnv = goaldata.second.pnewEnv;
