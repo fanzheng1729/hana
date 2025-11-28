@@ -88,6 +88,9 @@ public:
         if (status != GOALNEW)
             return status; // No need to evaluate
 
+        // Sub and super contexts of env
+        pEnvs const & psubEnvs = subEnvs(env), & psupEnvs = supEnvs(env);
+        
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             Environ const & other = *goaldata.first;
