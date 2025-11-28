@@ -45,17 +45,6 @@ pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
-// Return true if from implies to.
-bool implies(Environ const & from, Environ const & to)
-{
-    if (from.psubEnvs().size() < to.psupEnvs().size())
-        return std::binary_search
-            (from.psubEnvs().begin(), from.psubEnvs().end(), &to, less);
-    else
-        return std::binary_search
-            (to.psupEnvs().begin(), to.psupEnvs().end(), &from, less);
-}
-
 // Return true if all hypotheses of a move are valid.
 bool Environ::valid(Move const & move) const
 {

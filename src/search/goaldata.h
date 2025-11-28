@@ -26,8 +26,6 @@ bool issubProb(Environ const & env);
 pEnvs const & subEnvs(Environ const & env);
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env);
-// Return true if from implies to.
-bool implies(Environ const & from, Environ const & to);
 
 // Data associated with the goal
 class Goaldata
