@@ -20,7 +20,7 @@ public:
     // The assertion to be proved
     Assertion const & assertion;
     // Problem context
-    Environ * const pProbEnv;
+    Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     Enviter probEnviter() const { return probEnv().enviter; }
     // Is staged move generation used?
@@ -154,12 +154,13 @@ public:
 private:
     // Add the problem context. Return its pointer.
     template<class Env>
-    Environ * addProbEnv(Env const & env, strview name)
+    Environ const * addProbEnv(Env const & env, strview name)
     {
         Environs::iterator const enviter
         = environs.insert(Environs::value_type(name, NULL)).first;
         Environ * const pEnv = new Env(env);
-        (enviter->second = pEnv)->pProb = this;
+        pEnv->pProb = this;
+        enviter->second = pEnv;
         pEnv->enviter = enviter;
         return pEnv;
     }
@@ -177,7 +178,7 @@ private:
     { return addGoal(Goalview(RPN, type), p, s); }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
-    Environ * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
+    Environ const * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
     // close all the nodes except p
     void closenodesexcept(Nodeptrs const & nodeptrs, Nodeptr p = Nodeptr())
     {
