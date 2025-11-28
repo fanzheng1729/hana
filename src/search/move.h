@@ -50,7 +50,6 @@ struct Move
     Assertion const & theorem() const { return pthm->second; }
     strview exptypecode() const { return theorem().exptypecode(); }
     // Hypothesis (must be of type THM)
-    Hypiter hypiter(Hypsize index) const { return theorem().hypiters[index]; }
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
     bool hypfloats(Hypsize index) const { return theorem().hypfloats(index); }
     Expression const & hypexp(Hypsize index) const
