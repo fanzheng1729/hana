@@ -296,7 +296,7 @@ static void additeminorder(std::vector<T> & vec, T const & item)
 }
 
 // Add env to context relations. Return compEnvs(*this, env).
-int Environ::addEnv(Environ const & env)
+int Environ::addEnv(Environ const & env) const
 {
     switch (compEnvs(*this, env))
     {

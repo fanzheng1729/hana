@@ -103,10 +103,10 @@ private:
     bool m_subProb;
     // Pointers to contexts
     typedef std::vector<Environ const *> pEnvs;
-    pEnvs psubEnvs;
-    pEnvs psupEnvs;
+    mutable pEnvs psubEnvs;
+    mutable pEnvs psupEnvs;
     // Add env to context relations. Return compEnvs(*this, env).
-    int addEnv(Environ const & env);
+    int addEnv(Environ const & env) const;
 };
 
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
