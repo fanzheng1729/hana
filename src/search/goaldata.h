@@ -77,7 +77,7 @@ public:
     }
     void setstatustrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }
-    Goalstatus & getstatus(Environ & env)
+    Goalstatus & getstatus(Environ const & env)
     {
         if (proven(env))
             return status = GOALTRUE;
