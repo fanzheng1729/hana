@@ -51,7 +51,8 @@ bool Environ::implies(Environ const & env) const
 // Return true if from implies to.
 bool hasimplication(Environ const & from, Environ const & to)
 {
-    return from.implies(to);
+    bool result = from.implies(to);
+    return result;
 }
 
 // Return true if the context is a sub-context of the problem context
