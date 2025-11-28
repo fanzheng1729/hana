@@ -91,9 +91,9 @@ public:
             if (goaldata.second.status == GOALTRUE &&
                 hasimplication(env, *goaldata.first))
             {
-                if (hasimplication(*pnewEnv2, *goaldata.first))
-                    pnewEnv2 = goaldata.first;
-                status = GOALTRUE;
+                pnewEnv = goaldata.second.pnewEnv;
+                if (!pnewEnv) pnewEnv = goaldata.first;
+                return status = GOALTRUE;
             }
         }
         if (status == GOALTRUE)
