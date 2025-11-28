@@ -324,17 +324,13 @@ int compEnvs(Environ const & x, Environ const & y)
     std::sort(xhypiters.begin(), xhypiters.end(), comphypiters);
     std::sort(yhypiters.begin(), yhypiters.end(), comphypiters);
 
-    if (x.assertion.hypcount() > y.assertion.hypcount())
-        if (std::includes
-            (xhypiters.begin(), xhypiters.end(),
-                yhypiters.begin(), yhypiters.end(), comphypiters))
-            return 1; // x > y
+    if (x.assertion.hypcount() > y.assertion.hypcount() &&
+        includes(xhypiters, yhypiters, comphypiters))
+        return 1; // x
 
-    if (x.assertion.hypcount() < y.assertion.hypcount())
-        if (std::includes
-            (yhypiters.begin(), yhypiters.end(),
-                xhypiters.begin(), xhypiters.end(), comphypiters))
-            return -1; // x < y
+    if (x.assertion.hypcount() < y.assertion.hypcount() &&
+        includes(yhypiters, xhypiters, comphypiters))
+        return -1; // x < y
 
     return 0; // Not comparable
 }
