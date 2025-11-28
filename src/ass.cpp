@@ -21,7 +21,7 @@ Bvector & Assertion::trimvars
             if (hypstotrim[j] && usage[j]) break;
 // std::cout << j << ' ';
         hypstotrim[i] = (j != Hypsize(-1) ||
-                        util::filter(conclusion)(hypiters[i]->first.c_str));
+                        util::filter(conclusion)(hyplabel(i).c_str));
     }
     hypstotrim.flip();
 // std::cout << hypstotrim;

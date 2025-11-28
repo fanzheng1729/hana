@@ -219,19 +219,17 @@ bool Syntaxioms::checkRPN
     (strview label, Assertion ass, struct Typecodes const & typecodes) const
 {
     Expression & exp = ass.expression;
-    Hypiters const & hyps = ass.hypiters;
-
     if (exp.empty()) return false;
+
     exp[0] = typecodes.normalize(exp[0]);
-//std::cout << ass.expRPN;
     if (!::checkRPN(label, ass, ass.expRPN)) return false;
 
-    for (Hypsize i = 0; i < hyps.size(); ++i)
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
         if (ass.hypfloats(i)) continue;
         exp = ass.hypexp(i);
         if (exp.empty()) return false;
-//std::cout << "Checking hypothesis " << hyps[i]->first << ": " << exp;
+//std::cout << "Checking hypothesis " << ass.hyplabel(i) << ": " << exp;
         exp[0] = typecodes.normalize(exp[0]);
         if (!::checkRPN(label, ass, ass.hypRPN(i))) return false;
     }
