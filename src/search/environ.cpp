@@ -39,13 +39,13 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 }
 
 // Context relations
-bool Environ::impliedby(Environ const & from) const
+bool Environ::impliedby(Environ const & env) const
 {
-    return prob().environs.reachable(from.enviter, enviter);
+    return prob().environs.reachable(env.enviter, enviter);
 }
-bool Environ::implies(Environ const & to) const
+bool Environ::implies(Environ const & env) const
 {
-    return prob().environs.reachable(enviter, to.enviter);
+    return prob().environs.reachable(enviter, env.enviter);
 }
 bool hasimplication(Environ const & from, Environ const & to)
 {
