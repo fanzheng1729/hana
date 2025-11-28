@@ -74,7 +74,7 @@ Moves Game::theirmoves() const
 Moves Game::ourmoves(stage_t stage) const
 {
 // std::cout << "Finding moves at stage " << stage << " for " << *this;
-    if (!pEnv() || proven())
+    if (proven())
         return Moves();
     if (env().staged)
         return env().ourmoves(*this, stage);
@@ -106,7 +106,7 @@ bool Game::writeproof() const
     if (attempt.type == Move::NONE || proven())
         return false;
     // attempt.type == Move::THM, goal not proven
-    if (!pEnv() || !checkDV(attempt, env().assertion, true))
+    if (!checkDV(attempt, env().assertion, true))
         return false;
 // std::cout << "Writing proof: " << goal().expression();
     // Pointers to proofs of hypotheses
