@@ -160,7 +160,7 @@ private:
         Environ * const pEnv = new Env(env);
         pEnv->pProb = this;
         enviter->second = pEnv;
-        pEnv->enviter = enviter;
+        pEnv->name = enviter->first;
         return pEnv;
     }
     friend Environ;

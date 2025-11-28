@@ -294,8 +294,10 @@ static void additeminorder(std::vector<T> & vec, T const & item)
 // Add env to context relations, given cmp = compEnvs(*this, env).
 void Environ::addEnv(Environ const & env, int cmp) const
 {
-    if (cmp == 1) additeminorder(m_psubEnvs, &env);
-    else if (cmp == -1) additeminorder(m_psupEnvs, &env);
+    if (cmp == 1)
+        return additeminorder(m_psubEnvs, &env);
+    if (cmp == -1)
+        return additeminorder(m_psupEnvs, &env);
 }
 
 // Compare two hypiters by address.
@@ -307,7 +309,8 @@ static int comphypiters(Hypiter x, Hypiter y)
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
 int compEnvs(Environ const & x, Environ const & y)
 {
-    if (x.assertion.hypcount() == y.assertion.hypcount()) return 0;
+    if (x.assertion.hypcount() == y.assertion.hypcount())
+        return 0;
 
     Hypiters xhypiters(x.assertion.hypiters);
     Hypiters yhypiters(y.assertion.hypiters);
@@ -326,7 +329,7 @@ int compEnvs(Environ const & x, Environ const & y)
                 xhypiters.begin(), xhypiters.end(), comphypiters))
             return -1; // x < y
 
-    return 0; // not comparable
+    return 0; // Not comparable
 }
 
 // Return true if an assertion duplicates a previous one.
