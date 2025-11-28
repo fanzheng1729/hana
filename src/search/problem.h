@@ -114,6 +114,7 @@ public:
         FOR (Goaldatas::reference goaldata, game.goaldatas())
             if (!goaldata.second.proven() && implies(*goaldata.first, game.env()))
             {
+                // Super-context found. Copy proof.
                 goaldata.second.proofdst(*goaldata.first) = game.proof();
                 goaldata.second.setstatustrue();
                 closenodesexcept(goaldata.second.nodeptrs());

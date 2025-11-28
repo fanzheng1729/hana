@@ -11,7 +11,7 @@ class Database;
 class Problem;
 struct Environ;
 // Pointers to contexts
-typedef std::vector<struct Environ const *> pEnvs;
+typedef std::vector<Environ const *> pEnvs;
 // Move in proof search tree
 // struct Move;
 // List of moves
@@ -97,8 +97,7 @@ private:
                 Proofsize size, Moves & moves) const;
 // Cache for context implications
     bool m_subProb;
-    mutable pEnvs m_psubEnvs;
-    mutable pEnvs m_psupEnvs;
+    mutable pEnvs m_psubEnvs, m_psupEnvs;
     // Add env to context relations, given comparison result.
     void addEnv(Environ const & env, int cmp) const;
     // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.

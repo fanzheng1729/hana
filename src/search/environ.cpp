@@ -38,6 +38,12 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
     return true;
 }
 
+// Return true if the context is a sub-context of the problem context
+bool issubProb(Environ const & env)
+{
+    return env.issubProb();
+}
+
 // Return true if from implies to.
 bool implies(Environ const & from, Environ const & to)
 {
@@ -48,12 +54,6 @@ bool implies(Environ const & from, Environ const & to)
     else
         return std::binary_search
             (to.psupEnvs().begin(), to.psupEnvs().end(), &from, less);
-}
-
-// Return true if the context is a sub-context of the problem context
-bool issubProb(Environ const & env)
-{
-    return env.issubProb();
 }
 
 // Return true if all hypotheses of a move are valid.
