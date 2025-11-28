@@ -110,14 +110,27 @@ public:
     void copyproof(Game const & game)
     {
         if (!game.proven() || game.env().issubProb()) return;
+
+        // Super-contexts
+        pEnvs const & psupEnvs = supEnvs(game.env());
+        pEnvs::const_iterator supiter = psupEnvs.begin();
+        pEnvs::const_iterator const supend = psupEnvs.end();
+
         // Loop through super-contexts.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
-            if (!goaldata.second.proven() && implies(*goaldata.first, game.env()))
+            if (!goaldata.second.proven())
             {
-                // Super-context found. Copy proof.
-                goaldata.second.proofdst(*goaldata.first) = game.proof();
-                goaldata.second.setstatustrue();
-                closenodesexcept(goaldata.second.nodeptrs());
+                Environ const & otherEnv = *goaldata.first;
+                while (supiter != supend && less(*supiter, &otherEnv))
+                    ++supiter;
+                if (supiter != supend && *supiter == &otherEnv)
+                {
+                    // Super-context found. Copy proof.
+                    goaldata.second.proofdst(otherEnv) = game.proof();
+                    goaldata.second.setstatustrue();
+                    closenodesexcept(goaldata.second.nodeptrs());
+                }
+                if (supiter == supend) break;
             }
     }
     // Record the proof of proven goals on back propagation.

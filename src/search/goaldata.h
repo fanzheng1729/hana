@@ -61,13 +61,12 @@ public:
         FOR (Goaldatas::const_reference goaldata, goaldatas())
             if (!goaldata.second.proof.empty() && !issubProb(*goaldata.first))
             {
-                if (subiter == subend) break;
-        
                 Environ const & otherEnv = *goaldata.first;
                 while (subiter != subend && less(*subiter, &otherEnv))
                     ++subiter;
                 if (subiter != subend && *subiter == &otherEnv)
                     return proof = goaldata.second.proof;
+                if (subiter == subend) break;
             }
         
         return proof;
