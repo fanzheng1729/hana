@@ -104,7 +104,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         {
             Environ const & oldEnv = *renv.second;
             if (&oldEnv == pnewEnv) continue;
-            int cmp = compEnvs(oldEnv, *pnewEnv);
+            int const cmp = compEnvs(oldEnv, *pnewEnv);
             oldEnv.addEnv(*pnewEnv, cmp);
             pnewEnv->addEnv(oldEnv, -cmp);
         }
