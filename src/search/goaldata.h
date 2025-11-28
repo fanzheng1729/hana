@@ -16,6 +16,7 @@ typedef std::set<Nodeptr> Nodeptrs;
 struct Environ;
 // Pointers to contexts
 typedef std::vector<Environ *> pEnvs;
+
 // Return true if the context is a sub-context of the problem context
 bool issubProb(Environ const & env);
 // Return true if from implies to.
