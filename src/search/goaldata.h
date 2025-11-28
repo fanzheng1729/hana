@@ -50,7 +50,9 @@ public:
     Proofsteps const & proofsrc()
     {
         Environ const & env = *pGoal->first;
-        if (!proofsrc().empty()) return proofsrc();
+        Proofsteps const & proof0
+        = const_cast<Goaldata const *>(this)->proofsrc();
+        if (!proof0.empty()) return proof0;
         if (issubProb(env)) return proof;
         
         // Sub-contexts of env
