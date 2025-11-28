@@ -25,7 +25,7 @@ inline bool operator<(Goal const & x, Goal const & y)
     { return x.RPN < y.RPN || x.RPN == y.RPN && x.typecode < y.typecode; }
 
 
-// Polymorphic context
+// Polymorphic context, with move generation and goal evaluation
 struct Environ;
 // Data associated with the goal
 class Goaldata;

@@ -26,7 +26,7 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
 typedef std::map<std::string, struct Environ *> Environs;
 // Iterator to polymorphic contexts
 typedef Environs::const_iterator Enviter;
-// Polymorphic context
+// Polymorphic context, with move generation and goal evaluation
 struct Environ : protected Gen
 {
     Environ(Assertion const & ass, Database const & db,

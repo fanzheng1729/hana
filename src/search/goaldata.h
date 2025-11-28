@@ -12,7 +12,7 @@ typedef MCTS<Game>::Nodeptr Nodeptr;
 // Set of nodes in proof search tree
 typedef std::set<Nodeptr> Nodeptrs;
 
-// Polymorphic context
+// Polymorphic context, with move generation and goal evaluation
 struct Environ;
 // Pointers to contexts
 typedef std::vector<Environ *> pEnvs;
