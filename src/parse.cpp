@@ -105,6 +105,8 @@ static bool checkDV
 // Return a single NULL if not okay.
 static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
 {
+    if (unexpected(ass.esshypcount() > 0, "essential hypothesis", ""))
+        return pProofs(1);
     // Pointers to the proofs to be included
     pProofs pproofs;
     // Preallocate for efficiency
@@ -113,9 +115,7 @@ static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
     FOR (Hypiter iter, ass.hypiters)
     {
         Hypothesis const & hyp(iter->second);
-        if (unexpected(!hyp.floats, "essential hypothesis", iter->first))
-            return pProofs(1);
-        // Hypothesis is floating. Find the frame for the substitution.
+        // Frame for the substitution
         strview var(hyp.expression[1]);
         Substframe const * pframe(findframe(var, stack));
         if (unexpected(!pframe, "variable", var))
