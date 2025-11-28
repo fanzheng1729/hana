@@ -42,7 +42,7 @@ public:
         // Add proofs of hypotheses.
         addhypproofs();
         // Root goal
-        Goalptr const pGoal = addGoal(goal, pProbEnv, s);
+        Goalptr const pGoal = addGoal(goal, *pProbEnv, s);
         if (s == GOALTRUE)
             pGoal->second.pnewEnv = addsubEnv
                 (*pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
@@ -68,7 +68,7 @@ public:
         {
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
-            Goalptr const pGoal = addGoal(goal, &env, GOALTRUE);
+            Goalptr const pGoal = addGoal(goal, env, GOALTRUE);
             pGoal->second.proofdst(env).assign(1, env.assertion.hypiters[i]);
         }
     }
@@ -166,16 +166,16 @@ private:
     }
     friend Environ;
     // Add a goal. Return its pointer.
-    Goalptr addGoal(Goalview const & goal, Environ const * p, Goalstatus s)
+    Goalptr addGoal(Goalview const & goal, Environ const & env, Goalstatus s)
     {
         BigGoalptr const pBigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
         Goaldata const goaldata(s, pBigGoal);
-        return &*pBigGoal->second.insert(std::make_pair(p, goaldata)).first;
+        return &*pBigGoal->second.insert(std::make_pair(&env, goaldata)).first;
     }
     Goalptr addGoal
-        (Proofsteps const & RPN, strview type, Environ const * p, Goalstatus s)
-    { return addGoal(Goalview(RPN, type), p, s); }
+        (Proofsteps const & RPN, strview type, Environ const & env, Goalstatus s)
+    { return addGoal(Goalview(RPN, type), env, s); }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
