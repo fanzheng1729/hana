@@ -108,6 +108,6 @@ private:
 };
 
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not compparable.
-int cmopEnvs(Environ const & x, Environ const & y);
+int compEnvs(Environ const & x, Environ const & y);
 
 #endif // ENVIRON_H_INCLUDED

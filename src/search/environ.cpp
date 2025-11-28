@@ -286,7 +286,7 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
 }
 
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not compparable.
-int cmopEnvs(Environ const & x, Environ const & y)
+int compEnvs(Environ const & x, Environ const & y)
 {
     if (x.assertion.hypcount() == y.assertion.hypcount()) return 0;
 
