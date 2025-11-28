@@ -285,6 +285,23 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
         return addboundmove(move, moves);
 }
 
+// Add env to context relations. Return compEnvs(*this, env).
+int Environ::addEnv(Environ const & env)
+{
+    int cmp = compEnvs(*this, env);
+    if (cmp == 1)
+    {
+        // this > env
+        // psubEnvs.push_back(&env);
+    }
+    else if (cmp == -1)
+    {
+        // this < env
+        // psupEnvs.push_back(&env);
+    }
+    return cmp;
+}
+
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
 int compEnvs(Environ const & x, Environ const & y)
 {
