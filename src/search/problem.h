@@ -45,7 +45,7 @@ public:
         Goalptr const pGoal = addGoal(goal, pProbEnv, s);
         if (s == GOALTRUE)
             pGoal->second.pnewEnv = addsubEnv
-                (pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
+                (*pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
         // Root node
         *root() = Game(addsimpGoal(pGoal));
         addNodeptr(root());
@@ -61,15 +61,15 @@ public:
         }
     }
     // Add 1-step proof of all the hypotheses to a context.
-    void addhypproofs(Environ const * p)
+    void addhypproofs(Environ const & env)
     {
-        if (!p || p->issubProb()) return;
-        for (Hypsize i = 0; i < p->assertion.hypcount(); ++i)
+        if (env.issubProb()) return;
+        for (Hypsize i = 0; i < env.assertion.hypcount(); ++i)
         {
-            if (p->assertion.hypfloats(i)) continue;
-            Goalview goal(p->assertion.hypRPN(i), p->assertion.hyptypecode(i));
-            Goalptr const pGoal = addGoal(goal, p, GOALTRUE);
-            pGoal->second.proofdst(*p).assign(1, p->assertion.hypiters[i]);
+            if (env.assertion.hypfloats(i)) continue;
+            Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
+            Goalptr const pGoal = addGoal(goal, &env, GOALTRUE);
+            pGoal->second.proofdst(env).assign(1, env.assertion.hypiters[i]);
         }
     }
     // UCB threshold for generating a new batch of moves
@@ -178,7 +178,7 @@ private:
     { return addGoal(Goalview(RPN, type), p, s); }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
-    Environ const * addsubEnv(Environ const * pEnv, Bvector const & hypstotrim);
+    Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
     // close all the nodes except p
     void closenodesexcept(Nodeptrs const & nodeptrs, Nodeptr p = Nodeptr())
     {

@@ -69,20 +69,20 @@ static void DAGerr(strview env1, strview env2)
 
 // Add a sub-context with hypotheses trimmed.
 // Return pointer to the new context. Return NULL if unsuccessful.
-Environ const * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
+Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
         return NULL;
     // Name of new context
-    std::string const & name(pEnv->assertion.hypslabel(hypstotrim));
+    std::string const & name(env.assertion.hypslabel(hypstotrim));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result
     = environs.insert(std::pair<strview, Environ const *>(name, NULL));
     // Iterator to the new context
     Environs::iterator const newEnviter = result.first;
-    if (!environs.linked(pEnv->enviter, newEnviter) &&
-        !environs.link(pEnv->enviter, newEnviter))
-        DAGerr(pEnv->enviter->first, newEnviter->first);
+    if (!environs.linked(env.enviter, newEnviter) &&
+        !environs.link(env.enviter, newEnviter))
+        DAGerr(env.enviter->first, newEnviter->first);
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newEnviter->second;
@@ -90,11 +90,11 @@ Environ const * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstot
     Assertion & newass = assertions[newEnviter->first];
     if (unexpected(!newass.expression.empty(), "Duplicate name", name))
         return NULL;
-    Assertion const & ass = pEnv->makeAss(hypstotrim);
+    Assertion const & ass = env.makeAss(hypstotrim);
     if (ass.expression.empty())
         return NULL;
     // Add the new context.
-    Environ * const pnewEnv = pEnv->makeEnv(newass = ass);
+    Environ * const pnewEnv = env.makeEnv(newass = ass);
     if (pnewEnv)
     {
         pnewEnv->pProb = this;
