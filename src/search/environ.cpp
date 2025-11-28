@@ -306,6 +306,13 @@ static int comphypiters(Hypiter x, Hypiter y)
     return std::less<Hypptr>()(&*x, &*y);
 }
 
+// Check inclusion relation.
+template <class C, class Comp>
+static bool includes(C const & x, C const & y, Comp comp)
+{
+    return std::includes(x.begin(), x.end(), y.begin(), y.end(), comp);
+}
+
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
 int compEnvs(Environ const & x, Environ const & y)
 {
