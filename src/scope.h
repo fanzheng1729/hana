@@ -27,12 +27,12 @@ struct Scopes : std::vector<Scope>
     bool pop_back();
     // Find active floating hypothesis corresponding to variable.
     // Return its pointer or NULL if there isn't one.
-    Hypptr getfloatinghyp(strview var) const;
+    pHyp getfloatinghyp(strview var) const;
     // Determine if a string is an active variable.
     bool isactivevariable(strview var) const;
     // Determine if a string is the label of an active hypothesis.
     // If so, return the pointer to the hypothesis. Otherwise return NULL.
-    Hypptr activehypptr(strview label) const;
+    pHyp activehypptr(strview label) const;
     // Determine if a floating hypothesis on a string can be added.
     // Return 0 if Okay. Otherwise return error code.
     int erraddfloatinghyp(strview var) const;

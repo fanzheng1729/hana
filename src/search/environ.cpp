@@ -292,7 +292,7 @@ void Environ::addEnv(Environ const & env, int cmp) const
 // Compare two hypiters by address.
 static int comphypiters(Hypiter x, Hypiter y)
 {
-    return std::less<Hypptr>()(&*x, &*y);
+    return std::less<pHyp>()(&*x, &*y);
 }
 
 // Check inclusion relation.

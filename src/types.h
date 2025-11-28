@@ -64,7 +64,7 @@ struct Hypothesis
 // Map: label -> hypothesis
 typedef std::map<strview, Hypothesis> Hypotheses;
 // Pointer to (label, hypothesis)
-typedef Hypotheses::const_pointer Hypptr;
+typedef Hypotheses::const_pointer pHyp;
 // Iterator to a hypothesis
 typedef Hypotheses::const_iterator Hypiter;
 // Return true if the name of the hypothesis pointed to is label.
@@ -89,9 +89,9 @@ struct Symbol2 : strview
 struct Symbol3 : Symbol2
 {
     // Pointer to the floating hypothesis for variable, NULL for constant
-    Hypptr phyp;
+    pHyp phyp;
     strview typecode() const { return phyp->second.expression[0]; }
-    Symbol3(strview str = "", ID n = 0, Hypptr p = NULL) :
+    Symbol3(strview str = "", ID n = 0, pHyp p = NULL) :
         Symbol2(str, n), phyp(p) {}
 };
 
@@ -144,12 +144,12 @@ struct Proofstep
     } type;
     union
     {
-        Hypptr phyp;
+        pHyp phyp;
         Assptr pass;
         Index index;
     };
     Proofstep(Type t = NONE) : type(t == SAVE ? t : NONE) {}
-    Proofstep(Hypptr p) : type(p ? HYP : NONE), phyp(p) {}
+    Proofstep(pHyp p) : type(p ? HYP : NONE), phyp(p) {}
     Proofstep(Assptr p) : type(p ? THM : NONE), pass(p) {}
     Proofstep(Hypiter iter) : type(HYP), phyp(&*iter) {}
     Proofstep(Index i) : type(LOAD), index(i) {}

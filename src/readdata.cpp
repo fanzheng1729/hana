@@ -86,7 +86,7 @@ ReadStatus Imp::readexprest
     {
         m_tokens.pop();
 
-        Hypptr phyp(m_scopes.getfloatinghyp(token));
+        pHyp phyp(m_scopes.getfloatinghyp(token));
 
         if (!phyp && !m_database.hasconst(token))
         {
@@ -325,7 +325,7 @@ ReadStatus Imp::readregular(strview label, Proofsteps & proof)
 bool Imp::addfloatinghyp(strview label, strview type, strview var)
 {
     // Check if there is an active hypothesis on the var ($4.2.5).
-    Hypptr const phyp = m_scopes.getfloatinghyp(var);
+    pHyp const phyp = m_scopes.getfloatinghyp(var);
     if (phyp)
     {
         std::cerr << "Variable " << var << " already has a floating ";
