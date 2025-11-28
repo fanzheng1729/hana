@@ -99,7 +99,7 @@ Environ * Problem::addsubEnv(Environ const * pEnv, Bvector const & hypstotrim)
     {
         (newEnviter->second = pnewEnv)->pProb = this;
         pnewEnv->enviter = newEnviter;
-        pnewEnv->m_subProb = environs.reachable(probEnviter(), newEnviter);
+        pnewEnv->m_subProb = probEnv().implies(*pnewEnv);
         addhypproofs(pnewEnv);
     }
     return pnewEnv;
