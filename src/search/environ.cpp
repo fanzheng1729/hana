@@ -38,12 +38,6 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
     return true;
 }
 
-// Context relations
-bool Environ::implies(Environ const & env) const
-{
-    return prob().environs.reachable(enviter, env.enviter);
-}
-
 // Return true if from implies to.
 bool hasimplication(Environ const & from, Environ const & to)
 {
