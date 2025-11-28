@@ -100,6 +100,14 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         newEnviter->second = pnewEnv;
         pnewEnv->enviter = newEnviter;
         addhypproofs(*pnewEnv);
+        FOR (Environs::const_reference renv, environs)
+        {
+            Environ const & oldEnv = *renv.second;
+            if (&oldEnv == pnewEnv) continue;
+            int cmp = compEnvs(oldEnv, *pnewEnv);
+            oldEnv.addEnv(*pnewEnv, cmp);
+            pnewEnv->addEnv(oldEnv, -cmp);
+        }
     }
     return pnewEnv;
 }
