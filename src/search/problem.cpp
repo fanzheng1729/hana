@@ -78,9 +78,6 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     = environs.insert(std::pair<strview, Environ const *>(name, NULL));
     // Iterator to the new context
     Environs::iterator const newEnviter = result.first;
-    if (!environs.linked(env.enviter, newEnviter) &&
-        !environs.link(env.enviter, newEnviter))
-        DAGerr(env.enviter->first, newEnviter->first);
     // If it already exists, set the game's context pointer.
     if (!result.second)
         return newEnviter->second;
