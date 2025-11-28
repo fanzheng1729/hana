@@ -289,17 +289,18 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
 int Environ::addEnv(Environ const & env)
 {
     int cmp = compEnvs(*this, env);
-    if (cmp == 1)
+
+    switch (cmp)
     {
-        // this > env
-        // psubEnvs.push_back(&env);
+    case 1: // Sub-context
+        /* code */
+        return 1;
+    case -1: // Super-context
+        /* code */
+        return -1;
+    default:
+        return 0;
     }
-    else if (cmp == -1)
-    {
-        // this < env
-        // psupEnvs.push_back(&env);
-    }
-    return cmp;
 }
 
 // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
