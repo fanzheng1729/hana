@@ -164,6 +164,11 @@ private:
         pEnv->enviter = enviter;
         return pEnv;
     }
+    // Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not compparable.
+    static int cmopEnvs(Environ const & x, Environ const & y)
+    {
+        if (x.assertion.hypcount() == y.assertion.hypcount()) return 0;
+    }
     friend Environ;
     // Add a goal. Return its pointer.
     Goalptr addGoal(Goalview const & goal, Environ const & env, Goalstatus s)
