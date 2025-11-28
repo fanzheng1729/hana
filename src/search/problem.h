@@ -165,7 +165,7 @@ private:
     }
     friend Environ;
     // Add a goal. Return its pointer.
-    Goalptr addGoal(Goalview const & goal, Environ * p, Goalstatus s)
+    Goalptr addGoal(Goalview const & goal, Environ const * p, Goalstatus s)
     {
         BigGoalptr const pBigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
@@ -173,7 +173,7 @@ private:
         return &*pBigGoal->second.insert(std::make_pair(p, goaldata)).first;
     }
     Goalptr addGoal
-        (Proofsteps const & RPN, strview type, Environ * p, Goalstatus s)
+        (Proofsteps const & RPN, strview type, Environ const * p, Goalstatus s)
     { return addGoal(Goalview(RPN, type), p, s); }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
