@@ -39,7 +39,7 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 }
 
 // Return true if from implies to.
-bool hasimplication(Environ const & from, Environ const & to)
+bool implies(Environ const & from, Environ const & to)
 {
     static const std::less<Environ const *> less;
     if (from.psubEnvs().size() < to.psupEnvs().size())

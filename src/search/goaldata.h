@@ -20,7 +20,7 @@ typedef std::vector<Environ const *> pEnvs;
 // Return true if the context is a sub-context of the problem context
 bool issubProb(Environ const & env);
 // Return true if from implies to.
-bool hasimplication(Environ const & from, Environ const & to);
+bool implies(Environ const & from, Environ const & to);
 
 // Data associated with the goal
 class Goaldata
@@ -49,7 +49,7 @@ public:
         FOR (Goaldatas::const_reference goaldata, goaldatas())
             if (!goaldata.second.proof.empty() &&
                 !issubProb(*goaldata.first) &&
-                hasimplication(env, *goaldata.first))
+                implies(env, *goaldata.first))
                 return proof = goaldata.second.proof;
         return proof;
     }
@@ -89,10 +89,10 @@ public:
             if (!goaldata.first)
                 continue;
             if (goaldata.second.status == GOALFALSE &&
-                hasimplication(*goaldata.first, env))
+                implies(*goaldata.first, env))
                 return status = GOALFALSE;
             if (goaldata.second.status == GOALTRUE &&
-                hasimplication(env, *goaldata.first))
+                implies(env, *goaldata.first))
             {
                 pnewEnv = goaldata.second.pnewEnv;
                 if (!pnewEnv) pnewEnv = goaldata.first;
