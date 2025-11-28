@@ -42,8 +42,8 @@ class Goaldata
 public:
     // New context after trimming unnecessary hypotheses
     Environ const * pnewEnv;
-    Goaldata(Goalstatus s, Goalptr pGoal, BigGoalptr bigGoalptr) :
-        status(s), pGoal(pGoal), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
+    Goaldata(Goalstatus s, BigGoalptr bigGoalptr) :
+        status(s), pGoal(NULL), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Proofsteps const & proofsrc() const
@@ -95,8 +95,10 @@ public:
         if (!pnewEnv) return pGoal;
         BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
         if (!pBigGoal) return pGoal;
-        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pGoal, pBigGoal));
-        return &*pBigGoal->second.insert(value).first;
+        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
+        Goalptr pnewGoal = &*pBigGoal->second.insert(value).first;
+        pnewGoal->second.pGoal = pnewGoal;
+        return pnewGoal;
     }
     void setstatustrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }

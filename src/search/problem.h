@@ -183,9 +183,8 @@ private:
     {
         BigGoalptr const pBigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
-        Goaldata const goaldata(s, NULL, pBigGoal);
-        Goalptr const pGoal
-        = &*pBigGoal->second.insert(std::make_pair(&env, goaldata)).first;
+        Goaldatas::value_type const value(&env, Goaldata(s, pBigGoal));
+        Goalptr const pGoal = &*pBigGoal->second.insert(value).first;
         pGoal->second.pGoal = pGoal;
         return pGoal;
     }
