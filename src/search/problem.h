@@ -1,7 +1,6 @@
 #ifndef PROBLEM_H_INCLUDED
 #define PROBLEM_H_INCLUDED
 
-#include <algorithm>    // for std::sort and std::includes
 #include "environ.h"
 #include "goaldata.h"
 #include "../util/for.h"

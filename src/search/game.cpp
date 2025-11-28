@@ -1,4 +1,3 @@
-#include <algorithm>    // for std::remove_copy_if and std::includes
 #include "environ.h"
 #include "game.h"
 #include "goaldata.h"

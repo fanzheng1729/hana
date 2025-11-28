@@ -1,4 +1,4 @@
-#include <algorithm>    // for std::transform, std::min and search algorithms
+#include <algorithm>    // for std::transform, std::min and ordered algorithms
 #include "../proof/analyze.h"
 #include "../database.h"
 #include "../disjvars.h"
