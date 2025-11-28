@@ -22,7 +22,6 @@ public:
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
-    Enviter probEnviter() const { return probEnv().enviter; }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
