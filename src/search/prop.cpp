@@ -36,7 +36,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     for (Hypsize i = assertion.hypcount() - 1; i != Hypsize(-1); --i)
     {
         if (assertion.hypfloats(i)) continue;
-// std::cout << "Trimming hypothesis " << assertion.hypiters[i]->first << std::endl;
+// std::cout << "Trimming hypothesis " << assertion.hyplabel(i) << std::endl;
         result[i] = true;
         // Check if it can be trimmed.
         CNFClauses cnf2;
@@ -46,7 +46,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         {
             if (assertion.hypfloats(j) || result[j])
                 continue; // Skip floating or trimmed hypotheses.
-// std::cout << "Adding hypothesis " << assertion.hypiters[j]->first << std::endl;
+// std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl;
             // Add CNF clauses.
             CNFClauses::size_type begin = j>0 ? ends[j - 1] : 0, end = ends[j];
             cnf2.insert(cnf2.end(), hypscnf.first.data() + begin,
