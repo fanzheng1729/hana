@@ -110,7 +110,7 @@ public:
     void copyproof(Game const & game)
     {
         if (!game.proven() || game.env().issubProb()) return;
-        // Loop through contexts with the same big goal.
+        // Loop through super-contexts.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
             if (!goaldata.second.proven() && implies(*goaldata.first, game.env()))
             {

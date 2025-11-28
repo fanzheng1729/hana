@@ -18,6 +18,8 @@ struct Environ;
 // Pointers to contexts
 typedef std::vector<Environ const *> pEnvs;
 
+static const std::less<Environ const *> less;
+
 // Return true if the context is a sub-context of the problem context
 bool issubProb(Environ const & env);
 // Return sub-contexts of env.
@@ -49,13 +51,25 @@ public:
     {
         if (!proofsrc().empty()) return proofsrc();
         if (issubProb(env)) return proof;
-        return proof;
+        
+        // Sub-contexts of env
+        pEnvs const & psubEnvs = subEnvs(env);
+        pEnvs::const_iterator subiter = psubEnvs.begin();
+        pEnvs::const_iterator const subend = psubEnvs.end();
+        
         // Loop through sub-contexts.
         FOR (Goaldatas::const_reference goaldata, goaldatas())
-            if (!goaldata.second.proof.empty() &&
-                !issubProb(*goaldata.first) &&
-                implies(env, *goaldata.first))
-                return proof = goaldata.second.proof;
+            if (!goaldata.second.proof.empty() && !issubProb(*goaldata.first))
+            {
+                if (subiter == subend) break;
+        
+                Environ const & otherEnv = *goaldata.first;
+                while (subiter != subend && less(*subiter, &otherEnv))
+                    ++subiter;
+                if (subiter != subend && *subiter == &otherEnv)
+                    return proof = goaldata.second.proof;
+            }
+        
         return proof;
     }
     bool proven() const { return !proofsrc().empty(); }
@@ -98,24 +112,30 @@ public:
 
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
-            Environ const & other = *goaldata.first;
-            if (&other == &env)
+            Environ const & otherEnv = *goaldata.first;
+            Goaldata const & otherdata = goaldata.second;
+
+            if (&otherEnv == &env)
                 continue;
 
-            if (goaldata.second.status == GOALFALSE)
+            if (otherdata.status == GOALFALSE && supiter != supend)
             {
-                supiter = std::lower_bound(supiter, supend, &other);
-                if (supiter != supend && *supiter == &other)
+                while (supiter != supend && less(*supiter, &otherEnv))
+                    ++supiter;
+                if (supiter != supend && *supiter == &otherEnv)
                     return status = GOALFALSE;
-                // if (implies(other, env))
-                //     return status = GOALFALSE;
             }
 
-            if (goaldata.second.status == GOALTRUE && implies(env, other))
+            if (otherdata.status == GOALTRUE && subiter != subend)
             {
-                pnewEnv = goaldata.second.pnewEnv;
-                if (!pnewEnv) pnewEnv = &other;
-                return status = GOALTRUE;
+                while (subiter != subend && less(*subiter, &otherEnv))
+                    ++subiter;
+                if (subiter != subend && *subiter == &otherEnv)
+                {
+                    pnewEnv = otherdata.pnewEnv;
+                    if (!pnewEnv) pnewEnv = &otherEnv;
+                    return status = GOALTRUE;
+                }
             }
         }
 

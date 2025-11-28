@@ -165,8 +165,8 @@ static unsigned discouragement
 //std::cout << "Checking discouragement from " << from << " to " << to;
     unsigned result = 0;
     // First comment after from
-    Comments::const_iterator iter
-        (std::lower_bound(comments.begin(), comments.end(), from));
+    Comments::const_iterator iter =
+        std::lower_bound(comments.begin(), comments.end(), from);
     for ( ; iter->tokenpos < to; ++iter)
         result |= discouragement(iter->text);
 //std::cout << " with result " << result;
