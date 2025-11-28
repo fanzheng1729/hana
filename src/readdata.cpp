@@ -204,7 +204,7 @@ unsigned Imp::discouragement() const
 void Imp::addasstype(Assertion & ass, bool isaxiom) const
 {
     ass.type |= isaxiom * Asstype::AXIOM;
-    ass.type |= ass.istrivial(ass.expression) * Asstype::TRIVIAL;
+    ass.type |= ass.istrivial() * Asstype::TRIVIAL;
     ass.type |= discouragement();
 }
 

@@ -103,7 +103,7 @@ struct Assertion
         return i;
     }
     // Return true if the expression matches a hypothesis.
-    bool istrivial(Expression const &) const
+    bool istrivial() const
         { return matchhyp(expression) < hypcount(); }
     // # free variables
     Hypsize nfreevar() const
