@@ -60,10 +60,8 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-static void DAGerr(strview env1, strview env2)
-{
-    std::cerr << "cycle formed by\n" << env1 << "\n->\n" << env2 << std::endl;
-}
+// Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
+int compEnvs(Environ const & x, Environ const & y);
 
 // Add a sub-context with hypotheses trimmed.
 // Return pointer to the new context. Return NULL if unsuccessful.
