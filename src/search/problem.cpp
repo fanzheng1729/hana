@@ -60,9 +60,6 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     return Eval(value, false);
 }
 
-// Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
-int compEnvs(Environ const & x, Environ const & y);
-
 // Add a sub-context with hypotheses trimmed.
 // Return pointer to the new context. Return NULL if unsuccessful.
 Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotrim)
@@ -91,7 +88,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     if (pnewEnv)
     {
         pnewEnv->pProb = this;
-        pnewEnv->m_subProb = (compEnvs(probEnv(), *pnewEnv) == 1);
+        pnewEnv->m_subProb = (probEnv().compare(*pnewEnv) == 1);
         newEnviter->second = pnewEnv;
         pnewEnv->name = newEnviter->first;
         addhypproofs(*pnewEnv);
@@ -99,7 +96,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         {
             Environ const & oldEnv = *renv.second;
             if (&oldEnv == pnewEnv) continue;
-            int const cmp = compEnvs(oldEnv, *pnewEnv);
+            int const cmp = oldEnv.compare(*pnewEnv);
             oldEnv.addEnv(*pnewEnv, cmp);
             pnewEnv->addEnv(oldEnv, -cmp);
         }

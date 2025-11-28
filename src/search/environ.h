@@ -99,8 +99,10 @@ private:
     bool m_subProb;
     mutable pEnvs m_psubEnvs;
     mutable pEnvs m_psupEnvs;
-    // Add env to context relations, given cmp = compEnvs(*this, env).
+    // Add env to context relations, given comparison result.
     void addEnv(Environ const & env, int cmp) const;
+    // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
+    int compare(Environ const & env) const;
 };
 
 #endif // ENVIRON_H_INCLUDED

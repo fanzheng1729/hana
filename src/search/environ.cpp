@@ -291,7 +291,7 @@ static void additeminorder(std::vector<T> & vec, T const & item)
         vec.insert(iter, item);
 }
 
-// Add env to context relations, given cmp = compEnvs(*this, env).
+// Add env to context relations, given comparison result.
 void Environ::addEnv(Environ const & env, int cmp) const
 {
     if (cmp == 1)
@@ -313,22 +313,22 @@ static bool includes(C const & x, C const & y, Comp comp)
     return std::includes(x.begin(), x.end(), y.begin(), y.end(), comp);
 }
 
-// Compare two contexts. Return -1 if x < y, 1 if x > y, 0 if not comparable.
-int compEnvs(Environ const & x, Environ const & y)
+// Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
+int Environ::compare(Environ const & env) const
 {
-    if (x.assertion.hypcount() == y.assertion.hypcount())
+    if (assertion.hypcount() == env.assertion.hypcount())
         return 0;
 
-    Hypiters xhypiters(x.assertion.hypiters);
-    Hypiters yhypiters(y.assertion.hypiters);
+    Hypiters xhypiters(assertion.hypiters);
+    Hypiters yhypiters(env.assertion.hypiters);
     std::sort(xhypiters.begin(), xhypiters.end(), comphypiters);
     std::sort(yhypiters.begin(), yhypiters.end(), comphypiters);
 
-    if (x.assertion.hypcount() > y.assertion.hypcount() &&
+    if (assertion.hypcount() > env.assertion.hypcount() &&
         includes(xhypiters, yhypiters, comphypiters))
         return 1; // x
 
-    if (x.assertion.hypcount() < y.assertion.hypcount() &&
+    if (assertion.hypcount() < env.assertion.hypcount() &&
         includes(yhypiters, xhypiters, comphypiters))
         return -1; // x < y
 
