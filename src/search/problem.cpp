@@ -38,8 +38,6 @@ Eval Problem::evalleaf(Nodeptr p) const
     if (!isourturn(p))
         return evaltheirleaf(p);
     // Our leaf
-    if (!game.pEnv())
-        return EvalLOSS;
     if (game.proven())
         return EvalWIN;
     return game.env().evalourleaf(game);
@@ -432,7 +430,7 @@ void Problem::navigate(bool detailed) const
 
 void Problem::writeproof(const char * const filename) const
 {
-    if (proof().empty() || !root()->game().pEnv() || !filename)
+    if (proof().empty() || !filename)
         return;
 
     Printer printer(&root()->game().env().database.typecodes());
