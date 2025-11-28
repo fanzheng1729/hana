@@ -99,11 +99,16 @@ public:
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             Environ const & other = *goaldata.first;
+            if (&other == &env)
+                continue;
 
             if (goaldata.second.status == GOALFALSE)
             {
-                if (implies(other, env))
+                supiter = std::lower_bound(supiter, supend, &other);
+                if (supiter != supend && *supiter == &other)
                     return status = GOALFALSE;
+                // if (implies(other, env))
+                //     return status = GOALFALSE;
             }
 
             if (goaldata.second.status == GOALTRUE && implies(env, other))

@@ -1,4 +1,3 @@
-#include <algorithm>// for std::lower_bound
 #include <numeric>  // for std::accumulate
 #include <fstream>
 #include <iostream>
