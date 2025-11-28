@@ -115,7 +115,7 @@ public:
         if (!game.proven() || game.env().issubProb()) return;
         // Loop through contexts with the same big goal.
         FOR (Goaldatas::reference goaldata, game.goaldatas())
-            if (!goaldata.second.proven() && game.env().impliedby(*goaldata.first))
+            if (!goaldata.second.proven() && hasimplication(*goaldata.first, game.env()))
             {
                 goaldata.second.proofdst(*goaldata.first) = game.proof();
                 goaldata.second.setstatustrue();

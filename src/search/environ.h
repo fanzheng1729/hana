@@ -41,7 +41,6 @@ struct Environ : protected Gen
         Gen(ass.varusage, maxsize), m_subProb(false) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
-    bool impliedby(Environ const & env) const;
     bool implies(Environ const & env) const;
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
     pEnvs const & psupEnvs() const { return m_psupEnvs; }
