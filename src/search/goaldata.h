@@ -86,16 +86,13 @@ public:
 
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
-            if (!goaldata.first)
-                continue;
-            if (goaldata.second.status == GOALFALSE &&
-                implies(*goaldata.first, env))
+            Environ const & other = *goaldata.first;
+            if (goaldata.second.status == GOALFALSE && implies(other, env))
                 return status = GOALFALSE;
-            if (goaldata.second.status == GOALTRUE &&
-                implies(env, *goaldata.first))
+            if (goaldata.second.status == GOALTRUE && implies(env, other))
             {
                 pnewEnv = goaldata.second.pnewEnv;
-                if (!pnewEnv) pnewEnv = goaldata.first;
+                if (!pnewEnv) pnewEnv = &other;
                 return status = GOALTRUE;
             }
         }
