@@ -209,7 +209,7 @@ static void printhypsline(Nodeptr p)
     FOR (Nodeptr child, *p.children())
     {
         while (p->game().attempt.hypfloats(i)) ++i;
-        std::cout << p->game().attempt.hypiter(i++)->first;
+        std::cout << p->game().attempt.hyplabel(i++);
         printeval(child);
         std::cout << ' ';
     }
