@@ -75,7 +75,7 @@ protected:
     Problem * pProb;
     friend Problem;
 private:
-// private methods
+// Move generation
     // Add a move with only bound substitutions.
     // Return true if it has no essential hypotheses.
     bool addboundmove(Move const & move, Moves & moves) const;
@@ -93,7 +93,7 @@ private:
     // Return true if a move closes the goal.
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
-    // Cache for issubProb
+// Cache for context implications
     bool m_subProb;
 };
 
