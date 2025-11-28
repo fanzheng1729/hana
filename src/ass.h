@@ -91,17 +91,6 @@ struct Assertion
             if (hypexp(i) == exp) break;
         return i;
     }
-    Hypsize matchhyp(Proofsteps const & RPN, strview typecode) const
-    {
-        Hypsize i = 0;
-        for ( ; i < hypcount(); ++i)
-        {
-            Expression const & exp = hypexp(i);
-            if (!exp.empty() && exp[0] == typecode && hypRPN(i) == RPN)
-                break;
-        }
-        return i;
-    }
     // Return true if the expression matches a hypothesis.
     bool istrivial() const
         { return matchhyp(expression) < hypcount(); }
