@@ -95,7 +95,10 @@ private:
                 Proofsize size, Moves & moves) const;
 // Cache for context implications
     bool m_subProb;
-    pEnvs psubEnvs, psupEnvs;
+    // Pointers to contexts
+    typedef std::vector<Environ *> pEnvs;
+    pEnvs psubEnvs;
+    pEnvs psupEnvs;
 };
 
 #endif // ENVIRON_H_INCLUDED
