@@ -15,6 +15,7 @@ inline int comphypiters(Hypiter x, Hypiter y)
 
 class Database;
 class Problem;
+struct Environ;
 // Move in proof search tree
 // struct Move;
 // List of moves
@@ -29,7 +30,7 @@ inline Value score(Proofsize size) { return 1. / (size + 1); }
 bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
 
 // Map: name -> polymorphic contexts
-typedef std::map<std::string, struct Environ const *> Environs;
+typedef std::map<std::string, Environ const *> Environs;
 // Iterator to polymorphic contexts
 typedef Environs::const_iterator Enviter;
 // Polymorphic context, with move generation and goal evaluation
