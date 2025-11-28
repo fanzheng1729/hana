@@ -7,7 +7,7 @@
 #include "../util/for.h"
 
 // Problem statement + Proof search tree with loop detection
-// + context management + UI
+// + context management + goal management + UI
 class Problem : public MCTS<Game>
 {
     // Assertions corresponding to contexts
