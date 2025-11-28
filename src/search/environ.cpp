@@ -299,8 +299,8 @@ static void additeminorder(std::vector<T> & vec, T const & item)
 // Add env to context relations, given cmp = compEnvs(*this, env).
 void Environ::addEnv(Environ const & env, int cmp) const
 {
-    if (cmp == 1) additeminorder(psubEnvs, &env);
-    else if (cmp == -1) additeminorder(psupEnvs, &env);
+    if (cmp == 1) additeminorder(m_psubEnvs, &env);
+    else if (cmp == -1) additeminorder(m_psupEnvs, &env);
 }
 
 // Compare two hypiters by address.

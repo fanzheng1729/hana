@@ -101,8 +101,8 @@ private:
     bool m_subProb;
     // Pointers to contexts
     typedef std::vector<Environ const *> pEnvs;
-    mutable pEnvs psubEnvs;
-    mutable pEnvs psupEnvs;
+    mutable pEnvs m_psubEnvs;
+    mutable pEnvs m_psupEnvs;
     // Add env to context relations, given cmp = compEnvs(*this, env).
     void addEnv(Environ const & env, int cmp) const;
 };
