@@ -84,7 +84,6 @@ public:
         if (status != GOALNEW)
             return status; // No need to evaluate
 
-        Environ * pnewEnv2 = &env;
         FOR (Goaldatas::const_reference goaldata, goaldatas())
         {
             if (!goaldata.first)
