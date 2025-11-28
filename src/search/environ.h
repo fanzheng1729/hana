@@ -105,6 +105,8 @@ private:
     typedef std::vector<Environ const *> pEnvs;
     mutable pEnvs psubEnvs;
     mutable pEnvs psupEnvs;
+    // Add env to context relations, given cmp = compEnvs(*this, env).
+    int addEnv(Environ const & env, int cmp) const;
     // Add env to context relations. Return compEnvs(*this, env).
     int addEnv(Environ const & env) const;
 };

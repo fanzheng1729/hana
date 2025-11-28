@@ -295,6 +295,22 @@ static void additeminorder(std::vector<T> & vec, T const & item)
         vec.insert(iter, item);
 }
 
+// Add env to context relations, given cmp = compEnvs(*this, env).
+int Environ::addEnv(Environ const & env, int cmp) const
+{
+    switch (cmp)
+    {
+    case 1: // Sub-context
+        additeminorder(psubEnvs, &env);
+        return 1;
+    case -1: // Super-context
+        additeminorder(psupEnvs, &env);
+        return -1;
+    default:
+        return 0;
+    }
+}
+
 // Add env to context relations. Return compEnvs(*this, env).
 int Environ::addEnv(Environ const & env) const
 {
