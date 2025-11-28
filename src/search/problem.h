@@ -61,7 +61,7 @@ public:
         }
     }
     // Add 1-step proof of all the hypotheses to a context.
-    void addhypproofs(Environ * p)
+    void addhypproofs(Environ const * p)
     {
         if (!p || p->issubProb()) return;
         for (Hypsize i = 0; i < p->assertion.hypcount(); ++i)
