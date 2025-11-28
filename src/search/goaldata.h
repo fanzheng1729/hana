@@ -15,7 +15,7 @@ typedef std::set<Nodeptr> Nodeptrs;
 // Polymorphic context, with move generation and goal evaluation
 struct Environ;
 // Pointers to contexts
-typedef std::vector<Environ *> pEnvs;
+typedef std::vector<Environ const *> pEnvs;
 
 // Return true if the context is a sub-context of the problem context
 bool issubProb(Environ const & env);

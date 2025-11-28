@@ -96,7 +96,7 @@ private:
 // Cache for context implications
     bool m_subProb;
     // Pointers to contexts
-    typedef std::vector<Environ *> pEnvs;
+    typedef std::vector<Environ const *> pEnvs;
     pEnvs psubEnvs;
     pEnvs psupEnvs;
 };
