@@ -1,4 +1,4 @@
-#include <algorithm>    // for std::transform, std::min and std::lower_bound
+#include <algorithm>    // for std::transform, std::min and search algorithms
 #include "../proof/analyze.h"
 #include "../database.h"
 #include "../disjvars.h"
@@ -51,8 +51,13 @@ bool Environ::implies(Environ const & env) const
 // Return true if from implies to.
 bool hasimplication(Environ const & from, Environ const & to)
 {
-    bool result = from.implies(to);
-    return result;
+    static const std::less<Environ const *> less;
+    if (from.psubEnvs().size() < to.psupEnvs().size())
+        return std::binary_search
+            (from.psubEnvs().begin(), from.psubEnvs().end(), &to, less);
+    else
+        return std::binary_search
+            (to.psupEnvs().begin(), to.psupEnvs().end(), &from, less);
 }
 
 // Return true if the context is a sub-context of the problem context

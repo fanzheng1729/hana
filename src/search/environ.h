@@ -10,6 +10,8 @@
 class Database;
 class Problem;
 struct Environ;
+// Pointers to contexts
+typedef std::vector<struct Environ const *> pEnvs;
 // Move in proof search tree
 // struct Move;
 // List of moves
@@ -41,6 +43,8 @@ struct Environ : protected Gen
     // Context relations
     bool impliedby(Environ const & env) const;
     bool implies(Environ const & env) const;
+    pEnvs const & psubEnvs() const { return m_psubEnvs; }
+    pEnvs const & psupEnvs() const { return m_psupEnvs; }
     // Return true if the context is a sub-context of the problem context
     bool issubProb() const { return m_subProb; }
     // Return true if an assertion is on topic.
@@ -99,8 +103,6 @@ private:
                 Proofsize size, Moves & moves) const;
 // Cache for context implications
     bool m_subProb;
-    // Pointers to contexts
-    typedef std::vector<Environ const *> pEnvs;
     mutable pEnvs m_psubEnvs;
     mutable pEnvs m_psupEnvs;
     // Add env to context relations, given cmp = compEnvs(*this, env).
