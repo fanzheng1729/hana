@@ -117,7 +117,7 @@ struct Assertion;
 // Map: label -> assertion
 typedef std::map<strview, Assertion> Assertions;
 // Pointer to (label, assertion)
-typedef Assertions::const_pointer Assptr;
+typedef Assertions::const_pointer pAss;
 // Iterator to an assertion
 typedef Assertions::const_iterator Assiter;
 // Vector of iterators to assertions
@@ -145,12 +145,12 @@ struct Proofstep
     union
     {
         pHyp phyp;
-        Assptr pass;
+        pAss pass;
         Index index;
     };
     Proofstep(Type t = NONE) : type(t == SAVE ? t : NONE) {}
     Proofstep(pHyp p) : type(p ? HYP : NONE), phyp(p) {}
-    Proofstep(Assptr p) : type(p ? THM : NONE), pass(p) {}
+    Proofstep(pAss p) : type(p ? THM : NONE), pass(p) {}
     Proofstep(Hypiter iter) : type(HYP), phyp(&*iter) {}
     Proofstep(Index i) : type(LOAD), index(i) {}
 // Return hypothesis or assertion pointer of the proof step.

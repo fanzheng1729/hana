@@ -105,7 +105,7 @@ Propctors::size_type Propctors::addbatch
 
     FOR (Relations::const_reference rdef, batch)
     {
-        Assptr  pass = rdef.second.pass;
+        pAss  pass = rdef.second.pass;
         if (!pass) continue;
         strview label = pass->first;
         TTindex ttsize = truthtablesize(pass->second);

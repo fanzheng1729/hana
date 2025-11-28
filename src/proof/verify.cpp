@@ -100,7 +100,7 @@ static bool checkDV
 // Subroutine for proof verification. Verify a proof step referencing an
 // assertion (i.e., not a hypothesis).
 static bool verifystep
-    (Assptr pass, Assptr pthm, std::vector<Expression> & stack,
+    (pAss pass, pAss pthm, std::vector<Expression> & stack,
      Substitutions & substitutions)
 {
     strview label = pass ? pass->first : "";
@@ -139,7 +139,7 @@ static bool enoughsavedsteps
 }
 
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(Proofsteps const & proof, Printer & printer, Assptr pass)
+Expression verify(Proofsteps const & proof, Printer & printer, pAss pass)
 {
     strview label = pass ? pass->first : "";
 //std::cout << "Verifying " << label << std::endl;
@@ -203,7 +203,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, Assptr pass)
 // {
 //     Assertions const & assertions = database.assertions();
 //     Assiter const iter = assertions.find(label);
-//     Assptr const pass = iter == assertions.end() ? NULL : &*iter;
+//     pAss const pass = iter == assertions.end() ? NULL : &*iter;
 
 //     Proofsteps steps(regular(proof, hypotheses, assertions));
 //     if (steps.empty())

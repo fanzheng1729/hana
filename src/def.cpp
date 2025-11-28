@@ -186,7 +186,7 @@ bool checkdefinitions
 //std::cout << "Checking definition for " << r.first << std::endl;
         Definition const & definition = rdef.second;
         // Points to the corresponding assertion.
-        Assptr pdef = definition.pdef;
+        pAss pdef = definition.pdef;
         if (unexpected(!pdef, "empty definition for", rdef.first))
             continue;
         // Construct the statement from the revPolish notation.

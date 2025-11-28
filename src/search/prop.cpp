@@ -107,7 +107,7 @@ struct Substadder : Adder
 
 // Add a move with free variables. Return false.
 bool Prop::addhardmoves
-    (Assptr pthm, Proofsize size, Move & move, Moves & moves) const
+    (pAss pthm, Proofsize size, Move & move, Moves & moves) const
 {
 // if (size >= 5)
 // std::cout << "Trying " << pthm->first << ' ' << size << std::endl;

@@ -168,7 +168,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
 }
 
 // Add Hypothesis-oriented moves. Return false.
-bool Environ::addhypmoves(Assptr pthm, Moves & moves,
+bool Environ::addhypmoves(pAss pthm, Moves & moves,
                           Stepranges const & stepranges,
                           Hypsize maxfreehyps) const
 {
@@ -212,7 +212,7 @@ bool Environ::addhypmoves(Assptr pthm, Moves & moves,
 
     return false;
 }
-bool Environ::addhypmoves(Assptr pthm, Moves & moves,
+bool Environ::addhypmoves(pAss pthm, Moves & moves,
                           Stepranges const & stepranges) const
 {
     Assertion const & thm = pthm->second;

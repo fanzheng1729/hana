@@ -8,7 +8,7 @@
 struct Definition
 {
     // Pointer to the defining assertion, null -> no definition
-    Assptr pdef;
+    pAss pdef;
     // Left and right hand side of definition
     Proofsteps lhs, rhs;
     // # of the defining assertion

@@ -19,16 +19,16 @@ struct Move
         Hypsize index;
     };
     // Pointer to the theorem to be used, on our turn
-    Assptr pthm;
+    pAss pthm;
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Essential hypotheses needed, on our turn
     mutable std::vector<Goalptr> hypvec;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
-    Move(Assptr ptr, Substitutions const & subst) :
+    Move(pAss ptr, Substitutions const & subst) :
         type(THM), pthm(ptr), substitutions(subst) {}
-    Move(Assptr ptr, Stepranges const & subst) :
+    Move(pAss ptr, Stepranges const & subst) :
         type(THM), pthm(ptr)
     {
         substitutions.resize(subst.size());

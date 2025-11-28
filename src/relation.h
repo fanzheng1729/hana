@@ -10,15 +10,15 @@ static const unsigned NJUSTIFICATION = 16;
 struct Justifications
 {
     // Pointers to justifications of the relation
-    Assptr data[NJUSTIFICATION];
+    pAss data[NJUSTIFICATION];
     // Pointer to the syntaxiom being justified
-    Assptr pass;
-    Assptr & operator[](unsigned i) { return data[i]; }
-    Assptr const & operator[](unsigned i) const { return data[i]; }
+    pAss pass;
+    pAss & operator[](unsigned i) { return data[i]; }
+    pAss const & operator[](unsigned i) const { return data[i]; }
     Reltype type() const
     {
         Reltype result = 0;
-        for (Assptr const * p = &data[NJUSTIFICATION - 1]; p >= data; --p)
+        for (pAss const * p = &data[NJUSTIFICATION - 1]; p >= data; --p)
             result = 2 * result + !!*p;
         return result;
     }

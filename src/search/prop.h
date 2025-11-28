@@ -35,7 +35,7 @@ struct Prop : Environ
 private:
     // Add a move with free variables. Return false.
     virtual bool addhardmoves
-        (Assptr pthm, Proofsize size, Move & move, Moves & moves) const;
+        (pAss pthm, Proofsize size, Move & move, Moves & moves) const;
     // The CNF of all hypotheses combined
     Hypscnf const hypscnf;
     Atom hypatomcount;

@@ -109,8 +109,8 @@ typename std::vector<EXP>::size_type findsubstitutions
 }
 
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(Proofsteps const & proof, Printer & printer, Assptr pass = NULL);
-inline Expression verify(Proofsteps const & proof, Assptr pass = NULL)
+Expression verify(Proofsteps const & proof, Printer & printer, pAss pass = NULL);
+inline Expression verify(Proofsteps const & proof, pAss pass = NULL)
 {
     Printer printer;
     return verify(proof, printer, pass);

@@ -82,14 +82,14 @@ private:
     // Return true if it has no essential hypotheses.
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add Hypothesis-oriented moves. Return false.
-    bool addhypmoves(Assptr pthm, Moves & moves,
+    bool addhypmoves(pAss pthm, Moves & moves,
                      Stepranges const & stepranges,
                      Hypsize maxfreehyps) const;
-    bool addhypmoves(Assptr pthm, Moves & moves,
+    bool addhypmoves(pAss pthm, Moves & moves,
                      Stepranges const & stepranges) const;
     // Add a move with free variables. Return false.
     virtual bool addhardmoves
-        (Assptr pthm, Proofsize size, Move & move, Moves & moves) const
+        (pAss pthm, Proofsize size, Move & move, Moves & moves) const
         { return pthm && !pthm && size && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
     // Return true if a move closes the goal.
