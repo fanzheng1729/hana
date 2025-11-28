@@ -33,7 +33,7 @@ class Goaldata
     BigGoalptr pBigGoal;
 public:
     // New context after trimming unnecessary hypotheses
-    Environ * pnewEnv;
+    Environ const * pnewEnv;
     Goaldata(Goalstatus s, BigGoalptr p = NULL) :
         status(s), pBigGoal(p), pnewEnv(NULL) {}
     Goal const & goal() const { return pBigGoal->first; }
@@ -68,7 +68,7 @@ public:
     friend Goalptr addsimpGoal(Goalptr pGoal)
     {
         if (!pGoal) return pGoal;
-        Environ * const pnewEnv = pGoal->second.pnewEnv;
+        Environ const * const pnewEnv = pGoal->second.pnewEnv;
         if (!pnewEnv) return pGoal;
         BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
         if (!pBigGoal) return pGoal;

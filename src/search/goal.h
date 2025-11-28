@@ -30,7 +30,7 @@ struct Environ;
 // Data associated with the goal
 class Goaldata;
 // Map: context -> evaluation
-struct Goaldatas : std::map<Environ *, Goaldata>
+struct Goaldatas : std::map<Environ const *, Goaldata>
 {
     // Proof that holds in the problem context
     Proofsteps proof;
