@@ -29,6 +29,7 @@ pEnvs const & supEnvs(Environ const & env);
 // Data associated with the goal
 class Goaldata
 {
+    friend class Problem;
     Goalstatus status;
     Proofsteps proof;
     // Set of nodes trying to prove the open goal
@@ -40,8 +41,8 @@ class Goaldata
 public:
     // New context after trimming unnecessary hypotheses
     Environ const * pnewEnv;
-    Goaldata(Goalstatus s, BigGoalptr p) :
-        status(s), pBigGoal(p), pnewEnv(NULL) {}
+    Goaldata(Goalstatus s, Goalptr pGoal, BigGoalptr bigGoalptr) :
+        status(s), pGoal(pGoal), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Proofsteps const & proofsrc() const
@@ -89,7 +90,7 @@ public:
         if (!pnewEnv) return pGoal;
         BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
         if (!pBigGoal) return pGoal;
-        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
+        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pGoal, pBigGoal));
         return &*pBigGoal->second.insert(value).first;
     }
     void setstatustrue() { status = GOALTRUE; }
