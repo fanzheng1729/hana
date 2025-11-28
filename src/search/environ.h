@@ -95,6 +95,7 @@ private:
                 Proofsize size, Moves & moves) const;
 // Cache for context implications
     bool m_subProb;
+    pEnvs psubEnvs, psupEnvs;
 };
 
 #endif // ENVIRON_H_INCLUDED
