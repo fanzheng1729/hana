@@ -47,8 +47,9 @@ public:
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Proofsteps const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
-    Proofsteps const & proofsrc(Environ const & env)
+    Proofsteps const & proofsrc()
     {
+        Environ const & env = *pGoal->first;
         if (!proofsrc().empty()) return proofsrc();
         if (issubProb(env)) return proof;
         
@@ -72,7 +73,7 @@ public:
         return proof;
     }
     bool proven() const { return !proofsrc().empty(); }
-    bool proven(Environ const & env) { return !proofsrc(env).empty(); }
+    bool proven(Environ const & env) { return !proofsrc().empty(); }
     Proofsteps & proofdst(Environ const & env)
     { return issubProb(env) ? goaldatas().proof : proof; }
     Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
@@ -95,8 +96,9 @@ public:
     }
     void setstatustrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }
-    Goalstatus & getstatus(Environ const & env)
+    Goalstatus & getstatus()
     {
+        Environ const & env = *pGoal->first;
         if (proven(env))
             return status = GOALTRUE;
         if (status != GOALNEW)

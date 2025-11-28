@@ -9,7 +9,7 @@
 Goaldata & Game::goaldata() const { return pGoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
-Proofsteps const & Game::proof() const { return goaldata().proofsrc(env()); }
+Proofsteps const & Game::proof() const { return goaldata().proofsrc(); }
 Environ const & Game::env() const { return *pGoal->first; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
@@ -114,7 +114,7 @@ bool Game::writeproof() const
         if (attempt.hypfloats(i))
             hyps[i] = &attempt.substitutions[attempt.hypexp(i)[1]];
         else
-            hyps[i] = &attempt.hypvec[i]->second.proofsrc(*attempt.hypvec[i]->first);
+            hyps[i] = &attempt.hypvec[i]->second.proofsrc();
 // std::cout << "Added hyp\n" << *hyps[i];
     }
     // The whole proof
