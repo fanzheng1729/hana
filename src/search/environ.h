@@ -106,7 +106,12 @@ private:
     // Add env to context relations, given cmp = compEnvs(*this, env).
     void addEnv(Environ const & env, int cmp) const;
     // Add env to context relations. Return compEnvs(*this, env).
-    int addEnv(Environ const & env) const;
+    int addEnv(Environ const & env) const
+    {
+        int result = compEnvs(*this, env);
+        addEnv(env, result);
+        return result;
+    }
 };
 
 #endif // ENVIRON_H_INCLUDED

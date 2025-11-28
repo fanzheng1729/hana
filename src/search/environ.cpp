@@ -302,22 +302,6 @@ void Environ::addEnv(Environ const & env, int cmp) const
     else if (cmp == -1) additeminorder(psupEnvs, &env);
 }
 
-// Add env to context relations. Return compEnvs(*this, env).
-int Environ::addEnv(Environ const & env) const
-{
-    switch (compEnvs(*this, env))
-    {
-    case 1: // Sub-context
-        additeminorder(psubEnvs, &env);
-        return 1;
-    case -1: // Super-context
-        additeminorder(psupEnvs, &env);
-        return -1;
-    default:
-        return 0;
-    }
-}
-
 // Compare two hypiters by address.
 static int comphypiters(Hypiter x, Hypiter y)
 {
