@@ -84,16 +84,16 @@ struct Assertion
     // Return index the hypothesis matching the expression.
     // If there is no match, return # hypotheses.
     // Length of the rev Polish notation of all necessary hypotheses combined
-    Hypsize matchhyp(Expression const & exp) const
+    Hypsize matchhyp() const
     {
         Hypsize i = 0;
         for ( ; i < hypcount(); ++i)
-            if (hypexp(i) == exp) break;
+            if (hypexp(i) == expression) break;
         return i;
     }
     // Return true if the expression matches a hypothesis.
     bool istrivial() const
-        { return matchhyp(expression) < hypcount(); }
+        { return matchhyp() < hypcount(); }
     // # free variables
     Hypsize nfreevar() const
         { return nfreevars.empty() ? 0 : nfreevars.back(); }
