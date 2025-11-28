@@ -35,9 +35,8 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     Hypsize ntotrim = 0; // # essential hypothesis to trim
     for (Hypsize i = assertion.hypcount() - 1; i != Hypsize(-1); --i)
     {
-        Hypiter const hypiter = assertion.hypiters[i];
         if (assertion.hypfloats(i)) continue;
-// std::cout << "Trimming hypothesis " << hypiter->first << std::endl;
+// std::cout << "Trimming hypothesis " << assertion.hypiters[i]->first << std::endl;
         result[i] = true;
         // Check if it can be trimmed.
         CNFClauses cnf2;
