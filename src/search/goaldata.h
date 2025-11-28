@@ -76,8 +76,8 @@ public:
     }
     bool proven() const { return !proofsrc().empty(); }
     bool proven(Environ const & env) { return !proofsrc().empty(); }
-    Proofsteps & proofdst(Environ const & env)
-    { return issubProb(env) ? goaldatas().proof : proof; }
+    Proofsteps & proofdst()
+    { return issubProb(*pGoal->first) ? goaldatas().proof : proof; }
     Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
     // Add node pointer to p's goal data.
     friend void addNodeptr(Nodeptr p)

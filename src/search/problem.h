@@ -67,7 +67,7 @@ public:
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
             Goalptr const pGoal = addGoal(goal, env, GOALTRUE);
-            pGoal->second.proofdst(env).assign(1, env.assertion.hypiters[i]);
+            pGoal->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
     // UCB threshold for generating a new batch of moves
@@ -126,7 +126,7 @@ public:
                 if (supiter != supend && *supiter == &otherEnv)
                 {
                     // Super-context found. Copy proof.
-                    goaldata.second.proofdst(otherEnv) = game.proof();
+                    goaldata.second.proofdst() = game.proof();
                     goaldata.second.setstatustrue();
                     closenodesexcept(goaldata.second.nodeptrs());
                 }
