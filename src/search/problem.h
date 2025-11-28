@@ -121,8 +121,9 @@ public:
             if (!goaldata.second.proven())
             {
                 Environ const & otherEnv = *goaldata.first;
-                while (supiter != supend && less(*supiter, &otherEnv))
-                    ++supiter;
+                supiter = std::lower_bound(supiter, supend, &otherEnv, less);
+                // while (supiter != supend && less(*supiter, &otherEnv))
+                //     ++supiter;
                 if (supiter != supend && *supiter == &otherEnv)
                 {
                     // Super-context found. Copy proof.

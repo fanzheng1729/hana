@@ -1,6 +1,7 @@
 #ifndef GOALDATA_H_INCLUDED
 #define GOALDATA_H_INCLUDED
 
+#include <algorithm>    // for std::lower_bound
 #include "game.h"
 #include "goalstat.h"
 #include "../MCTS/MCTS.h"
@@ -65,8 +66,9 @@ public:
             if (!goaldata.second.proof.empty() && !issubProb(*goaldata.first))
             {
                 Environ const & otherEnv = *goaldata.first;
-                while (subiter != subend && less(*subiter, &otherEnv))
-                    ++subiter;
+                subiter = std::lower_bound(subiter, subend, &otherEnv, less);
+                // while (subiter != subend && less(*subiter, &otherEnv))
+                //     ++subiter;
                 if (subiter != subend && *subiter == &otherEnv)
                     return proof = goaldata.second.proof;
                 if (subiter == subend) break;
@@ -123,16 +125,18 @@ public:
 
             if (otherdata.status == GOALFALSE && supiter != supend)
             {
-                while (supiter != supend && less(*supiter, &otherEnv))
-                    ++supiter;
+                supiter = std::lower_bound(supiter, supend, &otherEnv, less);
+                // while (supiter != supend && less(*supiter, &otherEnv))
+                //     ++supiter;
                 if (supiter != supend && *supiter == &otherEnv)
                     return status = GOALFALSE;
             }
 
             if (otherdata.status == GOALTRUE && subiter != subend)
             {
-                while (subiter != subend && less(*subiter, &otherEnv))
-                    ++subiter;
+                subiter = std::lower_bound(subiter, subend, &otherEnv, less);
+                // while (subiter != subend && less(*subiter, &otherEnv))
+                //     ++subiter;
                 if (subiter != subend && *subiter == &otherEnv)
                 {
                     pnewEnv = otherdata.pnewEnv;
