@@ -1,6 +1,7 @@
 #ifndef PROBLEM_H_INCLUDED
 #define PROBLEM_H_INCLUDED
 
+#include <algorithm>    // for std::sort
 #include "../DAG.h"
 #include "environ.h"
 #include "goaldata.h"
@@ -171,6 +172,8 @@ private:
     static int cmopEnvs(Environ const & x, Environ const & y)
     {
         if (x.assertion.hypcount() == y.assertion.hypcount()) return 0;
+        Hypiters xhypiters(x.assertion.hypiters);
+        Hypiters yhypiters(y.assertion.hypiters);
     }
     friend Environ;
     // Add a goal. Return its pointer.
