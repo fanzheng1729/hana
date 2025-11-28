@@ -105,8 +105,6 @@ struct Assertion
     // Return true if the expression matches a hypothesis.
     bool istrivial(Expression const & exp) const
         { return matchhyp(exp) < hypcount(); }
-    bool istrivial(Proofsteps const & RPN, strview typecode) const
-        { return matchhyp(RPN, typecode) < hypcount(); }
     // # free variables
     Hypsize nfreevar() const
         { return nfreevars.empty() ? 0 : nfreevars.back(); }
