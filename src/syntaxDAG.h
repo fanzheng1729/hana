@@ -33,9 +33,9 @@ struct SyntaxDAG
         {
             if (!ismaximal(exprank, maxranks))
                 continue;
-            // expbucket is maximal.
+            // exprank is maximal.
             Rankiter const newiter = maxranks.insert(exprank).first;
-            // Remove non-maximal buckets.
+            // Remove non-maximal ranks.
             for (Rankiter iter = maxranks.begin();
                 iter != maxranks.end(); )
                 if (iter == newiter || ismaximal(*iter, maxranks))

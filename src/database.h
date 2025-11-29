@@ -211,28 +211,28 @@ public:
         FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
         {
             strview const label = syntaxiom.first;
-            strview bucket = "other";
+            strview rank = "other";
 
             if (props.count(label))
                 if (prims.count(label))
                     continue;
                 else
-                    bucket = label;
+                    rank = label;
 
-            m_syntaxDAG.addsyntax(label, bucket);
+            m_syntaxDAG.addsyntax(label, rank);
         }
         FOR (Definitions::const_reference def, definitions())
             if (def.second.pdef)
                 m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
-    // The maximal buckets of an assertion
+    // The maximal ranks of an assertion
     SyntaxDAG::Ranks assmaxbuckets(Assertion const & ass) const
     {
         SyntaxDAG::Ranks result(hypsmaxbuckets(ass));
         syntaxDAG().addexp(result, ass.expRPN);
         return result;
     }
-    // The maximal buckets of the hypotheses of an assertion
+    // The maximal ranks of the hypotheses of an assertion
     SyntaxDAG::Ranks hypsmaxbuckets(Assertion const & ass) const
     {
         SyntaxDAG::Ranks result;
