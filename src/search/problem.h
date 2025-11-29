@@ -39,12 +39,12 @@ public:
         // Add proofs of hypotheses.
         addhypproofs();
         // Root goal
-        Goalptr const pGoal = addGoal(goal, *pProbEnv, s);
+        Goalptr const pgoal = addGoal(goal, *pProbEnv, s);
         if (s == GOALTRUE)
-            pGoal->second.pnewEnv = addsubEnv
-                (*pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
+            pgoal->second.pnewEnv = addsubEnv
+                (*pProbEnv, pProbEnv->hypstotrim(pgoal->second.goal()));
         // Root node
-        *root() = Game(addsimpGoal(pGoal));
+        *root() = Game(addsimpGoal(pgoal));
         addpNode(root());
     }
     // Add 1-step proof of all the hypotheses of the problem context.
