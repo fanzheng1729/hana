@@ -280,7 +280,7 @@ static void additeminorder(std::vector<T> & vec, T const & item)
         vec.insert(iter, item);
 }
 
-// Add env to context relations, given comparison result.
+// Add env to context implication relations, given comparison result.
 void Environ::addEnv(Environ const & env, int cmp) const
 {
     if (cmp == 1)

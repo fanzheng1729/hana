@@ -40,7 +40,7 @@ struct Environ : protected Gen
     // Context relations
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
     pEnvs const & psupEnvs() const { return m_psupEnvs; }
-    // Return true if the context is a sub-context of the problem context
+    // Return true if *this <= problem context
     bool issubProb() const { return m_subProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
@@ -95,10 +95,11 @@ private:
     // Return true if a move closes the goal.
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
-// Cache for context implications
+    // true if *this <= problem context
     bool m_subProb;
+    // Cache for context implication relations
     mutable pEnvs m_psubEnvs, m_psupEnvs;
-    // Add env to context relations, given comparison result.
+    // Add env to context implication relations, given comparison result.
     void addEnv(Environ const & env, int cmp) const;
     // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
     int compare(Environ const & env) const;
