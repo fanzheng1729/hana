@@ -92,10 +92,10 @@ public:
         if (!pgoal) return pgoal;
         Environ const * const pnewEnv = pgoal->second.pnewEnv;
         if (!pnewEnv) return pgoal;
-        BigGoalptr const pBigGoal = pgoal->second.pBigGoal;
-        if (!pBigGoal) return pgoal;
-        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pnewEnv, pBigGoal));
-        return &*pBigGoal->second.insert(value).first;
+        BigGoalptr const pbigGoal = pgoal->second.pBigGoal;
+        if (!pbigGoal) return pgoal;
+        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pnewEnv, pbigGoal));
+        return &*pbigGoal->second.insert(value).first;
     }
     void setstatustrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }
