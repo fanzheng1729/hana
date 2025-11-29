@@ -3,15 +3,15 @@
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
-static Nodeptr cycles(Goalptr pGoal, Nodeptr pNode)
+static Nodeptr cycles(Goalptr pgoal, Nodeptr pnode)
 {
     while (true)
     {
-        Game const & game = pNode->game();
-        if (game.nDefer == 0 && pGoal == game.pGoal)
-            return pNode;
-        if (Nodeptr const parent = pNode.parent())
-            pNode = parent.parent();
+        Game const & game = pnode->game();
+        if (game.nDefer == 0 && pgoal == game.pGoal)
+            return pnode;
+        if (Nodeptr const parent = pnode.parent())
+            pnode = parent.parent();
         else break;
     }
     return Nodeptr();
