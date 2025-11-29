@@ -35,13 +35,13 @@ struct Environ : protected Gen
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
-        Gen(ass.varusage, maxsize), m_subProb(false) {}
+        Gen(ass.varusage, maxsize), m_subsumedbyProb(false) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
     pEnvs const & psupEnvs() const { return m_psupEnvs; }
     // Return true if *this <= problem context
-    bool issubProb() const { return m_subProb; }
+    bool subsumedbyProb() const { return m_subsumedbyProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
@@ -96,7 +96,7 @@ private:
     bool trythm(Game const & game, AST const & ast, Assiter iter,
                 Proofsize size, Moves & moves) const;
     // true if *this <= problem context
-    bool m_subProb;
+    bool m_subsumedbyProb;
     // Cache for context implication relations
     mutable pEnvs m_psubEnvs, m_psupEnvs;
     // Add env to context implication relations, given comparison result.

@@ -21,7 +21,7 @@ typedef std::vector<Environ const *> pEnvs;
 static const std::less<Environ const *> less;
 
 // Return true if the context is a sub-context of the problem context
-bool issubProb(Environ const & env);
+bool subsumedbyProb(Environ const & env);
 // Return sub-contexts of env.
 pEnvs const & subEnvs(Environ const & env);
 // Return super-contexts of env.
@@ -53,7 +53,7 @@ public:
         Proofsteps const & proof0
         = const_cast<Goaldata const *>(this)->proofsrc();
         if (!proof0.empty()) return proof0;
-        if (issubProb(*pEnv)) return proof;
+        if (subsumedbyProb(*pEnv)) return proof;
 
         // Sub-contexts of env
         pEnvs const & psubEnvs = subEnvs(*pEnv);
@@ -62,7 +62,7 @@ public:
         
         // Loop through sub-contexts.
         FOR (Goaldatas::const_reference goaldata, goaldatas())
-            if (!goaldata.second.proof.empty() && !issubProb(*goaldata.first))
+            if (!goaldata.second.proof.empty() && !subsumedbyProb(*goaldata.first))
             {
                 Environ const & otherEnv = *goaldata.first;
                 subiter = std::lower_bound(subiter, subend, &otherEnv, less);
@@ -78,7 +78,7 @@ public:
     bool proven() const { return !proofsrc().empty(); }
     bool proven(Environ const & env) { return !proofsrc().empty(); }
     Proofsteps & proofdst()
-    { return issubProb(*pEnv) ? goaldatas().proof : proof; }
+    { return subsumedbyProb(*pEnv) ? goaldatas().proof : proof; }
     pNodes const & pnodes() const { return m_pnodes; }
     // Add node pointer to p's goal data.
     friend void addpNode(pNode p)

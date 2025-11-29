@@ -88,7 +88,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     if (pnewEnv)
     {
         pnewEnv->pProb = this;
-        pnewEnv->m_subProb = (probEnv().compare(*pnewEnv) == 1);
+        pnewEnv->m_subsumedbyProb = (probEnv().compare(*pnewEnv) == 1);
         newEnviter->second = pnewEnv;
         pnewEnv->name = newEnviter->first;
         addhypproofs(*pnewEnv);

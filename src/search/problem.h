@@ -61,7 +61,7 @@ public:
     // Add 1-step proof of all the hypotheses to a context.
     void addhypproofs(Environ const & env)
     {
-        if (env.issubProb()) return;
+        if (env.subsumedbyProb()) return;
         for (Hypsize i = 0; i < env.assertion.hypcount(); ++i)
         {
             if (env.assertion.hypfloats(i)) continue;
@@ -109,7 +109,7 @@ public:
     // Copy proof of the game to other contexts.
     void copyproof(Game const & game)
     {
-        if (!game.proven() || game.env().issubProb()) return;
+        if (!game.proven() || game.env().subsumedbyProb()) return;
 
         // Super-contexts
         pEnvs const & psupEnvs = supEnvs(game.env());
@@ -175,7 +175,7 @@ private:
         pEnv->pProb = this;
         enviter->second = pEnv;
         pEnv->name = enviter->first;
-        pEnv->m_subProb = true;
+        pEnv->m_subsumedbyProb = true;
         return pEnv;
     }
     friend Environ;
