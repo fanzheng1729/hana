@@ -89,8 +89,8 @@ void printpercent
 inline std::string ask(const char * question)
 {
     std::string answer;
-    std::cout << question;
-    std::cin >> answer;
+    std::cout   << question;
+    std::cin    >> answer;
     return answer;
 }
 
