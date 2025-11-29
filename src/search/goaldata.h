@@ -90,11 +90,12 @@ public:
     friend pGoal addsimpgoal(pGoal pgoal)
     {
         if (!pgoal) return pgoal;
-        Environ const * const pnewEnv = pgoal->second.pnewEnv;
-        if (!pnewEnv) return pgoal;
+        Environ const * const psimpEnv = pgoal->second.pnewEnv;
+        if (!psimpEnv) return pgoal;
         pBIGGOAL const pbigGoal = pgoal->second.pbigGoal;
         if (!pbigGoal) return pgoal;
-        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pnewEnv, pbigGoal));
+        Goaldatas::value_type const value
+            (psimpEnv, Goaldata(GOALTRUE, psimpEnv, pbigGoal));
         return &*pbigGoal->second.insert(value).first;
     }
     void setstatustrue() { status = GOALTRUE; }
