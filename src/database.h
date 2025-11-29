@@ -212,6 +212,8 @@ public:
             strview bucket= propctors().count(label) ? label : "other";
             m_syntaxDAG.addsyntax(label, bucket);
         }
+        FOR (Definitions::const_reference def, definitions())
+            m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
 };
 

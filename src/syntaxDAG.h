@@ -3,7 +3,8 @@
 
 #include <map>
 #include "util/DAG.h"
-#include "util/strview.h"
+#include "util/for.h"
+#include "types.h"
 
 // DAG built from syntaxioms.
 // x -> y if definition of x ultimatedly uses y.
@@ -16,7 +17,14 @@ struct SyntaxDAG
     // Add a syntaxiom and put it in a bucket.
     void addsyntax(strview syntaxiom, strview bucket)
     { bucketbysyntaxiom[syntaxiom] = *m_buckets.insert(bucket).first; }
-    // Add an edge. Returns true if edge is added.
+    // Add a definition.
+    void adddef(strview label, Proofsteps const & defRPN)
+    {
+        FOR (Proofstep step, defRPN)
+            if (step.type == Proofstep::HYP)
+                link(label, step.phyp->first);
+    }
+    // Add an edge between syntaxioms. Returns true if edge is added.
     bool link(strview from, strview to)
     {
         strview frombucket  = bucketbysyntaxiom.at(from);
