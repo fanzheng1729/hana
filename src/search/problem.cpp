@@ -77,23 +77,23 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     if (!result.second)
         return newEnviter->second;
     // If it does not exist, add the simplified assertion.
-    Assertion & newass = assertions[newEnviter->first];
-    if (unexpected(!newass.expression.empty(), "Duplicate name", name))
+    Assertion & subAss = assertions[newEnviter->first];
+    if (unexpected(!subAss.expression.empty(), "Duplicate name", name))
         return NULL;
     Assertion const & ass = env.makeAss(hypstotrim);
     if (ass.expression.empty())
         return NULL;
-    // Add the new context.
-    Environ * const pnewEnv = env.makeEnv(newass = ass);
-    if (pnewEnv)
+    // Add the sub-context.
+    Environ * const psubEnv = env.makeEnv(subAss = ass);
+    if (psubEnv)
     {
-        pnewEnv->pProb = this;
-        pnewEnv->m_subsumedbyProb = (probEnv().compare(*pnewEnv) == 1);
-        newEnviter->second = pnewEnv;
-        addhypproofs(*pnewEnv);
-        updateimplication(*pnewEnv);
+        psubEnv->pProb = this;
+        psubEnv->m_subsumedbyProb = (probEnv().compare(*psubEnv) == 1);
+        newEnviter->second = psubEnv;
+        addhypproofs(*psubEnv);
+        updateimplication(*psubEnv);
     }
-    return pnewEnv;
+    return psubEnv;
 }
 
 // Return the only open child of p.
