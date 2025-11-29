@@ -18,6 +18,8 @@ class Problem : public MCTS<Game>
 public:
     // The assertion to be proved
     Assertion const & assertion;
+    // Buckets of the assertion
+    SyntaxDAG::Buckets buckets;
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
@@ -26,10 +28,10 @@ public:
     bool const staged;
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
+        MCTS(Game(), params),
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
-        staged(env.staged & STAGED),
-        MCTS(Game(), params)
+        staged(env.staged & STAGED)
     {
         if (!pProbEnv) return;
         // Check goal.
