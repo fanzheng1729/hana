@@ -204,7 +204,15 @@ public:
         return propctors().checkpropsat(assertions(), typecodes());
     }
 // Build DAG of syntaxioms.
-    void buildsyntaxDAG();
+    void buildsyntaxDAG()
+    {
+        FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
+        {
+            strview label = syntaxiom.first;
+            strview bucket= propctors().count(label) ? label : "other";
+            m_syntaxDAG.addsyntax(label, bucket);
+        }
+    }
 };
 
 #endif // DATABASE_H_INCLUDED
