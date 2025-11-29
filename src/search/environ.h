@@ -37,7 +37,7 @@ struct Environ : protected Gen
         Gen(ass.varusage, maxsize),
         database(db),
         assertion(ass),
-        buckets(db.hypsmaxbuckets(ass)),
+        buckets(db.hypsmaxranks(ass)),
         name(ass.hypslabel()),
         hypslen(ass.hypslen()),
         staged(isstaged),

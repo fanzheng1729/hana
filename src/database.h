@@ -226,14 +226,14 @@ public:
                 m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
     // The maximal ranks of an assertion
-    SyntaxDAG::Ranks assmaxbuckets(Assertion const & ass) const
+    SyntaxDAG::Ranks assmaxranks(Assertion const & ass) const
     {
-        SyntaxDAG::Ranks result(hypsmaxbuckets(ass));
+        SyntaxDAG::Ranks result(hypsmaxranks(ass));
         syntaxDAG().addexp(result, ass.expRPN);
         return result;
     }
     // The maximal ranks of the hypotheses of an assertion
-    SyntaxDAG::Ranks hypsmaxbuckets(Assertion const & ass) const
+    SyntaxDAG::Ranks hypsmaxranks(Assertion const & ass) const
     {
         SyntaxDAG::Ranks result;
         for (Hypsize i = 0; i < ass.hypcount(); ++i)
