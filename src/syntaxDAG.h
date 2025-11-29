@@ -26,25 +26,25 @@ struct SyntaxDAG
             if (step.type == Proofstep::THM)
                 link(label, step.pass->first);
     }
-    // Add an expression to the set of maximal buckets.
-    void addexp(Buckets & maxbuckets, Proofsteps const & RPN) const
+    // Add an expression to the set of maximal ranks.
+    void addexp(Buckets & maxranks, Proofsteps const & RPN) const
     {
-        FOR (strview expbucket, expbuckets(RPN))
+        FOR (strview exprank, expranks(RPN))
         {
-            if (!ismaximal(expbucket, maxbuckets))
+            if (!ismaximal(exprank, maxranks))
                 continue;
             // expbucket is maximal.
-            Rankiter const newiter = maxbuckets.insert(expbucket).first;
+            Rankiter const newiter = maxranks.insert(exprank).first;
             // Remove non-maximal buckets.
-            for (Rankiter iter = maxbuckets.begin();
-                iter != maxbuckets.end(); )
-                if (iter == newiter || ismaximal(*iter, maxbuckets))
+            for (Rankiter iter = maxranks.begin();
+                iter != maxranks.end(); )
+                if (iter == newiter || ismaximal(*iter, maxranks))
                     ++iter;
                 else
-                    maxbuckets.erase(iter++);
+                    maxranks.erase(iter++);
         }
     }
-    // Find the bucket of a syntaxiom.
+    // Find the rank of a syntaxiom.
     // Return ranks().end() if not found.
     Rankiter bucketiter(strview label) const
     {
@@ -53,8 +53,8 @@ struct SyntaxDAG
             return ranks().end();
         return ranks().find(mapiter->second);
     }
-    // Return the buckets of an expression.
-    Buckets expbuckets(Proofsteps const & RPN) const
+    // Return the ranks of an expression.
+    Buckets expranks(Proofsteps const & RPN) const
     {
         Buckets result;
         FOR (Proofstep step, RPN)
