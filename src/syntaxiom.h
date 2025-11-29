@@ -14,7 +14,7 @@ struct Syntaxiom
     operator Assertions::size_type() const { return assiter->second.number; }
 };
 
-// Map: name -> syntax axioms
+// Map: label -> syntax axioms
 struct Syntaxioms : std::map<strview, Syntaxiom>
 {
     Syntaxioms() {}
