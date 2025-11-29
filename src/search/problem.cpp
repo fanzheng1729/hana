@@ -91,14 +91,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         pnewEnv->m_subsumedbyProb = (probEnv().compare(*pnewEnv) == 1);
         newEnviter->second = pnewEnv;
         addhypproofs(*pnewEnv);
-        FOR (Environs::const_reference renv, environs)
-        {
-            Environ const & oldEnv = *renv.second;
-            if (&oldEnv == pnewEnv) continue;
-            int const cmp = oldEnv.compare(*pnewEnv);
-            oldEnv.addEnv(*pnewEnv, cmp);
-            pnewEnv->addEnv(oldEnv, -cmp);
-        }
+        updateimplication(*pnewEnv);
     }
     return pnewEnv;
 }
