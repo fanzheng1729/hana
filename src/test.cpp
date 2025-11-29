@@ -1,11 +1,11 @@
 #include <algorithm>    // for std::find_if, std::count_if
 #include <vector>
 #include "util/arith.h"
+#include "util/DAG.h"
 #include "util/filter.h"
 #include "util/find.h"
 #include "util/for.h"
 #include "ass.h"
-#include "DAG.h"
 #include "io.h"
 #include "MCTS/tree.h"
 
