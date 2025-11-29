@@ -41,7 +41,7 @@ public:
         // Root goal
         pGoal const pgoal = addgoal(goal, *pProbEnv, s);
         if (s == GOALTRUE)
-            pgoal->second.pnewEnv = addsubEnv
+            pgoal->second.psimpEnv = addsubEnv
                 (*pProbEnv, pProbEnv->hypstotrim(pgoal->second.goal()));
         // Root node
         *root() = Game(addsimpgoal(pgoal));

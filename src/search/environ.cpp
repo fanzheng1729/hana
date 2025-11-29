@@ -74,7 +74,7 @@ bool Environ::valid(Move const & move) const
         if (s == GOALFALSE)
             return false; // Refuted
         // Simplified context for the child, if !NULL
-        Environ const * & psimpEnv = pgoal->second.pnewEnv;
+        Environ const * & psimpEnv = pgoal->second.psimpEnv;
         psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = addsimpgoal(pgoal);

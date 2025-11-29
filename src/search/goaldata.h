@@ -40,10 +40,10 @@ class Goaldata
     // Pointer to the different contexts where the goal is evaluated
     pBIGGOAL pbigGoal;
 public:
-    // New context after trimming unnecessary hypotheses
-    Environ const * pnewEnv;
+    // Simplified context after trimming unnecessary hypotheses
+    Environ const * psimpEnv;
     Goaldata(Goalstatus s, Environ const * envptr, pBIGGOAL bigpGoal) :
-        status(s), pEnv(envptr), pbigGoal(bigpGoal), pnewEnv(NULL) {}
+        status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv(NULL) {}
     Goal const & goal() const { return pbigGoal->first; }
     Goaldatas & goaldatas() const { return pbigGoal->second; }
     Proofsteps const & proofsrc() const
@@ -90,7 +90,7 @@ public:
     friend pGoal addsimpgoal(pGoal pgoal)
     {
         if (!pgoal) return pgoal;
-        Environ const * const psimpEnv = pgoal->second.pnewEnv;
+        Environ const * const psimpEnv = pgoal->second.psimpEnv;
         if (!psimpEnv) return pgoal;
         pBIGGOAL const pbigGoal = pgoal->second.pbigGoal;
         if (!pbigGoal) return pgoal;
@@ -139,8 +139,8 @@ public:
                 //     ++subiter;
                 if (subiter != subend && *subiter == &otherEnv)
                 {
-                    pnewEnv = otherdata.pnewEnv;
-                    if (!pnewEnv) pnewEnv = &otherEnv;
+                    psimpEnv = otherdata.psimpEnv;
+                    if (!psimpEnv) psimpEnv = &otherEnv;
                     return status = GOALTRUE;
                 }
             }
