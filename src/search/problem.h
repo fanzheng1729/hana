@@ -16,6 +16,8 @@ class Problem : public MCTS<Game>
     // Map: goal -> context -> evaluation
     Goals goals;
 public:
+    // Database used
+    Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
     // Buckets of the assertion
@@ -27,8 +29,8 @@ public:
     enum { STAGED = 1 };
     bool const staged;
     template<class Env>
-    Problem(Env const & env, Value const params[2]) :
-        MCTS(Game(), params),
+    Problem(Env const & env, Database const & db, Value const params[2]) :
+        MCTS(Game(), params), database(db),
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)

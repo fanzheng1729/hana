@@ -6,6 +6,7 @@
 #include "gen.h"
 #include "goalstat.h"
 #include "../MCTS/stageval.h"
+#include "../syntaxDAG.h"
 
 class Database;
 class Problem;

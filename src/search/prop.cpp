@@ -202,7 +202,7 @@ bool testpropsearch
         // Try search proof.
         ++all;
         Prop prop(iter->second, database, maxsize, parameters[2]);
-        Problem tree(prop, parameters);
+        Problem tree(prop, database, parameters);
         Problem::size_type const n = testpropsearch(iter, tree, maxsize);
         if (n == 0)
         {

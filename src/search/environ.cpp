@@ -331,7 +331,7 @@ static bool isduplicate(Assertion const & ass, Database const & db)
         return false;
 
     static Value const zeros[2] = {0, 0};
-    return Problem(Environ(ass, db, -1), zeros).playonce() == WDL::WIN;
+    return Problem(Environ(ass, db, -1), db, zeros).playonce() == WDL::WIN;
 }
 
 // Mark duplicate assertions. Return its number.
