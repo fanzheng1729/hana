@@ -46,7 +46,7 @@ struct SyntaxDAG
     }
     // Find the rank of a syntaxiom.
     // Return ranks().end() if not found.
-    Rankiter bucketiter(strview label) const
+    Rankiter rankiter(strview label) const
     {
         Mapiter const mapiter = syntaxiomranks.find(label);
         if (mapiter == syntaxiomranks.end())
@@ -77,8 +77,7 @@ struct SyntaxDAG
         FOR (strview fromrank, ranks)
         {
             Rankiter const from = this->ranks().find(fromrank);
-            if (from != this->ranks().end() &&
-                this->ranks().reachable(from, to))
+            if (from != this->ranks().end() && this->ranks().reachable(from, to))
                 return false;
         }
         return true;
@@ -86,29 +85,29 @@ struct SyntaxDAG
     // Add an edge between syntaxioms. Returns true if edge is added.
     bool link(strview from, strview to)
     {
-        Rankiter fromiter = bucketiter(from);
+        Rankiter fromiter = rankiter(from);
         if (fromiter == m_ranks.end())
-            return false; // Bucket unseen
-        Rankiter toiter   = bucketiter(to);
+            return false; // Rank unseen
+        Rankiter toiter   = rankiter(to);
         if (toiter == m_ranks.end())
-            return false; // Bucket unseen
+            return false; // Rank unseen
         return m_ranks.link(fromiter, toiter);
     }
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
-        Rankiter fromiter = bucketiter(from);
+        Rankiter fromiter = rankiter(from);
         if (fromiter == m_ranks.end())
-            return false; // Bucket unseen
-        Rankiter toiter   = bucketiter(to);
+            return false; // Rank unseen
+        Rankiter toiter   = rankiter(to);
         if (toiter == m_ranks.end())
-            return false; // Bucket unseen
+            return false; // Rank unseen
         return ranks().reachable(fromiter, toiter);
     }
 private:
     // DAG of classes of syntaxioms
     DAG<Buckets> m_ranks;
-    // Map: syntaxiom -> bucket
+    // Map: syntaxiom -> rank
     std::map<strview, strview> syntaxiomranks;
 };
 
