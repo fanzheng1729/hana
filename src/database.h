@@ -203,6 +203,8 @@ public:
     {
         return propctors().checkpropsat(assertions(), typecodes());
     }
+// Build DAG of syntaxioms.
+    void buildsyntaxDAG();
 };
 
 #endif // DATABASE_H_INCLUDED
