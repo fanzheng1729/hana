@@ -23,7 +23,7 @@ struct Move
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Essential hypotheses needed, on our turn
-    mutable std::vector<Goalptr> hypvec;
+    mutable std::vector<pGoal> hypvec;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :

@@ -3,7 +3,7 @@
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
-static pNode cycles(Goalptr pgoal, pNode pnode)
+static pNode cycles(pGoal pgoal, pNode pnode)
 {
     while (true)
     {
@@ -20,7 +20,7 @@ static pNode cycles(Goalptr pgoal, pNode pnode)
 namespace
 {
 // Set of pointers to goals
-struct pGoals : std::set<Goalptr>
+struct pGoals : std::set<pGoal>
 {
     // Return true if all open children of p are present.
     bool haschildren(pNode p) const
@@ -36,19 +36,19 @@ struct pGoals : std::set<Goalptr>
     }
     // Return pointer to a new goal implied by the existing goals.
     // Return NULL if there is no such goal.
-    Goalptr saturate()
+    pGoal saturate()
     {
-        FOR (Goalptr const pgoal, *this)
+        FOR (pGoal const pgoal, *this)
             FOR (pNode const pnode, pgoal->second.pnodes())
             {
                 pNode const parent = pnode.parent();
                 if (parent->game().proven())
                     continue;
-                Goalptr const pnewgoal = parent->game().pgoal;
+                pGoal const pnewgoal = parent->game().pgoal;
                 if (haschildren(parent) && insert(pnewgoal).second)
                     return pnewgoal;
             }
-        return Goalptr();
+        return pGoal();
     }
 };
 }
@@ -71,7 +71,7 @@ bool loops(pNode p)
         allgoals.insert(move.hypvec[i]);
     }
     // Check if these hypotheses combined prove a parent node.
-    while (Goalptr const pgoal = allgoals.saturate())
+    while (pGoal const pgoal = allgoals.saturate())
         FOR (pNode const pnewnode, pgoal->second.pnodes())
             if (pnewnode.isancestorof(p))
                 return true;

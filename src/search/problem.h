@@ -39,7 +39,7 @@ public:
         // Add proofs of hypotheses.
         addhypproofs();
         // Root goal
-        Goalptr const pgoal = addgoal(goal, *pProbEnv, s);
+        pGoal const pgoal = addgoal(goal, *pProbEnv, s);
         if (s == GOALTRUE)
             pgoal->second.pnewEnv = addsubEnv
                 (*pProbEnv, pProbEnv->hypstotrim(pgoal->second.goal()));
@@ -187,14 +187,14 @@ private:
     }
     friend Environ;
     // Add a goal. Return its pointer.
-    Goalptr addgoal(Goalview const & goal, Environ const & env, Goalstatus s)
+    pGoal addgoal(Goalview const & goal, Environ const & env, Goalstatus s)
     {
         pBIGGOAL const pbigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
         Goaldatas::value_type const value(&env, Goaldata(s, &env, pbigGoal));
         return &*pbigGoal->second.insert(value).first;
     }
-    Goalptr addgoal
+    pGoal addgoal
         (Proofsteps const & RPN, strview type, Environ const & env, Goalstatus s)
     { return addgoal(Goalview(RPN, type), env, s); }
     // Add a sub-context with hypotheses trimmed.

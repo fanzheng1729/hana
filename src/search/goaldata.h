@@ -42,8 +42,8 @@ class Goaldata
 public:
     // New context after trimming unnecessary hypotheses
     Environ const * pnewEnv;
-    Goaldata(Goalstatus s, Environ const * envptr, pBIGGOAL bigGoalptr) :
-        status(s), pEnv(envptr), pbigGoal(bigGoalptr), pnewEnv(NULL) {}
+    Goaldata(Goalstatus s, Environ const * envptr, pBIGGOAL bigpGoal) :
+        status(s), pEnv(envptr), pbigGoal(bigpGoal), pnewEnv(NULL) {}
     Goal const & goal() const { return pbigGoal->first; }
     Goaldatas & goaldatas() const { return pbigGoal->second; }
     Proofsteps const & proofsrc() const
@@ -87,7 +87,7 @@ public:
         p->game().goaldata().m_pnodes.insert(p);
     }
     // Add simplified goal. Return its pointer. Return pgoal if unsuccessful.
-    friend Goalptr addsimpgoal(Goalptr pgoal)
+    friend pGoal addsimpgoal(pGoal pgoal)
     {
         if (!pgoal) return pgoal;
         Environ const * const pnewEnv = pgoal->second.pnewEnv;
