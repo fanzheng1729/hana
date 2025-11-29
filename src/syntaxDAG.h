@@ -13,34 +13,39 @@ class SyntaxDAG
     // Classes of syntaxioms
     typedef std::set<std::string> Buckets;
     // DAG of classes of syntaxioms
-    DAG<Buckets> buckets;
+    DAG<Buckets> m_buckets;
     // Map: syntaxiom -> bucket
     std::map<strview, strview> bucketbysyntaxiom;
 public:
+    DAG<Buckets> const & buckets() const { return m_buckets; }
     // Add a syntaxiom and put it in a bucket.
     void addsyntax(strview syntaxiom, strview bucket)
-    { bucketbysyntaxiom[syntaxiom] = *buckets.insert(bucket).first; }
+    { bucketbysyntaxiom[syntaxiom] = *m_buckets.insert(bucket).first; }
     // Add an edge. Returns true if edge is added.
     bool link(strview from, strview to)
     {
         strview frombucket  = bucketbysyntaxiom.at(from);
         strview tobucket    = bucketbysyntaxiom.at(to);
-        Buckets::const_iterator const fromiter  = buckets.find(frombucket);
-        if (fromiter == buckets.end())  return false;
-        Buckets::const_iterator const toiter    = buckets.find(tobucket);
-        if (toiter == buckets.end())    return false;
-        return buckets.link(fromiter, toiter);
+        Buckets::const_iterator const fromiter  = m_buckets.find(frombucket);
+        if (fromiter == m_buckets.end())
+            return false;
+        Buckets::const_iterator const toiter    = m_buckets.find(tobucket);
+        if (toiter == m_buckets.end())
+            return false;
+        return m_buckets.link(fromiter, toiter);
     }
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
         strview frombucket  = bucketbysyntaxiom.at(from);
         strview tobucket    = bucketbysyntaxiom.at(to);
-        Buckets::const_iterator const fromiter  = buckets.find(frombucket);
-        if (fromiter == buckets.end())  return false;
-        Buckets::const_iterator const toiter    = buckets.find(tobucket);
-        if (toiter == buckets.end())    return false;
-        return buckets.reachable(fromiter, toiter);
+        Buckets::const_iterator const fromiter  = m_buckets.find(frombucket);
+        if (fromiter == m_buckets.end())
+            return false;
+        Buckets::const_iterator const toiter    = m_buckets.find(tobucket);
+        if (toiter == m_buckets.end())
+            return false;
+        return m_buckets.reachable(fromiter, toiter);
     }
 };
 
