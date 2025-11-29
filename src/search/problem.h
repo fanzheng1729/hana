@@ -183,10 +183,8 @@ private:
     {
         BigGoalptr const pBigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
-        Goaldatas::value_type const value(&env, Goaldata(s, pBigGoal));
-        Goalptr const pGoal = &*pBigGoal->second.insert(value).first;
-        pGoal->second.pGoal = pGoal;
-        return pGoal;
+        Goaldatas::value_type const value(&env, Goaldata(s, &env, pBigGoal));
+        return &*pBigGoal->second.insert(value).first;
     }
     Goalptr addGoal
         (Proofsteps const & RPN, strview type, Environ const & env, Goalstatus s)

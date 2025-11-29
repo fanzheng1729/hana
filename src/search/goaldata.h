@@ -35,29 +35,28 @@ class Goaldata
     Proofsteps proof;
     // Set of nodes trying to prove the open goal
     Nodeptrs m_nodeptrs;
-    // Pointer to the goal
-    Goalptr pGoal;
+    // Pointer to the context
+    Environ const * pEnv;
     // Pointer to the different contexts where the goal is evaluated
     BigGoalptr pBigGoal;
 public:
     // New context after trimming unnecessary hypotheses
     Environ const * pnewEnv;
-    Goaldata(Goalstatus s, BigGoalptr bigGoalptr) :
-        status(s), pGoal(NULL), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
+    Goaldata(Goalstatus s, Environ const * envptr, BigGoalptr bigGoalptr) :
+        status(s), pEnv(envptr), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
     Goal const & goal() const { return pBigGoal->first; }
     Goaldatas & goaldatas() const { return pBigGoal->second; }
     Proofsteps const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
     Proofsteps const & proofsrc()
     {
-        Environ const & env = *pGoal->first;
         Proofsteps const & proof0
         = const_cast<Goaldata const *>(this)->proofsrc();
         if (!proof0.empty()) return proof0;
-        if (issubProb(env)) return proof;
+        if (issubProb(*pEnv)) return proof;
         
         // Sub-contexts of env
-        pEnvs const & psubEnvs = subEnvs(env);
+        pEnvs const & psubEnvs = subEnvs(*pEnv);
         pEnvs::const_iterator subiter = psubEnvs.begin();
         pEnvs::const_iterator const subend = psubEnvs.end();
         
@@ -79,7 +78,7 @@ public:
     bool proven() const { return !proofsrc().empty(); }
     bool proven(Environ const & env) { return !proofsrc().empty(); }
     Proofsteps & proofdst()
-    { return issubProb(*pGoal->first) ? goaldatas().proof : proof; }
+    { return issubProb(*pEnv) ? goaldatas().proof : proof; }
     Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
     // Add node pointer to p's goal data.
     friend void addNodeptr(Nodeptr p)
@@ -95,23 +94,21 @@ public:
         if (!pnewEnv) return pGoal;
         BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
         if (!pBigGoal) return pGoal;
-        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pBigGoal));
-        Goalptr pnewGoal = &*pBigGoal->second.insert(value).first;
-        pnewGoal->second.pGoal = pnewGoal;
-        return pnewGoal;
+        Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pnewEnv, pBigGoal));
+        return &*pBigGoal->second.insert(value).first;
     }
     void setstatustrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }
     Goalstatus & getstatus()
     {
-        Environ const & env = *pGoal->first;
-        if (proven(env))
+        if (proven(*pEnv))
             return status = GOALTRUE;
         if (status != GOALNEW)
             return status; // No need to evaluate
 
         // Sub and super contexts of env
-        pEnvs const & psubEnvs = subEnvs(env), & psupEnvs = supEnvs(env);
+        pEnvs const & psubEnvs = subEnvs(*pEnv);
+        pEnvs const & psupEnvs = supEnvs(*pEnv);
         pEnvs::const_iterator subiter = psubEnvs.begin();
         pEnvs::const_iterator const subend = psubEnvs.end();
         pEnvs::const_iterator supiter = psupEnvs.begin();
@@ -122,7 +119,7 @@ public:
             Environ const & otherEnv = *goaldata.first;
             Goaldata const & otherdata = goaldata.second;
 
-            if (&otherEnv == &env)
+            if (&otherEnv == pEnv)
                 continue;
 
             if (otherdata.status == GOALFALSE && supiter != supend)
