@@ -56,7 +56,7 @@ bool Environ::valid(Move const & move) const
     {
         if (move.hypfloats(i)) continue;
         // Add the essential hypothesis as a goal.
-        Goalptr const pgoal = pProb->addGoal
+        Goalptr const pgoal = pProb->addgoal
         (move.hypRPN(i), move.hyptypecode(i), *this, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
         Goalstatus & s = pgoal->second.getstatus();
@@ -65,7 +65,7 @@ bool Environ::valid(Move const & move) const
         if (s >= GOALOPEN)// Valid
         {
             move.hypvec[i]
-            = pgoal->second.proven(*pgoal->first) ? pgoal : addsimpGoal(pgoal);
+            = pgoal->second.proven(*pgoal->first) ? pgoal : addsimpgoal(pgoal);
             continue;
         }
         // New goal (s == GOALNEW)
@@ -77,7 +77,7 @@ bool Environ::valid(Move const & move) const
         Environ const * & pnewEnv = pgoal->second.pnewEnv;
         pnewEnv = pProb->addsubEnv(*this, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
-        move.hypvec[i] = addsimpGoal(pgoal);
+        move.hypvec[i] = addsimpgoal(pgoal);
 // if (pnewEnv)
 // std::cout << pgoal->second.goal().expression() << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;

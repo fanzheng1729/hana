@@ -39,12 +39,12 @@ public:
         // Add proofs of hypotheses.
         addhypproofs();
         // Root goal
-        Goalptr const pgoal = addGoal(goal, *pProbEnv, s);
+        Goalptr const pgoal = addgoal(goal, *pProbEnv, s);
         if (s == GOALTRUE)
             pgoal->second.pnewEnv = addsubEnv
                 (*pProbEnv, pProbEnv->hypstotrim(pgoal->second.goal()));
         // Root node
-        *root() = Game(addsimpGoal(pgoal));
+        *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
     }
     // Add 1-step proof of all the hypotheses of the problem context.
@@ -65,7 +65,7 @@ public:
         {
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
-            Goalptr const pGoal = addGoal(goal, env, GOALTRUE);
+            Goalptr const pGoal = addgoal(goal, env, GOALTRUE);
             pGoal->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
@@ -187,16 +187,16 @@ private:
     }
     friend Environ;
     // Add a goal. Return its pointer.
-    Goalptr addGoal(Goalview const & goal, Environ const & env, Goalstatus s)
+    Goalptr addgoal(Goalview const & goal, Environ const & env, Goalstatus s)
     {
         BigGoalptr const pBigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
         Goaldatas::value_type const value(&env, Goaldata(s, &env, pBigGoal));
         return &*pBigGoal->second.insert(value).first;
     }
-    Goalptr addGoal
+    Goalptr addgoal
         (Proofsteps const & RPN, strview type, Environ const & env, Goalstatus s)
-    { return addGoal(Goalview(RPN, type), env, s); }
+    { return addgoal(Goalview(RPN, type), env, s); }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);

@@ -87,7 +87,7 @@ public:
         p->game().goaldata().m_pnodes.insert(p);
     }
     // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
-    friend Goalptr addsimpGoal(Goalptr pGoal)
+    friend Goalptr addsimpgoal(Goalptr pGoal)
     {
         if (!pGoal) return pGoal;
         Environ const * const pnewEnv = pGoal->second.pnewEnv;
