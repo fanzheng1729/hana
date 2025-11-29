@@ -34,8 +34,11 @@ struct Environ : protected Gen
 {
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
-        database(db), assertion(ass), hypslen(ass.hypslen()), staged(isstaged),
-        Gen(ass.varusage, maxsize), m_subsumedbyProb(false) {}
+        Gen(ass.varusage, maxsize),
+        database(db),
+        assertion(ass), name0(ass.hypslabel()), hypslen(ass.hypslen()),
+        staged(isstaged),
+        m_subsumedbyProb(false) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
@@ -63,11 +66,12 @@ struct Environ : protected Gen
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeAss(Bvector const &) const { return Assertion(); }
  
-    strview name;
     // Database used
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
+    strview name;
+    std::string name0;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
     // Is staged move generation used?
@@ -99,7 +103,7 @@ private:
     bool m_subsumedbyProb;
     // Cache for context implication relations
     mutable pEnvs m_psubEnvs, m_psupEnvs;
-    // Add env to context implication relations, given comparison result.
+    // Update context implication relations, given comparison result.
     void addEnv(Environ const & env, int cmp) const;
     // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
     int compare(Environ const & env) const;
