@@ -74,13 +74,13 @@ bool Environ::valid(Move const & move) const
         if (s == GOALFALSE)
             return false; // Refuted
         // Simplified context for the child, if !NULL
-        Environ const * & pnewEnv = pgoal->second.pnewEnv;
-        pnewEnv = pProb->addsubEnv(*this, hypstotrim(goal));
+        Environ const * & psimpEnv = pgoal->second.pnewEnv;
+        psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
         move.hypvec[i] = addsimpgoal(pgoal);
-// if (pnewEnv)
-// std::cout << pgoal->second.goal().expression() << label() << "\n->\n",
-// std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
+// if (psimpEnv)
+// std::cout << pgoal->second.goal().expression() << name << "\n->\n",
+// std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
     }
     return true;
 }
