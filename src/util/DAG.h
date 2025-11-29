@@ -1,7 +1,7 @@
 #ifndef DAG_H_INCLUDED
 #define DAG_H_INCLUDED
 
-#include <algorithm>    // for std:.*_bound
+#include <algorithm>    // for std::*_bound
 #include <set>
 #include <utility>
 #include <vector>
