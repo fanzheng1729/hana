@@ -10,8 +10,8 @@
 
 // Pointer to node in proof search tree
 typedef MCTS<Game>::Nodeptr Nodeptr;
-// Set of nodes in proof search tree
-typedef std::set<Nodeptr> Nodeptrs;
+// Set of pointers of nodes in proof search tree
+typedef std::set<Nodeptr> pNodes;
 
 // Polymorphic context, with move generation and goal evaluation
 struct Environ;
@@ -33,8 +33,8 @@ class Goaldata
     friend class Problem;
     Goalstatus status;
     Proofsteps proof;
-    // Set of nodes trying to prove the open goal
-    Nodeptrs m_nodeptrs;
+    // Set of pointers to nodes trying to prove the open goal
+    pNodes m_nodeptrs;
     // Pointer to the context
     Environ const * pEnv;
     // Pointer to the different contexts where the goal is evaluated
@@ -79,7 +79,7 @@ public:
     bool proven(Environ const & env) { return !proofsrc().empty(); }
     Proofsteps & proofdst()
     { return issubProb(*pEnv) ? goaldatas().proof : proof; }
-    Nodeptrs const & nodeptrs() const { return m_nodeptrs; }
+    pNodes const & nodeptrs() const { return m_nodeptrs; }
     // Add node pointer to p's goal data.
     friend void addNodeptr(Nodeptr p)
     {

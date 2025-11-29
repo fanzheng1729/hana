@@ -169,9 +169,9 @@ private:
     template<class Env>
     Environ const * addProbEnv(Env const & env, strview name)
     {
-        Environs::iterator const enviter
-        = environs.insert(Environs::value_type(name, NULL)).first;
         Environ * const pEnv = new Env(env);
+        Environs::iterator const enviter =
+        environs.insert(std::pair<strview, Environ const *>(name, NULL)).first;
         pEnv->pProb = this;
         enviter->second = pEnv;
         pEnv->name = enviter->first;
@@ -193,7 +193,7 @@ private:
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
     // close all the nodes except p
-    void closenodesexcept(Nodeptrs const & nodeptrs, Nodeptr p = Nodeptr())
+    void closenodesexcept(pNodes const & nodeptrs, Nodeptr p = Nodeptr())
     {
         FOR (Nodeptr const other, nodeptrs)
             if (other != p && !other->won())
