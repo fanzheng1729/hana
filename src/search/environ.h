@@ -36,7 +36,7 @@ struct Environ : protected Gen
             std::size_t maxsize, bool isstaged = false) :
         Gen(ass.varusage, maxsize),
         database(db),
-        assertion(ass), name0(ass.hypslabel()), hypslen(ass.hypslen()),
+        assertion(ass), name(ass.hypslabel()), hypslen(ass.hypslen()),
         staged(isstaged),
         m_subsumedbyProb(false) {}
     Problem const & prob() const { return *pProb; }
@@ -65,13 +65,12 @@ struct Environ : protected Gen
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeAss(Bvector const &) const { return Assertion(); }
- 
+// Data members 
     // Database used
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
-    strview name;
-    std::string name0;
+    std::string name;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
     // Is staged move generation used?

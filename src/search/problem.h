@@ -174,7 +174,6 @@ private:
         environs.insert(std::pair<strview, Environ const *>(name, NULL)).first;
         pEnv->pProb = this;
         enviter->second = pEnv;
-        pEnv->name = enviter->first;
         pEnv->m_subsumedbyProb = true;
         return pEnv;
     }

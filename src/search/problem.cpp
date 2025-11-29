@@ -90,7 +90,6 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         pnewEnv->pProb = this;
         pnewEnv->m_subsumedbyProb = (probEnv().compare(*pnewEnv) == 1);
         newEnviter->second = pnewEnv;
-        pnewEnv->name = newEnviter->first;
         addhypproofs(*pnewEnv);
         FOR (Environs::const_reference renv, environs)
         {
