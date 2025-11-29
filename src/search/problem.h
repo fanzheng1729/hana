@@ -27,8 +27,7 @@ public:
     template<class Env>
     Problem(Env const & env, Value const params[2]) :
         assertion(env.assertion),
-        pProbEnv(assertion.expression.empty() ? NULL :
-            addProbEnv(env, assertion.hypslabel())),
+        pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED),
         MCTS(Game(), params)
     {
@@ -167,13 +166,11 @@ public:
 private:
     // Add the problem context. Return its pointer.
     template<class Env>
-    Environ const * addProbEnv(Env const & env, strview name)
+    Environ const * addProbEnv(Env const & env)
     {
         Environ * const pEnv = new Env(env);
-        Environs::iterator const enviter =
-        environs.insert(std::pair<strview, Environ const *>(name, NULL)).first;
+        environs[env.name] = pEnv;
         pEnv->pProb = this;
-        enviter->second = pEnv;
         pEnv->m_subsumedbyProb = true;
         return pEnv;
     }
