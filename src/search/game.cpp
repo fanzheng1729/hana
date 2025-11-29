@@ -6,11 +6,11 @@
 #include "problem.h"
 #include "../proof/write.h"
 
-Goaldata & Game::goaldata() const { return pGoal->second; }
+Goaldata & Game::goaldata() const { return pgoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
 Proofsteps const & Game::proof() const { return goaldata().proofsrc(); }
-Environ const & Game::env() const { return *pGoal->first; }
+Environ const & Game::env() const { return *pgoal->first; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
 {
@@ -37,7 +37,7 @@ bool Game::legal(Move const & move, bool ourturn) const
 // Play a move.
 Game Game::play(Move const & move, bool ourturn) const
 {
-    Game game(pGoal, nDefer);
+    Game game(pgoal, nDefer);
 
     if (ourturn) // Record the move.
     {
@@ -45,7 +45,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.nDefer = (move.type == Move::DEFER) * (nDefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
-        game.pGoal = attempt.hypvec[move.index];
+        game.pgoal = attempt.hypvec[move.index];
 
     return game;
 }

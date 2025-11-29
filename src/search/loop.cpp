@@ -8,7 +8,7 @@ static pNode cycles(Goalptr pgoal, pNode pnode)
     while (true)
     {
         Game const & game = pnode->game();
-        if (game.nDefer == 0 && pgoal == game.pGoal)
+        if (game.nDefer == 0 && pgoal == game.pgoal)
             return pnode;
         if (pNode const parent = pnode.parent())
             pnode = parent.parent();
@@ -29,7 +29,7 @@ struct Goalptrs : std::set<Goalptr>
         {
             if (child->game().proven())
                 continue;
-            if (!count(child->game().pGoal))
+            if (!count(child->game().pgoal))
                 return false;
         }
         return true;
@@ -44,7 +44,7 @@ struct Goalptrs : std::set<Goalptr>
                 pNode const parent = pnode.parent();
                 if (parent->game().proven())
                     continue;
-                Goalptr const pnewgoal = parent->game().pGoal;
+                Goalptr const pnewgoal = parent->game().pgoal;
                 if (haschildren(parent) && insert(pnewgoal).second)
                     return pnewgoal;
             }

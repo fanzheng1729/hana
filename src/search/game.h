@@ -12,12 +12,12 @@ struct Game
     typedef ::Move Move;
     typedef ::Moves Moves;
     // Pointer to goal to be proven
-    Goalptr pGoal;
+    Goalptr pgoal;
     // # defers to the game
     stage_t nDefer;
     // Proof attempt made, on their turn
     Move attempt;
-    Game(Goalptr p = NULL, stage_t n = 0) : pGoal(p), nDefer(n) {}
+    Game(Goalptr p = NULL, stage_t n = 0) : pgoal(p), nDefer(n) {}
     Goaldata & goaldata() const;
     Goaldatas & goaldatas() const;
     Goal const & goal() const;
