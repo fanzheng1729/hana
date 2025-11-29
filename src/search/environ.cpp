@@ -56,30 +56,30 @@ bool Environ::valid(Move const & move) const
     {
         if (move.hypfloats(i)) continue;
         // Add the essential hypothesis as a goal.
-        Goalptr const pGoal = pProb->addGoal
+        Goalptr const pgoal = pProb->addGoal
         (move.hypRPN(i), move.hyptypecode(i), *this, GOALNEW);
-// std::cout << "Validating " << pGoal->second.goal().expression();
-        Goalstatus & s = pGoal->second.getstatus();
+// std::cout << "Validating " << pgoal->second.goal().expression();
+        Goalstatus & s = pgoal->second.getstatus();
         if (s == GOALFALSE)
             return false; // Refuted
         if (s >= GOALOPEN)// Valid
         {
             move.hypvec[i]
-            = pGoal->second.proven(*pGoal->first) ? pGoal : addsimpGoal(pGoal);
+            = pgoal->second.proven(*pgoal->first) ? pgoal : addsimpGoal(pgoal);
             continue;
         }
         // New goal (s == GOALNEW)
-        Goal const & goal = pGoal->second.goal();
+        Goal const & goal = pgoal->second.goal();
         s = status(goal);
         if (s == GOALFALSE)
             return false; // Refuted
         // Simplified context for the child, if !NULL
-        Environ const * & pnewEnv = pGoal->second.pnewEnv;
+        Environ const * & pnewEnv = pgoal->second.pnewEnv;
         pnewEnv = pProb->addsubEnv(*this, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
-        move.hypvec[i] = addsimpGoal(pGoal);
+        move.hypvec[i] = addsimpGoal(pgoal);
 // if (pnewEnv)
-// std::cout << pGoal->second.goal().expression() << label() << "\n->\n",
+// std::cout << pgoal->second.goal().expression() << label() << "\n->\n",
 // std::cout << (pnewEnv ? pnewEnv->label() : "") << std::endl;
     }
     return true;
