@@ -50,7 +50,7 @@ std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
     return out << std::endl;
 }
 
-struct SyntaxDAG;
+class SyntaxDAG;
 std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG);
 
 // Return true if n <= lim. Otherwise print a message and return false.
