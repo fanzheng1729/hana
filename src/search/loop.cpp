@@ -19,8 +19,8 @@ static pNode cycles(Goalptr pgoal, pNode pnode)
 
 namespace
 {
-// Set of goal pointers
-struct Goalptrs : std::set<Goalptr>
+// Set of pointers to goals
+struct pGoals : std::set<Goalptr>
 {
     // Return true if all open children of p are present.
     bool haschildren(pNode p) const
@@ -58,7 +58,7 @@ bool loops(pNode p)
 {
     Move const & move = p->game().attempt;
     // All the goals necessary to prove p
-    Goalptrs allgoals;
+    pGoals allgoals;
     // Check if any of the hypotheses appears in a parent node.
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
