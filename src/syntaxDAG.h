@@ -21,7 +21,7 @@ struct SyntaxDAG
     void adddef(strview label, Proofsteps const & defRPN)
     {
         FOR (Proofstep step, defRPN)
-            if (step.type == Proofstep::HYP)
+            if (step.type == Proofstep::THM)
                 link(label, step.phyp->first);
     }
     // Add an edge between syntaxioms. Returns true if edge is added.
