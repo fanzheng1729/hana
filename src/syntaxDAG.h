@@ -14,8 +14,8 @@ struct SyntaxDAG
     typedef std::set<std::string> Buckets;
     typedef Buckets::const_iterator Bucketiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
-    typedef DAG<Buckets> BucketsDAG;
-    BucketsDAG const & ranks() const { return m_buckets; }
+    typedef DAG<Buckets> RanksDAG;
+    RanksDAG const & ranks() const { return m_buckets; }
     // Add a syntaxiom and put it in a bucket.
     void addsyntax(strview syntaxiom, strview bucket)
     { bucketbysyntaxiom[syntaxiom] = *m_buckets.insert(bucket).first; }

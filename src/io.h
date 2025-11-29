@@ -51,7 +51,7 @@ std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
 }
 
 template
-<class SyntaxDAG, class Ranks = typename SyntaxDAG::BucketsDAG>
+<class SyntaxDAG, class Ranks = typename SyntaxDAG::RanksDAG>
 std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
     typedef typename SyntaxDAG::Bucketiter It;
