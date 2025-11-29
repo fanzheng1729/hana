@@ -189,10 +189,10 @@ private:
     // Add a goal. Return its pointer.
     Goalptr addgoal(Goalview const & goal, Environ const & env, Goalstatus s)
     {
-        BigGoalptr const pBigGoal
+        BigGoalptr const pbigGoal
         = &*goals.insert(std::make_pair(goal, Goaldatas())).first;
-        Goaldatas::value_type const value(&env, Goaldata(s, &env, pBigGoal));
-        return &*pBigGoal->second.insert(value).first;
+        Goaldatas::value_type const value(&env, Goaldata(s, &env, pbigGoal));
+        return &*pbigGoal->second.insert(value).first;
     }
     Goalptr addgoal
         (Proofsteps const & RPN, strview type, Environ const & env, Goalstatus s)
