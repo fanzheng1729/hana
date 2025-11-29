@@ -97,6 +97,9 @@ int main(int argc, char * argv[])
     // if (!database.checkpropassertion()) return EXIT_FAILURE;
     // std::cout << "checked in " << timer << 's' << std::endl;
 
+    database.buildsyntaxDAG();
+    std::cout << database.syntaxDAG();
+
     Value parameters[] = {0, 1e-3, 0};
     // Value parameters[] = {0, 1e-4, Problem::STAGED};
     Problem::size_type maxsize = 1u << 15;

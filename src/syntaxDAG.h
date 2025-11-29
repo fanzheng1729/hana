@@ -7,15 +7,10 @@
 
 // DAG built from syntaxioms.
 // x -> y if definition of x ultimatedly uses y.
-class SyntaxDAG
+struct SyntaxDAG
 {
     // Classes of syntaxioms
     typedef std::set<std::string> Buckets;
-    // DAG of classes of syntaxioms
-    DAG<Buckets> m_buckets;
-    // Map: syntaxiom -> bucket
-    std::map<strview, strview> bucketbysyntaxiom;
-public:
     DAG<Buckets> const & buckets() const { return m_buckets; }
     // Add a syntaxiom and put it in a bucket.
     void addsyntax(strview syntaxiom, strview bucket)
@@ -46,6 +41,11 @@ public:
             return false;
         return m_buckets.reachable(fromiter, toiter);
     }
+private:
+    // DAG of classes of syntaxioms
+    DAG<Buckets> m_buckets;
+    // Map: syntaxiom -> bucket
+    std::map<strview, strview> bucketbysyntaxiom;
 };
 
 #endif
