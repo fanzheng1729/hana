@@ -20,8 +20,10 @@ public:
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
-    // Buckets of the assertion
+private:
+    // Buckets of the assertion, updated when problem is simplified.
     SyntaxDAG::Buckets buckets;
+public:
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
@@ -32,6 +34,7 @@ public:
     Problem(Env const & env, Value const params[2]) :
         MCTS(Game(), params), database(env.database),
         assertion(env.assertion),
+        buckets(database.assbuckets(assertion)),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
     {

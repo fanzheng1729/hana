@@ -1,14 +1,13 @@
 #ifndef ENVIRON_H_INCLUDED
 #define ENVIRON_H_INCLUDED
 
-#include "../ass.h"
+#include "../database.h"
 #include "game.h"
 #include "gen.h"
 #include "goalstat.h"
 #include "../MCTS/stageval.h"
 #include "../syntaxDAG.h"
 
-class Database;
 class Problem;
 struct Environ;
 // Pointers to contexts
@@ -37,7 +36,10 @@ struct Environ : protected Gen
             std::size_t maxsize, bool isstaged = false) :
         Gen(ass.varusage, maxsize),
         database(db),
-        assertion(ass), name(ass.hypslabel()), hypslen(ass.hypslen()),
+        assertion(ass),
+        buckets(db.hypsbuckets(ass)),
+        name(ass.hypslabel()),
+        hypslen(ass.hypslen()),
         staged(isstaged),
         m_subsumedbyProb(false) {}
     Problem const & prob() const { return *pProb; }
@@ -71,6 +73,8 @@ struct Environ : protected Gen
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
+    // Buckets of the hypotheses combined
+    SyntaxDAG::Buckets buckets;
     std::string name;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
