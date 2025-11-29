@@ -50,6 +50,9 @@ std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
     return out << std::endl;
 }
 
+struct SyntaxDAG;
+std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG);
+
 // Return true if n <= lim. Otherwise print a message and return false.
 bool is1stle2nd(std::size_t const n, std::size_t const lim,
                 const char * const s1, const char * const s2);
