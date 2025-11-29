@@ -38,15 +38,15 @@ struct Goalptrs : std::set<Goalptr>
     // Return NULL if there is no such goal.
     Goalptr saturate()
     {
-        FOR (Goalptr const pGoal, *this)
-            FOR (Nodeptr const pNode, pGoal->second.pnodes())
+        FOR (Goalptr const pgoal, *this)
+            FOR (Nodeptr const pnode, pgoal->second.pnodes())
             {
-                Nodeptr const parent = pNode.parent();
+                Nodeptr const parent = pnode.parent();
                 if (parent->game().proven())
                     continue;
-                Goalptr const newGoal = parent->game().pGoal;
-                if (haschildren(parent) && insert(newGoal).second)
-                    return newGoal;
+                Goalptr const pnewgoal = parent->game().pGoal;
+                if (haschildren(parent) && insert(pnewgoal).second)
+                    return pnewgoal;
             }
         return Goalptr();
     }
