@@ -29,8 +29,8 @@ public:
     enum { STAGED = 1 };
     bool const staged;
     template<class Env>
-    Problem(Env const & env, Database const & db, Value const params[2]) :
-        MCTS(Game(), params), database(db),
+    Problem(Env const & env, Value const params[2]) :
+        MCTS(Game(), params), database(env.database),
         assertion(env.assertion),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
