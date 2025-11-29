@@ -103,7 +103,7 @@ public:
     void closenodes(Nodeptr p)
     {
         if (!p->game().proven()) return;
-        closenodesexcept(p->game().goaldata().nodeptrs(), p);
+        closenodesexcept(p->game().goaldata().pnodes(), p);
         copyproof(p->game());
     }
     // Copy proof of the game to other contexts.
@@ -129,7 +129,7 @@ public:
                     // Super-context found. Copy proof.
                     goaldata.second.proofdst() = game.proof();
                     goaldata.second.setstatustrue();
-                    closenodesexcept(goaldata.second.nodeptrs());
+                    closenodesexcept(goaldata.second.pnodes());
                 }
                 if (supiter == supend) break;
             }
@@ -193,9 +193,9 @@ private:
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
     // close all the nodes except p
-    void closenodesexcept(pNodes const & nodeptrs, Nodeptr p = Nodeptr())
+    void closenodesexcept(pNodes const & pnodes, Nodeptr p = Nodeptr())
     {
-        FOR (Nodeptr const other, nodeptrs)
+        FOR (Nodeptr const other, pnodes)
             if (other != p && !other->won())
             {
                 setwin(other);

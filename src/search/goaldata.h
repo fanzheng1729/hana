@@ -34,7 +34,7 @@ class Goaldata
     Goalstatus status;
     Proofsteps proof;
     // Set of pointers to nodes trying to prove the open goal
-    pNodes m_nodeptrs;
+    pNodes m_pnodes;
     // Pointer to the context
     Environ const * pEnv;
     // Pointer to the different contexts where the goal is evaluated
@@ -79,12 +79,12 @@ public:
     bool proven(Environ const & env) { return !proofsrc().empty(); }
     Proofsteps & proofdst()
     { return issubProb(*pEnv) ? goaldatas().proof : proof; }
-    pNodes const & nodeptrs() const { return m_nodeptrs; }
+    pNodes const & pnodes() const { return m_pnodes; }
     // Add node pointer to p's goal data.
     friend void addNodeptr(Nodeptr p)
     {
         if (p->game().proven()) return;
-        p->game().goaldata().m_nodeptrs.insert(p);
+        p->game().goaldata().m_pnodes.insert(p);
     }
     // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
     friend Goalptr addsimpGoal(Goalptr pGoal)
