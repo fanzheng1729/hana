@@ -11,7 +11,8 @@ struct SyntaxDAG
 {
     // Classes of syntaxioms
     typedef std::set<std::string> Buckets;
-    DAG<Buckets> const & buckets() const { return m_buckets; }
+    typedef DAG<Buckets> BucketsDAG;
+    BucketsDAG const & buckets() const { return m_buckets; }
     // Add a syntaxiom and put it in a bucket.
     void addsyntax(strview syntaxiom, strview bucket)
     { bucketbysyntaxiom[syntaxiom] = *m_buckets.insert(bucket).first; }

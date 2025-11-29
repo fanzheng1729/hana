@@ -51,19 +51,20 @@ std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
 }
 
 template
-<class SyntaxDAG,
- bool(SyntaxDAG::*reachable)(strview, strview) const = &SyntaxDAG::reachable>
+<class SyntaxDAG, class Buckets = typename SyntaxDAG::BucketsDAG>
 std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
-    typedef typename SyntaxDAG::Buckets Buckets;
     typedef typename Buckets::const_iterator It;
+
     Buckets const & buckets = syntaxDAG.buckets();
     for (It iter1 = buckets.begin(); iter1 != buckets.end(); ++iter1)
     {
         out << *iter1 << " -> ";
         for (It iter2 = buckets.begin(); iter2 != buckets.end(); ++iter2)
-            if (syntaxDAG.reachable(*iter1, *iter2))
+        {
+            if (buckets.reachable(iter1, iter2))
                 out << *iter2 << ' ';
+        }
         out << std::endl;
     }
     return out;
