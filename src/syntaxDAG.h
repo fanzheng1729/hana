@@ -12,7 +12,7 @@ struct SyntaxDAG
 {
     // Classes of syntaxioms
     typedef std::set<std::string> Buckets;
-    typedef Buckets::const_iterator Bucketiter;
+    typedef Buckets::const_iterator Rankiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Buckets> RanksDAG;
     RanksDAG const & ranks() const { return m_buckets; }
@@ -34,9 +34,9 @@ struct SyntaxDAG
             if (!ismaximal(expbucket, maxbuckets))
                 continue;
             // expbucket is maximal.
-            Bucketiter const newiter = maxbuckets.insert(expbucket).first;
+            Rankiter const newiter = maxbuckets.insert(expbucket).first;
             // Remove non-maximal buckets.
-            for (Bucketiter iter = maxbuckets.begin();
+            for (Rankiter iter = maxbuckets.begin();
                 iter != maxbuckets.end(); )
                 if (iter == newiter || ismaximal(*iter, maxbuckets))
                     ++iter;
@@ -46,7 +46,7 @@ struct SyntaxDAG
     }
     // Find the bucket of a syntaxiom.
     // Return ranks().end() if not found.
-    Bucketiter bucketiter(strview label) const
+    Rankiter bucketiter(strview label) const
     {
         Mapiter const mapiter = bucketbysyntaxiom.find(label);
         if (mapiter == bucketbysyntaxiom.end())
@@ -70,13 +70,13 @@ struct SyntaxDAG
     bool ismaximal(strview bucket, Buckets const & buckets) const
     {
         // Locate the bucket.
-        Bucketiter const to = this->ranks().find(bucket);
+        Rankiter const to = this->ranks().find(bucket);
         if (to == this->ranks().end())
             return true; // Bucket unseen.
         // Bucket seen.
         FOR (strview frombucket, buckets)
         {
-            Bucketiter const from = this->ranks().find(frombucket);
+            Rankiter const from = this->ranks().find(frombucket);
             if (from != this->ranks().end() &&
                 this->ranks().reachable(from, to))
                 return false;
@@ -86,10 +86,10 @@ struct SyntaxDAG
     // Add an edge between syntaxioms. Returns true if edge is added.
     bool link(strview from, strview to)
     {
-        Bucketiter fromiter = bucketiter(from);
+        Rankiter fromiter = bucketiter(from);
         if (fromiter == m_buckets.end())
             return false; // Bucket unseen
-        Bucketiter toiter   = bucketiter(to);
+        Rankiter toiter   = bucketiter(to);
         if (toiter == m_buckets.end())
             return false; // Bucket unseen
         return m_buckets.link(fromiter, toiter);
@@ -97,10 +97,10 @@ struct SyntaxDAG
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
-        Bucketiter fromiter = bucketiter(from);
+        Rankiter fromiter = bucketiter(from);
         if (fromiter == m_buckets.end())
             return false; // Bucket unseen
-        Bucketiter toiter   = bucketiter(to);
+        Rankiter toiter   = bucketiter(to);
         if (toiter == m_buckets.end())
             return false; // Bucket unseen
         return ranks().reachable(fromiter, toiter);
