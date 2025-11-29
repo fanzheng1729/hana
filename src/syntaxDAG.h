@@ -2,9 +2,8 @@
 #define SYNTAXDAG_H_INCLUDED
 
 #include <map>
-#include <set>
-#include "util/strview.h"
 #include "util/DAG.h"
+#include "util/strview.h"
 
 // DAG built from syntaxioms.
 // x -> y if definition of x ultimatedly uses y.
