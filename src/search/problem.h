@@ -175,6 +175,7 @@ private:
         pEnv->pProb = this;
         enviter->second = pEnv;
         pEnv->name = enviter->first;
+        pEnv->m_subProb = true;
         return pEnv;
     }
     friend Environ;

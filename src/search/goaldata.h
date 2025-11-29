@@ -54,7 +54,7 @@ public:
         = const_cast<Goaldata const *>(this)->proofsrc();
         if (!proof0.empty()) return proof0;
         if (issubProb(*pEnv)) return proof;
-        
+
         // Sub-contexts of env
         pEnvs const & psubEnvs = subEnvs(*pEnv);
         pEnvs::const_iterator subiter = psubEnvs.begin();
