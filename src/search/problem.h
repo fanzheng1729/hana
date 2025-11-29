@@ -69,6 +69,17 @@ public:
             pGoal->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
+    void updateimplication(Environ const & env)
+    {
+        FOR (Environs::const_reference renv, environs)
+        {
+            Environ const & oldEnv = *renv.second;
+            if (&oldEnv == &env) continue;
+            int const cmp = oldEnv.compare(env);
+            oldEnv.addEnv(env, cmp);
+            env.addEnv(oldEnv, -cmp);
+        }
+    }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(pNode p) const;
