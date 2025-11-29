@@ -22,7 +22,7 @@ public:
     Assertion const & assertion;
 private:
     // Ranks of the assertion, updated when problem is simplified.
-    SyntaxDAG::Ranks buckets;
+    SyntaxDAG::Ranks ranks;
 public:
     // Problem context
     Environ const * const pProbEnv;
@@ -34,7 +34,7 @@ public:
     Problem(Env const & env, Value const params[2]) :
         MCTS(Game(), params), database(env.database),
         assertion(env.assertion),
-        buckets(database.assmaxranks(assertion)),
+        ranks(database.assmaxranks(assertion)),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
     {

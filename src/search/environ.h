@@ -37,7 +37,7 @@ struct Environ : protected Gen
         Gen(ass.varusage, maxsize),
         database(db),
         assertion(ass),
-        buckets(db.hypsmaxranks(ass)),
+        ranks(db.hypsmaxranks(ass)),
         name(ass.hypslabel()),
         hypslen(ass.hypslen()),
         staged(isstaged),
@@ -74,7 +74,7 @@ struct Environ : protected Gen
     // The assertion to be proved
     Assertion const & assertion;
     // Ranks of the hypotheses combined
-    SyntaxDAG::Ranks buckets;
+    SyntaxDAG::Ranks ranks;
     std::string name;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
