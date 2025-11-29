@@ -56,7 +56,7 @@ std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
     typedef typename SyntaxDAG::Bucketiter It;
 
-    Ranks const & ranks = syntaxDAG.buckets();
+    Ranks const & ranks = syntaxDAG.ranks();
     for (It iter1 = ranks.begin(); iter1 != ranks.end(); ++iter1)
     {
         out << *iter1 << " -> ";

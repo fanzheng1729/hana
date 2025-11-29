@@ -15,7 +15,7 @@ struct SyntaxDAG
     typedef Buckets::const_iterator Bucketiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Buckets> BucketsDAG;
-    BucketsDAG const & buckets() const { return m_buckets; }
+    BucketsDAG const & ranks() const { return m_buckets; }
     // Add a syntaxiom and put it in a bucket.
     void addsyntax(strview syntaxiom, strview bucket)
     { bucketbysyntaxiom[syntaxiom] = *m_buckets.insert(bucket).first; }
@@ -45,13 +45,13 @@ struct SyntaxDAG
         }
     }
     // Find the bucket of a syntaxiom.
-    // Return buckets().end() if not found.
+    // Return ranks().end() if not found.
     Bucketiter bucketiter(strview label) const
     {
         Mapiter const mapiter = bucketbysyntaxiom.find(label);
         if (mapiter == bucketbysyntaxiom.end())
-            return buckets().end();
-        return buckets().find(mapiter->second);
+            return ranks().end();
+        return ranks().find(mapiter->second);
     }
     // Return the buckets of an expression.
     Buckets expbuckets(Proofsteps const & RPN) const
@@ -70,15 +70,15 @@ struct SyntaxDAG
     bool ismaximal(strview bucket, Buckets const & buckets) const
     {
         // Locate the bucket.
-        Bucketiter const to = this->buckets().find(bucket);
-        if (to == this->buckets().end())
+        Bucketiter const to = this->ranks().find(bucket);
+        if (to == this->ranks().end())
             return true; // Bucket unseen.
         // Bucket seen.
         FOR (strview frombucket, buckets)
         {
-            Bucketiter const from = this->buckets().find(frombucket);
-            if (from != this->buckets().end() &&
-                this->buckets().reachable(from, to))
+            Bucketiter const from = this->ranks().find(frombucket);
+            if (from != this->ranks().end() &&
+                this->ranks().reachable(from, to))
                 return false;
         }
         return true;
@@ -103,7 +103,7 @@ struct SyntaxDAG
         Bucketiter toiter   = bucketiter(to);
         if (toiter == m_buckets.end())
             return false; // Bucket unseen
-        return buckets().reachable(fromiter, toiter);
+        return ranks().reachable(fromiter, toiter);
     }
 private:
     // DAG of classes of syntaxioms
