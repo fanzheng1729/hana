@@ -66,17 +66,17 @@ struct SyntaxDAG
             }
         return result;
     }
-    // Return true if the bucket is maximal among the buckets.
-    bool ismaximal(strview bucket, Buckets const & buckets) const
+    // Return true if the rank is maximal among the ranks.
+    bool ismaximal(strview rank, Buckets const & ranks) const
     {
-        // Locate the bucket.
-        Rankiter const to = this->ranks().find(bucket);
+        // Locate the rank.
+        Rankiter const to = this->ranks().find(rank);
         if (to == this->ranks().end())
-            return true; // Bucket unseen.
-        // Bucket seen.
-        FOR (strview frombucket, buckets)
+            return true; // Rank unseen.
+        // Rank seen.
+        FOR (strview fromrank, ranks)
         {
-            Rankiter const from = this->ranks().find(frombucket);
+            Rankiter const from = this->ranks().find(fromrank);
             if (from != this->ranks().end() &&
                 this->ranks().reachable(from, to))
                 return false;
