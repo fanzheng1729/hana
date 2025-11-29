@@ -84,10 +84,9 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     if (ass.expression.empty())
         return NULL;
     // Add the new context.
-    Environ * const pnewEnv = env.makeEnv(ass);
+    Environ * const pnewEnv = env.makeEnv(newass = ass);
     if (pnewEnv)
     {
-        newass = ass;
         pnewEnv->pProb = this;
         pnewEnv->m_subsumedbyProb = (probEnv().compare(*pnewEnv) == 1);
         newEnviter->second = pnewEnv;
