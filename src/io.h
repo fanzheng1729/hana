@@ -50,8 +50,22 @@ std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
     return out << std::endl;
 }
 
-class SyntaxDAG;
-std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG);
+template
+<class DAG,
+ bool(DAG::*reachable)(typename DAG::const_interator, typename DAG::const_interator) const = DAG::reachable>
+std::ostream & operator<<(std::ostream & out, const DAG & dag)
+{
+    for (typename DAG::const_iterator iter1 = dag.begin();
+         iter1 != dag.end(); ++iter1)
+    {
+        std::cout << *iter1 << " -> ";
+        for (typename DAG::const_iterator iter2 = dag.begin();
+             iter2 != dag.end(); ++iter2)
+            if (dag.reachable(iter1, iter2))
+                std::cout << *iter2 << ' ';
+        std::cout << std::endl;
+    }
+}
 
 // Return true if n <= lim. Otherwise print a message and return false.
 bool is1stle2nd(std::size_t const n, std::size_t const lim,
