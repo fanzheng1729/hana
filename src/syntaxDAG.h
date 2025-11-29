@@ -66,7 +66,7 @@ struct SyntaxDAG
             }
         return result;
     }
-    // Return true if the rank is maximal among the ranks.
+    // Return true if there is no x in ranks such that rank < x.
     bool ismaximal(strview rank, Ranks const & ranks) const
     {
         // Locate the rank.
@@ -103,6 +103,14 @@ struct SyntaxDAG
         if (toiter == m_ranks.end())
             return false; // Rank unseen
         return ranks().reachable(fromiter, toiter);
+    }
+    // Ranks A < B if for all a in A, there is b in B such that a < b.
+    bool simplerthan(Ranks const & A, Ranks const & B) const
+    {
+        FOR (strview a, A)
+            if (ismaximal(a, B))
+                return false;
+        return true;
     }
 private:
     // DAG of classes of syntaxioms
