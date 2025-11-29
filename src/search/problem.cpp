@@ -8,7 +8,7 @@
 
 // UCB threshold for generating a new batch of moves
 // Change this to turn on staged move generation.
-Value Problem::UCBnewstage(Nodeptr p) const
+Value Problem::UCBnewstage(pNode p) const
 {
     if (!(staged & STAGED))
         return MCTS<Game>::UCBnewstage(p);
@@ -25,12 +25,12 @@ Value Problem::UCBnewstage(Nodeptr p) const
 
 // Evaluate the leaf. Return {value, sure?}.
 // p should != NULL.
-Eval Problem::evalleaf(Nodeptr p) const
+Eval Problem::evalleaf(pNode p) const
 {
     Game const & game = p->game();
     if (game.attempt.type == Move::THM)
     {
-        bool loops(Nodeptr p);
+        bool loops(pNode p);
         if (loops(p))
             return EvalLOSS;
     }
@@ -43,7 +43,7 @@ Eval Problem::evalleaf(Nodeptr p) const
     return game.env().evalourleaf(game);
 }
 
-Eval Problem::evaltheirleaf(Nodeptr p) const
+Eval Problem::evaltheirleaf(pNode p) const
 {
     Value value = const_cast<Problem *>(this)->singularext(p);
     if (value == WDL::WIN)
@@ -55,8 +55,8 @@ Eval Problem::evaltheirleaf(Nodeptr p) const
     }
     // value is between WDL::LOSS and WDL::WIN.
     if (!p->game().nDefer)
-        FOR (Nodeptr child, *p.children())
-            addNodeptr(child);
+        FOR (pNode child, *p.children())
+            addpNode(child);
     return Eval(value, false);
 }
 
@@ -106,17 +106,17 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
 
 // Return the only open child of p.
 // Return NULL if p has 0 or at least 2 open children.
-static Nodeptr onlyopenchild(Nodeptr p)
+static pNode onlyopenchild(pNode p)
 {
-    if (Problem::isourturn(p)) return Nodeptr();
+    if (Problem::isourturn(p)) return pNode();
 
-    Nodeptr result;
+    pNode result;
     bool hasopenchild = false;
-    FOR (Nodeptr child, *p.children())
+    FOR (pNode child, *p.children())
     {
         if (child->won()) continue;
         // Open child found.
-        if (hasopenchild) return Nodeptr();
+        if (hasopenchild) return pNode();
         // 1 open child
         result = child;
         hasopenchild = true;
@@ -125,9 +125,9 @@ static Nodeptr onlyopenchild(Nodeptr p)
 }
 
 // Move to the only open child of a node. Return true if it exists.
-static bool gotoonlyopenchild(Nodeptr & p)
+static bool gotoonlyopenchild(pNode & p)
 {
-    if (Nodeptr child = onlyopenchild(p))
+    if (pNode child = onlyopenchild(p))
         return p = child;
     return false;
 }
@@ -135,14 +135,14 @@ static bool gotoonlyopenchild(Nodeptr & p)
 static const char strproven[] = "V";
 
 // Format: ax-mp[!]
-static void printrefname(Nodeptr p)
+static void printrefname(pNode p)
 {
     std::cout << p->game().attempt.label();
     if (onlyopenchild(p)) std::cout << '!';
 }
 
 // Format: ax-mp[!] or DEFER(n)
-static void printattempt(Nodeptr p)
+static void printattempt(pNode p)
 {
     switch (p->game().attempt.type)
     {
@@ -157,20 +157,20 @@ static void printattempt(Nodeptr p)
     }
 }
 // Format: score*size
-static void printeval(Nodeptr p)
+static void printeval(pNode p)
 {
     std::cout << ' ' << Problem::value(p) << '*' << p.size();
 }
 // Format: score*size=UCB
-static void printeval(Nodeptr p, Problem const & tree)
+static void printeval(pNode p, Problem const & tree)
 {
     printeval(p); std::cout << '=' << tree.UCB(p) << '\t';
 }
 
 // Format: ax-mp score*size=UCB ...
-static void printourchildren(Nodeptr p, Problem const & tree)
+static void printourchildren(pNode p, Problem const & tree)
 {
-    FOR (Nodeptr child, *p.children())
+    FOR (pNode child, *p.children())
         printattempt(child), printeval(child, tree);
     std::cout << std::endl;
 }
@@ -183,7 +183,7 @@ static void printstage(stage_t stage)
 }
 
 // Format: [(n)] maj score*size   [V]|- ...
-static void printournode(Nodeptr p, stage_t stage)
+static void printournode(pNode p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
     printstage(stage);
@@ -195,7 +195,7 @@ static void printournode(Nodeptr p, stage_t stage)
 }
 
 // Format: DEFER(n) score*size
-static void printdeferline(Nodeptr p)
+static void printdeferline(pNode p)
 {
     printattempt(p);
     if (!p.children()->empty())
@@ -203,10 +203,10 @@ static void printdeferline(Nodeptr p)
     std::cout << std::endl;
 }
 // Format: min score*size maj score*size
-static void printhypsline(Nodeptr p)
+static void printhypsline(pNode p)
 {
     Hypsize i = 0;
-    FOR (Nodeptr child, *p.children())
+    FOR (pNode child, *p.children())
     {
         while (p->game().attempt.hypfloats(i)) ++i;
         std::cout << p->game().attempt.hyplabel(i++);
@@ -217,10 +217,10 @@ static void printhypsline(Nodeptr p)
 }
 
 // Format: ax-mp[!] score*size score*size
-static void printtheirnode(Nodeptr p)
+static void printtheirnode(pNode p)
 {
     printrefname(p);
-    FOR (Nodeptr child, *p.children())
+    FOR (pNode child, *p.children())
         printeval(child);
     std::cout << std::endl;
 }
@@ -228,7 +228,7 @@ static void printtheirnode(Nodeptr p)
 // Format:
 // Goal score [V]|- ...
 // [Hyps hyo1 hyp2]
-static void printgoal(Nodeptr p)
+static void printgoal(pNode p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
     std::cout << &strproven[!p->game().proven()];
@@ -254,11 +254,11 @@ static void printgoal(Nodeptr p)
 **/
 // n.   (n) ax-mp[!] score*size score*size
 //      maj score*size  |- ...
-void Problem::printmainline(Nodeptr p, size_type detail) const
+void Problem::printmainline(pNode p, size_type detail) const
 {
     printgoal(p);
     // Print children.
-    static void (*const printfn[])(Nodeptr) = {&printhypsline, &printdeferline};
+    static void (*const printfn[])(pNode) = {&printhypsline, &printdeferline};
     if (detail)
         isourturn(p) ? printourchildren(p, *this) :
             (*printfn[p->game().attempt.type == Move::DEFER])(p);
@@ -294,14 +294,14 @@ void Problem::printmainline(Nodeptr p, size_type detail) const
     }
 }
 
-void Problem::checkmainline(Nodeptr p) const
+void Problem::checkmainline(pNode p) const
 {
     for ( ; p; p = pickchild(p))
     {
         if (isourturn(p) && p->game().nDefer == 0
             && p->game().proven() && !p->won())
         {
-            for (Nodeptr q = root(); q && q != p; q = pickchild(q))
+            for (pNode q = root(); q && q != p; q = pickchild(q))
                 std::cout << *q;
             std::cout << *p;
             navigate();
@@ -322,7 +322,7 @@ void Problem::printstats() const
 }
 
 // Move up to the parent. Return true if successful.
-static bool moveup(Nodeptr & p)
+static bool moveup(pNode & p)
 {
     if (!p.parent()) return false;
 
@@ -335,19 +335,19 @@ static bool moveup(Nodeptr & p)
 }
 
 // Input the index and move to the child. Return true if successful.
-static bool gototheirchild(Nodeptr & p)
+static bool gototheirchild(pNode & p)
 {
     std::size_t i;
     std::cin >> i;
 
     Problem::Children const & children(*p.children());
-    return i >= children.size() ? Nodeptr() : (p = children[i]);
+    return i >= children.size() ? pNode() : (p = children[i]);
 }
 
 // Move to the child with given assertion and index. Return true if successful.
-static bool findourchild(Nodeptr & p, strview ass, std::size_t index)
+static bool findourchild(pNode & p, strview ass, std::size_t index)
 {
-    FOR (Nodeptr child, *p.children())
+    FOR (pNode child, *p.children())
     {
         Move const & move = child->game().attempt;
         if (move.type == Move::THM && move.label() == ass && index-- == 0)
@@ -357,7 +357,7 @@ static bool findourchild(Nodeptr & p, strview ass, std::size_t index)
 }
 
 // Input the assertion and the index and move to the child. Return true if successful.
-static bool gotoourchild(Nodeptr & p)
+static bool gotoourchild(pNode & p)
 {
     if (p.children()->empty())
         return false;
@@ -375,7 +375,7 @@ static bool gotoourchild(Nodeptr & p)
             return false;
     }
 
-    Nodeptr grandchild = p;
+    pNode grandchild = p;
     if (gotoonlyopenchild(grandchild) &&
         askyn("Go to only open child y/n?"))
         p = grandchild;
@@ -395,7 +395,7 @@ void Problem::navigate(bool detailed) const
     "b[ye] or e[xit] or q[uit] to leave navigation" << std::endl;
 
     std::string token;
-    Nodeptr p = root();
+    pNode p = root();
     while (true)
     {
 // std::cout << isourturn(node) << ' ' << &node.value() << std::endl;

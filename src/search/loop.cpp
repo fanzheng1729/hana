@@ -3,18 +3,18 @@
 // If goal appears as the goal of a node or its ancestors,
 // return the pointer of the ancestor.
 // This check is necessary to prevent self-assignment in writeproof().
-static Nodeptr cycles(Goalptr pgoal, Nodeptr pnode)
+static pNode cycles(Goalptr pgoal, pNode pnode)
 {
     while (true)
     {
         Game const & game = pnode->game();
         if (game.nDefer == 0 && pgoal == game.pGoal)
             return pnode;
-        if (Nodeptr const parent = pnode.parent())
+        if (pNode const parent = pnode.parent())
             pnode = parent.parent();
         else break;
     }
-    return Nodeptr();
+    return pNode();
 }
 
 namespace
@@ -23,9 +23,9 @@ namespace
 struct Goalptrs : std::set<Goalptr>
 {
     // Return true if all open children of p are present.
-    bool haschildren(Nodeptr p) const
+    bool haschildren(pNode p) const
     {
-        FOR (Nodeptr const child, *p.children())
+        FOR (pNode const child, *p.children())
         {
             if (child->game().proven())
                 continue;
@@ -39,9 +39,9 @@ struct Goalptrs : std::set<Goalptr>
     Goalptr saturate()
     {
         FOR (Goalptr const pgoal, *this)
-            FOR (Nodeptr const pnode, pgoal->second.pnodes())
+            FOR (pNode const pnode, pgoal->second.pnodes())
             {
-                Nodeptr const parent = pnode.parent();
+                pNode const parent = pnode.parent();
                 if (parent->game().proven())
                     continue;
                 Goalptr const pnewgoal = parent->game().pGoal;
@@ -54,7 +54,7 @@ struct Goalptrs : std::set<Goalptr>
 }
 
 // Return true if ptr duplicates upstream goals.
-bool loops(Nodeptr p)
+bool loops(pNode p)
 {
     Move const & move = p->game().attempt;
     // All the goals necessary to prove p
@@ -72,7 +72,7 @@ bool loops(Nodeptr p)
     }
     // Check if these hypotheses combined prove a parent node.
     while (Goalptr const pGoal = allgoals.saturate())
-        FOR (Nodeptr const pnewNode, pGoal->second.pnodes())
+        FOR (pNode const pnewNode, pGoal->second.pnodes())
             if (pnewNode.isancestorof(p))
                 return true;
     return false;

@@ -16,7 +16,7 @@ struct MCTS : private Tree<MCTSNode<G> >
     typedef typename G::Moves Moves;
     typedef Tree<MCTSNode<G> > MCTSTree;
     using typename MCTSTree::size_type;
-    using typename MCTSTree::Nodeptr;
+    using typename MCTSTree::pNode;
     using typename MCTSTree::Children;
 private:
     static int const digits = std::numeric_limits<size_type>::digits;
@@ -60,26 +60,26 @@ public:
     using MCTSTree::empty;
     using MCTSTree::size;
     Value const * exploration() const { return m_exploration; }
-    static bool issure(Nodeptr p) { return p->eval().sure; }
+    static bool issure(pNode p) { return p->eval().sure; }
     bool issure() const { return issure(root()); }
-    static Value value(Nodeptr p) { return p->eval().value; }
+    static Value value(pNode p) { return p->eval().value; }
     Value value() const { return value(root()); }
 protected:
-    static void seteval(Nodeptr p, Eval eval) { if (p) p->seteval(eval); }
-    static void setwin (Nodeptr p) { seteval(p, EvalWIN); }
-    static void setdraw(Nodeptr p) { seteval(p, EvalDRAW); }
-    static void setloss(Nodeptr p) { seteval(p, EvalLOSS); }
-    static void setalmostwin (Nodeptr p) { seteval(p, ALMOSTWIN); }
-    static void setalmostloss(Nodeptr p) { seteval(p, ALMOSTLOSS); }
+    static void seteval(pNode p, Eval eval) { if (p) p->seteval(eval); }
+    static void setwin (pNode p) { seteval(p, EvalWIN); }
+    static void setdraw(pNode p) { seteval(p, EvalDRAW); }
+    static void setloss(pNode p) { seteval(p, EvalLOSS); }
+    static void setalmostwin (pNode p) { seteval(p, ALMOSTWIN); }
+    static void setalmostloss(pNode p) { seteval(p, ALMOSTLOSS); }
 public:
-    static bool isourturn(Nodeptr p) { return p->isourturn();}
+    static bool isourturn(pNode p) { return p->isourturn();}
     // True if value of x < value of y
-    static bool compvalue(Nodeptr x, Nodeptr y) { return value(x) < value(y); }
+    static bool compvalue(pNode x, pNode y) { return value(x) < value(y); }
     // Visit count based UCB bonus
     Value UCBbonus(bool ourturn, size_type parent, size_type self) const
     { return sqrt[ourturn][util::log2(parent)] / std::sqrt(self); }
     // Upper confidence bound
-    Value UCB(Nodeptr p) const
+    Value UCB(pNode p) const
     {
         Value const v = value(p);
         if (::issure(v)) return v;
@@ -87,7 +87,7 @@ public:
     }
     // Compare 2 children, by UCB and turn.
     // < 0 if x < y, = 0 if x == y, > 0 if x > y.
-    int compchild(Nodeptr x, Nodeptr y) const
+    int compchild(pNode x, pNode y) const
     {
         Value const dif = UCB(x) - UCB(y);
         int const raw = dif > 0 ? 1 : dif < 0 ? -1: 0;
@@ -95,17 +95,17 @@ public:
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
-    virtual Value UCBnewstage(Nodeptr p) const
+    virtual Value UCBnewstage(pNode p) const
     {
         static Value const inf = std::numeric_limits<Value>::max();
         return isourturn(p) ? -inf : inf;
     }
     // Return the unsure child with largest UCB.
     // Return NULL if there is no such a child.
-    Nodeptr pickchild(Nodeptr p) const
+    pNode pickchild(pNode p) const
     {
         Children const * const children = p.children();
-        if (!children) return Nodeptr();
+        if (!children) return pNode();
         // Find the first unsure child.
         typedef typename Children::const_iterator Iter;
         Iter child = children->begin();
@@ -113,7 +113,7 @@ public:
             if (!issure(*child)) break;
         // If all children are sure, return NULL.
         if (child == children->end())
-            return Nodeptr();
+            return pNode();
         // Find the unsure child with largest UCB.
         for (Iter iter(child); iter != children->end(); ++iter)
         {
@@ -123,39 +123,39 @@ public:
         // Determine whether to generate a new batch of moves.
         if (isourturn(p) ? UCB(*child) < UCBnewstage(p) :
             UCB(*child) > UCBnewstage(p))
-            return Nodeptr();
+            return pNode();
 
         return *child;
     }
     // Return the leaf with largest UCB.
     // Return NULL if p is NULL.
-    Nodeptr pickleaf(Nodeptr p) const
+    pNode pickleaf(pNode p) const
     {
-        Nodeptr result;
+        pNode result;
         while (p) result = p, p = pickchild(p);
         return result;
     }
     // Expand the node pointed. Return # new children.
     // p should != NULL.
     template<Moves (G::*)(bool) const>
-    size_type expand(Nodeptr p)
+    size_type expand(pNode p)
     {
         return addchildren(p, p->moves(isourturn(p)));
     }
     template<Moves (G::*)(bool, stage_t) const>
-    size_type expand(Nodeptr p)
+    size_type expand(pNode p)
     {
         stage_t & stage = p->m_stage;
         return addchildren(p, p->moves(isourturn(p), stage++));
     }
     // Call back when children of p moved.
-    virtual void expandcallback(Nodeptr p) {}
+    virtual void expandcallback(pNode p) {}
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
-    virtual Eval evalleaf(Nodeptr p) const = 0;
+    virtual Eval evalleaf(pNode p) const = 0;
     // Returns the minimax value of a parent.
     // p should != NULL.
-    static Value minimax(Nodeptr p)
+    static Value minimax(pNode p)
     {
         Children const & ch = *p.children();
         return ch.empty() ? WDL::DRAW :
@@ -165,14 +165,14 @@ public:
     }
     // Evaluate the parent. Return {value, sure?}.
     // p should != NULL.
-    virtual Eval evalparent(Nodeptr p) const { return minimax(p); }
+    virtual Eval evalparent(pNode p) const { return minimax(p); }
     // Evaluate all the new leaves.
     // p should != NULL.
-    void evalnewleaves(Nodeptr p) const
+    void evalnewleaves(pNode p) const
     {
         for (size_type i = p->index(); i < p.children()->size(); ++i)
         {
-            Nodeptr const child = (*p.children())[i];
+            pNode const child = (*p.children())[i];
             // Evaluate child.
             if (!child.children()->empty())
                 continue; // child not a leaf
@@ -187,13 +187,13 @@ public:
     }
     // Evaluate the node. Return {value, sure?}.
     // p should != NULL.
-    Eval evaluate(Nodeptr p) const
+    Eval evaluate(pNode p) const
     { return p.children()->empty() ? evalleaf(p) : evalparent(p); }
     // Call back for back propagation.
-    virtual void backpropcallback(Nodeptr p) {}
+    virtual void backpropcallback(pNode p) {}
     // Back propagate from the node pointed.
     // DO NOTHING if p is NULL.
-    void backprop(Nodeptr p)
+    void backprop(pNode p)
     {
 // std::cout << "Back prop called on " << p;
         for ( ; p; p = p.parent())
@@ -204,14 +204,14 @@ public:
         }
     }
     size_type playcount() const { return m_playcount; }
-    virtual void checkmainline(Nodeptr p) const {}
+    virtual void checkmainline(pNode p) const {}
     // Play out once. Return the value at the root.
     Value playonce()
     {
 // std::cout << playcount() << '\t' << size() << std::endl;
 // std::cout << *root();
 // checkmainline(root());
-        Nodeptr p = pickleaf(root());
+        pNode p = pickleaf(root());
 // std::cout << "Expanding " << *p;
         if (size_type const n = expand<&G::moves>(p))
 // std::cout << "Expanded " << n << " new moves at " << *p,
@@ -243,7 +243,7 @@ public:
 private:
     // For all functions below, p should != NULL.
     // Add children. Return # new children.
-    size_type addchildren(Nodeptr p, Moves const & moves)
+    size_type addchildren(pNode p, Moves const & moves)
     {
 // std::cout << "Adding " << moves.size() << " moves to " << *p;
         size_type const oldsize = p.children()->size();
@@ -254,7 +254,7 @@ private:
         {
             if (!p->legal(move)) continue;
             // Add child.
-            Nodeptr child(this->insert(p, p->play(move)));
+            pNode child(this->insert(p, p->play(move)));
         }
 // if (p->stage() >= 5)
 // std::cout << p.children()->size() - oldsize << " moves added to " << *p;

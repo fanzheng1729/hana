@@ -17,19 +17,19 @@ class Tree
 public:
     typedef std::size_t size_type;
     // Wrapper of pointer to a node
-    class Nodeptr;
+    class pNode;
     // Node of the tree
     class TreeNode;
     // Children of a node
 #ifdef __cpp_lib_incomplete_container_elements
     typedef std::vector<TreeNode> Children;
 #else
-    typedef std::vector<Nodeptr> Children;
+    typedef std::vector<pNode> Children;
 #endif // __cpp_lib_incomplete_container_elements
     // Node of the tree
     class TreeNode
     {
-        friend Nodeptr;
+        friend pNode;
         friend Tree;
         // Pointer to the parent
         TreeNode * parent;
@@ -64,24 +64,24 @@ private:
     TreeNode * m_data;
 public:
     // Wrapper of pointer to a node
-    class Nodeptr
+    class pNode
     {
         friend Tree;
         TreeNode * m_ptr;
-        Nodeptr(TreeNode * p) : m_ptr(p) {}
+        pNode(TreeNode * p) : m_ptr(p) {}
 #ifndef __cpp_lib_incomplete_container_elements
         // Clear the node.
         // DO NOTHING if (!*this).
         void m_clear() const
         {
             if (!*this) return;
-            FOR (Nodeptr p, m_ptr->children) p.m_clear();
+            FOR (pNode p, m_ptr->children) p.m_clear();
             delete m_ptr;
         }
 #endif // __cpp_lib_incomplete_container_elements
         // Add a child. Return the pointer to the child.
         // DOES NOT set the size. *this should != NULL.
-        Nodeptr m_insert(T const & t) const
+        pNode m_insert(T const & t) const
         {
             reserve(m_ptr->children.size() + 1);
 #ifdef __cpp_lib_incomplete_container_elements
@@ -103,10 +103,10 @@ public:
 #ifndef __cpp_lib_incomplete_container_elements
         // Add a subtree with copying. Return pointer to the child.
         // *this should != NULL.
-        Nodeptr m_insert(TreeNode const & node) const
+        pNode m_insert(TreeNode const & node) const
         {
             // Add the root of the subtree.
-            Nodeptr child = m_insert(node.value);
+            pNode child = m_insert(node.value);
             child.m_ptr->size = node.size;
             // Add all its children.
             child.m_insertchildren(node);
@@ -117,17 +117,17 @@ public:
         // *this should != NULL.
         void m_insertchildren(TreeNode const & node) const
         {
-            FOR (Nodeptr p, node.children) m_insert(*p.m_ptr);
+            FOR (pNode p, node.children) m_insert(*p.m_ptr);
         }
 #endif // __cpp_lib_incomplete_container_elements
     public:
-        Nodeptr() : m_ptr(NULL) {}
-        Nodeptr(TreeNode const & node) : m_ptr(const_cast<TreeNode *>(&node)) {}
+        pNode() : m_ptr(NULL) {}
+        pNode(TreeNode const & node) : m_ptr(const_cast<TreeNode *>(&node)) {}
         operator TreeNode const * () const { return m_ptr; }
-        friend inline bool operator<(Nodeptr x, Nodeptr y)
+        friend inline bool operator<(pNode x, pNode y)
             { return std::less<TreeNode *>()(x.m_ptr, y.m_ptr); }
         // Return the parent. Return NULL if *this is NULL.
-        Nodeptr parent() const { return Nodeptr(*this ? m_ptr->parent : NULL); }
+        pNode parent() const { return pNode(*this ? m_ptr->parent : NULL); }
         // Return the size. Return 0 if *this is NULL.
         size_type size() const { return *this ? m_ptr->size : 0; }
         // Return true if a node has grand child. Return 0 if *this is NULL.
@@ -151,8 +151,8 @@ public:
             static_assert(std::is_nothrow_move_constructible<TreeNode>::value,
                           "Node type must be nothrow move constructible");
             if (hasgrandchild())
-                FOR (Nodeptr child, m_ptr->children)
-                    FOR (Nodeptr grand, child.m_ptr->children)
+                FOR (pNode child, m_ptr->children)
+                    FOR (pNode grand, child.m_ptr->children)
                         grand.m_ptr->parent = child.m_ptr;
             return !m_ptr->children.empty();
 #endif // __cpp_lib_incomplete_container_elements
@@ -160,14 +160,14 @@ public:
         }
         // Return true if *this is ancestor of p.
         // Return false if p is NULL
-        bool isancestorof(Nodeptr p) const
+        bool isancestorof(pNode p) const
         {
             for (p = p.parent(); p; p = p.parent())
                 if (this->m_ptr == p.m_ptr)
                     return true;
             return false;
         }
-    }; // class Nodeptr
+    }; // class pNode
 public:
     // Construct an empty tree.
     Tree() : m_data(NULL) {}
@@ -208,20 +208,20 @@ public:
     ~Tree() { data().m_clear(); }
 #endif // __cpp_lib_incomplete_container_elements
     // The root node
-    Nodeptr data() const { return m_data; }
-    Nodeptr root() { return m_data;}
-    Nodeptr const root() const { return m_data; }
+    pNode data() const { return m_data; }
+    pNode root() { return m_data;}
+    pNode const root() const { return m_data; }
     // Return true if the tree is empty.
     bool empty() const { return !m_data; }
     // Return size of the tree.
     size_type size() const {return m_data->size; }
     // Add a child. Return the pointer to the child.
     // DO NOTHING and Return NULL if p is NULL.
-    Nodeptr insert(Nodeptr p, T const & value)
+    pNode insert(pNode p, T const & value)
     {
-        if (!p) return Nodeptr();
+        if (!p) return pNode();
         // Pointer to the child.
-        Nodeptr const child = p.m_insert(value);
+        pNode const child = p.m_insert(value);
         // Adjust sizes of ancestors.
         p.m_ptr->incsize(child.m_ptr->size = 1);
 
@@ -229,17 +229,17 @@ public:
     }
     // Check data structure integrity.
     // DO NOTHING and Return true if p is NULL.
-    bool check(Nodeptr p) const
+    bool check(pNode p) const
     {
         if (!p) return true;
         size_type n = 0;
-        FOR (Nodeptr child, p.m_ptr->children)
+        FOR (pNode child, p.m_ptr->children)
         {
             if (child.parent() != p) return false;
             n += child.size();
         }
         if (p.size() != n + 1) return false;
-        FOR (Nodeptr child, p.m_ptr->children)
+        FOR (pNode child, p.m_ptr->children)
             if (!check(child)) return false;
         return true;
     }
@@ -250,7 +250,7 @@ public:
 template<class T> Tree<T> chain1(T n)
 {
     Tree<T> t(0);
-    Tree<T>::Nodeptr p(t.data());
+    Tree<T>::pNode p(t.data());
     for (T i = 1; i <= n; ++i) p = t.insert(p, i);
     return t;
 }

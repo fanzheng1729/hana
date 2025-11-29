@@ -9,9 +9,9 @@
 #include "../util/for.h"
 
 // Pointer to node in proof search tree
-typedef MCTS<Game>::Nodeptr Nodeptr;
+typedef MCTS<Game>::pNode pNode;
 // Set of pointers of nodes in proof search tree
-typedef std::set<Nodeptr> pNodes;
+typedef std::set<pNode> pNodes;
 
 // Polymorphic context, with move generation and goal evaluation
 struct Environ;
@@ -81,7 +81,7 @@ public:
     { return issubProb(*pEnv) ? goaldatas().proof : proof; }
     pNodes const & pnodes() const { return m_pnodes; }
     // Add node pointer to p's goal data.
-    friend void addNodeptr(Nodeptr p)
+    friend void addpNode(pNode p)
     {
         if (p->game().proven()) return;
         p->game().goaldata().m_pnodes.insert(p);

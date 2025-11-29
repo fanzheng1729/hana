@@ -46,7 +46,7 @@ public:
                 (*pProbEnv, pProbEnv->hypstotrim(pGoal->second.goal()));
         // Root node
         *root() = Game(addsimpGoal(pGoal));
-        addNodeptr(root());
+        addpNode(root());
     }
     // Add 1-step proof of all the hypotheses of the problem context.
     void addhypproofs()
@@ -72,9 +72,9 @@ public:
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
-    virtual Value UCBnewstage(Nodeptr p) const;
+    virtual Value UCBnewstage(pNode p) const;
     // Do singular extension. Return the value.
-    Value singularext(Nodeptr p)
+    Value singularext(pNode p)
     {
         if (isourturn(p))
             return value(p);
@@ -89,18 +89,18 @@ public:
     }
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
-    virtual Eval evalleaf(Nodeptr p) const;
-    Eval evaltheirleaf(Nodeptr p) const;
+    virtual Eval evalleaf(pNode p) const;
+    Eval evaltheirleaf(pNode p) const;
     // Evaluate the parent. Return {value, sure?}.
     // p should != NULL.
-    virtual Eval evalparent(Nodeptr p) const
+    virtual Eval evalparent(pNode p) const
     {
         Value const v = minimax(p);
         bool const stuck = (staged & STAGED) && isourturn(p) && v == WDL::LOSS;
         return stuck ? p->eval() : v;
     }
     // Close all the nodes with p's proven goal.
-    void closenodes(Nodeptr p)
+    void closenodes(pNode p)
     {
         if (!p->game().proven()) return;
         closenodesexcept(p->game().goaldata().pnodes(), p);
@@ -135,7 +135,7 @@ public:
             }
     }
     // Record the proof of proven goals on back propagation.
-    virtual void backpropcallback(Nodeptr p)
+    virtual void backpropcallback(pNode p)
     {
         if (p->game().proven())
             setwin(p); // Fix seteval in backprop.
@@ -193,23 +193,23 @@ private:
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
     // close all the nodes except p
-    void closenodesexcept(pNodes const & pnodes, Nodeptr p = Nodeptr())
+    void closenodesexcept(pNodes const & pnodes, pNode p = pNode())
     {
-        FOR (Nodeptr const other, pnodes)
+        FOR (pNode const other, pnodes)
             if (other != p && !other->won())
             {
                 setwin(other);
-                Nodeptr const parent = other.parent();
+                pNode const parent = other.parent();
                 if (parent && !parent->won())
                     backprop(parent);
             }
     }
 public:
     // Printing routines. DO NOTHING if ptr is NULL.
-    void printmainline(Nodeptr p, size_type detail = 0) const;
+    void printmainline(pNode p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
         { printmainline(root(), detail); }
-    virtual void checkmainline(Nodeptr p) const;
+    virtual void checkmainline(pNode p) const;
     void printstats() const;
     void printenvs() const
     {
