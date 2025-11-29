@@ -6,21 +6,21 @@
 #include "propctor.h"
 #include "relation.h"
 #include "stat.h"
+#include "syntaxDAG.h"
 #include "syntaxiom.h"
 #include "util/for.h"
 
 class Database
 {
-    // Set of constants
     typedef std::set<strview> Constants;
     Constants m_constants;
-    // Map: var -> id
     typedef std::map<strview, Symbol2::ID> VarIDmap;
     VarIDmap m_varIDmap;
     std::vector<strview> m_varvec;
     Hypotheses m_hypotheses;
     Assertions m_assertions;
     Assiters m_assiters;
+    SyntaxDAG m_syntaxDAG;
     Syntaxioms m_syntaxioms;
     Commentinfo m_commentinfo;
     Relationmap m_relations;
@@ -37,6 +37,7 @@ public:
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Assertions const & assertions() const { return m_assertions; }
     Assiters const & assiters() const { return m_assiters; }
+    SyntaxDAG const & syntaxDAG() const { return m_syntaxDAG; }
     Syntaxioms const & syntaxioms() const { return m_syntaxioms; }
     Syntaxioms primitivesyntaxioms() const
     {
