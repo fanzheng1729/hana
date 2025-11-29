@@ -15,10 +15,10 @@ struct SyntaxDAG
     typedef Buckets::const_iterator Rankiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Buckets> RanksDAG;
-    RanksDAG const & ranks() const { return m_buckets; }
-    // Add a syntaxiom and put it in a bucket.
-    void addsyntax(strview syntaxiom, strview bucket)
-    { bucketbysyntaxiom[syntaxiom] = *m_buckets.insert(bucket).first; }
+    RanksDAG const & ranks() const { return m_ranks; }
+    // Add a syntaxiom and put it in a rank.
+    void addsyntax(strview syntaxiom, strview rank)
+    { rankbysyntaxiom[syntaxiom] = *m_ranks.insert(rank).first; }
     // Add a definition to the DAG of syntaxioms.
     void adddef(strview label, Proofsteps const & defRPN)
     {
@@ -48,8 +48,8 @@ struct SyntaxDAG
     // Return ranks().end() if not found.
     Rankiter bucketiter(strview label) const
     {
-        Mapiter const mapiter = bucketbysyntaxiom.find(label);
-        if (mapiter == bucketbysyntaxiom.end())
+        Mapiter const mapiter = rankbysyntaxiom.find(label);
+        if (mapiter == rankbysyntaxiom.end())
             return ranks().end();
         return ranks().find(mapiter->second);
     }
@@ -60,8 +60,8 @@ struct SyntaxDAG
         FOR (Proofstep step, RPN)
             if (step.type == Proofstep::THM)
             {
-                Mapiter const iter = bucketbysyntaxiom.find(step.pass->first);
-                if (iter != bucketbysyntaxiom.end())
+                Mapiter const iter = rankbysyntaxiom.find(step.pass->first);
+                if (iter != rankbysyntaxiom.end())
                     result.insert(iter->second);
             }
         return result;
@@ -87,29 +87,29 @@ struct SyntaxDAG
     bool link(strview from, strview to)
     {
         Rankiter fromiter = bucketiter(from);
-        if (fromiter == m_buckets.end())
+        if (fromiter == m_ranks.end())
             return false; // Bucket unseen
         Rankiter toiter   = bucketiter(to);
-        if (toiter == m_buckets.end())
+        if (toiter == m_ranks.end())
             return false; // Bucket unseen
-        return m_buckets.link(fromiter, toiter);
+        return m_ranks.link(fromiter, toiter);
     }
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
         Rankiter fromiter = bucketiter(from);
-        if (fromiter == m_buckets.end())
+        if (fromiter == m_ranks.end())
             return false; // Bucket unseen
         Rankiter toiter   = bucketiter(to);
-        if (toiter == m_buckets.end())
+        if (toiter == m_ranks.end())
             return false; // Bucket unseen
         return ranks().reachable(fromiter, toiter);
     }
 private:
     // DAG of classes of syntaxioms
-    DAG<Buckets> m_buckets;
+    DAG<Buckets> m_ranks;
     // Map: syntaxiom -> bucket
-    std::map<strview, strview> bucketbysyntaxiom;
+    std::map<strview, strview> rankbysyntaxiom;
 };
 
 #endif
