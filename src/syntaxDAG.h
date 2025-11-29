@@ -13,6 +13,7 @@ struct SyntaxDAG
     // Classes of syntaxioms
     typedef std::set<std::string> Buckets;
     typedef Buckets::const_iterator Bucketiter;
+    typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Buckets> BucketsDAG;
     BucketsDAG const & buckets() const { return m_buckets; }
     // Add a syntaxiom and put it in a bucket.
@@ -23,30 +24,47 @@ struct SyntaxDAG
     {
         FOR (Proofstep step, defRPN)
             if (step.type == Proofstep::THM)
-                link(label, step.phyp->first);
+                link(label, step.pass->first);
     }
     // Add an expression to the set of maximal buckets.
-    void addexp(Buckets & buckets, Proofsteps const & expRPN) const
+    void addexp(Buckets & maxbuckets, Proofsteps const & RPN) const
     {
-        // Buckets of all syntaxioms in the expression
-        Buckets expbuckets;
-        FOR (Proofstep step, expRPN)
-            if (step.type == Proofstep::THM)
-                expbuckets.insert(bucketbysyntaxiom.at(step.phyp->first));
-        // Add buckets of all syntaxioms in the expression
-        FOR (strview expbucket, expbuckets)
+        FOR (strview expbucket, expbuckets(RPN))
         {
-            if (!ismaximal(expbucket, buckets))
+            if (!ismaximal(expbucket, maxbuckets))
                 continue;
             // expbucket is maximal.
-            Bucketiter const newiter = buckets.insert(expbucket).first;
+            Bucketiter const newiter = maxbuckets.insert(expbucket).first;
             // Remove non-maximal buckets.
-            for (Bucketiter iter = buckets.begin(); iter != buckets.end(); )
-                if (iter == newiter || ismaximal(*iter, buckets))
+            for (Bucketiter iter = maxbuckets.begin();
+                iter != maxbuckets.end(); )
+                if (iter == newiter || ismaximal(*iter, maxbuckets))
                     ++iter;
                 else
-                    buckets.erase(iter++);
+                    maxbuckets.erase(iter++);
         }
+    }
+    // Find the bucket of a syntaxiom.
+    // Return buckets().end() if not found.
+    Bucketiter bucketiter(strview label) const
+    {
+        Mapiter const mapiter = bucketbysyntaxiom.find(label);
+        if (mapiter == bucketbysyntaxiom.end())
+            return buckets().end();
+        return buckets().find(mapiter->second);
+    }
+    // Return the buckets of an expression.
+    Buckets expbuckets(Proofsteps const & RPN) const
+    {
+        Buckets result;
+        FOR (Proofstep step, RPN)
+            if (step.type == Proofstep::THM)
+            {
+                Mapiter const iter = bucketbysyntaxiom.find(step.pass->first);
+                if (iter != bucketbysyntaxiom.end())
+                    result.insert(iter->second);
+            }
+        return result;
     }
     // Return true if the bucket is maximal among the buckets.
     bool ismaximal(strview bucket, Buckets const & buckets) const
@@ -68,12 +86,10 @@ struct SyntaxDAG
     // Add an edge between syntaxioms. Returns true if edge is added.
     bool link(strview from, strview to)
     {
-        strview frombucket  = bucketbysyntaxiom.at(from);
-        Bucketiter fromiter = m_buckets.find(frombucket);
+        Bucketiter fromiter = bucketiter(from);
         if (fromiter == m_buckets.end())
             return false; // Bucket unseen
-        strview tobucket    = bucketbysyntaxiom.at(to);
-        Bucketiter toiter   = m_buckets.find(tobucket);
+        Bucketiter toiter   = bucketiter(to);
         if (toiter == m_buckets.end())
             return false; // Bucket unseen
         return m_buckets.link(fromiter, toiter);
@@ -81,15 +97,13 @@ struct SyntaxDAG
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
-        strview frombucket  = bucketbysyntaxiom.at(from);
-        Bucketiter fromiter = m_buckets.find(frombucket);
+        Bucketiter fromiter = bucketiter(from);
         if (fromiter == m_buckets.end())
             return false; // Bucket unseen
-        strview tobucket    = bucketbysyntaxiom.at(to);
-        Bucketiter toiter   = m_buckets.find(tobucket);
+        Bucketiter toiter   = bucketiter(to);
         if (toiter == m_buckets.end())
             return false; // Bucket unseen
-        return m_buckets.reachable(fromiter, toiter);
+        return buckets().reachable(fromiter, toiter);
     }
 private:
     // DAG of classes of syntaxioms

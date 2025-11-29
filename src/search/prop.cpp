@@ -186,8 +186,6 @@ bool testpropsearch
     for (Assiters::size_type i = 1; i < assiters.size(); ++i)
     {
         Assiter const iter = assiters[i];
-        // printass(*iter);
-        // std::cout << database.assbuckets(iter->second);
 
         // Skip axioms, trivial and duplicate theorems.
         if (iter->second.type

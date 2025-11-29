@@ -206,29 +206,39 @@ public:
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()
     {
+        Syntaxioms const & prims = primitivesyntaxioms();
+        Propctors  const & props = propctors();
         FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
         {
-            strview label = syntaxiom.first;
-            strview bucket= propctors().count(label) ? label : "other";
+            strview const label = syntaxiom.first;
+            strview bucket = "other";
+
+            if (props.count(label))
+                if (prims.count(label))
+                    continue;
+                else
+                    bucket = label;
+
             m_syntaxDAG.addsyntax(label, bucket);
         }
         FOR (Definitions::const_reference def, definitions())
             if (def.second.pdef)
                 m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
-    // The buckets of an assertion
-    SyntaxDAG::Buckets hypsbuckets(Assertion const & ass) const
+    // The maximal buckets of an assertion
+    SyntaxDAG::Buckets assmaxbuckets(Assertion const & ass) const
+    {
+        SyntaxDAG::Buckets result(hypsmaxbuckets(ass));
+        syntaxDAG().addexp(result, ass.expRPN);
+        return result;
+    }
+    // The maximal buckets of the hypotheses of an assertion
+    SyntaxDAG::Buckets hypsmaxbuckets(Assertion const & ass) const
     {
         SyntaxDAG::Buckets result;
         for (Hypsize i = 0; i < ass.hypcount(); ++i)
             if (!ass.hypfloats(i))
                 syntaxDAG().addexp(result, ass.hypRPN(i));
-        return result;
-    }
-    SyntaxDAG::Buckets assbuckets(Assertion const & ass) const
-    {
-        SyntaxDAG::Buckets result(hypsbuckets(ass));
-        syntaxDAG().addexp(result, ass.expRPN);
         return result;
     }
 };
