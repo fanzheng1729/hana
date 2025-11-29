@@ -5,7 +5,7 @@
 #include <set>
 #include <utility>
 #include <vector>
-#include "util/for.h"
+#include "for.h"
 
 // Directed acyclic graph, on top of a set
 template<class Carrier>
