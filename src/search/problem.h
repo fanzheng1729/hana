@@ -65,8 +65,8 @@ public:
         {
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
-            Goalptr const pGoal = addgoal(goal, env, GOALTRUE);
-            pGoal->second.proofdst().assign(1, env.assertion.hypiters[i]);
+            addgoal(goal, env, GOALTRUE)
+            ->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
     void updateimplication(Environ const & env)
