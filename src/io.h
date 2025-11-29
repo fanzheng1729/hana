@@ -56,15 +56,13 @@ std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
     typedef typename SyntaxDAG::Bucketiter It;
 
-    Buckets const & buckets = syntaxDAG.buckets();
-    for (It iter1 = buckets.begin(); iter1 != buckets.end(); ++iter1)
+    Buckets const & ranks = syntaxDAG.buckets();
+    for (It iter1 = ranks.begin(); iter1 != ranks.end(); ++iter1)
     {
         out << *iter1 << " -> ";
-        for (It iter2 = buckets.begin(); iter2 != buckets.end(); ++iter2)
-        {
-            if (buckets.reachable(iter1, iter2))
+        for (It iter2 = ranks.begin(); iter2 != ranks.end(); ++iter2)
+            if (ranks.reachable(iter1, iter2))
                 out << *iter2 << ' ';
-        }
         out << std::endl;
     }
     return out;
