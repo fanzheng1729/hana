@@ -11,10 +11,10 @@
 struct SyntaxDAG
 {
     // Classes of syntaxioms
-    typedef std::set<std::string> Buckets;
-    typedef Buckets::const_iterator Rankiter;
+    typedef std::set<std::string> Ranks;
+    typedef Ranks::const_iterator Rankiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
-    typedef DAG<Buckets> RanksDAG;
+    typedef DAG<Ranks> RanksDAG;
     RanksDAG const & ranks() const { return m_ranks; }
     // Add a syntaxiom and put it in a rank.
     void addsyntax(strview syntaxiom, strview rank)
@@ -27,7 +27,7 @@ struct SyntaxDAG
                 link(label, step.pass->first);
     }
     // Add an expression to the set of maximal ranks.
-    void addexp(Buckets & maxranks, Proofsteps const & RPN) const
+    void addexp(Ranks & maxranks, Proofsteps const & RPN) const
     {
         FOR (strview exprank, expranks(RPN))
         {
@@ -54,9 +54,9 @@ struct SyntaxDAG
         return ranks().find(mapiter->second);
     }
     // Return the ranks of an expression.
-    Buckets expranks(Proofsteps const & RPN) const
+    Ranks expranks(Proofsteps const & RPN) const
     {
-        Buckets result;
+        Ranks result;
         FOR (Proofstep step, RPN)
             if (step.type == Proofstep::THM)
             {
@@ -67,7 +67,7 @@ struct SyntaxDAG
         return result;
     }
     // Return true if the rank is maximal among the ranks.
-    bool ismaximal(strview rank, Buckets const & ranks) const
+    bool ismaximal(strview rank, Ranks const & ranks) const
     {
         // Locate the rank.
         Rankiter const to = this->ranks().find(rank);
@@ -106,7 +106,7 @@ struct SyntaxDAG
     }
 private:
     // DAG of classes of syntaxioms
-    DAG<Buckets> m_ranks;
+    DAG<Ranks> m_ranks;
     // Map: syntaxiom -> rank
     std::map<strview, strview> syntaxiomranks;
 };

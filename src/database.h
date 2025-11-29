@@ -226,16 +226,16 @@ public:
                 m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
     // The maximal buckets of an assertion
-    SyntaxDAG::Buckets assmaxbuckets(Assertion const & ass) const
+    SyntaxDAG::Ranks assmaxbuckets(Assertion const & ass) const
     {
-        SyntaxDAG::Buckets result(hypsmaxbuckets(ass));
+        SyntaxDAG::Ranks result(hypsmaxbuckets(ass));
         syntaxDAG().addexp(result, ass.expRPN);
         return result;
     }
     // The maximal buckets of the hypotheses of an assertion
-    SyntaxDAG::Buckets hypsmaxbuckets(Assertion const & ass) const
+    SyntaxDAG::Ranks hypsmaxbuckets(Assertion const & ass) const
     {
-        SyntaxDAG::Buckets result;
+        SyntaxDAG::Ranks result;
         for (Hypsize i = 0; i < ass.hypcount(); ++i)
             if (!ass.hypfloats(i))
                 syntaxDAG().addexp(result, ass.hypRPN(i));

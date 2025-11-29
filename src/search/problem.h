@@ -21,8 +21,8 @@ public:
     // The assertion to be proved
     Assertion const & assertion;
 private:
-    // Buckets of the assertion, updated when problem is simplified.
-    SyntaxDAG::Buckets buckets;
+    // Ranks of the assertion, updated when problem is simplified.
+    SyntaxDAG::Ranks buckets;
 public:
     // Problem context
     Environ const * const pProbEnv;

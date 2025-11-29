@@ -73,8 +73,8 @@ struct Environ : protected Gen
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
-    // Buckets of the hypotheses combined
-    SyntaxDAG::Buckets buckets;
+    // Ranks of the hypotheses combined
+    SyntaxDAG::Ranks buckets;
     std::string name;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
