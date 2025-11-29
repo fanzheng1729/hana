@@ -40,6 +40,6 @@ typedef Goaldatas::pointer Goalptr;
 
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> Goals;
-typedef Goals::pointer BigGoalptr;
+typedef Goals::pointer pBIGGOAL;
 
 #endif // GOAL_H_INCLUDED
