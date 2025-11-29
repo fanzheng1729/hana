@@ -86,14 +86,14 @@ public:
         if (p->game().proven()) return;
         p->game().goaldata().m_pnodes.insert(p);
     }
-    // Add simplified goal. Return its pointer. Return pGoal if unsuccessful.
-    friend Goalptr addsimpgoal(Goalptr pGoal)
+    // Add simplified goal. Return its pointer. Return pgoal if unsuccessful.
+    friend Goalptr addsimpgoal(Goalptr pgoal)
     {
-        if (!pGoal) return pGoal;
-        Environ const * const pnewEnv = pGoal->second.pnewEnv;
-        if (!pnewEnv) return pGoal;
-        BigGoalptr const pBigGoal = pGoal->second.pBigGoal;
-        if (!pBigGoal) return pGoal;
+        if (!pgoal) return pgoal;
+        Environ const * const pnewEnv = pgoal->second.pnewEnv;
+        if (!pnewEnv) return pgoal;
+        BigGoalptr const pBigGoal = pgoal->second.pBigGoal;
+        if (!pBigGoal) return pgoal;
         Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pnewEnv, pBigGoal));
         return &*pBigGoal->second.insert(value).first;
     }
