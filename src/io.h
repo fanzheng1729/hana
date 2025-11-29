@@ -51,12 +51,12 @@ std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
 }
 
 template
-<class SyntaxDAG, class Buckets = typename SyntaxDAG::BucketsDAG>
+<class SyntaxDAG, class Ranks = typename SyntaxDAG::BucketsDAG>
 std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
     typedef typename SyntaxDAG::Bucketiter It;
 
-    Buckets const & ranks = syntaxDAG.buckets();
+    Ranks const & ranks = syntaxDAG.buckets();
     for (It iter1 = ranks.begin(); iter1 != ranks.end(); ++iter1)
     {
         out << *iter1 << " -> ";
