@@ -18,7 +18,7 @@ struct SyntaxDAG
     RanksDAG const & ranks() const { return m_ranks; }
     // Add a syntaxiom and put it in a rank.
     void addsyntax(strview syntaxiom, strview rank)
-    { rankbysyntaxiom[syntaxiom] = *m_ranks.insert(rank).first; }
+    { syntaxiomranks[syntaxiom] = *m_ranks.insert(rank).first; }
     // Add a definition to the DAG of syntaxioms.
     void adddef(strview label, Proofsteps const & defRPN)
     {
@@ -48,8 +48,8 @@ struct SyntaxDAG
     // Return ranks().end() if not found.
     Rankiter bucketiter(strview label) const
     {
-        Mapiter const mapiter = rankbysyntaxiom.find(label);
-        if (mapiter == rankbysyntaxiom.end())
+        Mapiter const mapiter = syntaxiomranks.find(label);
+        if (mapiter == syntaxiomranks.end())
             return ranks().end();
         return ranks().find(mapiter->second);
     }
@@ -60,8 +60,8 @@ struct SyntaxDAG
         FOR (Proofstep step, RPN)
             if (step.type == Proofstep::THM)
             {
-                Mapiter const iter = rankbysyntaxiom.find(step.pass->first);
-                if (iter != rankbysyntaxiom.end())
+                Mapiter const iter = syntaxiomranks.find(step.pass->first);
+                if (iter != syntaxiomranks.end())
                     result.insert(iter->second);
             }
         return result;
@@ -109,7 +109,7 @@ private:
     // DAG of classes of syntaxioms
     DAG<Buckets> m_ranks;
     // Map: syntaxiom -> bucket
-    std::map<strview, strview> rankbysyntaxiom;
+    std::map<strview, strview> syntaxiomranks;
 };
 
 #endif
