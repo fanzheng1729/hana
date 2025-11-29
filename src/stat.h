@@ -1,7 +1,7 @@
 #ifndef STAT_H_INCLUDED
 #define STAT_H_INCLUDED
 
-#include <algorithm>
+#include <algorithm>    // for std::max
 #include "def.h"
 #include "util/for.h"
 // #include "io.h"
@@ -31,7 +31,7 @@ Assertions::size_type largestsymboldefnumber
         else
         {
 //std::cout << "ud";
-            Syntaxioms::const_iterator itersyn(syntaxioms.find(strview(step)));
+            Syntaxioms::const_iterator itersyn=syntaxioms.find(strview(step));
             if (itersyn != syntaxioms.end())
                 number = itersyn->second; // found in syntax axioms
             else
