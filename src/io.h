@@ -54,7 +54,7 @@ template
 <class SyntaxDAG, class Buckets = typename SyntaxDAG::BucketsDAG>
 std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
-    typedef typename Buckets::const_iterator It;
+    typedef typename SyntaxDAG::Bucketiter It;
 
     Buckets const & buckets = syntaxDAG.buckets();
     for (It iter1 = buckets.begin(); iter1 != buckets.end(); ++iter1)

@@ -216,6 +216,21 @@ public:
             if (def.second.pdef)
                 m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
+    // The buckets of an assertion
+    SyntaxDAG::Buckets hypsbuckets(Assertion const & ass) const
+    {
+        SyntaxDAG::Buckets result;
+        for (Hypsize i = 0; i < ass.hypcount(); ++i)
+            if (!ass.hypfloats(i))
+                syntaxDAG().addexp(result, ass.hypRPN(i));
+        return result;
+    }
+    SyntaxDAG::Buckets assbuckets(Assertion const & ass) const
+    {
+        SyntaxDAG::Buckets result(hypsbuckets(ass));
+        syntaxDAG().addexp(result, ass.expRPN);
+        return result;
+    }
 };
 
 #endif // DATABASE_H_INCLUDED
