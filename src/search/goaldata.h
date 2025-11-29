@@ -38,14 +38,14 @@ class Goaldata
     // Pointer to the context
     Environ const * pEnv;
     // Pointer to the different contexts where the goal is evaluated
-    BigGoalptr pBigGoal;
+    BigGoalptr pbigGoal;
 public:
     // New context after trimming unnecessary hypotheses
     Environ const * pnewEnv;
     Goaldata(Goalstatus s, Environ const * envptr, BigGoalptr bigGoalptr) :
-        status(s), pEnv(envptr), pBigGoal(bigGoalptr), pnewEnv(NULL) {}
-    Goal const & goal() const { return pBigGoal->first; }
-    Goaldatas & goaldatas() const { return pBigGoal->second; }
+        status(s), pEnv(envptr), pbigGoal(bigGoalptr), pnewEnv(NULL) {}
+    Goal const & goal() const { return pbigGoal->first; }
+    Goaldatas & goaldatas() const { return pbigGoal->second; }
     Proofsteps const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
     Proofsteps const & proofsrc()
@@ -92,7 +92,7 @@ public:
         if (!pgoal) return pgoal;
         Environ const * const pnewEnv = pgoal->second.pnewEnv;
         if (!pnewEnv) return pgoal;
-        BigGoalptr const pbigGoal = pgoal->second.pBigGoal;
+        BigGoalptr const pbigGoal = pgoal->second.pbigGoal;
         if (!pbigGoal) return pgoal;
         Goaldatas::value_type value(pnewEnv, Goaldata(GOALTRUE, pnewEnv, pbigGoal));
         return &*pbigGoal->second.insert(value).first;
