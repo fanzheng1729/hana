@@ -159,6 +159,7 @@ public:
         numberlimit = maxranknumber;
         maxranks.clear();
         prune(root());
+        focusenvs();
         maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
         printranksinfo();
         navigate();
