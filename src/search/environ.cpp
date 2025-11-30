@@ -60,11 +60,11 @@ Environ::MoveValidity Environ::valid(Move const & move) const
         (move.hypRPN(i), move.hyptypecode(i), *this, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
         Goalstatus & s = pgoal->second.getstatus();
-        if (s == GOALFALSE)
-            return MoveINVALID; // Refuted
+        if (s == GOALFALSE) // Refuted
+            return MoveINVALID;
         // Check if the goal is proven.
         bool const proven = pgoal->second.proven();
-        if (s >= GOALOPEN)// Valid
+        if (s >= GOALOPEN) // Valid
         {
             move.hypvec[i] = proven ? pgoal : addsimpgoal(pgoal);
             continue;
@@ -72,8 +72,8 @@ Environ::MoveValidity Environ::valid(Move const & move) const
         // New goal (s == GOALNEW)
         Goal const & goal = pgoal->second.goal();
         s = status(goal);
-        if (s == GOALFALSE)
-            return MoveINVALID; // Refuted
+        if (s == GOALFALSE) // Refuted
+            return MoveINVALID;
         // Simplified context for the child, if !NULL
         Environ const * & psimpEnv = pgoal->second.psimpEnv;
         psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
