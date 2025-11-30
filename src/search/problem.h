@@ -42,7 +42,7 @@ public:
         assertion(env.assertion),
         numberlimit(std::min(assertion.number, database.assiters().size())),
         maxranks(database.assmaxranks(assertion)),
-        maxranknumber(database.maxranknumber(maxranks)),
+        maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
     {
@@ -156,13 +156,25 @@ public:
         if (value() != ALMOSTWIN)
             return;
         std::cout << numberlimit << ' ' << maxranknumber << std::endl;
+        std::cout << maxranks;
         numberlimit = maxranknumber;
+        maxranks.clear();
         prune(root());
+        maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
         std::cout << numberlimit << ' ' << maxranknumber << std::endl;
+        std::cout << maxranks;
         navigate();
         std::cin.get();
     }
-    // Prune the sub-tree at p. Update maxranks and maxnraknumber.
+    // Add the ranks of a node to maxranks.
+    void addranks(pNode p)
+    {
+        if (value(p) < ALMOSTWIN)
+            return;
+        database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
+        database.syntaxDAG().addexp(maxranks, p->game().goal().RPN);
+    }
+    // Prune the sub-tree at p. Update maxranks.
     void prune(pNode p)
     {
         if (p.haschild())
@@ -173,6 +185,8 @@ public:
         }
         else if (value(p) < ALMOSTWIN)
             setalmostloss(p);
+        else
+            addranks(p);
     }
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }

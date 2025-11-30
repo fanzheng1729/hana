@@ -1,7 +1,7 @@
 #ifndef SYNTAXDAG_H_INCLUDED
 #define SYNTAXDAG_H_INCLUDED
 
-#include <algorithm>    // for std::min
+#include <algorithm>    // for std::min and std::max
 #include <map>
 #include <set>
 #include "util/DAG.h"
@@ -87,6 +87,14 @@ struct SyntaxDAG
                 return false;
         }
         return true;
+    }
+    // max # rank in a rank set
+    std::size_t maxranknumber(Ranks const & ranks) const
+    {
+        std::size_t max = 0;
+        FOR (strview rank, ranks)
+            max = std::max(max, ranksDAG().at(rank));
+        return max;
     }
     // Find the rank of a syntaxiom.
     // Return ranksDAG().end() if not found.

@@ -77,7 +77,7 @@ struct Environ : protected Gen
     // The assertion to be proved
     Assertion const & assertion;
     // Maximal ranks of the hypotheses combined
-    SyntaxDAG::Ranks maxranks;
+    SyntaxDAG::Ranks const maxranks;
     std::string name;
     // Length of the rev Polish notation of all hypotheses combined
     Proofsize const hypslen;
