@@ -43,7 +43,8 @@ struct Environ : protected Gen
         staged(isstaged),
         m_subsumedbyProb(false), m_rankssimplerthanProb(false) {}
     Problem const & prob() const { return *pProb; }
-    // Context relations
+    // Context implication relations
+    // Updated when new context is added
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
     pEnvs const & psupEnvs() const { return m_psupEnvs; }
     // Return true if *this <= problem context
@@ -108,11 +109,12 @@ private:
                 Proofsize size, Moves & moves) const;
     // true if *this <= problem context
     bool m_subsumedbyProb;
+    // Cache for context implication relations
+    // Updated when new context is added
+    mutable pEnvs m_psubEnvs, m_psupEnvs;
     // true if maxranks is simpler than problem maxranks
     // Updated when problem is simplified
-    bool m_rankssimplerthanProb;
-    // Cache for context implication relations
-    mutable pEnvs m_psubEnvs, m_psupEnvs;
+    mutable bool m_rankssimplerthanProb;
     // Update context implication relations, given comparison result.
     void addEnv(Environ const & env, int cmp) const;
     // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.

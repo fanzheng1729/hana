@@ -186,8 +186,26 @@ public:
         else
             addranks(p);
     }
+    // Focus on simpler contexts.
+    void focusenvs()
+    {
+        FOR (Environs::const_reference env, environs)
+            env.second->m_rankssimplerthanProb
+            = database.syntaxDAG().simplerthan
+            (env.second->maxranks, maxranks);
+    }
     // Focus the sub-tree at p, with updated maxranks.
-    void focus(pNode p);
+    void focus(pNode p)
+    {
+        // if (value(p) < ALMOSTWIN)
+        //     return;
+        // if (p.haschild())
+        // {
+        //     FOR (pNode child, *p.children())
+        //         focus(child);
+        //     seteval(p, minimax(p));
+        // }
+    }
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // # goals of a given status
@@ -260,7 +278,14 @@ public:
     void printenvs() const
     {
         FOR (Environs::const_reference env, environs)
-            std::cout << env.first << std::endl;
+        {
+            SyntaxDAG::Ranks const & envranks = env.second->maxranks;
+            char const c = env.second->m_rankssimplerthanProb ? '*' : ' ';
+            std::cout << c << env.first << '\t';
+            FOR (std::string const & rank, env.second->maxranks)
+                std::cout << rank << ' ';
+            std::cout << std::endl;
+        }
     }
     void printranksinfo() const
     {
@@ -268,6 +293,7 @@ public:
         FOR (std::string const & rank, maxranks)
             std::cout << rank << ' ';
         std::cout << std::endl;
+        printenvs();
     }
     void navigate(bool detailed = true) const;
     void writeproof(const char * const filename) const;
