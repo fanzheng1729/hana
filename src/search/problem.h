@@ -140,6 +140,10 @@ public:
             setwin(p); // Fix seteval in backprop.
         else if (p->won() && p->game().writeproof())
             closenodes(p);
+        else if (p == root() && value(p) == ALMOSTWIN)
+            std::cout << assertion.number << ' ' << probEnv().name,
+            navigate(),
+            std::cin.get();
     }
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
