@@ -164,7 +164,7 @@ public:
         maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
         // printranksinfo();
     }
-    // Add the ranks of a node to maxranks.
+    // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode p)
     {
         if (value(p) < ALMOSTWIN)
@@ -194,7 +194,7 @@ public:
             = database.syntaxDAG().simplerthan
             (env.second->maxranks, maxranks);
     }
-    // Focus the sub-tree at p, with updated maxranks.
+    // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p)
     {
         if (value(p) < ALMOSTWIN)
