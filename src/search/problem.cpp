@@ -1,7 +1,6 @@
 #include <cctype>   // for std::tolower
 #include <fstream>
 #include "../proof/analyze.h"
-#include "../database.h"
 #include "goaldata.h"
 #include "../io.h"
 #include "problem.h"
