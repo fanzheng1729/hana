@@ -245,7 +245,7 @@ public:
         return result;
     }
     // max # rank in a rank set
-    Assertions::size_type maxranknumber(SyntaxDAG::Ranks const & ranks)
+    Assertions::size_type maxranknumber(SyntaxDAG::Ranks const & ranks) const
     {
         Assertions::size_type max = 0;
         FOR (strview rank, ranks)
