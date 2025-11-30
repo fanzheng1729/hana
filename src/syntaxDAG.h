@@ -15,7 +15,9 @@ struct SyntaxDAG
     // Classes of syntaxioms
     typedef std::set<std::string> Ranks;
     typedef Ranks::const_iterator Rankiter;
-    typedef std::map<strview, strview>::const_iterator Mapiter;
+    // Map: syntaxiom -> rank
+    typedef std::map<strview, strview> Syntaxranks;
+    typedef Syntaxranks::const_iterator Mapiter;
     typedef DAG<std::map<std::string, std::size_t> > RanksDAG;
     typedef RanksDAG::const_iterator RankDAGiter;
     RanksDAG const & ranksDAG() const { return m_ranksDAG; }
@@ -26,7 +28,7 @@ struct SyntaxDAG
         = m_ranksDAG.insert(std::make_pair(rank, number));
         if (!result.second) // Another syntaxiom of same rank found
             result.first->second = std::min(number, result.first->second);
-        syntaxiomranks[syntaxiom] = result.first->first;
+        syntaxranks[syntaxiom] = result.first->first;
     }
     // Add the definition of salabel to the DAG of syntaxioms.
     void adddef(strview salabel, Proofsteps const & defRPN)
@@ -63,8 +65,8 @@ struct SyntaxDAG
         FOR (Proofstep step, RPN)
             if (step.type == Proofstep::THM)
             {
-                Mapiter const iter = syntaxiomranks.find(step.pass->first);
-                if (iter != syntaxiomranks.end())
+                Mapiter const iter = syntaxranks.find(step.pass->first);
+                if (iter != syntaxranks.end())
                     result.insert(iter->second);
             }
         return result;
@@ -89,8 +91,8 @@ struct SyntaxDAG
     // Return ranksDAG().end() if not found.
     RankDAGiter rankDAGiter(strview label) const
     {
-        Mapiter const mapiter = syntaxiomranks.find(label);
-        if (mapiter == syntaxiomranks.end())
+        Mapiter const mapiter = syntaxranks.find(label);
+        if (mapiter == syntaxranks.end())
             return ranksDAG().end();
         return ranksDAG().find(mapiter->second);
     }
@@ -131,7 +133,7 @@ private:
     // DAG of classes of syntaxioms
     RanksDAG m_ranksDAG;
     // Map: syntaxiom -> rank
-    std::map<strview, strview> syntaxiomranks;
+    Syntaxranks syntaxranks;
 };
 
 #endif
