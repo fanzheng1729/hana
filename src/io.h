@@ -56,7 +56,7 @@ std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
     typedef typename SyntaxDAG::Rankiter It;
 
-    Ranks const & dag = syntaxDAG.ranks();
+    Ranks const & dag = syntaxDAG.ranksDAG();
     for (It iter1 = dag.begin(); iter1 != dag.end(); ++iter1)
     {
         out << *iter1 << " -> ";

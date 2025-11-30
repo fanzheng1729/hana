@@ -15,7 +15,7 @@ struct SyntaxDAG
     typedef Ranks::const_iterator Rankiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Ranks> RanksDAG;
-    RanksDAG const & ranks() const { return m_ranks; }
+    RanksDAG const & ranksDAG() const { return m_ranks; }
     // Add a syntaxiom and put it in a rank.
     void addsyntax(strview syntaxiom, strview rank)
     { syntaxiomranks[syntaxiom] = *m_ranks.insert(rank).first; }
@@ -48,13 +48,13 @@ struct SyntaxDAG
         }
     }
     // Find the rank of a syntaxiom.
-    // Return ranks().end() if not found.
+    // Return ranksDAG().end() if not found.
     Rankiter rankiter(strview label) const
     {
         Mapiter const mapiter = syntaxiomranks.find(label);
         if (mapiter == syntaxiomranks.end())
-            return ranks().end();
-        return ranks().find(mapiter->second);
+            return ranksDAG().end();
+        return ranksDAG().find(mapiter->second);
     }
     // Return the ranks of an expression.
     Ranks expranks(Proofsteps const & RPN) const
@@ -73,14 +73,15 @@ struct SyntaxDAG
     bool ismaximal(strview rank, Ranks const & ranks) const
     {
         // Locate the rank.
-        Rankiter const to = this->ranks().find(rank);
-        if (to == this->ranks().end())
+        Rankiter const to = this->ranksDAG().find(rank);
+        if (to == this->ranksDAG().end())
             return true; // Rank unseen.
         // Rank seen.
         FOR (strview fromrank, ranks)
         {
-            Rankiter const from = this->ranks().find(fromrank);
-            if (from != this->ranks().end() && this->ranks().reachable(from, to))
+            Rankiter const from = this->ranksDAG().find(fromrank);
+            if (from != this->ranksDAG().end() &&
+                this->ranksDAG().reachable(from, to))
                 return false;
         }
         return true;
@@ -105,7 +106,7 @@ struct SyntaxDAG
         Rankiter toiter   = rankiter(to);
         if (toiter == m_ranks.end())
             return false; // Rank unseen
-        return ranks().reachable(fromiter, toiter);
+        return ranksDAG().reachable(fromiter, toiter);
     }
     // Ranks A < B if B is non-empty and
     // for all a in A, there is b in B such that a < b.
