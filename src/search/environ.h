@@ -48,8 +48,8 @@ struct Environ : protected Gen
     pEnvs const & psupEnvs() const { return m_psupEnvs; }
     // Return true if *this <= problem context
     bool subsumedbyProb() const { return m_subsumedbyProb; }
-    // Return true if ranks is simpler than problem ranks
-    // Updated when problem is simplified.
+    // Return true if maxranks is simpler than problem maxranks
+    // Updated when problem is simplified
     bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
@@ -108,8 +108,8 @@ private:
                 Proofsize size, Moves & moves) const;
     // true if *this <= problem context
     bool m_subsumedbyProb;
-    // true if ranks is simpler than problem ranks
-    // Updated when problem is simplified.
+    // true if maxranks is simpler than problem maxranks
+    // Updated when problem is simplified
     bool m_rankssimplerthanProb;
     // Cache for context implication relations
     mutable pEnvs m_psubEnvs, m_psupEnvs;
