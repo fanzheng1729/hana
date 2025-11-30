@@ -174,7 +174,7 @@ public:
         {
             pNode const child = (*p.children())[i];
             // Evaluate child.
-            if (!child.children()->empty())
+            if (child.haschild())
                 continue; // child not a leaf
             Eval const eval = evalleaf(child);
             child->seteval(eval);
@@ -188,7 +188,7 @@ public:
     // Evaluate the node. Return {value, sure?}.
     // p should != NULL.
     Eval evaluate(pNode p) const
-    { return p.children()->empty() ? evalleaf(p) : evalparent(p); }
+        { return p.haschild() ? evalparent(p) : evalleaf(p); }
     // Call back for back propagation.
     virtual void backpropcallback(pNode p) {}
     // Back propagate from the node pointed.
