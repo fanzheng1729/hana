@@ -13,7 +13,7 @@ struct SyntaxDAG
 {
     // Classes of syntaxioms
     typedef std::set<std::string> Ranks;
-    typedef Ranks::const_iterator Rankiter;
+    typedef Ranks::const_iterator RankDAGiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Ranks> RanksDAG;
     RanksDAG const & ranksDAG() const { return m_ranks; }
@@ -38,9 +38,9 @@ struct SyntaxDAG
             if (!ismaximal(exprank, maxranks))
                 continue;
             // exprank is maximal.
-            Rankiter const newiter = maxranks.insert(exprank).first;
+            RankDAGiter const newiter = maxranks.insert(exprank).first;
             // Remove non-maximal ranks.
-            for (Rankiter iter = maxranks.begin();
+            for (RankDAGiter iter = maxranks.begin();
                 iter != maxranks.end(); )
                 if (iter == newiter || ismaximal(*iter, maxranks))
                     ++iter;
@@ -65,13 +65,13 @@ struct SyntaxDAG
     bool ismaximal(strview rank, Ranks const & ranks) const
     {
         // Locate the rank.
-        Rankiter const to = ranksDAG().find(rank);
+        RankDAGiter const to = ranksDAG().find(rank);
         if (to == ranksDAG().end())
             return true; // Rank unseen.
         // Rank seen.
         FOR (strview fromrank, ranks)
         {
-            Rankiter const from = ranksDAG().find(fromrank);
+            RankDAGiter const from = ranksDAG().find(fromrank);
             if (from != ranksDAG().end() && ranksDAG().reachable(from, to))
                 return false;
         }
@@ -79,7 +79,7 @@ struct SyntaxDAG
     }
     // Find the rank of a syntaxiom.
     // Return ranksDAG().end() if not found.
-    Rankiter rankiter(strview label) const
+    RankDAGiter rankDAGiter(strview label) const
     {
         Mapiter const mapiter = syntaxiomranks.find(label);
         if (mapiter == syntaxiomranks.end())
@@ -89,10 +89,10 @@ struct SyntaxDAG
     // Add an edge between syntaxioms. Returns true if edge is added.
     bool link(strview from, strview to)
     {
-        Rankiter fromiter = rankiter(from);
+        RankDAGiter fromiter = rankDAGiter(from);
         if (fromiter == m_ranks.end())
             return false; // Rank unseen
-        Rankiter toiter   = rankiter(to);
+        RankDAGiter toiter   = rankDAGiter(to);
         if (toiter == m_ranks.end())
             return false; // Rank unseen
         return m_ranks.link(fromiter, toiter);
@@ -100,10 +100,10 @@ struct SyntaxDAG
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
-        Rankiter fromiter = rankiter(from);
+        RankDAGiter fromiter = rankDAGiter(from);
         if (fromiter == m_ranks.end())
             return false; // Rank unseen
-        Rankiter toiter   = rankiter(to);
+        RankDAGiter toiter   = rankDAGiter(to);
         if (toiter == m_ranks.end())
             return false; // Rank unseen
         return ranksDAG().reachable(fromiter, toiter);

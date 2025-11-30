@@ -54,7 +54,7 @@ template
 <class SyntaxDAG, class Ranks = typename SyntaxDAG::RanksDAG>
 std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
-    typedef typename SyntaxDAG::Rankiter It;
+    typedef typename SyntaxDAG::RankDAGiter It;
 
     Ranks const & dag = syntaxDAG.ranksDAG();
     for (It iter1 = dag.begin(); iter1 != dag.end(); ++iter1)
