@@ -224,7 +224,7 @@ static void printournode(pNode p, stage_t stage)
 static void printdeferline(pNode p)
 {
     printattempt(p);
-    if (!p.children()->empty())
+    if (p.haschild())
         printeval((*p.children())[0]);
     std::cout << std::endl;
 }
@@ -385,7 +385,7 @@ static bool findourchild(pNode & p, strview ass, std::size_t index)
 // Input the assertion and the index and move to the child. Return true if successful.
 static bool gotoourchild(pNode & p)
 {
-    if (p.children()->empty())
+    if (!p.haschild())
         return false;
 
     std::string token;

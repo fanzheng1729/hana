@@ -130,6 +130,8 @@ public:
         pNode parent() const { return pNode(*this ? m_ptr->parent : NULL); }
         // Return the size. Return 0 if *this is NULL.
         size_type size() const { return *this ? m_ptr->size : 0; }
+        // Return true if a node has a child. Return 0 if *this is NULL.
+        bool haschild() const { return size() > 1; }
         // Return true if a node has grand child. Return 0 if *this is NULL.
         bool hasgrandchild() const
             { return *this && m_ptr->size > m_ptr->children.size() + 1; }
