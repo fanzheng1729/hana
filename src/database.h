@@ -211,6 +211,8 @@ public:
         FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
         {
             strview const label = syntaxiom.first;
+            Assertions::size_type const number
+            = syntaxiom.second.assiter->second.number;
             strview rank = "other";
 
             if (props.count(label))
@@ -219,7 +221,7 @@ public:
                 else
                     rank = label;
 
-            m_syntaxDAG.addsyntax(label, rank);
+            m_syntaxDAG.addsyntax(label, number, rank);
         }
         FOR (Definitions::const_reference def, definitions())
             if (def.second.pdef)

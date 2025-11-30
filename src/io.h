@@ -59,10 +59,10 @@ std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
     RanksDAG const & dag = syntaxDAG.ranksDAG();
     for (It iter1 = dag.begin(); iter1 != dag.end(); ++iter1)
     {
-        out << *iter1 << " -> ";
+        out << iter1->first << " (" << iter1->second << ") -> ";
         for (It iter2 = dag.begin(); iter2 != dag.end(); ++iter2)
             if (dag.reachable(iter1, iter2))
-                out << *iter2 << ' ';
+                out << iter2->first << " (" << iter2->second << ") ";
         out << std::endl;
     }
     return out;

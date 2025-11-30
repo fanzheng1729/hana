@@ -1,6 +1,7 @@
 #ifndef SYNTAXDAG_H_INCLUDED
 #define SYNTAXDAG_H_INCLUDED
 
+#include <algorithm>    // for std::min
 #include <map>
 #include <set>
 #include "util/DAG.h"
@@ -15,13 +16,17 @@ struct SyntaxDAG
     typedef std::set<std::string> Ranks;
     typedef Ranks::const_iterator Rankiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
-    typedef DAG<Ranks> RanksDAG;
+    typedef DAG<std::map<std::string, std::size_t> > RanksDAG;
     typedef RanksDAG::const_iterator RankDAGiter;
     RanksDAG const & ranksDAG() const { return m_ranksDAG; }
     // Add a syntaxiom and put it in a rank.
-    void addsyntax(strview syntaxiom, strview rank)
+    void addsyntax(strview syntaxiom, std::size_t number, strview rank)
     {
-        syntaxiomranks[syntaxiom] = *m_ranksDAG.insert(rank).first;
+        std::pair<RanksDAG::iterator, bool> const result
+        = m_ranksDAG.insert(std::make_pair(rank, number));
+        if (!result.second) // Another syntaxiom of same rank found
+            result.first->second = std::min(number, result.first->second);
+        syntaxiomranks[syntaxiom] = result.first->first;
     }
     // Add the definition of salabel to the DAG of syntaxioms.
     void adddef(strview salabel, Proofsteps const & defRPN)
