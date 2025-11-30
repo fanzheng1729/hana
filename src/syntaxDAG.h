@@ -16,10 +16,12 @@ struct SyntaxDAG
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Ranks> RanksDAG;
     typedef RanksDAG::const_iterator RankDAGiter;
-    RanksDAG const & ranksDAG() const { return m_ranks; }
+    RanksDAG const & ranksDAG() const { return m_ranksDAG; }
     // Add a syntaxiom and put it in a rank.
     void addsyntax(strview syntaxiom, strview rank)
-    { syntaxiomranks[syntaxiom] = *m_ranks.insert(rank).first; }
+    {
+        syntaxiomranks[syntaxiom] = *m_ranksDAG.insert(rank).first;
+    }
     // Add the definition of salabel to the DAG of syntaxioms.
     void adddef(strview salabel, Proofsteps const & defRPN)
     {
@@ -90,21 +92,21 @@ struct SyntaxDAG
     bool link(strview from, strview to)
     {
         RankDAGiter fromiter = rankDAGiter(from);
-        if (fromiter == m_ranks.end())
+        if (fromiter == m_ranksDAG.end())
             return false; // Rank unseen
         RankDAGiter toiter   = rankDAGiter(to);
-        if (toiter == m_ranks.end())
+        if (toiter == m_ranksDAG.end())
             return false; // Rank unseen
-        return m_ranks.link(fromiter, toiter);
+        return m_ranksDAG.link(fromiter, toiter);
     }
     // Return true if a node reaches the other.
     bool reachable(strview from, strview to) const
     {
         RankDAGiter fromiter = rankDAGiter(from);
-        if (fromiter == m_ranks.end())
+        if (fromiter == m_ranksDAG.end())
             return false; // Rank unseen
         RankDAGiter toiter   = rankDAGiter(to);
-        if (toiter == m_ranks.end())
+        if (toiter == m_ranksDAG.end())
             return false; // Rank unseen
         return ranksDAG().reachable(fromiter, toiter);
     }
@@ -121,7 +123,7 @@ struct SyntaxDAG
     }
 private:
     // DAG of classes of syntaxioms
-    RanksDAG m_ranks;
+    RanksDAG m_ranksDAG;
     // Map: syntaxiom -> rank
     std::map<strview, strview> syntaxiomranks;
 };
