@@ -89,6 +89,8 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     {
         psubEnv->pProb = this;
         psubEnv->m_subsumedbyProb = (probEnv().compare(*psubEnv) == 1);
+        psubEnv->m_rankssimpler
+        = database.syntaxDAG().simplerthan(psubEnv->ranks, ranks);
         newEnviter->second = psubEnv;
         addhypproofs(*psubEnv);
         updateimplication(*psubEnv);

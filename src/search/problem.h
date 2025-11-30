@@ -190,6 +190,8 @@ private:
         environs[env.name] = pEnv;
         pEnv->pProb = this;
         pEnv->m_subsumedbyProb = true;
+        pEnv->m_rankssimpler
+        = database.syntaxDAG().simplerthan(pEnv->ranks, ranks);
         return pEnv;
     }
     friend Environ;
