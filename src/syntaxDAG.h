@@ -104,9 +104,12 @@ struct SyntaxDAG
             return false; // Rank unseen
         return ranks().reachable(fromiter, toiter);
     }
-    // Ranks A < B if for all a in A, there is b in B such that a < b.
+    // Ranks A < B if B is non-empty and
+    // for all a in A, there is b in B such that a < b.
     bool simplerthan(Ranks const & A, Ranks const & B) const
     {
+        if (B.empty())
+            return false;
         FOR (strview a, A)
             if (ismaximal(a, B))
                 return false;
