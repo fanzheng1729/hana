@@ -210,7 +210,8 @@ bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) c
         else
         {
             // All arguments seen. Write RPN of term.
-            adder(argtypes, genresult, stack);
+            if (adder(argtypes, genresult, stack))
+                return true;
             // Try the next substitution.
             next(argtypes, size, stack);
         }
