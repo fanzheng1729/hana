@@ -19,12 +19,12 @@ struct SyntaxDAG
     // Add a syntaxiom and put it in a rank.
     void addsyntax(strview syntaxiom, strview rank)
     { syntaxiomranks[syntaxiom] = *m_ranks.insert(rank).first; }
-    // Add a definition to the DAG of syntaxioms.
-    void adddef(strview label, Proofsteps const & defRPN)
+    // Add the definition of salabel to the DAG of syntaxioms.
+    void adddef(strview salabel, Proofsteps const & defRPN)
     {
         FOR (Proofstep step, defRPN)
             if (step.type == Proofstep::THM)
-                link(label, step.pass->first);
+                link(salabel, step.pass->first);
     }
     // Add an expression to the set of maximal ranks.
     void addexp(Ranks & maxranks, Proofsteps const & RPN) const
