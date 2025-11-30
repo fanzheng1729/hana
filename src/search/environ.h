@@ -50,7 +50,7 @@ struct Environ : protected Gen
     bool subsumedbyProb() const { return m_subsumedbyProb; }
     // Return true if ranks is simpler than problem ranks
     // Updated when problem is simplified.
-    bool rankssimpler() const { return m_rankssimplerthanProb; }
+    bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
