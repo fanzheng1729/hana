@@ -8,7 +8,7 @@
 #include "syntaxiom.h"
 
 // Check if all symbols in a revPolish notation are defined.
-// If so, return the largest # of def/syntax axiom.
+// If so, return max # of def/syntax axiom.
 // If a symbol has no definition, its # is n. Otherwise return 0.
 template<class T>
 Assertions::size_type largestsymboldefnumber
@@ -45,7 +45,7 @@ Assertions::size_type largestsymboldefnumber
 }
 
 // Check if all symbols in an assertion are defined.
-// If so, return the largest # of def/syntax axiom.
+// If so, return max # of def/syntax axiom.
 // If a symbol has empty definition, return n. Otherwise return 0.
 template<class T>
 Assertions::size_type largestsymboldefnumber
@@ -73,7 +73,7 @@ Assertions::size_type largestsymboldefnumber
     return max;
 }
 
-// Return the largest # of syntax axiom in a revPolish notation.
+// Return max # of syntax axiom in a revPolish notation.
 inline Assertions::size_type largestsymboldefnumber
     (Proofsteps const & RPN, Syntaxioms const & syntaxioms)
 {
