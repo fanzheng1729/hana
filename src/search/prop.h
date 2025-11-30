@@ -2,7 +2,6 @@
 #define PROP_H_INCLUDED
 
 #include <new>      // for std::nothrow
-#include "../database.h"
 #include "environ.h"
 #include "../util/for.h"
 
