@@ -13,9 +13,9 @@ struct SyntaxDAG
 {
     // Classes of syntaxioms
     typedef std::set<std::string> Ranks;
-    typedef Ranks::const_iterator RankDAGiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Ranks> RanksDAG;
+    typedef RanksDAG::const_iterator RankDAGiter;
     RanksDAG const & ranksDAG() const { return m_ranks; }
     // Add a syntaxiom and put it in a rank.
     void addsyntax(strview syntaxiom, strview rank)
