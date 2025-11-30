@@ -6,10 +6,19 @@
 typedef std::size_t stage_t;
 typedef double Value;
 
+#if __cplusplus >= 201103L
+#define CONSTEXPR constexpr
+#else
+#define CONSTEXPR const
+#endif // __cplusplus >= 201103L
+
 // Predefined game values
 enum    WDL { LOSS = -1, DRAW = 0, WIN = 1 };
-static  const Value ALMOSTWIN = WDL::WIN - std::numeric_limits<Value>::epsilon();
-static  const Value ALMOSTLOSS = -ALMOSTWIN;
+static  CONSTEXPR Value ALMOSTWIN
+        = WDL::WIN - std::numeric_limits<Value>::epsilon();
+static  CONSTEXPR Value ALMOSTLOSS = -ALMOSTWIN;
+
+#undef CONSTEXPR
 
 // Return true if the game ends with value v.
 inline  bool issure(Value v)
