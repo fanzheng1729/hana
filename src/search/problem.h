@@ -195,19 +195,7 @@ public:
             (env.second->maxranks, maxranks);
     }
     // Focus the sub-tree at p, with updated maxranks, if almost won.
-    void focus(pNode p)
-    {
-        if (value(p) < ALMOSTWIN)
-            return;
-        if (p.haschild())
-        {
-            FOR (pNode child, *p.children())
-                focus(child);
-            seteval(p, minimax(p));
-        }
-        else if (!p->game().env().rankssimplerthanProb())
-            seteval(p, evalleaf(p));
-    }
+    void focus(pNode p);
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // # goals of a given status
