@@ -2,6 +2,8 @@
 #include <fstream>
 #include "../../io.h"
 #include "../problem.h"
+#include "../../proof/analyze.h"
+#include "../../proof/verify.h"
 
 // Return the only open child of p.
 // Return NULL if p has 0 or at least 2 open children.
@@ -325,4 +327,16 @@ void Problem::navigate(bool detailed) const
 
     static std::string const hline(50, '-');
     std::cout << hline << std::endl;
+}
+
+void Problem::writeproof(const char * const filename) const
+{
+    if (proof().empty() || !filename)
+        return;
+
+    Printer printer(&database.typecodes());
+    verify(proof(), printer);
+
+    std::ofstream out(filename);
+    out << printer.str(indentation(ast(proof())));
 }

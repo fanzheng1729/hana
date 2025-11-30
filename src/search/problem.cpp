@@ -128,15 +128,3 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     }
     return psubEnv;
 }
-
-void Problem::writeproof(const char * const filename) const
-{
-    if (proof().empty() || !filename)
-        return;
-
-    Printer printer(&database.typecodes());
-    verify(proof(), printer);
-
-    std::ofstream out(filename);
-    out << printer.str(indentation(ast(proof())));
-}
