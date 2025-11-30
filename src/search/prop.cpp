@@ -97,11 +97,20 @@ struct Substadder : Adder
             move.substitutions[freevars[i]] =
             result.at(freevars[i].typecode())[stack[i]];
         // Filter move by SAT.
-        if (env.valid(move))
-            // std::cout << move << std::endl,
-            // std::cout << move.substitutions,
+        switch (env.valid(move))
+        {
+        case Environ::MoveCLOSED:
+            moves.assign(1, move);
+            break;
+        case Environ::MoveVALID:
+            // std::cout << move << std::endl;
+            // std::cout << move.substitutions;
             moves.push_back(move);
-// std::cin.get();
+            // std::cin.get();
+            break;
+        default:
+            break;
+        }
     }
 };
 

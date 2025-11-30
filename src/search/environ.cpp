@@ -128,7 +128,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
             return false;
     }
 
-    if (valid(move))
+    if (valid(move) >= MoveVALID)
         // std::cout << move << std::endl,
         // std::cout << move.substitutions,
         moves.push_back(move);
@@ -199,11 +199,20 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
         if (thm.allvarsfilled(substack[hypstack.size()]))
         {
             Move move(pthm, substack[hypstack.size()]);
-            if (valid(move))
-                // std::cout << move << std::endl,
-                // std::cout << move.substitutions,
+            switch (valid(move))
+            {
+            case MoveCLOSED:
+                moves.assign(1, move);
+                return true;
+            case MoveVALID:
+                // std::cout << move << std::endl;
+                // std::cout << move.substitutions;
                 moves.push_back(move);
-// std::cin.get();
+                // std::cin.get();
+                break;
+            default:
+                break;
+            }
         }
         else
         if (hypstack.size() < nfreehyps && matchedhyps < maxfreehyps)
@@ -240,11 +249,20 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
                 Move move(pthm, newsubst);
-                if (valid(move))
-                    // std::cout << move << std::endl,
-                    // std::cout << move.substitutions,
+                switch (valid(move))
+                {
+                case MoveCLOSED:
+                    moves.assign(1, move);
+                    return true;
+                case MoveVALID:
+                    // std::cout << move << std::endl;
+                    // std::cout << move.substitutions;
                     moves.push_back(move);
-// std::cin.get();
+                    // std::cin.get();
+                    break;
+                default:
+                    break;
+                }
             }
         }
     }
