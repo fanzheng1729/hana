@@ -153,15 +153,15 @@ public:
     // Evaluate the leaf. Return {value, sure?}.
     // p should != NULL.
     virtual Eval evalleaf(pNode p) const = 0;
-    // Returns the minimax value of a parent.
-    // p should != NULL.
+    // Returns the minimax value of all children.
+    // Return WDL::DRAW if p has no child or p == NULL.
     static Value minimax(pNode p)
     {
+        if (!p.haschild()) return WDL::DRAW;
         Children const & ch = *p.children();
-        return ch.empty() ? WDL::DRAW :
-            value(isourturn(p) ?
-                  *std::max_element(ch.begin(), ch.end(), compvalue) :
-                  *std::min_element(ch.begin(), ch.end(), compvalue));
+        return value(isourturn(p) ?
+                     *std::max_element(ch.begin(), ch.end(), compvalue) :
+                     *std::min_element(ch.begin(), ch.end(), compvalue));
     }
     // Evaluate the parent. Return {value, sure?}.
     // p should != NULL.

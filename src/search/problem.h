@@ -21,8 +21,8 @@ public:
     // The assertion to be proved
     Assertion const & assertion;
 private:
+// Updated when problem is simplified
     // Maximal ranks of the assertion
-    // Updated when problem is simplified
     SyntaxDAG::Ranks maxranks;
 public:
     // Problem context
@@ -140,9 +140,29 @@ public:
             setwin(p); // Fix seteval in backprop.
         else if (p->won() && p->game().writeproof())
             closenodes(p);
-        else if (p == root() && value(p) == ALMOSTWIN)
-            navigate(),
-            std::cin.get();
+        else if (p == root())
+            prune();
+    }
+    // Prune the search tree, if almost won.
+    void prune()
+    {
+        if (value() != ALMOSTWIN)
+            return;
+        prune(root());
+        navigate();
+        std::cin.get();
+    }
+    // Prune the sub-tree at p.
+    void prune(pNode p)
+    {
+        if (p.haschild())
+        {
+            FOR (pNode child, *p.children())
+                prune(child);
+            seteval(p, minimax(p));
+        }
+        else if (value(p) < ALMOSTWIN)
+            setalmostloss(p);
     }
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
