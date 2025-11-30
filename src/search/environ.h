@@ -41,7 +41,7 @@ struct Environ : protected Gen
         name(ass.hypslabel()),
         hypslen(ass.hypslen()),
         staged(isstaged),
-        m_subsumedbyProb(false), m_rankssimpler(false) {}
+        m_subsumedbyProb(false), m_rankssimplerthanProb(false) {}
     Problem const & prob() const { return *pProb; }
     // Context relations
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
@@ -50,7 +50,7 @@ struct Environ : protected Gen
     bool subsumedbyProb() const { return m_subsumedbyProb; }
     // Return true if ranks is simpler than problem ranks
     // Updated when problem is simplified.
-    bool rankssimpler() const { return m_rankssimpler; }
+    bool rankssimpler() const { return m_rankssimplerthanProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Return the hypotheses of a goal to be trimmed.
@@ -110,7 +110,7 @@ private:
     bool m_subsumedbyProb;
     // true if ranks is simpler than problem ranks
     // Updated when problem is simplified.
-    bool m_rankssimpler;
+    bool m_rankssimplerthanProb;
     // Cache for context implication relations
     mutable pEnvs m_psubEnvs, m_psupEnvs;
     // Update context implication relations, given comparison result.
