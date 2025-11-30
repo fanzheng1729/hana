@@ -146,11 +146,8 @@ public:
     {
         if (p->game().proven())
             setwin(p); // Fix seteval in backprop.
-        else if (p->won())
-        {
-            if (p->game().writeproof())
-                closenodes(p);
-        }
+        else if (p->won() && p->game().writeproof())
+            closenodes(p);
     }
     // Refocus the tree on simpler sub-tree, if almost won.
     virtual void re_eval();

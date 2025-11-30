@@ -63,17 +63,5 @@ void Problem::focus(pNode p)
         if (p->won() && !p->game().proven())
             std::cout << "prune" << std::endl, navigate(p);
     }
-    else
-    {
-        // Eval eval = evalleaf(p);
-        Eval eval;
-        Game const & game = p->game();
-        if (game.proven())
-            eval = EvalWIN;
-        else if (ranksimplerthanProb(game))
-            eval = ALMOSTWIN;
-        else
-            eval = game.env().evalourleaf(game);
-        seteval(p, eval);
-    }
+    else seteval(p, evalleaf(p));
 }
