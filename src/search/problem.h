@@ -151,41 +151,11 @@ public:
             refocus();
     }
     // Refocus the tree on simpler sub-tree, if almost won.
-    void refocus()
-    {
-        if (value() != ALMOSTWIN)
-            return;
-        // printranksinfo();
-        numberlimit = maxranknumber;
-        maxranks.clear();
-        prune(root());
-        focusenvs();
-        focus(root());
-        maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
-        // printranksinfo();
-    }
+    void refocus();
     // Add the ranks of a node to maxranks, if almost won.
-    void addranks(pNode p)
-    {
-        if (value(p) < ALMOSTWIN)
-            return;
-        database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
-        database.syntaxDAG().addexp(maxranks, p->game().goal().RPN);
-    }
+    void addranks(pNode p);
     // Prune the sub-tree at p. Update maxranks.
-    void prune(pNode p)
-    {
-        if (p.haschild())
-        {
-            FOR (pNode child, *p.children())
-                prune(child);
-            seteval(p, minimax(p));
-        }
-        else if (value(p) < ALMOSTWIN)
-            setalmostloss(p);
-        else
-            addranks(p);
-    }
+    void prune(pNode p);
     // Focus on simpler contexts.
     void focusenvs();
     // Focus the sub-tree at p, with updated maxranks, if almost won.
