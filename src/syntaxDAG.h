@@ -2,6 +2,7 @@
 #define SYNTAXDAG_H_INCLUDED
 
 #include <map>
+#include <set>
 #include "util/DAG.h"
 #include "util/for.h"
 #include "types.h"
@@ -47,15 +48,6 @@ struct SyntaxDAG
                     maxranks.erase(iter++);
         }
     }
-    // Find the rank of a syntaxiom.
-    // Return ranksDAG().end() if not found.
-    Rankiter rankiter(strview label) const
-    {
-        Mapiter const mapiter = syntaxiomranks.find(label);
-        if (mapiter == syntaxiomranks.end())
-            return ranksDAG().end();
-        return ranksDAG().find(mapiter->second);
-    }
     // Return the ranks of a rev-Polish notation.
     Ranks RPNranks(Proofsteps const & RPN) const
     {
@@ -84,6 +76,15 @@ struct SyntaxDAG
                 return false;
         }
         return true;
+    }
+    // Find the rank of a syntaxiom.
+    // Return ranksDAG().end() if not found.
+    Rankiter rankiter(strview label) const
+    {
+        Mapiter const mapiter = syntaxiomranks.find(label);
+        if (mapiter == syntaxiomranks.end())
+            return ranksDAG().end();
+        return ranksDAG().find(mapiter->second);
     }
     // Add an edge between syntaxioms. Returns true if edge is added.
     bool link(strview from, strview to)
