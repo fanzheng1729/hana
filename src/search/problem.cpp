@@ -63,7 +63,8 @@ Eval Problem::evaltheirleaf(pNode p) const
 // Copy proof of the game to other contexts.
 void Problem::copyproof(Game const & game)
 {
-    if (!game.proven() || game.env().subsumedbyProb()) return;
+    if (!game.proven() || game.env().subsumedbyProb())
+        return;
 
     // Super-contexts
     pEnvs const & psupEnvs = supEnvs(game.env());
