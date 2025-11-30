@@ -23,7 +23,7 @@ namespace
 struct pGoals : std::set<pGoal>
 {
     // Return true if all open children of p are present.
-    bool haschildren(pNode p) const
+    bool hasallchildren(pNode p) const
     {
         FOR (pNode const child, *p.children())
         {
@@ -45,7 +45,7 @@ struct pGoals : std::set<pGoal>
                 if (parent->game().proven())
                     continue;
                 pGoal const pnewgoal = parent->game().pgoal;
-                if (haschildren(parent) && insert(pnewgoal).second)
+                if (hasallchildren(parent) && insert(pnewgoal).second)
                     return pnewgoal;
             }
         return pGoal();
