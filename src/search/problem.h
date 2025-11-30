@@ -187,13 +187,7 @@ public:
             addranks(p);
     }
     // Focus on simpler contexts.
-    void focusenvs()
-    {
-        FOR (Environs::const_reference env, environs)
-            env.second->m_rankssimplerthanProb
-            = database.syntaxDAG().simplerthan
-            (env.second->maxranks, maxranks);
-    }
+    void focusenvs();
     // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p);
     // Proof of the assertion, if not empty
