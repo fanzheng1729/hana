@@ -134,7 +134,7 @@ public:
         bool haschild() const { return size() > 1; }
         // Return true if a node has grand child. Return 0 if *this is NULL.
         bool hasgrandchild() const
-            { return *this && m_ptr->size > m_ptr->children.size() + 1; }
+            { return size() > m_ptr->children.size() + 1; }
         // Return the content of a node. *this != NULL.
         T & operator*() const { return m_ptr->value; }
         T * operator->()const { return&m_ptr->value; }
