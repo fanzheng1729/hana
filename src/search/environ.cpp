@@ -50,6 +50,8 @@ Environ::MoveValidity Environ::valid(Move const & move) const
 {
     if (!checkDV(move, assertion))
         return MoveINVALID;
+    // Check if all goals of the move are proven.
+    bool allproven = true;
     // Record the hypotheses.
     move.hypvec.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
@@ -64,6 +66,8 @@ Environ::MoveValidity Environ::valid(Move const & move) const
             return MoveINVALID;
         // Check if the goal is proven.
         bool const proven = pgoal->second.proven();
+        allproven &= proven;
+
         if (s >= GOALOPEN) // Valid
         {
             move.hypvec[i] = proven ? pgoal : addsimpgoal(pgoal);
@@ -83,7 +87,7 @@ Environ::MoveValidity Environ::valid(Move const & move) const
 // std::cout << pgoal->second.goal().expression() << name << "\n->\n",
 // std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
     }
-    return MoveVALID;
+    return allproven ? MoveCLOSED : MoveVALID;
 }
 
 // Moves generated at a given stage
