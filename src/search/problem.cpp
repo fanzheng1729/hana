@@ -40,6 +40,8 @@ Eval Problem::evalleaf(pNode p) const
     // Our leaf
     if (game.proven())
         return EvalWIN;
+    if (ranksimplerthanProb(game))
+        std::cout << game.env().name << std::endl << game.goal().expression();
     return game.env().evalourleaf(game);
 }
 

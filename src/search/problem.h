@@ -117,8 +117,8 @@ public:
         bool const stuck = (staged & STAGED) && isourturn(p) && v == WDL::LOSS;
         return stuck ? p->eval() : v;
     }
-    // Return true if the game is simpler than the problem in terms of rank.
-    bool simplerinrank(Game const & game) const
+    // Return true if game's rank < Problem's rank.
+    bool ranksimplerthanProb(Game const & game) const
     {
         return game.env().rankssimplerthanProb() &&
             database.syntaxDAG().simplerthan
