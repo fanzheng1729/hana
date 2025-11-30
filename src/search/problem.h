@@ -155,12 +155,14 @@ public:
     {
         if (value() != ALMOSTWIN)
             return;
+        std::cout << numberlimit << ' ' << maxranknumber << std::endl;
+        numberlimit = maxranknumber;
         prune(root());
         std::cout << numberlimit << ' ' << maxranknumber << std::endl;
         navigate();
         std::cin.get();
     }
-    // Prune the sub-tree at p.
+    // Prune the sub-tree at p. Update maxranks and maxnraknumber.
     void prune(pNode p)
     {
         if (p.haschild())
