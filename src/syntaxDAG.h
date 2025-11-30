@@ -73,15 +73,14 @@ struct SyntaxDAG
     bool ismaximal(strview rank, Ranks const & ranks) const
     {
         // Locate the rank.
-        Rankiter const to = this->ranksDAG().find(rank);
-        if (to == this->ranksDAG().end())
+        Rankiter const to = ranksDAG().find(rank);
+        if (to == ranksDAG().end())
             return true; // Rank unseen.
         // Rank seen.
         FOR (strview fromrank, ranks)
         {
-            Rankiter const from = this->ranksDAG().find(fromrank);
-            if (from != this->ranksDAG().end() &&
-                this->ranksDAG().reachable(from, to))
+            Rankiter const from = ranksDAG().find(fromrank);
+            if (from != ranksDAG().end() && ranksDAG().reachable(from, to))
                 return false;
         }
         return true;
