@@ -13,6 +13,7 @@ struct SyntaxDAG
 {
     // Classes of syntaxioms
     typedef std::set<std::string> Ranks;
+    typedef Ranks::const_iterator Rankiter;
     typedef std::map<strview, strview>::const_iterator Mapiter;
     typedef DAG<Ranks> RanksDAG;
     typedef RanksDAG::const_iterator RankDAGiter;
@@ -40,9 +41,9 @@ struct SyntaxDAG
             if (!ismaximal(exprank, maxranks))
                 continue;
             // exprank is maximal.
-            RankDAGiter const newiter = maxranks.insert(exprank).first;
+            Rankiter const newiter = maxranks.insert(exprank).first;
             // Remove non-maximal ranks.
-            for (RankDAGiter iter = maxranks.begin();
+            for (Rankiter iter = maxranks.begin();
                 iter != maxranks.end(); )
                 if (iter == newiter || ismaximal(*iter, maxranks))
                     ++iter;
