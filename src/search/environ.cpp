@@ -20,7 +20,7 @@ static Symbol3s symbols(Proofsteps const & RPN)
 // Return true if a move satisfies disjoint variable hypotheses.
 bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 {
-    if (!move.pthm)
+    if (move.type != Move::THM || !move.pthm)
         return false;
 // std::cout << "Checking DV of move " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
@@ -119,20 +119,20 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 // Return true if it has no essential hypotheses.
 bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
-    if (move.closes())
+    switch (valid(move))
     {
-        if (checkDV(move, assertion))
-            return moves.assign(1, move), true;
-        else
-            return false;
-    }
-
-    if (valid(move) >= MoveVALID)
-        // std::cout << move << std::endl,
-        // std::cout << move.substitutions,
+    case MoveCLOSED:
+        moves.assign(1, move);
+        return true;
+    case MoveVALID:
+        // std::cout << move << std::endl;
+        // std::cout << move.substitutions;
         moves.push_back(move);
-// std::cin.get();
-    return false;
+        // std::cin.get();
+        return false;
+    default:
+        return false;
+    }
 }
 
 static int const STACKEMPTY = -2;

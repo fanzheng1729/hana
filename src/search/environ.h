@@ -61,7 +61,7 @@ struct Environ : protected Gen
     virtual Goalstatus status(Goal const & goal) const
     { return goal.RPN.empty() ? GOALFALSE : GOALOPEN; }
     // Validity of a move.
-    enum MoveValidity { MoveINVALID = 0, MoveVALID, MoveCLOSED };
+    enum MoveValidity { MoveINVALID = -1, MoveVALID = 0, MoveCLOSED = 1 };
     // Validate a move.
     MoveValidity valid(Move const & move) const;
     // Moves generated at a given stage

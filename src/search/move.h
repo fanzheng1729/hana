@@ -80,8 +80,6 @@ struct Move
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
     // # of essential hypotheses the attempt (must be of type THM) needs
     Hypsize esshypcount() const { return hypcount() - varcount(); }
-    // Return true if the assertion applied has no essential hypothesis.
-    bool closes() const { return type == THM && esshypcount() == 0; }
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
     {

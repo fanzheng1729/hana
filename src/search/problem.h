@@ -149,6 +149,8 @@ public:
             closenodes(p);
         else if (p == root())
             refocus();
+        // if (p == root() && assertion.number == 203)
+        //     printstats(), navigate();
     }
     // Refocus the tree on simpler sub-tree, if almost won.
     void refocus();
