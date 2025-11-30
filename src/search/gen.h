@@ -17,7 +17,8 @@ typedef std::vector<Terms::size_type> Genstack;
 // Virtual base class for adder
 struct Adder
 {
-    virtual void operator()(Argtypes const & types, Genresult const & result,
+    // Add a move. Return true if the move closed the goal.
+    virtual bool operator()(Argtypes const & types, Genresult const & result,
                             Genstack const & stack) = 0;
 };
 

@@ -90,7 +90,8 @@ struct Substadder : Adder
     (Expression const & freevars, Moves & moves, Move & move,
         Environ const & env) :
         freevars(freevars), moves(moves), move(move), env(env) {}
-    void operator()(Argtypes const & types, Genresult const & result,
+    // Add a move. Return true if the move closed the goal.
+    bool operator()(Argtypes const & types, Genresult const & result,
                     Genstack const & stack)
     {
         for (Proofsize i = 0; i < types.size(); ++i)
@@ -101,15 +102,15 @@ struct Substadder : Adder
         {
         case Environ::MoveCLOSED:
             moves.assign(1, move);
-            break;
+            return true;
         case Environ::MoveVALID:
             // std::cout << move << std::endl;
             // std::cout << move.substitutions;
             moves.push_back(move);
             // std::cin.get();
-            break;
+            return false;
         default:
-            break;
+            return false;
         }
     }
 };

@@ -96,9 +96,13 @@ struct Termadder : Adder
     Terms & terms;
     Proofstep root;
     Termadder(Terms & terms, Proofstep root) : terms(terms), root(root) {}
-    virtual void operator()(Argtypes const & types, Genresult const & result,
+    // Add a move. Return true if the move closed the goal.
+    virtual bool operator()(Argtypes const & types, Genresult const & result,
                             Genstack const & stack)
-    { terms.push_back(writeRPN(types, result, stack, root)); }
+    {
+        terms.push_back(writeRPN(types, result, stack, root));
+        return false;
+    }
 };
 
 // Generate all terms of size 1.
