@@ -56,12 +56,12 @@ std::ostream & operator<<(std::ostream & out, const SyntaxDAG & syntaxDAG)
 {
     typedef typename SyntaxDAG::Rankiter It;
 
-    Ranks const & ranks = syntaxDAG.ranks();
-    for (It iter1 = ranks.begin(); iter1 != ranks.end(); ++iter1)
+    Ranks const & dag = syntaxDAG.ranks();
+    for (It iter1 = dag.begin(); iter1 != dag.end(); ++iter1)
     {
         out << *iter1 << " -> ";
-        for (It iter2 = ranks.begin(); iter2 != ranks.end(); ++iter2)
-            if (ranks.reachable(iter1, iter2))
+        for (It iter2 = dag.begin(); iter2 != dag.end(); ++iter2)
+            if (dag.reachable(iter1, iter2))
                 out << *iter2 << ' ';
         out << std::endl;
     }
