@@ -18,6 +18,7 @@ struct SyntaxDAG
     // Map: syntaxiom -> rank
     typedef std::map<strview, strview> Syntaxranks;
     typedef Syntaxranks::const_iterator Mapiter;
+    // DAG over map: rank -> min # of syntaxiom of that rank
     typedef DAG<std::map<std::string, std::size_t> > RanksDAG;
     typedef RanksDAG::const_iterator RankDAGiter;
     RanksDAG const & ranksDAG() const { return m_ranksDAG; }
