@@ -155,14 +155,12 @@ public:
     {
         if (value() != ALMOSTWIN)
             return;
-        std::cout << numberlimit << ' ' << maxranknumber << std::endl;
-        std::cout << maxranks;
+        printranksinfo();
         numberlimit = maxranknumber;
         maxranks.clear();
         prune(root());
         maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
-        std::cout << numberlimit << ' ' << maxranknumber << std::endl;
-        std::cout << maxranks;
+        printranksinfo();
         navigate();
         std::cin.get();
     }
@@ -261,6 +259,13 @@ public:
     {
         FOR (Environs::const_reference env, environs)
             std::cout << env.first << std::endl;
+    }
+    void printranksinfo() const
+    {
+        std::cout << maxranknumber << " < " << numberlimit << '\t';
+        FOR (std::string const & rank, maxranks)
+            std::cout << rank << ' ';
+        std::cout << std::endl;
     }
     void navigate(bool detailed = true) const;
     void writeproof(const char * const filename) const;
