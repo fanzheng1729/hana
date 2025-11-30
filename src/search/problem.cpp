@@ -1,8 +1,4 @@
-#include <cctype>   // for std::tolower
-#include <fstream>
-#include "../proof/analyze.h"
 #include "goaldata.h"
-#include "../io.h"
 #include "problem.h"
 
 // UCB threshold for generating a new batch of moves
@@ -18,7 +14,7 @@ Value Problem::UCBnewstage(pNode p) const
     Game const & game = p->game();
     stage_t const stage = p->stage();
     Proofsize size = game.env().hypslen + game.goal().size() + stage;
-    size_type const self = static_cast<size_type>(1) << (stage*2);
+    size_type const self = static_cast<size_type>(1) << (stage * 2);
     return score(size) + UCBbonus(true, p.size(), self);
 }
 
@@ -109,7 +105,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         return newEnviter->second;
     // If it does not exist, add the simplified assertion.
     Assertion & subAss = assertions[newEnviter->first];
-    if (unexpected(!subAss.expression.empty(), "Duplicate name", name))
+    if (!subAss.expression.empty())
         return NULL;
     Assertion const & ass = env.makeAss(hypstotrim);
     if (ass.expression.empty())
