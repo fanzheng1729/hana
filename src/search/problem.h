@@ -148,10 +148,10 @@ public:
         else if (p->won() && p->game().writeproof())
             closenodes(p);
         else if (p == root())
-            prune();
+            refocus();
     }
-    // Prune the search tree, if almost won.
-    void prune()
+    // Refocus the tree on simpler sub-tree, if almost won.
+    void refocus()
     {
         if (value() != ALMOSTWIN)
             return;
@@ -186,6 +186,8 @@ public:
         else
             addranks(p);
     }
+    // Focus the sub-tree at p, with updated maxranks.
+    void focus(pNode p);
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // # goals of a given status
