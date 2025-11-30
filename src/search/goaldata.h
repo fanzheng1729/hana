@@ -76,7 +76,7 @@ public:
         return proof;
     }
     bool proven() const { return !proofsrc().empty(); }
-    bool proven(Environ const & env) { return !proofsrc().empty(); }
+    bool proven() { return !proofsrc().empty(); }
     Proofsteps & proofdst()
     { return subsumedbyProb(*pEnv) ? goaldatas().proof : proof; }
     pNodes const & pnodes() const { return m_pnodes; }
@@ -102,7 +102,7 @@ public:
     Goalstatus getstatus() const { return status; }
     Goalstatus & getstatus()
     {
-        if (proven(*pEnv))
+        if (proven())
             return status = GOALTRUE;
         if (status != GOALNEW)
             return status; // No need to evaluate
