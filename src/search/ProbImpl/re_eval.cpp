@@ -1,7 +1,7 @@
 #include "../problem.h"
 
 // Refocus the tree on simpler sub-tree, if almost won.
-void Problem::refocus()
+void Problem::re_eval()
 {
     if (value() != ALMOSTWIN)
         return;
@@ -32,6 +32,8 @@ void Problem::prune(pNode p)
         FOR (pNode child, *p.children())
             prune(child);
         seteval(p, minimax(p));
+        if (p->won() && !p->game().proven())
+            std::cout << "prune" << std::endl, navigate(p);
     }
     else if (value(p) < ALMOSTWIN)
         setalmostloss(p);
@@ -58,7 +60,20 @@ void Problem::focus(pNode p)
         FOR (pNode child, *p.children())
             focus(child);
         seteval(p, minimax(p));
+        if (p->won() && !p->game().proven())
+            std::cout << "prune" << std::endl, navigate(p);
     }
-    else if (!p->game().env().rankssimplerthanProb())
-        seteval(p, evalleaf(p));
+    else
+    {
+        // Eval eval = evalleaf(p);
+        Eval eval;
+        Game const & game = p->game();
+        if (game.proven())
+            eval = EvalWIN;
+        else if (ranksimplerthanProb(game))
+            eval = ALMOSTWIN;
+        else
+            eval = game.env().evalourleaf(game);
+        seteval(p, eval);
+    }
 }

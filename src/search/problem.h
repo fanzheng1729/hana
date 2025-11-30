@@ -5,6 +5,7 @@
 #include "environ.h"
 #include "goaldata.h"
 #include "../util/for.h"
+#include "../io.h"
 
 // Problem statement + Proof search tree with loop detection
 // + context management + goal management + UI
@@ -145,15 +146,14 @@ public:
     {
         if (p->game().proven())
             setwin(p); // Fix seteval in backprop.
-        else if (p->won() && p->game().writeproof())
-            closenodes(p);
-        else if (p == root())
-            refocus();
-        // if (p == root() && assertion.number == 203)
-        //     printstats(), navigate();
+        else if (p->won())
+        {
+            if (p->game().writeproof())
+                closenodes(p);
+        }
     }
     // Refocus the tree on simpler sub-tree, if almost won.
-    void refocus();
+    virtual void re_eval();
     // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode p);
     // Prune the sub-tree at p. Update maxranks.
@@ -251,7 +251,8 @@ public:
         std::cout << std::endl;
         printenvs();
     }
-    void navigate(bool detailed = true) const;
+    void navigate(pNode p, bool detailed = true) const;
+    void navigate(bool detailed = true) const { navigate(root(), detailed); }
     void writeproof(const char * const filename) const;
     virtual ~Problem()
     {

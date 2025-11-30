@@ -283,7 +283,7 @@ static bool gotoourchild(pNode & p)
     return true;
 }
 
-void Problem::navigate(bool detailed) const
+void Problem::navigate(pNode p, bool detailed) const
 {
     if (empty()) return;
 
@@ -296,7 +296,6 @@ void Problem::navigate(bool detailed) const
     "b[ye] or e[xit] or q[uit] to leave navigation" << std::endl;
 
     std::string token;
-    pNode p = root();
     while (true)
     {
 // std::cout << isourturn(node) << ' ' << &node.value() << std::endl;

@@ -157,9 +157,9 @@ static Problem::size_type testpropsearch
     //     tree.printstats(), std::cin.get();
     if (tree.size() > maxsize)
     {
-        // printass(*iter);
+        printass(*iter);
         // std::cout << std::endl;
-        // tree.printstats();
+        tree.printstats();
         // tree.printenvs();
         // tree.navigate();
     }

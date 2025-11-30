@@ -35,8 +35,8 @@ Eval Problem::evalleaf(pNode p) const
     // Our leaf
     if (game.proven())
         return EvalWIN;
-    // if (ranksimplerthanProb(game))
-    //     return ALMOSTWIN;
+    if (ranksimplerthanProb(game))
+        return ALMOSTWIN;
     return game.env().evalourleaf(game);
 }
 

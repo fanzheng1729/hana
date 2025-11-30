@@ -204,6 +204,7 @@ public:
         }
     }
     size_type playcount() const { return m_playcount; }
+    virtual void re_eval() {}
     virtual void checkmainline(pNode p) const {}
     // Play out once. Return the value at the root.
     Value playonce()

@@ -104,9 +104,9 @@ bool Game::writeproof() const
     if (attempt.type == Move::NONE || proven())
         return false;
     // attempt.type == Move::THM, goal not proven
+// std::cout << "Writing proof: " << goal().expression();
     if (!checkDV(attempt, env().assertion, true))
         return false;
-// std::cout << "Writing proof: " << goal().expression();
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)
@@ -125,7 +125,10 @@ bool Game::writeproof() const
     const Expression & exp(verify(dest));
     const bool okay = (exp == goal().expression());
     if (okay)
+    {
+// std::cout << "Built proof for " << goal().expression();
         goaldata().setstatustrue();
+    }
     else
     {
         writeprooferr(*this, exp, hyps);
