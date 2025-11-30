@@ -45,11 +45,11 @@ pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
-// Return true if all hypotheses of a move are valid.
+// Validate a move.
 bool Environ::valid(Move const & move) const
 {
     if (!checkDV(move, assertion))
-        return false;
+        return MoveINVALID;
     // Record the hypotheses.
     move.hypvec.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
@@ -61,7 +61,7 @@ bool Environ::valid(Move const & move) const
 // std::cout << "Validating " << pgoal->second.goal().expression();
         Goalstatus & s = pgoal->second.getstatus();
         if (s == GOALFALSE)
-            return false; // Refuted
+            return MoveINVALID; // Refuted
         if (s >= GOALOPEN)// Valid
         {
             move.hypvec[i]
@@ -72,7 +72,7 @@ bool Environ::valid(Move const & move) const
         Goal const & goal = pgoal->second.goal();
         s = status(goal);
         if (s == GOALFALSE)
-            return false; // Refuted
+            return MoveINVALID; // Refuted
         // Simplified context for the child, if !NULL
         Environ const * & psimpEnv = pgoal->second.psimpEnv;
         psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
@@ -82,7 +82,7 @@ bool Environ::valid(Move const & move) const
 // std::cout << pgoal->second.goal().expression() << name << "\n->\n",
 // std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
     }
-    return true;
+    return MoveVALID;
 }
 
 // Moves generated at a given stage
