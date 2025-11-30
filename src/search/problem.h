@@ -117,6 +117,13 @@ public:
         bool const stuck = (staged & STAGED) && isourturn(p) && v == WDL::LOSS;
         return stuck ? p->eval() : v;
     }
+    // Return true if the game is simpler than the problem in terms of rank.
+    bool simplerinrank(Game const & game)
+    {
+        return game.env().rankssimplerthanProb() &&
+            database.syntaxDAG().simplerthan
+            (database.syntaxDAG().RPNranks(game.goal().RPN), maxranks);
+    }
     // Close all the nodes with p's proven goal.
     void closenodes(pNode p)
     {
