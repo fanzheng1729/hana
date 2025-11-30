@@ -27,6 +27,8 @@ private:
     Assertions::size_type numberlimit;
     // Maximal ranks of the assertion
     SyntaxDAG::Ranks maxranks;
+    // Max # of rank in maxranks
+    Assertions::size_type maxranknumber;
 public:
     // Problem context
     Environ const * const pProbEnv;
@@ -40,6 +42,7 @@ public:
         assertion(env.assertion),
         numberlimit(std::min(assertion.number, database.assiters().size())),
         maxranks(database.assmaxranks(assertion)),
+        maxranknumber(database.maxranknumber(maxranks)),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
     {
@@ -153,6 +156,7 @@ public:
         if (value() != ALMOSTWIN)
             return;
         prune(root());
+        std::cout << numberlimit << ' ' << maxranknumber << std::endl;
         navigate();
         std::cin.get();
     }
