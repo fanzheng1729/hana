@@ -21,8 +21,9 @@ public:
     // The assertion to be proved
     Assertion const & assertion;
 private:
-    // Ranks of the assertion, updated when problem is simplified.
-    SyntaxDAG::Ranks ranks;
+    // Maximal ranks of the assertion
+    // Updated when problem is simplified
+    SyntaxDAG::Ranks maxranks;
 public:
     // Problem context
     Environ const * const pProbEnv;
@@ -34,7 +35,7 @@ public:
     Problem(Env const & env, Value const params[2]) :
         MCTS(Game(), params), database(env.database),
         assertion(env.assertion),
-        ranks(database.assmaxranks(assertion)),
+        maxranks(database.assmaxranks(assertion)),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
     {
@@ -191,7 +192,7 @@ private:
         pEnv->pProb = this;
         pEnv->m_subsumedbyProb = true;
         pEnv->m_rankssimplerthanProb
-        = database.syntaxDAG().simplerthan(pEnv->ranks, ranks);
+        = database.syntaxDAG().simplerthan(pEnv->maxranks, maxranks);
         return pEnv;
     }
     friend Environ;
