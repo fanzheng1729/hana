@@ -1,7 +1,6 @@
 #ifndef DATABASE_H_INCLUDED
 #define DATABASE_H_INCLUDED
 
-#include <algorithm>    // for std::max
 #include "comment.h"
 #include "def.h"
 #include "propctor.h"
