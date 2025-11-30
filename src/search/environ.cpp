@@ -65,11 +65,16 @@ Environ::MoveValidity Environ::valid(Move const & move) const
             return MoveINVALID;
         // Check if the goal is proven.
         bool const proven = pgoal->second.proven();
-        allproven &= proven;
-
+        if (proven)
+        {
+            move.hypvec[i] = pgoal;
+            continue;
+        }
+        // Not proven
+        allproven = false;
         if (s >= GOALOPEN) // Valid
         {
-            move.hypvec[i] = proven ? pgoal : addsimpgoal(pgoal);
+            move.hypvec[i] = addsimpgoal(pgoal);
             continue;
         }
         // New goal (s == GOALNEW)
