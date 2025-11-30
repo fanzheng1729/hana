@@ -1,6 +1,7 @@
 #ifndef DATABASE_H_INCLUDED
 #define DATABASE_H_INCLUDED
 
+#include <algorithm>    // for std::max
 #include "comment.h"
 #include "def.h"
 #include "propctor.h"
@@ -227,13 +228,6 @@ public:
             if (def.second.pdef)
                 m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
     }
-    // The maximal ranks of an assertion
-    SyntaxDAG::Ranks assmaxranks(Assertion const & ass) const
-    {
-        SyntaxDAG::Ranks result(hypsmaxranks(ass));
-        syntaxDAG().addexp(result, ass.expRPN);
-        return result;
-    }
     // The maximal ranks of the hypotheses of an assertion
     SyntaxDAG::Ranks hypsmaxranks(Assertion const & ass) const
     {
@@ -242,6 +236,20 @@ public:
             if (!ass.hypfloats(i))
                 syntaxDAG().addexp(result, ass.hypRPN(i));
         return result;
+    }
+    // The maximal ranks of an assertion
+    SyntaxDAG::Ranks assmaxranks(Assertion const & ass) const
+    {
+        SyntaxDAG::Ranks result(hypsmaxranks(ass));
+        syntaxDAG().addexp(result, ass.expRPN);
+        return result;
+    }
+    // max # rank in a rank set
+    Assertions::size_type maxranknumber(SyntaxDAG::Ranks const & ranks)
+    {
+        Assertions::size_type max = 0;
+        FOR (strview rank, ranks)
+            ;
     }
 };
 

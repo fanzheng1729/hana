@@ -15,7 +15,7 @@ Assertions::size_type largestsymboldefnumber
     (Proofsteps const & RPN, T const & definitions,
      Syntaxioms const & syntaxioms, Assertions::size_type n)
 {
-    Assertions::size_type result = 1;
+    Assertions::size_type max = 1;
 //std::cout << definitions << syntaxioms;
     FOR (Proofstep step, RPN)
     {
@@ -38,10 +38,10 @@ Assertions::size_type largestsymboldefnumber
                 return 0; // undefined symbol
         }
 //std::cout << number << '\t';
-        result = std::max(result, number ? number : 1);
+        max = std::max(max, number);
     }
 
-    return result;
+    return max;
 }
 
 // Check if all symbols in an assertion are defined.
@@ -52,33 +52,32 @@ Assertions::size_type largestsymboldefnumber
     (Assertion const & ass, T const & definitions,
      Syntaxioms const & syntaxioms, Assertions::size_type const n = 0)
 {
-    Assertions::size_type result = 0;
+    Assertions::size_type max = 0;
 
-    result =
-        largestsymboldefnumber(ass.expRPN, definitions, syntaxioms, n);
-//std::cout << ass.expression << "has number " << result << std::endl;
-    if (result == 0)
+    max = largestsymboldefnumber(ass.expRPN, definitions, syntaxioms, n);
+//std::cout << ass.expression << "has number " << max << std::endl;
+    if (max == 0)
         return 0;
     // Check the hypotheses.
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
-        Assertions::size_type const result2 =
+        Assertions::size_type const maxi =
             largestsymboldefnumber(ass.hypRPN(i), definitions, syntaxioms, n);
-        if (result2 == 0)
+        if (maxi == 0)
             return 0;
-// std::cout << "hyp " << i << ':' << result2 << '\t';
-        result = std::max(result, result2);
-// std::cout << "has number " << result << std::endl;
+// std::cout << "hyp " << i << ':' << maxi << '\t';
+        max = std::max(max, maxi);
+// std::cout << "has number " << max << std::endl;
     }
 
-    return result;
+    return max;
 }
 
 // Return the largest # of syntax axiom in a revPolish notation.
 inline Assertions::size_type largestsymboldefnumber
     (Proofsteps const & RPN, Syntaxioms const & syntaxioms)
 {
-    Assertions::size_type result = 0;
+    Assertions::size_type max = 0;
 
     FOR (Proofstep step, RPN)
     {
@@ -87,10 +86,10 @@ inline Assertions::size_type largestsymboldefnumber
             continue;
 
         if (syntaxioms.count(strview(step)))
-            result = std::max(result, step.pass->second.number);
+            max = std::max(max, step.pass->second.number);
     }
 
-    return result;
+    return max;
 }
 
 // Return true if an assertion is hard, i.e., uses a new syntax in its proof.
