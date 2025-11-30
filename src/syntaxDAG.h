@@ -121,7 +121,7 @@ struct SyntaxDAG
     }
 private:
     // DAG of classes of syntaxioms
-    DAG<Ranks> m_ranks;
+    RanksDAG m_ranks;
     // Map: syntaxiom -> rank
     std::map<strview, strview> syntaxiomranks;
 };
