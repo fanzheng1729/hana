@@ -28,8 +28,11 @@ struct SyntaxDAG
     }
     // Add an expression to the set of maximal ranks.
     void addexp(Ranks & maxranks, Proofsteps const & RPN) const
+    { addranks(maxranks, expranks(RPN)); }
+    // Add ranks to the set of maximal ranks.
+    void addranks(Ranks & maxranks, Ranks const & newranks) const
     {
-        FOR (strview exprank, expranks(RPN))
+        FOR (strview exprank, newranks)
         {
             if (!ismaximal(exprank, maxranks))
                 continue;
