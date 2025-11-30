@@ -143,8 +143,8 @@ static Problem::size_type testpropsearch
     // std::cin.get();
     // if (iter->first == "biass")
     //     tree.navigate();
-    if (iter->second.number == 203)
-        tree.printstats(), std::cin.get();
+    // if (iter->second.number == 203)
+    //     tree.printstats(), std::cin.get();
     if (tree.size() > maxsize)
     {
         // printass(*iter);
