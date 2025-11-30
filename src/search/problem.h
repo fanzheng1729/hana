@@ -141,7 +141,6 @@ public:
         else if (p->won() && p->game().writeproof())
             closenodes(p);
         else if (p == root() && value(p) == ALMOSTWIN)
-            std::cout << assertion.number << ' ' << probEnv().name,
             navigate(),
             std::cin.get();
     }
