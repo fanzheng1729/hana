@@ -155,15 +155,14 @@ public:
     {
         if (value() != ALMOSTWIN)
             return;
-        printranksinfo();
+        // printranksinfo();
         numberlimit = maxranknumber;
         maxranks.clear();
         prune(root());
         focusenvs();
+        focus(root());
         maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
-        printranksinfo();
-        navigate();
-        std::cin.get();
+        // printranksinfo();
     }
     // Add the ranks of a node to maxranks.
     void addranks(pNode p)
@@ -198,14 +197,16 @@ public:
     // Focus the sub-tree at p, with updated maxranks.
     void focus(pNode p)
     {
-        // if (value(p) < ALMOSTWIN)
-        //     return;
-        // if (p.haschild())
-        // {
-        //     FOR (pNode child, *p.children())
-        //         focus(child);
-        //     seteval(p, minimax(p));
-        // }
+        if (value(p) < ALMOSTWIN)
+            return;
+        if (p.haschild())
+        {
+            FOR (pNode child, *p.children())
+                focus(child);
+            seteval(p, minimax(p));
+        }
+        else if (!p->game().env().rankssimplerthanProb())
+            seteval(p, evalleaf(p));
     }
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
@@ -281,7 +282,7 @@ public:
         FOR (Environs::const_reference env, environs)
         {
             SyntaxDAG::Ranks const & envranks = env.second->maxranks;
-            char const c = env.second->m_rankssimplerthanProb ? '*' : ' ';
+            char const c = env.second->rankssimplerthanProb() ? '*' : ' ';
             std::cout << c << env.first << '\t';
             FOR (std::string const & rank, env.second->maxranks)
                 std::cout << rank << ' ';
