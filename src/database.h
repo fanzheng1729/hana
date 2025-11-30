@@ -190,7 +190,7 @@ public:
         FOR (Assertions::reference r, m_assertions)
         {
             Assertion & ass = r.second;
-            bool isprop = largestsymboldefnumber(ass,propctors(),Syntaxioms(),1);
+            bool isprop = maxsymboldefnumber(ass,propctors(),Syntaxioms(),1);
             ass.type |= isprop * Asstype::PROPOSITIONAL;
             // Check if it is propositional and starts with a non-primitive type code.
             if (isprop && !ass.expression.empty() &&
@@ -249,7 +249,8 @@ public:
     {
         Assertions::size_type max = 0;
         FOR (strview rank, ranks)
-            ;
+            max = std::max(max, syntaxDAG().ranksDAG().at(rank));
+        return max;
     }
 };
 

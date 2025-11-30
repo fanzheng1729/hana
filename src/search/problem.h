@@ -1,6 +1,7 @@
 #ifndef PROBLEM_H_INCLUDED
 #define PROBLEM_H_INCLUDED
 
+#include <algorithm>    // for std::min
 #include "environ.h"
 #include "goaldata.h"
 #include "../util/for.h"
@@ -22,6 +23,8 @@ public:
     Assertion const & assertion;
 private:
 // Updated when problem is simplified
+    // Must use assertion whose number is smaller than this.
+    Assertions::size_type numberlimit;
     // Maximal ranks of the assertion
     SyntaxDAG::Ranks maxranks;
 public:
@@ -35,6 +38,7 @@ public:
     Problem(Env const & env, Value const params[2]) :
         MCTS(Game(), params), database(env.database),
         assertion(env.assertion),
+        numberlimit(std::min(assertion.number, database.assiters().size())),
         maxranks(database.assmaxranks(assertion)),
         pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)

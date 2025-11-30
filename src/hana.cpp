@@ -93,9 +93,9 @@ int main(int argc, char * argv[])
 
     printpercent(database.markpropassertions(), "/",
                  database.assertions().size(), " propositional assertions\n");
-    // timer.reset();
-    // if (!database.checkpropassertion()) return EXIT_FAILURE;
-    // std::cout << "checked in " << timer << 's' << std::endl;
+    timer.reset();
+    if (!database.checkpropassertion()) return EXIT_FAILURE;
+    std::cout << "checked in " << timer << 's' << std::endl;
 
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();

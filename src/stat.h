@@ -11,7 +11,7 @@
 // If so, return max # of def/syntax axiom.
 // If a symbol has no definition, its # is n. Otherwise return 0.
 template<class T>
-Assertions::size_type largestsymboldefnumber
+Assertions::size_type maxsymboldefnumber
     (Proofsteps const & RPN, T const & definitions,
      Syntaxioms const & syntaxioms, Assertions::size_type n)
 {
@@ -48,13 +48,13 @@ Assertions::size_type largestsymboldefnumber
 // If so, return max # of def/syntax axiom.
 // If a symbol has empty definition, return n. Otherwise return 0.
 template<class T>
-Assertions::size_type largestsymboldefnumber
+Assertions::size_type maxsymboldefnumber
     (Assertion const & ass, T const & definitions,
      Syntaxioms const & syntaxioms, Assertions::size_type const n = 0)
 {
     Assertions::size_type max = 0;
 
-    max = largestsymboldefnumber(ass.expRPN, definitions, syntaxioms, n);
+    max = maxsymboldefnumber(ass.expRPN, definitions, syntaxioms, n);
 //std::cout << ass.expression << "has number " << max << std::endl;
     if (max == 0)
         return 0;
@@ -62,7 +62,7 @@ Assertions::size_type largestsymboldefnumber
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
         Assertions::size_type const maxi =
-            largestsymboldefnumber(ass.hypRPN(i), definitions, syntaxioms, n);
+            maxsymboldefnumber(ass.hypRPN(i), definitions, syntaxioms, n);
         if (maxi == 0)
             return 0;
 // std::cout << "hyp " << i << ':' << maxi << '\t';
@@ -74,7 +74,7 @@ Assertions::size_type largestsymboldefnumber
 }
 
 // Return max # of syntax axiom in a revPolish notation.
-inline Assertions::size_type largestsymboldefnumber
+inline Assertions::size_type maxsymboldefnumber
     (Proofsteps const & RPN, Syntaxioms const & syntaxioms)
 {
     Assertions::size_type max = 0;
@@ -97,12 +97,12 @@ inline bool isasshard(Assertion const & ass, Syntaxioms const & syntaxioms)
 {
     // Largest # of syntax axiom in the assertion
     Assertions::size_type const symbolnumber
-        (largestsymboldefnumber(ass, Definitions(), syntaxioms));
+        (maxsymboldefnumber(ass, Definitions(), syntaxioms));
     if (symbolnumber == 0)
         return false; // Undefined syntax
     // Largest # of syntax axiom in the proof
     Assertions::size_type const proofsymbolnumber
-        (largestsymboldefnumber(ass.proof, syntaxioms));
+        (maxsymboldefnumber(ass.proof, syntaxioms));
     if (proofsymbolnumber == 0)
         return false; // Undefined syntax
     return proofsymbolnumber > symbolnumber;
