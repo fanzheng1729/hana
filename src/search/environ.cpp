@@ -65,7 +65,7 @@ Environ::MoveValidity Environ::valid(Move const & move) const
         if (s >= GOALOPEN)// Valid
         {
             move.hypvec[i]
-            = pgoal->second.proven(*pgoal->first) ? pgoal : addsimpgoal(pgoal);
+            = pgoal->second.proven() ? pgoal : addsimpgoal(pgoal);
             continue;
         }
         // New goal (s == GOALNEW)
