@@ -60,6 +60,35 @@ Eval Problem::evaltheirleaf(pNode p) const
     return Eval(value, false);
 }
 
+// Copy proof of the game to other contexts.
+void Problem::copyproof(Game const & game)
+{
+    if (!game.proven() || game.env().subsumedbyProb()) return;
+
+    // Super-contexts
+    pEnvs const & psupEnvs = supEnvs(game.env());
+    pEnvs::const_iterator supiter = psupEnvs.begin();
+    pEnvs::const_iterator const supend = psupEnvs.end();
+
+    // Loop through super-contexts.
+    FOR (Goaldatas::reference goaldata, game.goaldatas())
+        if (!goaldata.second.proven())
+        {
+            Environ const & otherEnv = *goaldata.first;
+            supiter = std::lower_bound(supiter, supend, &otherEnv, less);
+            // while (supiter != supend && less(*supiter, &otherEnv))
+            //     ++supiter;
+            if (supiter != supend && *supiter == &otherEnv)
+            {
+                // Super-context found. Copy proof.
+                goaldata.second.proofdst() = game.proof();
+                goaldata.second.setstatustrue();
+                closenodesexcept(goaldata.second.pnodes());
+            }
+            if (supiter == supend) break;
+        }
+}
+
 // Add a sub-context with hypotheses trimmed.
 // Return pointer to the new context. Return NULL if unsuccessful.
 Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotrim)
