@@ -52,7 +52,7 @@ struct Environ : protected Gen
     // Updated when problem is simplified
     bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
     // Return true if an assertion is on topic.
-    virtual bool ontopic(Assertion const & ass) const { return ass.number; }
+    virtual bool ontopic(Assertion const & ass) const { return ass.number>0; }
     // Return the hypotheses of a goal to be trimmed.
     virtual Bvector hypstotrim(Goal const & goal) const
     { return Bvector(0 && &goal); }
