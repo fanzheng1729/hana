@@ -46,7 +46,7 @@ pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
 // Validate a move.
-bool Environ::valid(Move const & move) const
+Environ::MoveValidity Environ::valid(Move const & move) const
 {
     if (!checkDV(move, assertion))
         return MoveINVALID;
