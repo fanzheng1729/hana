@@ -34,18 +34,32 @@ Prop::Prop(Assertion const & ass, Database const & db,
         FOR (Propctors::const_reference propctor, propctors)
             propctorfreqs.push_back
                 (static_cast<double>(propctor.second.freqcount) / total);
+    // Initialize weights of all hypotheses combined.
+    hypsweight = 0;
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        if (!ass.hypfloats(i))
+            FOR (Proofstep step, ass.hypRPN(i))
+                if (step.type == Proofstep::THM && step.pass)
+                    if (const char * const label = step.pass->first.c_str)
+                    {
+                        Propctors::const_iterator const iter
+                        = propctors.find(label);
+                        if (iter != propctors.end())
+                            hypsweight += iter->second.weight;
+                    }
     // Initialize propositional syntax axiom counts in hypotheses.
     hypspropctorcounts.resize(propctorfreqs.size());
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
         if (!ass.hypfloats(i))
             FOR (Proofstep step, ass.hypRPN(i))
                 if (step.type == Proofstep::THM && step.pass)
-                    if (const char * label = step.pass->first.c_str)
+                    if (const char * const label = step.pass->first.c_str)
                     {
                         std::vector<strview>::size_type const i
                         = util::find(propctorlabels, label)
                         - propctorlabels.begin();
-                        ++hypspropctorcounts[i];
+                        if (i < hypspropctorcounts.size())
+                            ++hypspropctorcounts[i];
                     }
 }
 
@@ -128,6 +142,13 @@ static double distance
     return result;
 }
 
+// Weight of the game
+Weight Prop::weight(Game const & game) const
+{
+    // return this->Environ::weight(game);
+    return hypsweight + ::weight(game.goal().RPN, database.propctors());
+}
+
 // Evaluate leaf games, and record the proof if proven.
 Eval Prop::evalourleaf(Game const & game) const
 {
@@ -135,11 +156,12 @@ Eval Prop::evalourleaf(Game const & game) const
     // Add propositional syntax axiom counts for goal.
     FOR (Proofstep step, game.goal().RPN)
         if (step.type == Proofstep::THM && step.pass)
-            if (const char * label = step.pass->first.c_str)
+            if (const char * const label = step.pass->first.c_str)
             {
                 std::vector<strview>::size_type const i
                 = util::find(propctorlabels, label) - propctorlabels.begin();
-                ++propctorcounts[i];
+                if (i < propctorcounts.size())
+                    ++propctorcounts[i];
             }
 
     double const dist = distance(propctorcounts, propctorfreqs);

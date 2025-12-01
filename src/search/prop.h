@@ -19,6 +19,8 @@ struct Prop : Environ
     virtual Goalstatus status(Goal const & goal) const;
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const;
+    // Weight of the game
+    virtual Weight weight(Game const & game) const;
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
     // Allocate a new context constructed from an assertion on the heap.

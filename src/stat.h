@@ -19,7 +19,7 @@ Assertions::size_type maxsymboldefnumber
 //std::cout << definitions << syntaxioms;
     FOR (Proofstep step, RPN)
         if (step.type == Proofstep::THM && step.pass)
-            if (const char * label = step.pass->first.c_str)
+            if (const char * const label = step.pass->first.c_str)
     {
         Assertions::size_type number = 0;
         typename T::const_iterator iterdf = definitions.find(label);
@@ -81,7 +81,7 @@ inline Assertions::size_type maxsymboldefnumber
 
     FOR (Proofstep step, RPN)
         if (step.type == Proofstep::THM && step.pass)
-            if (const char * label = step.pass->first.c_str)
+            if (const char * const label = step.pass->first.c_str)
                 if (syntaxioms.count(label))
                     max = std::max(max, step.pass->second.number);
 
@@ -110,12 +110,11 @@ void addfreqcount(Proofsteps const & RPN, T & definitions)
 {
     FOR (Proofstep step, RPN)
         if (step.type == Proofstep::THM && step.pass)
-            if (const char * label = step.pass->first.c_str)
+            if (const char * const label = step.pass->first.c_str)
             {
                 typename T::iterator const iter = definitions.find(label);
-                if (iter == definitions.end())
-                    continue;
-                ++iter->second.freqcount;
+                if (iter != definitions.end())
+                    ++iter->second.freqcount;
             }
 }
 
@@ -127,6 +126,55 @@ void addfreqcount(Assertion const & ass, T & definitions)
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
         if (!ass.hypfloats(i))
             addfreqcount(ass.hypRPN(i), definitions);
+}
+
+// Find the weights of a definition
+template<class T>
+void addweight(T & definitions, typename T::mapped_type & definition)
+{
+    if (!definition.pdef)
+        definition.weight = 1;
+    else if (definition.weight == 0)
+    {
+        Weight & sum = definition.weight;
+        FOR (Proofstep step, definition.rhs)
+            if (step.type == Proofstep::HYP && step.phyp)
+                ++sum;
+            else if (step.type == Proofstep::THM && step.pass)
+                if (const char * const label = step.pass->first.c_str)
+                {
+                    typename T::iterator const iter = definitions.find(label);
+                    if (iter == definitions.end())
+                        continue;
+                    addweight(definitions, iter->second);
+                    sum += iter->second.weight;
+                }
+        sum -= (definition.lhs.size() - 1);
+    }
+}
+
+template<class T>
+void addweight(T & definitions)
+{
+    FOR (typename T::reference rdef, definitions)
+        addweight(definitions, rdef.second);
+}
+
+template<class T>
+Weight weight(Proofsteps const & RPN, T const & definitions)
+{
+    Weight sum = 0;
+    FOR (Proofstep step, RPN)
+        if (step.type == Proofstep::HYP)
+            ++sum;
+        else if (step.type == Proofstep::THM && step.pass)
+            if (const char * const label = step.pass->first.c_str)
+            {
+                typename T::iterator const iter = definitions.find(label);
+                if (iter != definitions.end())
+                    sum += iter->second.weight;
+            }
+    return sum;
 }
 
 #endif // STAT_H_INCLUDED

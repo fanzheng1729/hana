@@ -177,10 +177,20 @@ public:
             {Relations::A3AN,Relations::A3AN},
             {Relations::O3OR,Relations::O3OR},
         };
+        // Find propositional syntax axioms.
         for (int i = 0; i < sizeof(tts)/sizeof(*tts); ++i)
             m_propctors.addbatch
             (relations(maskpatterns[i][0], maskpatterns[i][1]), tts[i]);
         m_propctors.adddefs(definitions());
+        // Set weights of equivalences to 1.
+        FOR (Relations::const_reference relation, equalities())
+        {
+            Propctors::iterator const iter = m_propctors.find(relation.first);
+            if (iter != propctors().end())
+                iter->second.weight = 1;
+        }
+        // Add weights for other propositional syntax axioms.
+        addweight(m_propctors);
     }
 // Mark propositional assertions. Return its number.
     Assertions::size_type markpropassertions()
