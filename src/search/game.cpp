@@ -6,9 +6,11 @@
 #include "problem.h"
 #include "../proof/write.h"
 
+Proofsize Game::hypsweight() const { return env().hypslen; }
 Goaldata & Game::goaldata() const { return pgoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
+Proofsize Game::goalweight() const { return goal().size(); }
 Proofsteps const & Game::proof() const { return goaldata().proofsrc(); }
 Environ const & Game::env() const { return *pgoal->first; }
 

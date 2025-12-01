@@ -131,7 +131,6 @@ static double distance
 // Evaluate leaf games, and record the proof if proven.
 Eval Prop::evalourleaf(Game const & game) const
 {
-    Proofsize len = game.env().hypslen + game.goal().size() + game.nDefer;
     std::vector<Proofsize> propctorcounts = hypspropctorcounts;
     // Add propositional syntax axiom counts for goal.
     FOR (Proofstep step, game.goal().RPN)
@@ -143,6 +142,7 @@ Eval Prop::evalourleaf(Game const & game) const
                 ++propctorcounts[i];
             }
 
+    Proofsize len = game.hypsweight() + game.goalweight() + game.nDefer;
     double const dist = distance(propctorcounts, propctorfreqs);
     return score(len + dist * frequencybias);
 }

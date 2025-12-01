@@ -80,7 +80,7 @@ struct Environ : protected Gen
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
     {
-        Proofsize len = game.env().hypslen + game.goal().size() + game.nDefer;
+        Proofsize len = game.hypsweight() + game.goalweight() + game.nDefer;
         return score(len);
     }
     // Allocate a new context constructed from an assertion on the heap.

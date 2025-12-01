@@ -13,7 +13,7 @@ Value Problem::UCBnewstage(pNode p) const
     // Our turn
     Game const & game = p->game();
     stage_t const stage = p->stage();
-    Proofsize len = game.env().hypslen + game.goal().size() + stage;
+    Proofsize len = game.hypsweight() + game.goalweight() + stage;
     size_type const self = static_cast<size_type>(1) << (stage * 2);
     return score(len) + UCBbonus(true, p.size(), self);
 }
