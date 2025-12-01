@@ -99,7 +99,7 @@ int main(int argc, char * argv[])
 
     std::cout << "Propositional syntax axioms frequency count" << std::endl;
     FOR (Propctors::const_reference propctor, database.propctors())
-        std::cout << propctor.first << ' ' << propctor.second.freq << ' ';
+        std::cout << propctor.first << ' ' << propctor.second.count << ' ';
     std::cout << std::endl;
 
     database.buildsyntaxDAG();

@@ -123,7 +123,7 @@ void addfreq(Proofsteps const & RPN, T & definitions)
         typename T::iterator const iter = definitions.find(label);
         if (iter == definitions.end())
             continue;
-        ++iter->second.freq;
+        ++iter->second.count;
     }
 }
 

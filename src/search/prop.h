@@ -23,7 +23,7 @@ struct Prop : Environ
         FOR (Propctors::const_reference propctor, propctors)
         {
             propctorlabels.push_back(propctor.first);
-            total += propctor.second.freq;
+            total += propctor.second.count;
         }
         // Initialize propositional syntax axiom frequencies.
         if (total == 0)
@@ -31,7 +31,7 @@ struct Prop : Environ
         else
             FOR (Propctors::const_reference propctor, propctors)
                 propctorfreqs.push_back
-                    (static_cast<double>(propctor.second.freq)/total);
+                    (static_cast<double>(propctor.second.count)/total);
     }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const

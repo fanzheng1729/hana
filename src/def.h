@@ -12,10 +12,10 @@ struct Definition
     // Left and right hand side of definition
     Proofsteps lhs, rhs;
     // # occurrences
-    Proofsize freq;
+    Proofsize count;
     // # of the defining assertion
     operator Assertions::size_type() const { return pdef->second.number; }
-    Definition() : pdef(NULL), freq(0) {}
+    Definition() : pdef(NULL), count(0) {}
     // Find the revPolish notation of (LHS, RHS).
     Definition(Assertions::const_reference rass);
     Definition
