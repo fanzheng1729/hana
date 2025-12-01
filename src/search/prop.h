@@ -32,7 +32,11 @@ struct Prop : Environ
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const;
     // Weight of the goal
-    virtual Weight weight(Proofsteps const & RPN) const;
+    virtual Weight weight(Proofsteps const & RPN) const
+    {
+        return RPN.size();
+        // return ::weight(RPN, database.propctors());
+    }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
     // Allocate a new context constructed from an assertion on the heap.
@@ -43,7 +47,15 @@ struct Prop : Environ
         Prop(ass, database, m_maxmoves, frequencybias, staged);
     }
     // Return the simplified assertion for the goal of the game to hold.
-    virtual Assertion makeAss(Bvector const & hypstotrim) const;
+    virtual Assertion makeAss(Bvector const & hypstotrim) const
+    {
+        Assertion result;
+        result.number = assertion.number;
+        result.sethyps(assertion, hypstotrim);
+        result.expression.resize(1);
+        result.disjvars = assertion.disjvars & result.varusage;
+        return result;
+    }
 private:
     // Add a move with free variables. Return false.
     virtual bool addhardmoves

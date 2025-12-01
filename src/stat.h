@@ -151,7 +151,7 @@ inline void addfreqcounts
             if (const char * const label = step.pass->first.c_str)
             {
                 Labels::size_type const i
-                = util::find(labels, label) - labels.begin();
+                = util::findsorted(labels, label) - labels.begin();
                 if (i < labels.size())
                     ++result[i];
             }

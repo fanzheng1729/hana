@@ -87,42 +87,14 @@ static double distance
     return result;
 }
 
-// Weight of the goal
-Weight Prop::weight(Proofsteps const & RPN) const
-{
-    return RPN.size();
-    // return ::weight(game.goal().RPN, database.propctors());
-}
-
 // Evaluate leaf games, and record the proof if proven.
 Eval Prop::evalourleaf(Game const & game) const
 {
-    Freqcounts propctorcounts = hypspropctorcounts;
-    // Add propositional syntax axiom counts for goal.
-    FOR (Proofstep step, game.goal().RPN)
-        if (step.type == Proofstep::THM && step.pass)
-            if (const char * const label = step.pass->first.c_str)
-            {
-                std::vector<strview>::size_type const i
-                = util::find(propctorlabels, label) - propctorlabels.begin();
-                if (i < propctorcounts.size())
-                    ++propctorcounts[i];
-            }
-
     Weight const w = this->Environ::weight(game) + game.nDefer;
+    Freqcounts propctorcounts = hypspropctorcounts;
+    addfreqcounts(game.goal().RPN, propctorlabels, propctorcounts);
     double const d = distance(propctorcounts, propctorfreqs);
     return score(w + d * frequencybias);
-}
-
-// Return the simplified assertion for the goal of the game to hold.
-Assertion Prop::makeAss(Bvector const & hypstotrim) const
-{
-    Assertion result;
-    result.number = assertion.number;
-    result.sethyps(assertion, hypstotrim);
-    result.expression.resize(1);
-    result.disjvars = assertion.disjvars & result.varusage;
-    return result;
 }
 
 // Adds substitutions to a move.
