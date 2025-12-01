@@ -77,9 +77,11 @@ struct Environ : protected Gen
     { return Bvector(0 && &goal); }
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
+    // Weight of the goal
+    virtual Weight weight(Proofsteps const & RPN) const { return RPN.size(); }
     // Weight of the game
-    virtual Weight weight(Game const & game) const
-    { return hypsweight + game.goal().RPN.size(); }
+    Weight weight(Game const & game) const
+    { return hypsweight + weight(game.goal().RPN); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
     { return score(weight(game) + game.nDefer); }

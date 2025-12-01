@@ -12,41 +12,25 @@ Prop::Prop(Assertion const & ass, Database const & db,
             std::size_t maxsize, double freqbias, bool staged) :
     Environ(ass, db, maxsize, staged),
     hypscnf(db.propctors().hypscnf(ass, hypatomcount)),
+    propctorlabels(labels(database.propctors())),
+    propctorfreqs(frequencies(database.propctors())),
     frequencybias(freqbias)
 {
     Propctors const & propctors = database.propctors();
     Propctors::size_type const propcount = propctors.size();
-    // Preallocate for efficiency.
-    propctorlabels.reserve(propcount);
-    propctorfreqs.reserve(propcount);
-    // Total frequency counts
-    Freqcount total = 0;
-    // Initialize propositional syntax axiom labels.
-    FOR (Propctors::const_reference propctor, propctors)
-    {
-        propctorlabels.push_back(propctor.first);
-        total += propctor.second.freqcount;
-    }
-    // Initialize propositional syntax axiom frequencies.
-    if (total == 0 && propcount > 0)
-        propctorfreqs.assign(propcount, 1./propcount);
-    else
-        FOR (Propctors::const_reference propctor, propctors)
-            propctorfreqs.push_back
-                (static_cast<double>(propctor.second.freqcount) / total);
     // Initialize weights of all hypotheses combined.
-    hypsweight = 0;
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
-        if (!ass.hypfloats(i))
-            FOR (Proofstep step, ass.hypRPN(i))
-                if (step.type == Proofstep::THM && step.pass)
-                    if (const char * const label = step.pass->first.c_str)
-                    {
-                        Propctors::const_iterator const iter
-                        = propctors.find(label);
-                        if (iter != propctors.end())
-                            hypsweight += iter->second.weight;
-                    }
+    // hypsweight = 0;
+    // for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    //     if (!ass.hypfloats(i))
+    //         FOR (Proofstep step, ass.hypRPN(i))
+    //             if (step.type == Proofstep::THM && step.pass)
+    //                 if (const char * const label = step.pass->first.c_str)
+    //                 {
+    //                     Propctors::const_iterator const iter
+    //                     = propctors.find(label);
+    //                     if (iter != propctors.end())
+    //                         hypsweight += iter->second.weight;
+    //                 }
     // Initialize propositional syntax axiom counts in hypotheses.
     hypspropctorcounts.resize(propctorfreqs.size());
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
@@ -142,11 +126,11 @@ static double distance
     return result;
 }
 
-// Weight of the game
-Weight Prop::weight(Game const & game) const
+// Weight of the goal
+Weight Prop::weight(Proofsteps const & RPN) const
 {
-    // return this->Environ::weight(game);
-    return hypsweight + ::weight(game.goal().RPN, database.propctors());
+    return RPN.size();
+    // return ::weight(game.goal().RPN, database.propctors());
 }
 
 // Evaluate leaf games, and record the proof if proven.
@@ -164,8 +148,9 @@ Eval Prop::evalourleaf(Game const & game) const
                     ++propctorcounts[i];
             }
 
+    Weight const weight = this->Environ::weight(game) + game.nDefer;
     double const dist = distance(propctorcounts, propctorfreqs);
-    return score(weight(game) + game.nDefer + dist * frequencybias);
+    return score(weight + dist * frequencybias);
 }
 
 // Return the simplified assertion for the goal of the game to hold.

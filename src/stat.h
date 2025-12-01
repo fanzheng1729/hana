@@ -104,6 +104,18 @@ inline bool isasshard(Assertion const & ass, Syntaxioms const & syntaxioms)
     return proofsymbolnumber > symbolnumber;
 }
 
+// Find all labels of definitions.
+template<class T>
+std::vector<strview> labels(T const & definitions)
+{
+    std::vector<strview> result;
+    // Preallocate for efficiency.
+    result.reserve(definitions.size());
+    FOR (typename T::const_reference rdef, definitions)
+        result.push_back(rdef.first);
+    return result;
+}
+
 // Add the syntax axioms of a rev-Polish notation to the frequency count.
 template<class T>
 void addfreqcount(Proofsteps const & RPN, T & definitions)
@@ -126,6 +138,31 @@ void addfreqcount(Assertion const & ass, T & definitions)
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
         if (!ass.hypfloats(i))
             addfreqcount(ass.hypRPN(i), definitions);
+}
+
+typedef double Frequency;
+typedef std::vector<Frequency> Frequencies;
+// Find frequencies of definitions.
+template<class T>
+Frequencies frequencies(T const & definitions)
+{
+    if (definitions.empty())
+        return Frequencies();
+
+    Frequencies result;
+    // Preallocate for efficiency.
+    result.reserve(definitions.size());
+
+    Freqcount total = 0;
+    FOR (typename T::const_reference rdef, definitions)
+        total += rdef.second.freqcount;
+
+    if (total == 0)
+        return Frequencies(definitions.size(), 1./definitions.size());
+    
+    FOR (typename T::const_reference rdef, definitions)
+        result.push_back(rdef.second.freqcount/static_cast<Frequency>(total));
+    return result;
 }
 
 // Find the weights of a definition
