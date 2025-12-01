@@ -149,7 +149,7 @@ Problem::size_type testsearch
     else if (unexpected(tree.empty(), "empty tree for", iter->first))
         return 0;
     else if (unexpected(tree.value() != 1, "game value", tree.value()))
-        return tree.printmainline(), 0;
+        return tree.navigate(), 0;
     else if (unexpected(!checkconclusion(iter->first,
                                          verify(tree.proof(), &*iter),
                                          iter->second.expression),

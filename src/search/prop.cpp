@@ -134,7 +134,10 @@ Eval Prop::evalourleaf(Game const & game) const
         static_cast<double>(propctorcounts[i] - hypspropctorcounts[i]);
         l2dist += diff * diff;
     }
-    return score(len) - l2dist * frequencybias;
+    Value value = score(len) - l2dist * frequencybias;
+    if (value < -0.5) value = -0.5;
+    if (value > +0.5) value = +0.5;
+    return value;
 }
 
 // Return the simplified assertion for the goal of the game to hold.
