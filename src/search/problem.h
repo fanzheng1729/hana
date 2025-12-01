@@ -85,8 +85,8 @@ public:
             ->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
-    // Update implication relation for newly added context.
-    void updateimps(Environ const & env)
+    // Add implication relation for newly added context.
+    void addimps(Environ const & env)
     {
         FOR (Environs::const_reference renv, environs)
         {
@@ -154,10 +154,10 @@ public:
     virtual void re_eval();
     // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode p);
-    // Prune the sub-tree at p. Update maxranks.
+    // Prune the sub-tree at p and update maxranks, if almost won.
     void prune(pNode p);
-    // Focus on simpler contexts.
-    void focusenvs();
+    // Update implications after problem context is simplified.
+    void updateimps();
     // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p);
     // Proof of the assertion, if not empty

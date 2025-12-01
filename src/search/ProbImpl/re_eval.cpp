@@ -1,4 +1,5 @@
 #include "../problem.h"
+#include "../util/for.h"
 
 // Refocus the tree on simpler sub-tree, if almost won.
 void Problem::re_eval()
@@ -9,7 +10,7 @@ void Problem::re_eval()
     numberlimit = maxranknumber;
     maxranks.clear();
     prune(root());
-    focusenvs();
+    updateimps();
     focus(root());
     maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
     // printranksinfo();
@@ -24,7 +25,7 @@ void Problem::addranks(pNode p)
     database.syntaxDAG().addexp(maxranks, p->game().goal().RPN);
 }
 
-// Prune the sub-tree at p. Update maxranks.
+// Prune the sub-tree at p and update maxranks, if almost won.
 void Problem::prune(pNode p)
 {
     if (p.haschild())
@@ -41,8 +42,8 @@ void Problem::prune(pNode p)
         addranks(p);
 }
 
-// Focus on simpler contexts.
-void Problem::focusenvs()
+// Update implications after problem context is simplified.
+void Problem::updateimps()
 {
     FOR (Environs::const_reference env, environs)
         env.second->m_rankssimplerthanProb
