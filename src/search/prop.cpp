@@ -142,41 +142,6 @@ bool Prop::addhardmoves
     return false;
 }
 
-// Test proof search.
-// Return the size of tree if okay. Otherwise return 0.
-Problem::size_type testsearch
-    (Assiter iter, Problem & tree, Problem::size_type maxsize)
-{
-    // printass(*iter);
-    tree.play(maxsize);
-    // tree.printstats();
-    // std::cin.get();
-    // if (iter->first == "impbii")
-    //     tree.navigate();
-    // if (iter->second.number == 203)
-    //     tree.printstats(), std::cin.get();
-    if (tree.size() > maxsize)
-    {
-        // printass(*iter);
-        // std::cout << std::endl;
-        // tree.printstats();
-        // tree.printenvs();
-        // tree.navigate();
-    }
-    else if (unexpected(tree.empty(), "empty tree for", iter->first))
-        return 0;
-    else if (unexpected(tree.value() != 1, "game value", tree.value()))
-        return tree.printmainline(), 0;
-    else if (unexpected(!checkconclusion(iter->first,
-                                         verify(tree.proof(), &*iter),
-                                         iter->second.expression),
-                        "wrong proof", tree.proof()))
-        return tree.navigate(), 0;
-    else if (iter->first == "biass_")
-        tree.writeproof((std::string(iter->first) + ".txt").c_str());
-    return tree.size();
-}
-
 static void printtime(Problem::size_type nodes, Time time)
 {
     std::cout << nodes << " nodes / " << time << "s = ";
