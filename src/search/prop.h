@@ -38,6 +38,10 @@ private:
     // The CNF of all hypotheses combined
     Hypscnf const hypscnf;
     Atom hypatomcount;
+    // Propositional syntax axiom labels
+    std::vector<strview> propctorlabels;
+    // Propositional syntax axiom frequency counts
+    std::vector<Proofsize> propctorfreqs;
 };
 
 #endif // PROP_H_INCLUDED

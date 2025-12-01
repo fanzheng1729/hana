@@ -12,7 +12,7 @@ struct Definition
     // Left and right hand side of definition
     Proofsteps lhs, rhs;
     // # occurrences
-    Proofsteps::size_type freq;
+    Proofsize freq;
     // # of the defining assertion
     operator Assertions::size_type() const { return pdef->second.number; }
     Definition() : pdef(NULL), freq(0) {}

@@ -11,7 +11,7 @@ struct Goal
     strview typecode;
     AST mutable tree;
     Goal(Goalview view) : RPN(view.first), typecode(view.second) {}
-    Proofsteps::size_type size() const { return RPN.size(); }
+    Proofsize size() const { return RPN.size(); }
     Expression expression() const
     {
         Expression result(verify(RPN));
