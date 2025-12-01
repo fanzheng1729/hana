@@ -25,7 +25,7 @@ struct Prop : Environ
             propctorlabels.push_back(propctor.first);
             total += propctor.second.freq;
         }
-        // Initialize propositional syntax axiom frequency list.
+        // Initialize propositional syntax axiom frequencies.
         if (total == 0)
             propctorfreqs.resize(propctors.size());
         else
@@ -61,8 +61,9 @@ private:
     Atom hypatomcount;
     // Propositional syntax axiom labels
     std::vector<strview> propctorlabels;
-    // Propositional syntax axiom frequencies.
+    // Propositional syntax axiom frequencies
     std::vector<double> propctorfreqs;
+    // Propositional syntax axiom counts for *this
 };
 
 #endif // PROP_H_INCLUDED
