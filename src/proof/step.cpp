@@ -4,19 +4,37 @@
 
 static const char proofsteperr[] = "Invalid proof step ";
 
-// Return typecode of the variable.
 strview Proofstep::typecode() const
 {
     switch (type)
     {
     case HYP:
+        if (!phyp) return "";
         if (phyp->second.expression.empty()) return "";
         return phyp->second.expression[0];
     case THM:
+        if (!pass) return "";
         if (pass->second.expression.empty()) return "";
         return pass->second.expression[0];
     default:
         return "";
+    }
+}
+
+// Return weight of the symbol.
+Proofsize Proofstep::weight() const
+{
+    switch (type)
+    {
+    case HYP:
+        return 1;
+    case THM:
+    {
+        Proofsize const result = pass->second.syntaxweight;
+        return result ? result : 1;
+    }
+    default:
+        return 0;
     }
 }
 
@@ -34,8 +52,10 @@ Proofstep::operator const char*() const
     switch (type)
     {
     case HYP:
+        if (!phyp) return NULL;
         return phyp->first.c_str;
     case THM:
+        if (!pass) return NULL;
         return pass->first.c_str;
     case LOAD: case SAVE:
         std::cerr << proofsteperr << "of type " << type << std::endl;
