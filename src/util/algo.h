@@ -1,5 +1,5 @@
-#ifndef UTIL_H_INCLUDED
-#define UTIL_H_INCLUDED
+#ifndef ALGO_H_INCLUDED
+#define ALGO_H_INCLUDED
 
 #include <algorithm>
 
@@ -34,4 +34,4 @@ namespace util
 #endif // __cpp_lib_robust_nonmodifying_seq_ops
 } // namespace util
 
-#endif // UTIL_H_INCLUDED
+#endif // ALGO_H_INCLUDED

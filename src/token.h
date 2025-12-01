@@ -3,8 +3,8 @@
 
 #include <cctype>           // for std::isalnum
 #include <deque>
+#include "util/algo.h"      // for util::none_of
 #include "util/strview.h"
-#include "util/util.h"      // for util::none_of
 
 typedef std::string Token;
 // A deque of tokens for input. Tokens are not destroyed after popping.

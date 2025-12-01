@@ -5,7 +5,7 @@
 #include "parse.h"
 #include "proof/write.h"
 #include "syntaxiom.h"
-#include "util/util.h"  // for util::mismatch
+#include "util/algo.h"  // for util::mismatch
 #include "util/find.h"
 #include "util/for.h"
 

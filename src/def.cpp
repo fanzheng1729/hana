@@ -6,8 +6,8 @@
 #include "proof/verify.h"
 #include "relation.h"
 #include "syntaxiom.h"
+#include "util/algo.h"  // for util::equal
 #include "util/for.h"
-#include "util/util.h"  // for util::equal
 
 // Find the revPolish notation of (LHS, RHS).
 Definition::Definition(Assertions::const_reference rass) : pdef(NULL), count(0)
