@@ -118,7 +118,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         = database.syntaxDAG().simplerthan(psubEnv->maxranks, maxranks);
         newEnviter->second = psubEnv;
         addhypproofs(*psubEnv);
-        updateimplication(*psubEnv);
+        updateimps(*psubEnv);
     }
     return psubEnv;
 }

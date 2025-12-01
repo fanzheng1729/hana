@@ -85,7 +85,7 @@ public:
             ->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
-    void updateimplication(Environ const & env)
+    void updateimps(Environ const & env)
     {
         FOR (Environs::const_reference renv, environs)
         {
