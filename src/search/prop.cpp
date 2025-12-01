@@ -9,7 +9,7 @@
 #include "../util/timer.h"
 
 Prop::Prop(Assertion const & ass, Database const & db,
-            std::size_t maxsize, bool staged = false) :
+            std::size_t maxsize, bool staged) :
     Environ(ass, db, maxsize, staged),
     hypscnf(db.propctors().hypscnf(ass, hypatomcount))
 {
