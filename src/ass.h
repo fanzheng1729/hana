@@ -8,6 +8,9 @@
 // Hypothesis label delimiter
 static const std::string hypdelim = "~";
 
+// Size-based weight
+inline Proofsize weight(Proofsteps const & RPN) { return RPN.size(); }
+
 // An axiom or a theorem
 struct Assertion
 {
@@ -59,26 +62,24 @@ struct Assertion
     Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
     // AST of a hypothesis
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
-    // length of a hypothesis
+    // Length of a hypothesis
     Proofsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
     // Total length of RPNs of hypotheses, skipping trimmed ones
-    Proofsize hypslen(Bvector const & hypstotrim = Bvector()) const
+    Proofsize hypslen() const
     {
         Proofsize len = 0;
-        for (Hypsize i = 0; i < hypstotrim.size(); ++i)
-            len += !hypstotrim[i] * hyplen(i);
-        for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
+        for (Hypsize i = 0; i < hypcount(); ++i)
             len += hyplen(i);
         return len;
     }
-    // Total length of RPNs of essential hypotheses, skipping trimmed ones
-    Proofsize esshypslen(Bvector const & hypstotrim = Bvector()) const
+    // Weight of a hypothesis
+    Proofsize hypweight(Hypsize index) const { return weight(hypRPN(index)); }
+    // Total weight of RPNs of hypotheses, skipping trimmed ones
+    Proofsize hypsweight() const
     {
         Proofsize len = 0;
-        for (Hypsize i = 0; i < hypstotrim.size(); ++i)
-            len += !hypfloats(i) * !hypstotrim[i] * hyplen(i);
-        for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
-            len += !hypfloats(i) * hyplen(i);
+        for (Hypsize i = 0; i < hypcount(); ++i)
+            len += hypweight(i);
         return len;
     }
     // Return true if the expression matches a hypothesis.

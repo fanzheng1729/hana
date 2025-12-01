@@ -19,12 +19,12 @@ typedef std::vector<Environ const *> pEnvs;
 // Game state in proof search tree
 // struct Game;
 
-// Size-based score
-inline Value score(Proofsize size) { return 1. / (size + 1); }
-inline Value score(double size)
+// Weight-based score
+inline Value score(Proofsize weight) { return 1. / (weight + 1); }
+inline Value score(double weight)
 {
-    if (size < 2) size = 2;
-    return 1 / (size + 1);
+    if (weight < 1) weight = 1;
+    return 1 / (weight + 1);
 }
 
 // Return true if a move satisfies disjoint variable hypotheses.
@@ -44,7 +44,7 @@ struct Environ : protected Gen
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         name(ass.hypslabel()),
-        hypslen(ass.hypslen()),
+        hypsweight(ass.hypsweight()),
         staged(isstaged),
         m_subsumedbyProb(false), m_rankssimplerthanProb(false)
     {
@@ -93,11 +93,11 @@ struct Environ : protected Gen
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
-    // Maximal ranks of the hypotheses combined
+    // Maximal ranks of all the hypotheses combined
     SyntaxDAG::Ranks const maxranks;
     std::string name;
-    // Length of the rev Polish notation of all hypotheses combined
-    Proofsize const hypslen;
+    // Weight of all the hypotheses combined
+    Proofsize const hypsweight;
     // Is staged move generation used?
     bool const staged;
 protected:
