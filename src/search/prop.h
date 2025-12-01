@@ -34,6 +34,7 @@ struct Prop : Environ
             FOR (Propctors::const_reference propctor, propctors)
                 propctorfreqs.push_back
                     (static_cast<double>(propctor.second.count)/total);
+        // Initialize propositional syntax axiom counts in hypotheses.
         for (Hypsize i = 0; i < ass.hypcount(); ++i)
             if (!ass.hypfloats(i))
                 FOR (Proofstep step, ass.hypRPN(i))
@@ -43,8 +44,8 @@ struct Prop : Environ
                             std::vector<strview>::size_type const i
                             = util::find(propctorlabels, label)
                             - propctorlabels.begin();
-                            if (i < propctorcounts.size())
-                                ++propctorcounts[i];
+                            if (i < hypspropctorcounts.size())
+                                ++hypspropctorcounts[i];
                         }
     }
     // Return true if an assertion is on topic/useful.
@@ -77,8 +78,8 @@ private:
     std::vector<strview> propctorlabels;
     // Propositional syntax axiom frequencies
     std::vector<double> propctorfreqs;
-    // Propositional syntax axiom counts for *this
-    std::vector<Proofsize> propctorcounts;
+    // Propositional syntax axiom counts in hypotheses
+    std::vector<Proofsize> hypspropctorcounts;
 };
 
 #endif // PROP_H_INCLUDED
