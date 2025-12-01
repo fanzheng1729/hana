@@ -1,7 +1,7 @@
 #ifndef VERIFY_H_INCLUDED
 #define VERIFY_H_INCLUDED
 
-#include <algorithm>    // for std::max
+#include <algorithm>// for std::max and std::max_element
 #include "printer.h"
 #include "../util/for.h"
 
