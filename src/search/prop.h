@@ -3,6 +3,7 @@
 
 #include <new>      // for std::nothrow
 #include "environ.h"
+#include "../util/find.h"
 #include "../util/for.h"
 
 // Propositional proof search, using SAT pruning
@@ -39,7 +40,11 @@ struct Prop : Environ
                     if (step.type == Proofstep::THM && step.pass)
                         if (const char * label = step.pass->first.c_str)
                         {
-                            //
+                            std::vector<strview>::size_type const i
+                            = util::find(propctorlabels, label)
+                            - propctorlabels.begin();
+                            if (i < propctorcounts.size())
+                                ++propctorcounts[i];
                         }
     }
     // Return true if an assertion is on topic/useful.
