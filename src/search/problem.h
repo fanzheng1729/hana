@@ -85,6 +85,7 @@ public:
             ->second.proofdst().assign(1, env.assertion.hypiters[i]);
         }
     }
+    // Update implication relation for newly added context.
     void updateimps(Environ const & env)
     {
         FOR (Environs::const_reference renv, environs)
