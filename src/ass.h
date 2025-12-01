@@ -80,10 +80,10 @@ struct Assertion
     // Total weight of RPNs of hypotheses
     Proofsize hypsweight() const
     {
-        Proofsize result = 0;
+        Proofsize sum = 0;
         for (Hypsize i = 0; i < hypcount(); ++i)
-            result += hypweight(i);
-        return result;
+            sum += hypweight(i);
+        return sum;
     }
     // Return true if the expression matches a hypothesis.
     bool istrivial() const
@@ -147,10 +147,10 @@ struct Assertion
 inline Proofsize weight(Proofsteps const & RPN)
 {
     return RPN.size();
-    Proofsize result = 0;
+    Proofsize sum = 0;
     for (Proofsize i = 0; i < RPN.size(); ++i)
-        result += RPN[i].weight();
-    return result;
+        sum += RPN[i].weight();
+    return sum;
 }
 
 #endif // ASS_H_INCLUDED

@@ -59,18 +59,18 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
 
 std::string::size_type Printer::maxlabellen() const
 {
-    std::string::size_type result = 0;
+    std::string::size_type max = 0;
 
     FOR (Expression const & step, steps)
     {
         if (step.empty())
             continue;
         std::string::size_type const len = std::strlen(step[0].c_str);
-        if (result < len)
-            result = len;
+        if (max < len)
+            max = len;
     }
 
-    return result;
+    return max;
 }
 
 std::string Printer::str(std::vector<Proofsize> const & indentation) const
