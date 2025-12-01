@@ -8,9 +8,6 @@
 // Hypothesis label delimiter
 static const std::string hypdelim = "~";
 
-// Size-based weight
-inline Proofsize weight(Proofsteps const & RPN) { return RPN.size(); }
-
 // An axiom or a theorem
 struct Assertion
 {
@@ -70,14 +67,6 @@ struct Assertion
         Proofsize len = 0;
         for (Hypsize i = 0; i < hypcount(); ++i)
             len += hyplen(i);
-        return len;
-    }
-    // Total weight of RPNs of hypotheses
-    Proofsize hypsweight() const
-    {
-        Proofsize len = 0;
-        for (Hypsize i = 0; i < hypcount(); ++i)
-            len += weight(hypRPN(i));
         return len;
     }
     // Return true if the expression matches a hypothesis.

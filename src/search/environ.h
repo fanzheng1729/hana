@@ -19,6 +19,18 @@ typedef std::vector<Environ const *> pEnvs;
 // Game state in proof search tree
 // struct Game;
 
+// Size-based weight
+inline Proofsize weight(Proofsteps const & RPN) { return RPN.size(); }
+
+// Total weight of RPNs of hypotheses
+inline Proofsize hypsweight(Assertion const & ass)
+{
+    Proofsize result = 0;
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        result += weight(ass.hypRPN(i));
+    return result;
+}
+
 // Weight-based score
 inline Value score(Proofsize weight) { return 1. / (weight + 1); }
 inline Value score(double weight)
@@ -44,7 +56,7 @@ struct Environ : protected Gen
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         name(ass.hypslabel()),
-        hypsweight(ass.hypsweight()),
+        hypsweight(::hypsweight(ass)),
         staged(isstaged),
         m_subsumedbyProb(false), m_rankssimplerthanProb(false)
     {
