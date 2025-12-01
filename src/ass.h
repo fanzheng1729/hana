@@ -146,7 +146,7 @@ struct Assertion
 // Size-based weight
 inline Proofsize weight(Proofsteps const & RPN)
 {
-    // return RPN.size();
+    return RPN.size();
     Proofsize result = 0;
     for (Proofsize i = 0; i < RPN.size(); ++i)
         result += RPN[i].weight();
