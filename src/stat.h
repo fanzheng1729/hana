@@ -170,7 +170,7 @@ Weight weight(Proofsteps const & RPN, T const & definitions)
         else if (step.type == Proofstep::THM && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
-                typename T::iterator const iter = definitions.find(label);
+                typename T::const_iterator const iter = definitions.find(label);
                 if (iter != definitions.end())
                     sum += iter->second.weight;
             }
