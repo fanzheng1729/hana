@@ -70,10 +70,10 @@ struct Assertion
     // Total length of RPNs of hypotheses
     Proofsize hypslen() const
     {
-        Proofsize len = 0;
+        Proofsize sum = 0;
         for (Hypsize i = 0; i < hypcount(); ++i)
-            len += hyplen(i);
-        return len;
+            sum += hyplen(i);
+        return sum;
     }
     // Weight of a hypothesis
     Proofsize hypweight(Hypsize index) const { return weight(hypRPN(index)); }
