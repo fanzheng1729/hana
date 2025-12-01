@@ -11,7 +11,7 @@
 struct Prop : Environ
 {
     Prop(Assertion const & ass, Database const & db,
-         std::size_t maxsize, bool staged = false);
+         std::size_t maxsize, double freqbias, bool staged = false);
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.type & Asstype::PROPOSITIONAL; }
@@ -40,6 +40,8 @@ private:
     std::vector<double> propctorfreqs;
     // Propositional syntax axiom counts in hypotheses
     std::vector<Proofsize> hypspropctorcounts;
+    // Frequency bias
+    double freqbias;
 };
 
 #endif // PROP_H_INCLUDED

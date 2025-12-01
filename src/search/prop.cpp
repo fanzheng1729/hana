@@ -9,7 +9,7 @@
 #include "../util/timer.h"
 
 Prop::Prop(Assertion const & ass, Database const & db,
-            std::size_t maxsize, bool staged) :
+            std::size_t maxsize, double freqbias, bool staged) :
     Environ(ass, db, maxsize, staged),
     hypscnf(db.propctors().hypscnf(ass, hypatomcount))
 {
@@ -125,8 +125,7 @@ Eval Prop::evalourleaf(Game const & game) const
             }
     // Total occurrence count
     Proofsize const total
-    = std::accumulate(propctorcounts.begin(), propctorcounts.end(),
-                        static_cast<Proofsize>(0));
+    = std::accumulate(propctorcounts.begin(), propctorcounts.end(), Proofsize());
     // L2 distance
     double l2dist = 0;
     for (std::vector<Proofsize>::size_type i = 0; i < propctorcounts.size(); ++i)
@@ -240,13 +239,13 @@ bool testpropsearch
             continue;
 
         // Skip non propositional theorems.
-        static const Prop prop1(assiters[1]->second, database, 0);
+        static const Prop prop1(assiters[1]->second, database, 0, 0, false);
         if (!(prop1.ontopic(iter->second)))
             continue;
 
         // Try search proof.
         ++all;
-        Prop prop(iter->second, database, maxsize, parameters[3]);
+        Prop prop(iter->second, database, maxsize, parameters[2], parameters[3]);
         Problem tree(prop, parameters);
         Problem::size_type const n = testsearch(iter, tree, maxsize);
         if (n == 0)
