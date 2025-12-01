@@ -11,44 +11,7 @@
 struct Prop : Environ
 {
     Prop(Assertion const & ass, Database const & db,
-         std::size_t maxsize, bool staged = false) :
-        Environ(ass, db, maxsize, staged),
-        hypscnf(db.propctors().hypscnf(ass, hypatomcount))
-    {
-        Propctors const & propctors = database.propctors();
-        Propctors::size_type const propcount = propctors.size();
-        // Preallocate for efficiency.
-        propctorlabels.reserve(propcount);
-        propctorfreqs.reserve(propcount);
-        // Total frequency counts
-        Proofsize total = 0;
-        // Initialize propositional syntax axiom labels.
-        FOR (Propctors::const_reference propctor, propctors)
-        {
-            propctorlabels.push_back(propctor.first);
-            total += propctor.second.count;
-        }
-        // Initialize propositional syntax axiom frequencies.
-        if (total == 0 && propcount > 0)
-            propctorfreqs.assign(propcount, 1./propcount);
-        else
-            FOR (Propctors::const_reference propctor, propctors)
-                propctorfreqs.push_back
-                    (static_cast<double>(propctor.second.count)/total);
-        // Initialize propositional syntax axiom counts in hypotheses.
-        for (Hypsize i = 0; i < ass.hypcount(); ++i)
-            if (!ass.hypfloats(i))
-                FOR (Proofstep step, ass.hypRPN(i))
-                    if (step.type == Proofstep::THM && step.pass)
-                        if (const char * label = step.pass->first.c_str)
-                        {
-                            std::vector<strview>::size_type const i
-                            = util::find(propctorlabels, label)
-                            - propctorlabels.begin();
-                            if (i < hypspropctorcounts.size())
-                                ++hypspropctorcounts[i];
-                        }
-    }
+         std::size_t maxsize, bool staged = false);
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.type & Asstype::PROPOSITIONAL; }
