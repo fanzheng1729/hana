@@ -135,8 +135,7 @@ Eval Prop::evalourleaf(Game const & game) const
         l2dist += diff * diff;
     }
     double len2 = len + l2dist * frequencybias;
-    if (len2 < 2) len2 = 2;
-    return score(len2);
+    return score(len2 >= 2 ? len2 : 2);
 }
 
 // Return the simplified assertion for the goal of the game to hold.
