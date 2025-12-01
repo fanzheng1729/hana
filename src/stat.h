@@ -20,10 +20,13 @@ Assertions::size_type maxsymboldefnumber
     FOR (Proofstep step, RPN)
     {
 //std::cout << step << ':';
-        if (step.type != Proofstep::THM)
+        if (step.type != Proofstep::THM || !step.pass)
             continue;
+        strview const label = step.pass->first;
+        if (!label.c_str)
+            continue;
+
         Assertions::size_type number = 0;
-        typename T::key_type const label = step;
         typename T::const_iterator iterdf = definitions.find(label);
 //std::cout << "sa";
         if (iterdf != definitions.end())
