@@ -60,9 +60,6 @@ struct Environ : protected Gen
     bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number>0; }
-    // Return the hypotheses of a goal to be trimmed.
-    virtual Bvector hypstotrim(Goal const & goal) const
-    { return Bvector(0 && &goal); }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
     { return goal.RPN.empty() ? GOALFALSE : GOALOPEN; }
@@ -70,11 +67,17 @@ struct Environ : protected Gen
     enum MoveValidity { MoveINVALID = -1, MoveVALID = 0, MoveCLOSED = 1 };
     // Validate a move.
     MoveValidity valid(Move const & move) const;
+    // Return the hypotheses of a goal to be trimmed.
+    virtual Bvector hypstotrim(Goal const & goal) const
+    { return Bvector(0 && &goal); }
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
-    { return score(game.env().hypslen + game.goal().size() + game.nDefer); }
+    {
+        Proofsize len = game.env().hypslen + game.goal().size() + game.nDefer;
+        return score(len);
+    }
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
