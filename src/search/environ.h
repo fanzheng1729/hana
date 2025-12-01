@@ -20,7 +20,7 @@ typedef std::vector<Environ const *> pEnvs;
 // struct Game;
 
 // Weight-based score
-inline Value score(Proofsize weight) { return 1. / (weight + 1); }
+inline Value score(Weight weight) { return 1. / (weight + 1); }
 inline Value score(double weight)
 {
     if (weight < 1) weight = 1;
@@ -78,7 +78,7 @@ struct Environ : protected Gen
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Weight of the game
-    virtual Proofsize weight(Game const & game) const
+    virtual Weight weight(Game const & game) const
     { return hypsweight + ::weight(game.goal().RPN); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
@@ -97,7 +97,7 @@ struct Environ : protected Gen
     SyntaxDAG::Ranks const maxranks;
     std::string name;
     // Weight of all the hypotheses combined
-    Proofsize const hypsweight;
+    Weight const hypsweight;
     // Is staged move generation used?
     bool const staged;
 protected:

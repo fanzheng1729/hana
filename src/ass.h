@@ -9,7 +9,7 @@
 static const std::string hypdelim = "~";
 
 // Size-based weight
-inline Proofsize weight(Proofsteps const & RPN);
+inline Weight weight(Proofsteps const & RPN);
 
 // An axiom or a theorem
 struct Assertion
@@ -76,11 +76,11 @@ struct Assertion
         return sum;
     }
     // Weight of a hypothesis
-    Proofsize hypweight(Hypsize index) const { return weight(hypRPN(index)); }
+    Weight hypweight(Hypsize index) const { return weight(hypRPN(index)); }
     // Total weight of RPNs of hypotheses
-    Proofsize hypsweight() const
+    Weight hypsweight() const
     {
-        Proofsize sum = 0;
+        Weight sum = 0;
         for (Hypsize i = 0; i < hypcount(); ++i)
             sum += hypweight(i);
         return sum;
@@ -144,10 +144,10 @@ struct Assertion
 };
 
 // Size-based weight
-inline Proofsize weight(Proofsteps const & RPN)
+inline Weight weight(Proofsteps const & RPN)
 {
     return RPN.size();
-    Proofsize sum = 0;
+    Weight sum = 0;
     for (Proofsize i = 0; i < RPN.size(); ++i)
         sum += RPN[i].weight();
     return sum;

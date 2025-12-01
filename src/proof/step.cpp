@@ -22,7 +22,7 @@ strview Proofstep::typecode() const
 }
 
 // Return weight of the symbol.
-Proofsize Proofstep::weight() const
+Weight Proofstep::weight() const
 {
     switch (type)
     {

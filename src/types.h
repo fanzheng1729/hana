@@ -36,6 +36,8 @@ struct Proofstep;
 typedef std::vector<Proofstep> Proofsteps;
 // # of step in the proof
 typedef Proofsteps::size_type Proofsize;
+// Weight of a rev-Polish notation
+typedef Proofsize Weight;
 // Iterator to a proof step
 typedef Proofsteps::const_iterator Stepiter;
 // Begin and end of a range of steps
@@ -164,7 +166,7 @@ struct Proofstep
     }
     strview typecode() const;
 // Return weight of the symbol.
-    Proofsize weight() const;
+    Weight weight() const;
 // Return symbol of the variable.
     Symbol3 var() const;
 // Return id of the variable.
