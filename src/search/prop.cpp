@@ -142,10 +142,7 @@ Eval Prop::evalourleaf(Game const & game) const
                 = util::find(propctorlabels, label) - propctorlabels.begin();
                 ++propctorcounts[i];
             }
-    // Total occurrence count
-    Proofsize const total
-    = std::accumulate(propctorcounts.begin(), propctorcounts.end(), Proofsize());
-    // L2 distance
+
     double const dist = distance(propctorcounts, propctorfreqs);
     double const len2 = len + dist * frequencybias;
     return score(len2 >= 2 ? len2 : 2);
