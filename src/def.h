@@ -12,7 +12,7 @@ struct Definition
     // Left and right hand side of definition
     Proofsteps lhs, rhs;
     // # occurrences
-    Proofsteps::size_type freqcount;
+    Proofsteps::size_type freq;
     // # of the defining assertion
     operator Assertions::size_type() const { return pdef->second.number; }
     Definition() : pdef(NULL) {}
@@ -42,7 +42,9 @@ struct Definitions : std::map<strview, Definition>
             struct Commentinfo const & commendinfo,
             struct Relations const & equalities);
     // Add the syntax axioms of a rev-Polish notation to the frequency count.
-    void addfreqcount(Proofsteps const & RPN);
+    void addfreq(Proofsteps const & RPN);
+    // Add the syntax axioms of an assertion to the frequency count.
+    void addfreq(Assertion const & ass);
 private:
     // Add a definition. Return true iff okay.
     bool adddef
