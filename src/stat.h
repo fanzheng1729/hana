@@ -111,4 +111,30 @@ inline bool isasshard(Assertion const & ass, Syntaxioms const & syntaxioms)
     return proofsymbolnumber > symbolnumber;
 }
 
+// Add the syntax axioms of a rev-Polish notation to the frequency count.
+template<class T>
+void addfreq(Proofsteps const & RPN, T & definitions)
+{
+    FOR (Proofstep step, RPN)
+    {
+        if (step.type != Proofstep::THM || !step.pass)
+            continue;
+        strview const label = step.pass->first;
+        typename T::iterator const iter = definitions.find(label);
+        if (iter == definitions.end())
+            continue;
+        ++iter->second.freq;
+    }
+}
+
+// Add the syntax axioms of an assertion to the frequency count.
+template<class T>
+void addfreq(Assertion const & ass, T & definitions)
+{
+    addfreq(ass.expRPN, definitions);
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        if (ass.hypfloats(i))
+            addfreq(ass.hypRPN(i), definitions);
+}
+
 #endif // STAT_H_INCLUDED

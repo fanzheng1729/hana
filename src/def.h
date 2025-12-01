@@ -41,10 +41,6 @@ struct Definitions : std::map<strview, Definition>
         (Assertions const & assertions,
             struct Commentinfo const & commendinfo,
             struct Relations const & equalities);
-    // Add the syntax axioms of a rev-Polish notation to the frequency count.
-    void addfreq(Proofsteps const & RPN);
-    // Add the syntax axioms of an assertion to the frequency count.
-    void addfreq(Assertion const & ass);
 private:
     // Add a definition. Return true iff okay.
     bool adddef

@@ -194,7 +194,10 @@ public:
             // Check if it is propositional and starts with a non-primitive type code.
             if (isprop && !ass.expression.empty() &&
                 typecodes().isprimitive(ass.exptypecode()) == FALSE)
+            {
+                m_propctors;
                 ++count;
+            }
         }
         return count;
     }
