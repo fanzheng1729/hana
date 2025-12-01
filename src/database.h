@@ -9,7 +9,7 @@
 #include "syntaxDAG.h"
 #include "syntaxiom.h"
 #include "util/for.h"
-
+// #include "io.h"
 class Database
 {
     typedef std::set<strview> Constants;
@@ -195,7 +195,7 @@ public:
             if (isprop && !ass.expression.empty() &&
                 typecodes().isprimitive(ass.exptypecode()) == FALSE)
             {
-                m_propctors;
+                addfreq(ass, m_propctors);
                 ++count;
             }
         }

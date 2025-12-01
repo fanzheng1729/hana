@@ -10,7 +10,7 @@
 #include "util/util.h"  // for util::equal
 
 // Find the revPolish notation of (LHS, RHS).
-Definition::Definition(Assertions::const_reference rass) : pdef(NULL)
+Definition::Definition(Assertions::const_reference rass) : pdef(NULL), freq(0)
 {
     strview label = rass.first;
     Assertion const & ass = rass.second;
@@ -99,7 +99,7 @@ static void printerr(strview label, int err)
 Definition::Definition
     (Assertions::const_reference rass,
         struct Typecodes const & typecodes,
-        struct Relations const & equalities)
+        struct Relations const & equalities) : pdef(NULL), freq(0)
 {
     int err = 0;
     Assertion const & ass = rass.second;
@@ -108,10 +108,7 @@ Definition::Definition
     if (!equalities.count(ass.expRPN.back().pass->first))
         printerr(rass.first, err = 2);
     if (err)
-    {
-        pdef = NULL;
         return;
-    }
     *this = Definition(rass);
     if (!pdef)
     {

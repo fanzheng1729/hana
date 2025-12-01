@@ -15,7 +15,7 @@ struct Definition
     Proofsteps::size_type freq;
     // # of the defining assertion
     operator Assertions::size_type() const { return pdef->second.number; }
-    Definition() : pdef(NULL) {}
+    Definition() : pdef(NULL), freq(0) {}
     // Find the revPolish notation of (LHS, RHS).
     Definition(Assertions::const_reference rass);
     Definition
