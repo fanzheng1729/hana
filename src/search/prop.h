@@ -13,18 +13,19 @@ struct Prop : Environ
         Environ(ass, db, maxsize, staged),
         hypscnf(db.propctors().hypscnf(ass, hypatomcount))
     {
-        // Initialize propositional syntax axiom frequency list.
         Propctors const & propctors = database.propctors();
         // Preallocate for efficiency.
         propctorlabels.reserve(propctors.size());
         propctorfreqs.reserve(propctors.size());
         // Total frequency counts
         Proofsize total = 0;
+        // Initialize propositional syntax axiom labels.
         FOR (Propctors::const_reference propctor, propctors)
         {
             propctorlabels.push_back(propctor.first);
             total += propctor.second.freq;
         }
+        // Initialize propositional syntax axiom frequency list.
         if (total == 0)
             propctorfreqs.resize(propctors.size());
         else
