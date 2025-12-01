@@ -8,6 +8,9 @@
 // Hypothesis label delimiter
 static const std::string hypdelim = "~";
 
+// Size-based weight
+inline Proofsize weight(Proofsteps const & RPN);
+
 // An axiom or a theorem
 struct Assertion
 {
@@ -34,6 +37,8 @@ struct Assertion
     AST expAST;
     // Type (propositional, predicate, etc)
     unsigned type;
+    // Weight of syntax axiom
+    Proofsize syntaxweight;
 // Functions:
     // Typecode of the conclusion
     strview exptypecode() const
@@ -68,6 +73,16 @@ struct Assertion
         for (Hypsize i = 0; i < hypcount(); ++i)
             len += hyplen(i);
         return len;
+    }
+    // Weight of a hypothesis
+    Proofsize hypweight(Hypsize index) const { return weight(hypRPN(index)); }
+    // Total weight of RPNs of hypotheses
+    Proofsize hypsweight() const
+    {
+        Proofsize result = 0;
+        for (Hypsize i = 0; i < hypcount(); ++i)
+            result += hypweight(i);
+        return result;
     }
     // Return true if the expression matches a hypothesis.
     bool istrivial() const
@@ -126,5 +141,11 @@ struct Assertion
     // Set the hypotheses, trimming away specified ones.
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());
 };
+
+// Size-based weight
+inline Proofsize weight(Proofsteps const & RPN)
+{
+    return RPN.size();
+}
 
 #endif // ASS_H_INCLUDED
