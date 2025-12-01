@@ -59,6 +59,17 @@ struct Prop : Environ
     virtual Eval evalourleaf(Game const & game) const
     {
         Proofsize len = game.env().hypslen + game.goal().size() + game.nDefer;
+        std::vector<Proofsize> propctorcounts = hypspropctorcounts;
+        Proofsteps const & RPN = game.goal().RPN;
+        FOR (Proofstep step, RPN)
+            if (step.type == Proofstep::THM && step.pass)
+                if (const char * label = step.pass->first.c_str)
+                {
+                    std::vector<strview>::size_type const i
+                    = util::find(propctorlabels, label) - propctorlabels.begin();
+                    if (i < propctorcounts.size())
+                        ++propctorcounts[i];
+                }
         return score(len);
     }
     // Allocate a new context constructed from an assertion on the heap.
