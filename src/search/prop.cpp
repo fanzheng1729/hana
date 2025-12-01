@@ -32,7 +32,7 @@ Prop::Prop(Assertion const & ass, Database const & db,
     else
         FOR (Propctors::const_reference propctor, propctors)
             propctorfreqs.push_back
-                (static_cast<double>(propctor.second.count)/total);
+                (static_cast<double>(propctor.second.count) / total);
     // Initialize propositional syntax axiom counts in hypotheses.
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
         if (!ass.hypfloats(i))
