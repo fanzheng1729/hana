@@ -14,6 +14,7 @@ Prop::Prop(Assertion const & ass, Database const & db,
     hypscnf(db.propctors().hypscnf(ass, hypatomcount)),
     propctorlabels(labels(database.propctors())),
     propctorfreqs(frequencies(database.propctors())),
+    hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
     frequencybias(freqbias)
 {
     Propctors const & propctors = database.propctors();
@@ -30,20 +31,6 @@ Prop::Prop(Assertion const & ass, Database const & db,
     //                     if (iter != propctors.end())
     //                         hypsweight += iter->second.weight;
     //                 }
-    // Initialize propositional syntax axiom counts in hypotheses.
-    hypspropctorcounts.resize(propctorfreqs.size());
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
-        if (!ass.hypfloats(i))
-            FOR (Proofstep step, ass.hypRPN(i))
-                if (step.type == Proofstep::THM && step.pass)
-                    if (const char * const label = step.pass->first.c_str)
-                    {
-                        std::vector<strview>::size_type const i
-                        = util::find(propctorlabels, label)
-                        - propctorlabels.begin();
-                        if (i < hypspropctorcounts.size())
-                            ++hypspropctorcounts[i];
-                    }
 }
 
 // Determine status of a goal.

@@ -40,13 +40,13 @@ private:
     Hypscnf const hypscnf;
     Atom hypatomcount;
     // Propositional syntax axiom labels
-    std::vector<strview> propctorlabels;
+    std::vector<strview> const propctorlabels;
     // Propositional syntax axiom frequencies
-    Frequencies propctorfreqs;
+    Frequencies const propctorfreqs;
     // Propositional syntax axiom counts in hypotheses
-    Freqcounts hypspropctorcounts;
+    Freqcounts const hypspropctorcounts;
     // Frequency bias
-    double frequencybias;
+    double const frequencybias;
 };
 
 #endif // PROP_H_INCLUDED

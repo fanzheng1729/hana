@@ -3,6 +3,7 @@
 
 #include <algorithm>    // for std::max
 #include "def.h"
+#include "util/find.h"
 #include "util/for.h"
 // #include "io.h"
 #include "syntaxiom.h"
@@ -104,11 +105,12 @@ inline bool isasshard(Assertion const & ass, Syntaxioms const & syntaxioms)
     return proofsymbolnumber > symbolnumber;
 }
 
+typedef std::vector<strview> Labels;
 // Find all labels of definitions.
 template<class T>
-std::vector<strview> labels(T const & definitions)
+Labels labels(T const & definitions)
 {
-    std::vector<strview> result;
+    Labels result;
     // Preallocate for efficiency.
     result.reserve(definitions.size());
     FOR (typename T::const_reference rdef, definitions)
@@ -138,6 +140,31 @@ void addfreqcount(Assertion const & ass, T & definitions)
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
         if (!ass.hypfloats(i))
             addfreqcount(ass.hypRPN(i), definitions);
+}
+
+// Count the syntax axioms in a rev-Polish notation.
+inline void addfreqcounts
+    (Proofsteps const & RPN, Labels const & labels, Freqcounts & result)
+{
+    FOR (Proofstep step, RPN)
+        if (step.type == Proofstep::THM && step.pass)
+            if (const char * const label = step.pass->first.c_str)
+            {
+                Labels::size_type const i
+                = util::find(labels, label) - labels.begin();
+                if (i < labels.size())
+                    ++result[i];
+            }
+}
+
+// Count the syntax axioms in all hypotheses of an assertion.
+inline Freqcounts hypsfreqcounts(Assertion const & ass, Labels const & labels)
+{
+    Freqcounts result(labels.size());
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        if (!ass.hypfloats(i))
+            addfreqcounts(ass.hypRPN(i), labels, result);
+    return result;
 }
 
 typedef double Frequency;
