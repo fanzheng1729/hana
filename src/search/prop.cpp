@@ -135,7 +135,7 @@ Eval Prop::evalourleaf(Game const & game) const
         static_cast<double>(propctorcounts[i] - hypspropctorcounts[i]);
         l2dist += diff * diff;
     }
-    // std::cout << frequencybias << std::endl; std::cin.get();
+// std::cout << frequencybias << std::endl; std::cin.get();
     return score(len) - l2dist * frequencybias;
 }
 
