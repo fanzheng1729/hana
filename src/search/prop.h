@@ -41,7 +41,7 @@ private:
     // Propositional syntax axiom counts in hypotheses
     std::vector<Proofsize> hypspropctorcounts;
     // Frequency bias
-    double freqbias;
+    double frequencybias;
 };
 
 #endif // PROP_H_INCLUDED

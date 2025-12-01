@@ -11,7 +11,8 @@
 Prop::Prop(Assertion const & ass, Database const & db,
             std::size_t maxsize, double freqbias, bool staged) :
     Environ(ass, db, maxsize, staged),
-    hypscnf(db.propctors().hypscnf(ass, hypatomcount))
+    hypscnf(db.propctors().hypscnf(ass, hypatomcount)),
+    frequencybias(freqbias)
 {
     Propctors const & propctors = database.propctors();
     Propctors::size_type const propcount = propctors.size();
@@ -134,7 +135,7 @@ Eval Prop::evalourleaf(Game const & game) const
         static_cast<double>(propctorcounts[i] - hypspropctorcounts[i]);
         l2dist += diff * diff;
     }
-    return score(len);
+    return score(len) - l2dist * frequencybias;
 }
 
 // Return the simplified assertion for the goal of the game to hold.
