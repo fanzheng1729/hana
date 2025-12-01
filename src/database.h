@@ -186,9 +186,9 @@ public:
     Assertions::size_type markpropassertions()
     {
         Assertions::size_type count = 0;
-        FOR (Assertions::reference r, m_assertions)
+        FOR (Assertions::reference rass, m_assertions)
         {
-            Assertion & ass = r.second;
+            Assertion & ass = rass.second;
             bool isprop = maxsymboldefnumber(ass,propctors(),Syntaxioms(),1);
             ass.type |= isprop * Asstype::PROPOSITIONAL;
             // Check if it is propositional and starts with a non-primitive type code.

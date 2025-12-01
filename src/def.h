@@ -11,6 +11,8 @@ struct Definition
     pAss pdef;
     // Left and right hand side of definition
     Proofsteps lhs, rhs;
+    // # occurrences
+    Proofsteps::size_type freqcount;
     // # of the defining assertion
     operator Assertions::size_type() const { return pdef->second.number; }
     Definition() : pdef(NULL) {}
