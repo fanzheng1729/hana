@@ -35,6 +35,7 @@ Prop::Prop(Assertion const & ass, Database const & db,
             propctorfreqs.push_back
                 (static_cast<double>(propctor.second.count) / total);
     // Initialize propositional syntax axiom counts in hypotheses.
+    hypspropctorcounts.resize(propctorfreqs.size());
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
         if (!ass.hypfloats(i))
             FOR (Proofstep step, ass.hypRPN(i))
@@ -44,8 +45,7 @@ Prop::Prop(Assertion const & ass, Database const & db,
                         std::vector<strview>::size_type const i
                         = util::find(propctorlabels, label)
                         - propctorlabels.begin();
-                        if (i < hypspropctorcounts.size())
-                            ++hypspropctorcounts[i];
+                        ++hypspropctorcounts[i];
                     }
 }
 
@@ -121,8 +121,7 @@ Eval Prop::evalourleaf(Game const & game) const
             {
                 std::vector<strview>::size_type const i
                 = util::find(propctorlabels, label) - propctorlabels.begin();
-                if (i < propctorcounts.size())
-                    ++propctorcounts[i];
+                ++propctorcounts[i];
             }
     // Total occurrence count
     Proofsize const total
@@ -135,7 +134,6 @@ Eval Prop::evalourleaf(Game const & game) const
         static_cast<double>(propctorcounts[i] - hypspropctorcounts[i]);
         l2dist += diff * diff;
     }
-// std::cout << frequencybias << std::endl; std::cin.get();
     return score(len) - l2dist * frequencybias;
 }
 

@@ -106,7 +106,7 @@ int main(int argc, char * argv[])
     std::cout << database.syntaxDAG();
     // return EXIT_SUCCESS;
 
-    Value parameters[] = {0, 1e-3, 1, 0};
+    Value parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
     Problem::size_type maxsize = 1u << 12;
     if (!testpropsearch(database, maxsize, parameters))
