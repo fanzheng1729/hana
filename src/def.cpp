@@ -163,7 +163,17 @@ void Definitions::addfreq(Proofsteps const & RPN)
 {
     FOR (Proofstep step, RPN)
         if (step.type == Proofstep::THM)
-            ++(*this)[step.pass->first].freq;
+        {
+            if (!step.pass)
+                continue;
+            strview const label = step.pass->first;
+            if (!label.c_str)
+                continue;
+            iterator const iterdef = find(label);
+            if (iterdef == end())
+                continue;
+            ++iterdef->second.freq;
+        }
 }
 
 // Add the syntax axioms of an assertion to the frequency count.
