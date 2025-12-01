@@ -110,16 +110,19 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 }
 
 static double distance
-    (std::vector<Proofsize> const & goal, std::vector<Proofsize> const & all)
+    (std::vector<Proofsize> const & goal, std::vector<double> const & all)
 {
     std::vector<Proofsize>::size_type const size = goal.size();
     if (unexpected(size != all.size(), "size mismatch", ""))
         return 0;
 
+    // Total occurrence count
+    Proofsize total = std::accumulate(goal.begin(), goal.end(), Proofsize());
+
     double result = 0;
     for (std::vector<Proofsize>::size_type i = 0; i < size; ++i)
     {
-        double const diff = goal[i] - all[i];
+        double diff = goal[i]/static_cast<double>(total) - all[i];
         result += diff * diff;
     }
     return result;
@@ -143,7 +146,7 @@ Eval Prop::evalourleaf(Game const & game) const
     Proofsize const total
     = std::accumulate(propctorcounts.begin(), propctorcounts.end(), Proofsize());
     // L2 distance
-    double const dist = distance(propctorcounts, hypspropctorcounts);
+    double const dist = distance(propctorcounts, propctorfreqs);
     double const len2 = len + dist * frequencybias;
     return score(len2 >= 2 ? len2 : 2);
 }
