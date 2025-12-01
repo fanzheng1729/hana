@@ -224,6 +224,7 @@ void addweight(T & definitions)
         addweight(definitions, rdef.second);
 }
 
+// Weight of a rev-Polish notation.
 template<class T>
 Weight weight(Proofsteps const & RPN, T const & definitions)
 {

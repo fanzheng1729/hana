@@ -8,31 +8,6 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
-Prop::Prop(Assertion const & ass, Database const & db,
-            std::size_t maxsize, double freqbias, bool staged) :
-    Environ(ass, db, maxsize, staged),
-    hypscnf(db.propctors().hypscnf(ass, hypatomcount)),
-    propctorlabels(labels(database.propctors())),
-    propctorfreqs(frequencies(database.propctors())),
-    hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
-    frequencybias(freqbias)
-{
-    Propctors const & propctors = database.propctors();
-    // Initialize weights of all hypotheses combined.
-    // hypsweight = 0;
-    // for (Hypsize i = 0; i < ass.hypcount(); ++i)
-    //     if (!ass.hypfloats(i))
-    //         FOR (Proofstep step, ass.hypRPN(i))
-    //             if (step.type == Proofstep::THM && step.pass)
-    //                 if (const char * const label = step.pass->first.c_str)
-    //                 {
-    //                     Propctors::const_iterator const iter
-    //                     = propctors.find(label);
-    //                     if (iter != propctors.end())
-    //                         hypsweight += iter->second.weight;
-    //                 }
-}
-
 // Determine status of a goal.
 Goalstatus Prop::status(Goal const & goal) const
 {

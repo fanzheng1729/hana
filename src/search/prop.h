@@ -11,7 +11,19 @@
 struct Prop : Environ
 {
     Prop(Assertion const & ass, Database const & db,
-         std::size_t maxsize, double freqbias, bool staged = false);
+         std::size_t maxsize, double freqbias, bool staged = false) :
+        Environ(ass, db, maxsize, staged),
+        hypscnf(db.propctors().hypscnf(ass, hypatomcount)),
+        propctorlabels(labels(database.propctors())),
+        propctorfreqs(frequencies(database.propctors())),
+        hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
+        frequencybias(freqbias)
+    {
+        // Reinitialize weights of all hypotheses combined.
+        hypsweight = 0;
+        for (Hypsize i = 0; i < ass.hypcount(); ++i)
+            hypsweight += weight(ass.hypRPN(i));
+    }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.type & Asstype::PROPOSITIONAL; }
