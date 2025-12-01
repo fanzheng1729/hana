@@ -8,11 +8,11 @@
 #include "util/for.h"
 #include "types.h"
 
-// DAG built from syntaxioms.
+// DAG built from syntax axioms.
 // x -> y if definition of x ultimatedly uses y.
 struct SyntaxDAG
 {
-    // Classes of syntaxioms
+    // Classes of syntax axioms
     typedef std::set<std::string> Ranks;
     typedef Ranks::const_iterator Rankiter;
     // Map: syntaxiom -> rank
@@ -31,7 +31,7 @@ struct SyntaxDAG
             result.first->second = std::min(number, result.first->second);
         syntaxranks[syntaxiom] = result.first->first;
     }
-    // Add the definition of salabel to the DAG of syntaxioms.
+    // Add the definition of salabel to the DAG of syntax axioms.
     void adddef(strview salabel, Proofsteps const & defRPN)
     {
         FOR (Proofstep step, defRPN)
@@ -105,7 +105,7 @@ struct SyntaxDAG
             return ranksDAG().end();
         return ranksDAG().find(mapiter->second);
     }
-    // Add an edge between syntaxioms. Returns true if edge is added.
+    // Add an edge between syntax axioms. Returns true if edge is added.
     bool link(strview from, strview to)
     {
         RankDAGiter fromiter = rankDAGiter(from);
@@ -139,7 +139,7 @@ struct SyntaxDAG
         return true;
     }
 private:
-    // DAG of classes of syntaxioms
+    // DAG of classes of syntax axioms
     RanksDAG m_ranksDAG;
     // Map: syntaxiom -> rank
     Syntaxranks syntaxranks;
