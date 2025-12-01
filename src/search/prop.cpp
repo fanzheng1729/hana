@@ -109,9 +109,9 @@ Eval Prop::evalourleaf(Game const & game) const
                     ++propctorcounts[i];
             }
 
-    Weight const weight = this->Environ::weight(game) + game.nDefer;
-    double const dist = distance(propctorcounts, propctorfreqs);
-    return score(weight + dist * frequencybias);
+    Weight const w = this->Environ::weight(game) + game.nDefer;
+    double const d = distance(propctorcounts, propctorfreqs);
+    return score(w + d * frequencybias);
 }
 
 // Return the simplified assertion for the goal of the game to hold.

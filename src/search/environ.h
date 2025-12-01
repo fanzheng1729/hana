@@ -20,12 +20,8 @@ typedef std::vector<Environ const *> pEnvs;
 // struct Game;
 
 // Weight-based score
-inline Value score(Weight weight) { return 1. / (weight + 1); }
-inline Value score(double weight)
-{
-    if (weight < 1) weight = 1;
-    return 1 / (weight + 1);
-}
+inline Value score(Weight w) { return 1. / (w + 1); }
+inline Value score(double w) { return 1. / ((w < 1 ? 1 : w) + 1); }
 
 // Return true if a move satisfies disjoint variable hypotheses.
 bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
