@@ -42,7 +42,7 @@ private:
     // Propositional syntax axiom labels
     std::vector<strview> propctorlabels;
     // Propositional syntax axiom frequencies
-    std::vector<double> propctorfreqs;
+    Frequencies propctorfreqs;
     // Propositional syntax axiom counts in hypotheses
     std::vector<Proofsize> hypspropctorcounts;
     // Frequency bias

@@ -107,7 +107,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 }
 
 static double distance
-    (std::vector<Proofsize> const & goal, std::vector<double> const & all)
+    (std::vector<Proofsize> const & goal, Frequencies const & all)
 {
     std::vector<Proofsize>::size_type const size = goal.size();
     if (unexpected(size != all.size(), "size mismatch", ""))
