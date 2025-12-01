@@ -1,4 +1,4 @@
-#include <algorithm>    // for and std::min
+#include <cstddef>  // for std::size_t
 #include <iostream>
 #include "../CNF.h"
 #include "../util/arith.h"
@@ -65,7 +65,9 @@ const char * testsat1()
 // Return 0 if okay; otherwise return # atoms in wrong CNF.
 unsigned testsat2(unsigned n)
 {
-    n = std::min<unsigned>(n, std::numeric_limits<std::size_t>::digits);
+    unsigned const digits = std::numeric_limits<std::size_t>::digits;
+    if (n > digits)
+        n = digits;
 
     for (unsigned i = 1u; i <= n; ++i)
     {

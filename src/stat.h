@@ -36,7 +36,8 @@ Assertions::size_type maxsymboldefnumber
                 return 0; // undefined symbol
         }
 //std::cout << number << '\t';
-        max = std::max(max, number);
+        if (number > max)
+            max = number;
     }
 
     return max;
@@ -64,7 +65,8 @@ Assertions::size_type maxsymboldefnumber
         if (maxi == 0)
             return 0;
 // std::cout << "hyp " << i << ':' << maxi << '\t';
-        max = std::max(max, maxi);
+        if (maxi > max)
+            max = maxi;
 // std::cout << "has number " << max << std::endl;
     }
 

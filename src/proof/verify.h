@@ -1,7 +1,7 @@
 #ifndef VERIFY_H_INCLUDED
 #define VERIFY_H_INCLUDED
 
-#include <algorithm>
+#include <algorithm>    // for std::max
 #include "printer.h"
 #include "../util/for.h"
 
@@ -85,7 +85,7 @@ typename std::vector<EXP>::size_type findsubstitutions
                                         hypothesis.expression, stack[base + i]);
                 return stack.size();
             }
-            Symbol2::ID id = hypothesis.expression[1];
+            Symbol2::ID const id = hypothesis.expression[1];
             substitutions.resize(std::max(id + 1, substitutions.size()));
             substitutions[id] = SUB(&stack[base + i][1],
                                     &stack[base + i].back() + 1);

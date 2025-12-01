@@ -1,6 +1,7 @@
 #ifndef CNF_H_INCLUDED
 #define CNF_H_INCLUDED
 
+#include <algorithm>// for std::max
 #include <cstddef>  // for std::size_t
 #include <vector>
 #include "util/for.h"
