@@ -24,7 +24,10 @@ struct Prop : Environ
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address.
     virtual Prop * makeEnv(Assertion const & ass) const
-    { return new(std::nothrow) Prop(ass, database, m_maxmoves, staged); }
+    {
+        return new(std::nothrow)
+        Prop(ass, database, m_maxmoves, frequencybias, staged);
+    }
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeAss(Bvector const & hypstotrim) const;
 private:
