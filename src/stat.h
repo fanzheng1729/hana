@@ -217,18 +217,12 @@ void addweight(T & definitions, typename T::mapped_type & definition)
     }
 }
 
-template<class T>
-void addweight(T & definitions)
-{
-    FOR (typename T::reference rdef, definitions)
-        addweight(definitions, rdef.second);
-}
-
 // Weight of a rev-Polish notation.
 template<class T>
 Weight weight(Proofsteps const & RPN, T const & definitions)
 {
     Weight sum = 0;
+
     FOR (Proofstep step, RPN)
         if (step.type == Proofstep::HYP)
             ++sum;
@@ -239,6 +233,7 @@ Weight weight(Proofsteps const & RPN, T const & definitions)
                 if (iter != definitions.end())
                     sum += iter->second.weight;
             }
+
     return sum;
 }
 

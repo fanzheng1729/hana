@@ -60,8 +60,8 @@ void Problem::focus(pNode p)
         FOR (pNode child, *p.children())
             focus(child);
         seteval(p, minimax(p));
-        if (p->won() && !p->game().proven())
-            std::cout << "prune" << std::endl, navigate(p);
+        // if (p->won() && !p->game().proven())
+        //     std::cout << "prune" << std::endl, navigate(p);
     }
     else seteval(p, evalleaf(p));
 }
