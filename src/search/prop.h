@@ -1,7 +1,6 @@
 #ifndef PROP_H_INCLUDED
 #define PROP_H_INCLUDED
 
-#include <algorithm>// for std:.accumulate
 #include <new>      // for std::nothrow
 #include "environ.h"
 #include "../util/for.h"
@@ -26,8 +25,12 @@ struct Prop : Environ
             propctorlabels.push_back(propctor.first);
             total += propctor.second.freq;
         }
-        FOR (Propctors::const_reference propctor, propctors)
-            propctorfreqs.push_back(static_cast<double>(propctor.second.freq)/total);
+        if (total == 0)
+            propctorfreqs.resize(propctors.size());
+        else
+            FOR (Propctors::const_reference propctor, propctors)
+                propctorfreqs.push_back
+                    (static_cast<double>(propctor.second.freq)/total);
     }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
