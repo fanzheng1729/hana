@@ -1,6 +1,7 @@
 #ifndef PROP_H_INCLUDED
 #define PROP_H_INCLUDED
 
+#include <algorithm>// for std:.accumulate
 #include <new>      // for std::nothrow
 #include "environ.h"
 #include "../util/for.h"
@@ -13,10 +14,20 @@ struct Prop : Environ
         Environ(ass, db, maxsize, staged),
         hypscnf(db.propctors().hypscnf(ass, hypatomcount))
     {
-        // Relevant syntax axioms
-        FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
-            if (syntaxiom.second.assiter->second.number < assertion.number)
-                syntaxioms.insert(syntaxiom);
+        // Initialize propositional syntax axiom frequency list.
+        Propctors const & propctors = database.propctors();
+        // Preallocate for efficiency.
+        propctorlabels.reserve(propctors.size());
+        propctorfreqs.reserve(propctors.size());
+        // Total frequency counts
+        Proofsize total = 0;
+        FOR (Propctors::const_reference propctor, propctors)
+        {
+            propctorlabels.push_back(propctor.first);
+            total += propctor.second.freq;
+        }
+        FOR (Propctors::const_reference propctor, propctors)
+            propctorfreqs.push_back(static_cast<double>(propctor.second.freq)/total);
     }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
@@ -40,8 +51,8 @@ private:
     Atom hypatomcount;
     // Propositional syntax axiom labels
     std::vector<strview> propctorlabels;
-    // Propositional syntax axiom frequency counts
-    std::vector<Proofsize> propctorfreqs;
+    // Propositional syntax axiom frequencies.
+    std::vector<double> propctorfreqs;
 };
 
 #endif // PROP_H_INCLUDED

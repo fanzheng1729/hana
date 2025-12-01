@@ -4,6 +4,8 @@
 #include <iostream>
 
 typedef double Ratio;
+template<class T, class U> double ratio(T x, U y)
+    { return static_cast<double>(x)/static_cast<double>(y); }
 
 struct Progress
 {

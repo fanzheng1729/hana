@@ -41,7 +41,13 @@ struct Environ : protected Gen
         name(ass.hypslabel()),
         hypslen(ass.hypslen()),
         staged(isstaged),
-        m_subsumedbyProb(false), m_rankssimplerthanProb(false) {}
+        m_subsumedbyProb(false), m_rankssimplerthanProb(false)
+    {
+        // Relevant syntax axioms
+        FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
+            if (syntaxiom.second.assiter->second.number < assertion.number)
+                syntaxioms.insert(syntaxiom);
+    }
     Problem const & prob() const { return *pProb; }
     // Context implication relations
     // Updated when new context is added

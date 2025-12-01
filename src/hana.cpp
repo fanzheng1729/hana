@@ -104,7 +104,7 @@ int main(int argc, char * argv[])
 
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
-    return EXIT_SUCCESS;
+    // return EXIT_SUCCESS;
 
     Value parameters[] = {0, 1e-3, 0};
     // Value parameters[] = {0, 1e-4, Problem::STAGED};
