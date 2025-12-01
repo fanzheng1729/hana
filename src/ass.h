@@ -64,7 +64,7 @@ struct Assertion
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
     // Length of a hypothesis
     Proofsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
-    // Total length of RPNs of hypotheses, skipping trimmed ones
+    // Total length of RPNs of hypotheses
     Proofsize hypslen() const
     {
         Proofsize len = 0;
@@ -72,14 +72,12 @@ struct Assertion
             len += hyplen(i);
         return len;
     }
-    // Weight of a hypothesis
-    Proofsize hypweight(Hypsize index) const { return weight(hypRPN(index)); }
-    // Total weight of RPNs of hypotheses, skipping trimmed ones
+    // Total weight of RPNs of hypotheses
     Proofsize hypsweight() const
     {
         Proofsize len = 0;
         for (Hypsize i = 0; i < hypcount(); ++i)
-            len += hypweight(i);
+            len += weight(hypRPN(i));
         return len;
     }
     // Return true if the expression matches a hypothesis.

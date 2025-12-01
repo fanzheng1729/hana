@@ -11,6 +11,7 @@ struct Syntaxiom
 {
     Assiter assiter;
     Constants constants;
+    Proofsize weight;
     operator Assertions::size_type() const { return assiter->second.number; }
 };
 
