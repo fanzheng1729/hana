@@ -195,7 +195,7 @@ public:
             if (isprop && !ass.expression.empty() &&
                 typecodes().isprimitive(ass.exptypecode()) == FALSE)
             {
-                addfreq(ass, m_propctors);
+                addfreqcount(ass, m_propctors);
                 ++count;
             }
         }
