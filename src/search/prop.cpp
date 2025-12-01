@@ -107,9 +107,9 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 }
 
 static double distance
-    (std::vector<Proofsize> const & goal, Frequencies const & all)
+    (Freqcounts const & goal, Frequencies const & all)
 {
-    std::vector<Proofsize>::size_type const size = goal.size();
+    Freqcounts::size_type const size = goal.size();
     if (unexpected(size != all.size(), "size mismatch", ""))
         return 0;
 
@@ -117,7 +117,7 @@ static double distance
     Proofsize total = std::accumulate(goal.begin(), goal.end(), Proofsize());
 
     double result = 0;
-    for (std::vector<Proofsize>::size_type i = 0; i < size; ++i)
+    for (Freqcounts::size_type i = 0; i < size; ++i)
     {
         double diff = goal[i]/static_cast<double>(total) - all[i];
         result += diff * diff;
@@ -135,7 +135,7 @@ Weight Prop::weight(Proofsteps const & RPN) const
 // Evaluate leaf games, and record the proof if proven.
 Eval Prop::evalourleaf(Game const & game) const
 {
-    std::vector<Proofsize> propctorcounts = hypspropctorcounts;
+    Freqcounts propctorcounts = hypspropctorcounts;
     // Add propositional syntax axiom counts for goal.
     FOR (Proofstep step, game.goal().RPN)
         if (step.type == Proofstep::THM && step.pass)

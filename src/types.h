@@ -38,6 +38,7 @@ typedef std::vector<Proofstep> Proofsteps;
 typedef Proofsteps::size_type Proofsize;
 // # occurrences
 typedef Proofsize Freqcount;
+typedef std::vector<Freqcount> Freqcounts;
 // Weight of a rev-Polish notation
 typedef Proofsize Weight;
 // Iterator to a proof step

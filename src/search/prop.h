@@ -44,7 +44,7 @@ private:
     // Propositional syntax axiom frequencies
     Frequencies propctorfreqs;
     // Propositional syntax axiom counts in hypotheses
-    std::vector<Proofsize> hypspropctorcounts;
+    Freqcounts hypspropctorcounts;
     // Frequency bias
     double frequencybias;
 };
