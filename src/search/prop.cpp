@@ -17,7 +17,6 @@ Prop::Prop(Assertion const & ass, Database const & db,
     frequencybias(freqbias)
 {
     Propctors const & propctors = database.propctors();
-    Propctors::size_type const propcount = propctors.size();
     // Initialize weights of all hypotheses combined.
     // hypsweight = 0;
     // for (Hypsize i = 0; i < ass.hypcount(); ++i)
