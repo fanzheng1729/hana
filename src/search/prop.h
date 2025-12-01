@@ -1,6 +1,7 @@
 #ifndef PROP_H_INCLUDED
 #define PROP_H_INCLUDED
 
+#include <algorithm>// for std::accumulate
 #include <new>      // for std::nothrow
 #include "environ.h"
 #include "../util/find.h"
@@ -56,22 +57,7 @@ struct Prop : Environ
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const;
     // Evaluate leaf games, and record the proof if proven.
-    virtual Eval evalourleaf(Game const & game) const
-    {
-        Proofsize len = game.env().hypslen + game.goal().size() + game.nDefer;
-        std::vector<Proofsize> propctorcounts = hypspropctorcounts;
-        Proofsteps const & RPN = game.goal().RPN;
-        FOR (Proofstep step, RPN)
-            if (step.type == Proofstep::THM && step.pass)
-                if (const char * label = step.pass->first.c_str)
-                {
-                    std::vector<strview>::size_type const i
-                    = util::find(propctorlabels, label) - propctorlabels.begin();
-                    if (i < propctorcounts.size())
-                        ++propctorcounts[i];
-                }
-        return score(len);
-    }
+    virtual Eval evalourleaf(Game const & game) const;
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address.
     virtual Prop * makeEnv(Assertion const & ass) const

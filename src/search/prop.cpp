@@ -68,6 +68,35 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     return result;
 }
 
+// Evaluate leaf games, and record the proof if proven.
+Eval Prop::evalourleaf(Game const & game) const
+{
+    Proofsize len = game.env().hypslen + game.goal().size() + game.nDefer;
+    std::vector<Proofsize> propctorcounts = hypspropctorcounts;
+    // Add propositional syntax axiom counts for goal.
+    FOR (Proofstep step, game.goal().RPN)
+        if (step.type == Proofstep::THM && step.pass)
+            if (const char * label = step.pass->first.c_str)
+            {
+                std::vector<strview>::size_type const i
+                = util::find(propctorlabels, label) - propctorlabels.begin();
+                if (i < propctorcounts.size())
+                    ++propctorcounts[i];
+            }
+    // Total occurrence count
+    Proofsize const total
+    = std::accumulate(propctorcounts.begin(), propctorcounts.end(),
+                        static_cast<Proofsize>(0));
+    // L2 distance
+    double l2dist = 0;
+    for (std::vector<Proofsize>::size_type i = 0; i < propctorcounts.size(); ++i)
+    {
+        double const diff = propctorcounts[i] - hypspropctorcounts[i];
+        l2dist += diff * diff;
+    }
+    return score(len);
+}
+
 // Return the simplified assertion for the goal of the game to hold.
 Assertion Prop::makeAss(Bvector const & hypstotrim) const
 {
