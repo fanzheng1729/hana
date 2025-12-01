@@ -14,6 +14,7 @@ inline Proofsize weight(Proofsteps const & RPN);
 // An axiom or a theorem
 struct Assertion
 {
+    Assertion() : number(0), tokenpos(0), type(0), syntaxweight(0) {}
 // Essential properties:
     // Hypotheses of this axiom or theorem
     Hypiters hypiters;
