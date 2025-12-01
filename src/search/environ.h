@@ -20,7 +20,7 @@ typedef std::vector<Environ const *> pEnvs;
 // struct Game;
 
 // Size-based score
-inline Value score(Proofsize size) { return 1. / (size + 1); }
+inline Value score(double size) { return 1 / (size + 1); }
 
 // Return true if a move satisfies disjoint variable hypotheses.
 bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
