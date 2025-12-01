@@ -144,8 +144,7 @@ Eval Prop::evalourleaf(Game const & game) const
             }
 
     double const dist = distance(propctorcounts, propctorfreqs);
-    double const len2 = len + dist * frequencybias;
-    return score(len2 >= 2 ? len2 : 2);
+    return score(len + dist * frequencybias);
 }
 
 // Return the simplified assertion for the goal of the game to hold.

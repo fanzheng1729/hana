@@ -13,9 +13,9 @@ Value Problem::UCBnewstage(pNode p) const
     // Our turn
     Game const & game = p->game();
     stage_t const stage = p->stage();
-    Proofsize size = game.env().hypslen + game.goal().size() + stage;
+    Proofsize len = game.env().hypslen + game.goal().size() + stage;
     size_type const self = static_cast<size_type>(1) << (stage * 2);
-    return score(size) + UCBbonus(true, p.size(), self);
+    return score(len) + UCBbonus(true, p.size(), self);
 }
 
 // Evaluate the leaf. Return {value, sure?}.
