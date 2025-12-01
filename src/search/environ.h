@@ -78,7 +78,7 @@ struct Environ : protected Gen
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Weight of the game
-    Proofsize weight(Game const & game) const
+    virtual Proofsize weight(Game const & game) const
     { return hypsweight + ::weight(game.goal().RPN); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const

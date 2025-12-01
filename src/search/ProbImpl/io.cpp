@@ -222,6 +222,17 @@ void Problem::printstats() const
     unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 
+// Format: max rank # > number limit    maxrank1 maxrank2 ...
+void Problem::printranksinfo() const
+{
+    std::cout << maxranknumber << " < " << numberlimit << '\t';
+    FOR (std::string const & rank, maxranks)
+        std::cout << rank << ' ';
+    std::cout << std::endl;
+    printenvs();
+}
+
+
 // Move up to the parent. Return true if successful.
 static bool moveup(pNode & p)
 {

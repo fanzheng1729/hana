@@ -240,14 +240,7 @@ public:
             std::cout << std::endl;
         }
     }
-    void printranksinfo() const
-    {
-        std::cout << maxranknumber << " < " << numberlimit << '\t';
-        FOR (std::string const & rank, maxranks)
-            std::cout << rank << ' ';
-        std::cout << std::endl;
-        printenvs();
-    }
+    void printranksinfo() const;
     void navigate(pNode p, bool detailed = true) const;
     void navigate(bool detailed = true) const { navigate(root(), detailed); }
     void writeproof(const char * const filename) const;
