@@ -1,5 +1,4 @@
 #include "../problem.h"
-#include "../util/for.h"
 
 // Refocus the tree on simpler sub-tree, if almost won.
 void Problem::re_eval()
