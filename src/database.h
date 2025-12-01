@@ -206,6 +206,7 @@ public:
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()
     {
+        return;
         Syntaxioms const & prims = primitivesyntaxioms();
         Propctors  const & props = propctors();
         FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())

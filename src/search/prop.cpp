@@ -151,15 +151,15 @@ static Problem::size_type testpropsearch
     tree.play(maxsize);
     // tree.printstats();
     // std::cin.get();
-    // if (iter->first == "biass")
+    // if (iter->first == "impbii")
     //     tree.navigate();
     // if (iter->second.number == 203)
     //     tree.printstats(), std::cin.get();
     if (tree.size() > maxsize)
     {
-        printass(*iter);
+        // printass(*iter);
         // std::cout << std::endl;
-        tree.printstats();
+        // tree.printstats();
         // tree.printenvs();
         // tree.navigate();
     }
