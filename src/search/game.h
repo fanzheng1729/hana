@@ -18,12 +18,9 @@ struct Game
     // Proof attempt made, on their turn
     Move attempt;
     Game(pGoal p = NULL, stage_t n = 0) : pgoal(p), nDefer(n) {}
-    Proofsize hypsweight() const;
     Goaldata & goaldata() const;
     Goaldatas & goaldatas() const;
     Goal const & goal() const;
-    Proofsize goalweight() const { return weight(goal().RPN); }
-    Proofsize totalweight() const { return hypsweight() + goalweight(); }
     Proofsteps const & proof() const;
     bool proven() const { return !proof().empty(); }
     Environ const & env() const;
