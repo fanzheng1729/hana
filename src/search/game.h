@@ -22,7 +22,8 @@ struct Game
     Goaldata & goaldata() const;
     Goaldatas & goaldatas() const;
     Goal const & goal() const;
-    Proofsize goalweight() const;
+    Proofsize goalweight() const { return weight(goal().RPN); }
+    Proofsize totalweight() const { return hypsweight() + goalweight(); }
     Proofsteps const & proof() const;
     bool proven() const { return !proof().empty(); }
     Environ const & env() const;

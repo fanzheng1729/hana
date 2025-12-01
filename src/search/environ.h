@@ -79,10 +79,7 @@ struct Environ : protected Gen
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
-    {
-        Proofsize len = game.hypsweight() + game.goalweight() + game.nDefer;
-        return score(len);
-    }
+    { return score(game.totalweight() + game.nDefer); }
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };

@@ -142,9 +142,8 @@ Eval Prop::evalourleaf(Game const & game) const
                 ++propctorcounts[i];
             }
 
-    Proofsize len = game.hypsweight() + game.goalweight() + game.nDefer;
     double const dist = distance(propctorcounts, propctorfreqs);
-    return score(len + dist * frequencybias);
+    return score(game.totalweight() + game.nDefer + dist * frequencybias);
 }
 
 // Return the simplified assertion for the goal of the game to hold.

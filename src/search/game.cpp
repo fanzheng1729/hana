@@ -10,7 +10,6 @@ Proofsize Game::hypsweight() const { return env().hypsweight; }
 Goaldata & Game::goaldata() const { return pgoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
-Proofsize Game::goalweight() const { return weight(goal().RPN); }
 Proofsteps const & Game::proof() const { return goaldata().proofsrc(); }
 Environ const & Game::env() const { return *pgoal->first; }
 
