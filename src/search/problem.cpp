@@ -12,7 +12,7 @@ Value Problem::UCBnewstage(pNode p) const
         return std::numeric_limits<Value>::max();
     // Our turn
     size_type const self = static_cast<size_type>(1) << (p->stage()*2);
-    return score(p->game().totalweight() + p->stage())
+    return score(p->game().env().weight(p->game()) + p->stage())
             + UCBbonus(true, p.size(), self);
 }
 

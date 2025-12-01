@@ -77,9 +77,12 @@ struct Environ : protected Gen
     { return Bvector(0 && &goal); }
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
+    // Weight of the game
+    Proofsize weight(Game const & game) const
+    { return hypsweight + ::weight(game.goal().RPN); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
-    { return score(game.totalweight() + game.nDefer); }
+    { return score(weight(game) + game.nDefer); }
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
