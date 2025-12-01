@@ -222,6 +222,20 @@ void Problem::printstats() const
     unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 
+// Format: [*]name  maxrank1 maxrank2 ...
+void Problem::printenvs() const
+{
+    FOR (Environs::const_reference env, environs)
+    {
+        SyntaxDAG::Ranks const & envranks = env.second->maxranks;
+        char const c = " *"[env.second->rankssimplerthanProb()];
+        std::cout << c << env.first << '\t';
+        FOR (std::string const & rank, env.second->maxranks)
+            std::cout << rank << ' ';
+        std::cout << std::endl;
+    }
+}
+
 // Format: max rank # > number limit    maxrank1 maxrank2 ...
 void Problem::printranksinfo() const
 {

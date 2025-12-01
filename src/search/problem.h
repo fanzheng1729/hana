@@ -228,18 +228,7 @@ public:
         { printmainline(root(), detail); }
     virtual void checkmainline(pNode p) const;
     void printstats() const;
-    void printenvs() const
-    {
-        FOR (Environs::const_reference env, environs)
-        {
-            SyntaxDAG::Ranks const & envranks = env.second->maxranks;
-            char const c = env.second->rankssimplerthanProb() ? '*' : ' ';
-            std::cout << c << env.first << '\t';
-            FOR (std::string const & rank, env.second->maxranks)
-                std::cout << rank << ' ';
-            std::cout << std::endl;
-        }
-    }
+    void printenvs() const;
     void printranksinfo() const;
     void navigate(pNode p, bool detailed = true) const;
     void navigate(bool detailed = true) const { navigate(root(), detailed); }
