@@ -204,7 +204,7 @@ public:
         }
     }
     size_type playcount() const { return m_playcount; }
-    virtual void re_eval() {}
+    virtual void playoncecallback() {}
     virtual void checkmainline(pNode p) const {}
     // Play out once. Return the value at the root.
     Value playonce()
@@ -219,6 +219,7 @@ public:
             evalnewleaves(p);
 // std::cout << "Back propagating from " << *p;
         backprop(p);
+        playoncecallback();
         ++m_playcount;
         return value();
     }

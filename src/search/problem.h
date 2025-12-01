@@ -151,7 +151,7 @@ public:
             closenodes(p);
     }
     // Refocus the tree on simpler sub-tree, if almost won.
-    virtual void re_eval();
+    virtual void playoncecallback();
     // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode p);
     // Prune the sub-tree at p and update maxranks, if almost won.

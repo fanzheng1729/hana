@@ -1,7 +1,7 @@
 #include "../problem.h"
 
 // Refocus the tree on simpler sub-tree, if almost won.
-void Problem::re_eval()
+void Problem::playoncecallback()
 {
     if (value() != ALMOSTWIN)
         return;
