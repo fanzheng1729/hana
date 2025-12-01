@@ -142,9 +142,9 @@ bool Prop::addhardmoves
     return false;
 }
 
-// Test proof search for propositional theorems.
+// Test proof search.
 // Return the size of tree if okay. Otherwise return 0.
-static Problem::size_type testpropsearch
+Problem::size_type testsearch
     (Assiter iter, Problem & tree, Problem::size_type maxsize)
 {
     // printass(*iter);
@@ -213,7 +213,7 @@ bool testpropsearch
         ++all;
         Prop prop(iter->second, database, maxsize, parameters[2]);
         Problem tree(prop, parameters);
-        Problem::size_type const n = testpropsearch(iter, tree, maxsize);
+        Problem::size_type const n = testsearch(iter, tree, maxsize);
         if (n == 0)
         {
             okay = false;
