@@ -14,9 +14,10 @@ struct Prop : Environ
         hypscnf(db.propctors().hypscnf(ass, hypatomcount))
     {
         Propctors const & propctors = database.propctors();
+        Propctors::size_type const propcount = propctors.size();
         // Preallocate for efficiency.
-        propctorlabels.reserve(propctors.size());
-        propctorfreqs.reserve(propctors.size());
+        propctorlabels.reserve(propcount);
+        propctorfreqs.reserve(propcount);
         // Total frequency counts
         Proofsize total = 0;
         // Initialize propositional syntax axiom labels.
@@ -26,12 +27,20 @@ struct Prop : Environ
             total += propctor.second.count;
         }
         // Initialize propositional syntax axiom frequencies.
-        if (total == 0)
-            propctorfreqs.resize(propctors.size());
+        if (total == 0 && propcount > 0)
+            propctorfreqs.assign(propcount, 1./propcount);
         else
             FOR (Propctors::const_reference propctor, propctors)
                 propctorfreqs.push_back
                     (static_cast<double>(propctor.second.count)/total);
+        for (Hypsize i = 0; i < ass.hypcount(); ++i)
+            if (!ass.hypfloats(i))
+                FOR (Proofstep step, ass.hypRPN(i))
+                    if (step.type == Proofstep::THM && step.pass)
+                        if (const char * label = step.pass->first.c_str)
+                        {
+                            //
+                        }
     }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
@@ -64,6 +73,7 @@ private:
     // Propositional syntax axiom frequencies
     std::vector<double> propctorfreqs;
     // Propositional syntax axiom counts for *this
+    std::vector<Proofsize> propctorcounts;
 };
 
 #endif // PROP_H_INCLUDED

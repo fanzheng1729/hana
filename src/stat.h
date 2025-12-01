@@ -18,14 +18,9 @@ Assertions::size_type maxsymboldefnumber
     Assertions::size_type max = 1;
 //std::cout << definitions << syntaxioms;
     FOR (Proofstep step, RPN)
+        if (step.type == Proofstep::THM && step.pass)
+            if (const char * label = step.pass->first.c_str)
     {
-//std::cout << step << ':';
-        if (step.type != Proofstep::THM || !step.pass)
-            continue;
-        strview const label = step.pass->first;
-        if (!label.c_str)
-            continue;
-
         Assertions::size_type number = 0;
         typename T::const_iterator iterdf = definitions.find(label);
 //std::cout << "sa";
@@ -83,14 +78,10 @@ inline Assertions::size_type maxsymboldefnumber
     Assertions::size_type max = 0;
 
     FOR (Proofstep step, RPN)
-    {
-//std::cout << step << ':';
-        if (step.type != Proofstep::THM)
-            continue;
-
-        if (syntaxioms.count(strview(step)))
-            max = std::max(max, step.pass->second.number);
-    }
+        if (step.type == Proofstep::THM && step.pass)
+            if (const char * label = step.pass->first.c_str)
+                if (syntaxioms.count(label))
+                    max = std::max(max, step.pass->second.number);
 
     return max;
 }
@@ -116,15 +107,14 @@ template<class T>
 void addfreq(Proofsteps const & RPN, T & definitions)
 {
     FOR (Proofstep step, RPN)
-    {
-        if (step.type != Proofstep::THM || !step.pass)
-            continue;
-        strview const label = step.pass->first;
-        typename T::iterator const iter = definitions.find(label);
-        if (iter == definitions.end())
-            continue;
-        ++iter->second.count;
-    }
+        if (step.type == Proofstep::THM && step.pass)
+            if (const char * label = step.pass->first.c_str)
+            {
+                typename T::iterator const iter = definitions.find(label);
+                if (iter == definitions.end())
+                    continue;
+                ++iter->second.count;
+            }
 }
 
 // Add the syntax axioms of an assertion to the frequency count.
@@ -133,7 +123,7 @@ void addfreq(Assertion const & ass, T & definitions)
 {
     addfreq(ass.expRPN, definitions);
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
-        if (ass.hypfloats(i))
+        if (!ass.hypfloats(i))
             addfreq(ass.hypRPN(i), definitions);
 }
 
