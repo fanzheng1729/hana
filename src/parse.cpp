@@ -144,7 +144,8 @@ static bool createsubstitutionframe
 static bool nextsubframe
     (Expiter expbegin, Expiter expend,
      Expression const & exp, Assertion const & ass,
-     Syntaxioms const & syntaxioms, Assiter iter, Subexprecords & recs,
+     Syntaxioms const & syntaxioms, pAss psyntaxiom,
+     Subexprecords & recs,
      // Track the substitutions for variables.
      Substack & stack, Substframe::Subexpends & result);
 
@@ -175,8 +176,8 @@ Substframe::Subexpends const & RPNmap
     // Match syntax axioms.
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
     {
-        Assiter assiter(syntaxiom.second.assiter);
-        Expression const & saexp(assiter->second.expression);
+        pAss const psyntaxiom = syntaxiom.second.pass;
+        Expression const & saexp(psyntaxiom->second.expression);
         if (saexp.empty() || saexp[0] != type)
             continue; // Type mismatch
 //std::cout << "Matching " << syntaxiom.first
@@ -185,7 +186,7 @@ Substframe::Subexpends const & RPNmap
         do
         {
             if (nextsubframe(expbegin, expend, exp, ass,
-                             syntaxioms, assiter, recs, stack, result))
+                             syntaxioms, psyntaxiom, recs, stack, result))
                 continue; // A new variable and possible substitutions found.
 
             if (stack.empty())
@@ -208,12 +209,13 @@ Substframe::Subexpends const & RPNmap
 static bool nextsubframe
     (Expiter expbegin, Expiter expend,
      Expression const & exp, Assertion const & ass,
-     Syntaxioms const & syntaxioms, Assiter iter, Subexprecords & recs,
+     Syntaxioms const & syntaxioms, pAss psyntaxiom,
+     Subexprecords & recs,
      // Track the substitutions for variables.
      Substack & stack, Substframe::Subexpends & result)
 {
     // The syntax axiom to be matched
-    Assertion const & syntaxiom = iter->second;
+    Assertion const & syntaxiom = psyntaxiom->second;
     // The pattern to be matched
     Expression const & pattern = syntaxiom.expression;
     // Iterators to exp and the pattern
@@ -239,7 +241,7 @@ static bool nextsubframe
             pProofs const & hyps = pproofsfromstack(syntaxiom, stack);
             if (!hyps.empty() && !hyps[0])
                 return false;
-            writeproof(result[iter1], &*iter, hyps);
+            writeproof(result[iter1], psyntaxiom, hyps);
         }
         return false;
     }

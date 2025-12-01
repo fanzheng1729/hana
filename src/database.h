@@ -216,7 +216,7 @@ public:
         {
             strview const label = syntaxiom.first;
             Assertions::size_type const number
-            = syntaxiom.second.assiter->second.number;
+            = syntaxiom.second.pass->second.number;
             strview rank = "other";
 
             if (props.count(label))

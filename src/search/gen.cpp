@@ -120,7 +120,7 @@ Terms Gen::generateupto1(strview type) const
     // Generate all 1-step syntax axioms.
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
     {
-        Assertion const & ass(syntaxiom.second.assiter->second);
+        Assertion const & ass(syntaxiom.second.pass->second);
         if (ass.expRPN.size() == 1 && ass.exptypecode() == type)
             terms.push_back(ass.expRPN);
     }
@@ -153,7 +153,7 @@ bool Gen::generateupto(strview type, Proofsize size) const
 
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
     {
-        Assertion const & ass = syntaxiom.second.assiter->second;
+        Assertion const & ass = syntaxiom.second.pass->second;
         if (ass.expRPN.size() <= 1 || ass.expRPN.size() > size ||
             ass.exptypecode() != type)
             continue; // Syntax axiom mismatch

@@ -9,9 +9,9 @@ typedef std::set<strview> Constants;
 // A syntax axiom
 struct Syntaxiom
 {
-    Assiter assiter;
+    pAss pass;
     Constants constants;
-    operator Assertions::size_type() const { return assiter->second.number; }
+    operator Assertions::size_type() const { return pass->second.number; }
 };
 
 // Map: label -> syntax axioms

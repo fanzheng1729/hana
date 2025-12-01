@@ -61,7 +61,7 @@ Syntaxioms::Syntaxioms
             iter->second.hypcount() == iter->second.varcount())
         {
             Syntaxiom & syntaxiom = (*this)[iter->first];
-            syntaxiom.assiter = iter;
+            syntaxiom.pass = &*iter;
             // Fill constants of the syntax axiom.
             std::remove_copy_if(exp.begin() + 1, exp.end(),
                                 end_inserter(syntaxiom.constants), id);

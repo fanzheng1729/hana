@@ -50,7 +50,7 @@ struct Environ : protected Gen
     {
         // Relevant syntax axioms
         FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
-            if (syntaxiom.second.assiter->second.number < assertion.number)
+            if (syntaxiom.second.pass->second.number < assertion.number)
                 syntaxioms.insert(syntaxiom);
     }
     Problem const & prob() const { return *pProb; }
