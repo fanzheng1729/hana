@@ -44,7 +44,7 @@ struct Environ : protected Gen
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         name(ass.hypslabel()),
-        hypsweight(ass.hypsweight()),
+        hypsweight(ass.hypslen()),
         staged(isstaged),
         m_subsumedbyProb(false), m_rankssimplerthanProb(false)
     {
@@ -79,7 +79,7 @@ struct Environ : protected Gen
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Weight of the game
     virtual Weight weight(Game const & game) const
-    { return hypsweight + ::weight(game.goal().RPN); }
+    { return hypsweight + game.goal().RPN.size(); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
     { return score(weight(game) + game.nDefer); }

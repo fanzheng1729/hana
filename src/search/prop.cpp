@@ -20,12 +20,12 @@ Prop::Prop(Assertion const & ass, Database const & db,
     propctorlabels.reserve(propcount);
     propctorfreqs.reserve(propcount);
     // Total frequency counts
-    Proofsize total = 0;
+    Freqcount total = 0;
     // Initialize propositional syntax axiom labels.
     FOR (Propctors::const_reference propctor, propctors)
     {
         propctorlabels.push_back(propctor.first);
-        total += propctor.second.count;
+        total += propctor.second.freqcount;
     }
     // Initialize propositional syntax axiom frequencies.
     if (total == 0 && propcount > 0)
@@ -33,7 +33,7 @@ Prop::Prop(Assertion const & ass, Database const & db,
     else
         FOR (Propctors::const_reference propctor, propctors)
             propctorfreqs.push_back
-                (static_cast<double>(propctor.second.count) / total);
+                (static_cast<double>(propctor.second.freqcount) / total);
     // Initialize propositional syntax axiom counts in hypotheses.
     hypspropctorcounts.resize(propctorfreqs.size());
     for (Hypsize i = 0; i < ass.hypcount(); ++i)

@@ -134,7 +134,7 @@ public:
         m_syntaxioms = Syntaxioms(assertions(), *this);
         if (!syntaxioms().addRPN(m_assertions, typecodes()))
             return false;
-        // Find the equivalence relations and their justifications among syntax axioms.
+        // Find various relations and their justifications among syntax axioms.
         Relations relations(assertions());
         FOR (Relations::const_reference relation, relations)
             m_relations[relation.second.type()].insert(relation);
@@ -185,21 +185,21 @@ public:
 // Mark propositional assertions. Return its number.
     Assertions::size_type markpropassertions()
     {
-        Assertions::size_type count = 0;
+        Assertions::size_type n = 0;
         FOR (Assertions::reference rass, m_assertions)
         {
             Assertion & ass = rass.second;
-            bool isprop = maxsymboldefnumber(ass,propctors(),Syntaxioms(),1);
+            bool isprop = maxsymboldefnumber(ass,propctors(), Syntaxioms(), 1);
             ass.type |= isprop * Asstype::PROPOSITIONAL;
             // Check if it is propositional and starts with a non-primitive type code.
             if (isprop && !ass.expression.empty() &&
                 typecodes().isprimitive(ass.exptypecode()) == FALSE)
             {
                 addfreqcount(ass, m_propctors);
-                ++count;
+                ++n;
             }
         }
-        return count;
+        return n;
     }
 // Return true if all propositional assertions are sound.
     bool checkpropassertion() const

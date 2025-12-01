@@ -8,13 +8,11 @@
 // Hypothesis label delimiter
 static const std::string hypdelim = "~";
 
-// Size-based weight
-inline Weight weight(Proofsteps const & RPN);
-
 // An axiom or a theorem
 struct Assertion
 {
-    Assertion() : number(0), tokenpos(0), type(0), syntaxweight(1) {}
+    Assertion()
+    : number(0), tokenpos(0), type(0) {}
 // Essential properties:
     // Hypotheses of this axiom or theorem
     Hypiters hypiters;
@@ -38,8 +36,6 @@ struct Assertion
     AST expAST;
     // Type (propositional, predicate, etc)
     unsigned type;
-    // Weight of syntax axiom
-    Proofsize syntaxweight;
 // Functions:
     // Typecode of the conclusion
     strview exptypecode() const
@@ -73,16 +69,6 @@ struct Assertion
         Proofsize sum = 0;
         for (Hypsize i = 0; i < hypcount(); ++i)
             sum += hyplen(i);
-        return sum;
-    }
-    // Weight of a hypothesis
-    Weight hypweight(Hypsize index) const { return weight(hypRPN(index)); }
-    // Total weight of RPNs of hypotheses
-    Weight hypsweight() const
-    {
-        Weight sum = 0;
-        for (Hypsize i = 0; i < hypcount(); ++i)
-            sum += hypweight(i);
         return sum;
     }
     // Return true if the expression matches a hypothesis.
@@ -142,15 +128,5 @@ struct Assertion
     // Set the hypotheses, trimming away specified ones.
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());
 };
-
-// Size-based weight
-inline Weight weight(Proofsteps const & RPN)
-{
-    return RPN.size();
-    Weight sum = 0;
-    for (Proofsize i = 0; i < RPN.size(); ++i)
-        sum += RPN[i].weight();
-    return sum;
-}
 
 #endif // ASS_H_INCLUDED

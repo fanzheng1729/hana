@@ -21,23 +21,6 @@ strview Proofstep::typecode() const
     }
 }
 
-// Return weight of the symbol.
-Weight Proofstep::weight() const
-{
-    switch (type)
-    {
-    case HYP:
-        return 1;
-    case THM:
-    {
-        Proofsize const result = pass->second.syntaxweight;
-        return result ? result : 1;
-    }
-    default:
-        return 0;
-    }
-}
-
 // Return symbol of the variable.
 Symbol3 Proofstep::var() const
 {
