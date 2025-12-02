@@ -24,6 +24,7 @@ struct Game
     Proofsteps const & proof() const;
     bool proven() const { return !proof().empty(); }
     Environ const & env() const;
+    Weight wDefer() const { return static_cast<Weight>(nDefer); }
     friend std::ostream & operator<<(std::ostream & out, Game const & game);
     // Return true if a move is legal.
     bool legal(Move const & move, bool ourturn) const;

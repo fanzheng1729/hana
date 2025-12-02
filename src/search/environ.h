@@ -80,7 +80,7 @@ struct Environ : protected Gen
     { return hypsweight + weight(game.goal().RPN); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
-    { return score(weight(game) + game.nDefer); }
+    { return score(weight(game) + game.wDefer()); }
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };

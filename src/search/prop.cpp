@@ -88,7 +88,7 @@ static double distance
 // Evaluate leaf games, and record the proof if proven.
 Eval Prop::evalourleaf(Game const & game) const
 {
-    Weight const w = this->Environ::weight(game) + game.nDefer;
+    Weight const w = this->Environ::weight(game) + game.wDefer();
     Freqcounts propctorcounts = hypspropctorcounts;
     addfreqcounts(game.goal().RPN, propctorlabels, propctorcounts);
     double const d = distance(propctorcounts, propctorfreqs);
