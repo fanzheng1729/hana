@@ -161,12 +161,15 @@ struct Proofstep
     Proofstep(pAss p) : type(p ? THM : NONE), pass(p) {}
     Proofstep(Hypiter iter) : type(HYP), phyp(&*iter) {}
     Proofstep(Index i) : type(LOAD), index(i) {}
+    bool empty() const { return type == NONE; }
+    bool ishyp() const { return type == HYP; }
+    bool isthm() const { return type == THM; }
 // Return hypothesis or assertion pointer of the proof step.
     const void * ptr() const
     {
-        if (type == HYP)
+        if (ishyp())
             return phyp;
-        else if (type == THM)
+        else if (isthm())
             return pass;
         return NULL;
     }
