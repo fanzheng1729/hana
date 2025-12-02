@@ -173,6 +173,7 @@ struct Proofstep
             return pass;
         return NULL;
     }
+// Return typecode. Return "" if not HYP nor THM.
     strview typecode() const;
 // Return symbol of the variable.
     Symbol3 var() const;
