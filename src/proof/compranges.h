@@ -4,6 +4,7 @@
 #include "../types.h"
 #include "../util/algo.h"   // for util::equal
 
+// Compare steps by content.
 inline bool compranges(Steprange x, Steprange y)
 {
     return std::lexicographical_compare

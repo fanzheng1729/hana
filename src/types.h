@@ -50,6 +50,12 @@ struct Steprange : std::pair<Stepiter, Stepiter>
 };
 // Ranges of steps to be substituted
 typedef std::vector<Steprange> Stepranges;
+// Ranges governed by a node, map: range -> has all vars
+typedef std::map<Steprange, bool, bool(*)(Steprange, Steprange)>
+    GovernedStepranges;
+// Map: node -> all ranges governed by the node
+typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
+    GovernedSteprangesbystep;
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<Proofsize> ASTnode;
