@@ -3,15 +3,6 @@
 
 #include "../types.h"
 
-// Return true if a proof has only 1 step using 1 theorem.
-inline bool is1step(Proofsteps const & proof)
-{
-    // Check if the first THM step is the last one.
-    Proofsize i = 0;
-    for ( ; i < proof.size() && proof[i].type != Proofstep::THM; ++i) ;
-    return i == proof.size() - 1;
-}
-
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs

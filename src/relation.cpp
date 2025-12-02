@@ -13,13 +13,13 @@ static bool matchline(Proofsteps const & RPN, int const * & cur,
         if (cur >= end || *cur < 0)
             return false;
         // 0 corresponds to the syntax axiom.
-        if (*cur == 0 && RPN[i].type != Proofstep::THM)
+        if (*cur == 0 && !RPN[i].isthm())
             return false;
         // !0 corresponds to a variable.
-        if (*cur != 0 && RPN[i].type != Proofstep::HYP)
+        if (*cur != 0 && !RPN[i].ishyp())
             return false;
 
-        if (substitutions[*cur].type == Proofstep::NONE)
+        if (substitutions[*cur].empty())
         {
             // A new step
             if (util::filter(substitutions)(RPN[i]))

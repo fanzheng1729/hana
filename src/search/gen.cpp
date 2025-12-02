@@ -14,12 +14,11 @@ static Argtypes argtypes(Proofsteps const & assRPN)
     Argtypes result(assRPN.size() - 1);
     for (Proofsize i = 0; i < assRPN.size() - 1; ++i)
     {
-        if (assRPN[i].type != Proofstep::HYP)
+        Proofstep const step = assRPN[i];
+        if (!step.ishyp() || !step.phyp ||
+            step.phyp->second.expression.empty())
             return Argtypes();
-        Hypothesis const & hyp = assRPN[i].phyp->second;
-        if (hyp.expression.empty())
-            return Argtypes();
-        result[i] = hyp.expression[0];
+        result[i] = step.phyp->second.expression[0];
     }
 
     return result;

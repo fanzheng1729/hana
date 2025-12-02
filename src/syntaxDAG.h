@@ -35,7 +35,7 @@ struct SyntaxDAG
     void adddef(strview salabel, Proofsteps const & defRPN)
     {
         FOR (Proofstep step, defRPN)
-            if (step.type == Proofstep::THM)
+            if (step.isthm())
                 link(salabel, step.pass->first);
     }
     // Add an expression to the set of maximal ranks.
@@ -64,7 +64,7 @@ struct SyntaxDAG
     {
         Ranks result;
         FOR (Proofstep step, RPN)
-            if (step.type == Proofstep::THM)
+            if (step.isthm())
             {
                 Mapiter const iter = syntaxranks.find(step.pass->first);
                 if (iter != syntaxranks.end())

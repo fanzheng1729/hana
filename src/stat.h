@@ -19,7 +19,7 @@ Assertions::size_type maxsymboldefnumber
     Assertions::size_type max = 1;
 //std::cout << definitions << syntaxioms;
     FOR (Proofstep step, RPN)
-        if (step.type == Proofstep::THM && step.pass)
+        if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
     {
         Assertions::size_type number = 0;
@@ -81,7 +81,7 @@ inline Assertions::size_type maxsymboldefnumber
     Assertions::size_type max = 0;
 
     FOR (Proofstep step, RPN)
-        if (step.type == Proofstep::THM && step.pass)
+        if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
                 if (syntaxioms.count(label))
                     max = std::max(max, step.pass->second.number);
@@ -123,7 +123,7 @@ template<class T>
 void addfreqcount(Proofsteps const & RPN, T & definitions)
 {
     FOR (Proofstep step, RPN)
-        if (step.type == Proofstep::THM && step.pass)
+        if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
                 typename T::iterator const iter = definitions.find(label);
@@ -147,7 +147,7 @@ inline void addfreqcounts
     (Proofsteps const & RPN, Labels const & labels, Freqcounts & result)
 {
     FOR (Proofstep step, RPN)
-        if (step.type == Proofstep::THM && step.pass)
+        if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
                 Labels::size_type const i
@@ -202,9 +202,9 @@ void addweight(T & definitions, typename T::mapped_type & definition)
     {
         Weight & sum = definition.weight;
         FOR (Proofstep step, definition.rhs)
-            if (step.type == Proofstep::HYP && step.phyp)
+            if (step.ishyp() && step.phyp)
                 ++sum;
-            else if (step.type == Proofstep::THM && step.pass)
+            else if (step.isthm() && step.pass)
                 if (const char * const label = step.pass->first.c_str)
                 {
                     typename T::iterator const iter = definitions.find(label);
@@ -224,9 +224,9 @@ Weight weight(Proofsteps const & RPN, T const & definitions)
     Weight sum = 0;
 
     FOR (Proofstep step, RPN)
-        if (step.type == Proofstep::HYP)
+        if (step.ishyp())
             ++sum;
-        else if (step.type == Proofstep::THM && step.pass)
+        else if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
                 typename T::const_iterator const iter = definitions.find(label);

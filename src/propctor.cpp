@@ -279,7 +279,7 @@ bool Propctors::addclause
     {
         const char * step = RPN[i];
 //std::cout << "Step " << step << ":\t";
-        if (RPN[i].type == Proofstep::HYP)
+        if (RPN[i].ishyp())
         {
             Hypsize const hypindex = util::find(hyps, step) - hyps.begin();
             if (hypindex < hyps.size())

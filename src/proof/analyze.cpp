@@ -40,10 +40,10 @@ AST ast(Proofsteps const & proof)
 
     for (Proofsize i = 0; i < proof.size(); ++i)
     {
-        Proofstep::Type type = proof[i].type;
-        if (type == Proofstep::HYP)
+        Proofstep const step = proof[i];
+        if (step.ishyp())
             stack.push_back(i);
-        else if (type == Proofstep::THM &&
+        else if (step.isthm() &&
                  addASTnode(proof[i].pass->second, stack, tree[i]))
             continue;
         else return AST();
