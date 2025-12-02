@@ -142,3 +142,31 @@ bool findsubstitutions
     SteprangeAST const y(pattern, patternAST);
     return findsubstitutions(x, y, result);
 }
+
+// Map: proofstep -> is in a tree governed by the step
+typedef std::map<Proofstep, bool, std::less<const char *> > Instep;
+
+// Find all maximal ranges governed by a Proofstep.
+static void maxranges
+(SteprangeAST const & exp, Instep & instep, GovernedSteprangesbystep & result)
+{
+    Proofstep const root = *(exp.first.second - 1);
+    if (!root.isthm())
+        return;
+    // Root is THM.
+    bool & isinstep = instep[root];
+    if (isinstep)
+        return;
+    // Not in a range governed by root.
+    isinstep = true;
+    result[root][exp.first];
+    // Recurse to all children.
+    isinstep = false;
+}
+GovernedSteprangesbystep maxranges(SteprangeAST const & exp)
+{
+    GovernedSteprangesbystep result;
+    Instep instep;
+    maxranges(exp, instep, result);
+    return result;
+}

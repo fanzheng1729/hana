@@ -17,4 +17,7 @@ bool findsubstitutions
      Proofsteps const & pattern, AST const & patternAST,
      Stepranges & result);
 
+// Find all maximal ranges governed by a Proofstep.
+GovernedSteprangesbystep maxranges(SteprangeAST const & exp);
+
 #endif // ANALYZE_H_INCLUDED
