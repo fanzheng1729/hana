@@ -76,13 +76,13 @@ static double distance
     // Total occurrence count
     Proofsize total = std::accumulate(goal.begin(), goal.end(), Proofsize());
 
-    double result = 0;
+    double dist = 0;
     for (Freqcounts::size_type i = 0; i < size; ++i)
     {
-        double diff = goal[i]/static_cast<double>(total) - all[i];
-        result += diff * diff;
+        double  diff = goal[i]/static_cast<double>(total) - all[i];
+        dist += diff * diff;
     }
-    return result;
+    return dist;
 }
 
 // Evaluate leaf games, and record the proof if proven.
