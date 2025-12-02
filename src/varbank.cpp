@@ -1,4 +1,3 @@
-#include "ass.h"
 #include "varbank.h"
 #include "util/hex.h"
 
