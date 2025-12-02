@@ -20,7 +20,7 @@ bool findsubstitutions
 // Return true if range1 has all the variables in range2
 bool hasallvars(Steprange range1, Steprange range2);
 
-// Find all maximal ranges governed by a Proofstep.
+// Find all maximal ranges governed by a syntax axiom.
 GovernedSteprangesbystep maxranges(SteprangeAST exp);
 
 #endif // ANALYZE_H_INCLUDED

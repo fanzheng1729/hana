@@ -157,7 +157,6 @@ bool hasallvars(Steprange range1, Steprange range2)
 // Map: proofstep -> is in a tree governed by the step
 typedef std::map<Proofstep, bool, std::less<const char *> > Instep;
 
-// Find all maximal ranges governed by a Proofstep.
 static void maxranges
 (SteprangeAST subexp, Steprange exp, Instep & instep,
     GovernedSteprangesbystep & result)
@@ -181,6 +180,8 @@ static void maxranges
         maxranges(subexp.child(i), exp, instep, result);
     isinstep = false;
 }
+
+// Find all maximal ranges governed by a syntax axiom.
 GovernedSteprangesbystep maxranges(SteprangeAST exp)
 {
     GovernedSteprangesbystep result;
