@@ -44,7 +44,7 @@ struct Definitions : std::map<strview, Definition>
             struct Commentinfo const & commendinfo,
             struct Relations const & equalities);
 private:
-    // Add a definition. Return true iff okay.
+    // Add a definition. Return true if okay.
     bool adddef
         (Assertions::const_reference rass,
             struct Typecodes const & typecodes,

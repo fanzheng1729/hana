@@ -128,7 +128,7 @@ Proofsteps Syntaxioms::RPN
     return iter == ends.end() ? Proofsteps() : iter->second;
 }
 
-// Add the revPolish notation and its AST. Return true iff okay.
+// Add the revPolish notation and its AST. Return true if okay.
 bool Syntaxioms::RPNAST
     (Expression const & exp, Assertion const & ass,
      Proofsteps & rpn, AST & tree) const
@@ -141,7 +141,7 @@ bool Syntaxioms::RPNAST
     return !unexpected(tree.empty(), "AST error", rpn);
 }
 
-// Add the revPolish notation of the whole assertion. Return true iff okay.
+// Add the revPolish notation of the whole assertion. Return true if okay.
 bool Syntaxioms::addRPN
     (Assertion & ass, struct Typecodes const & typecodes) const
 {
@@ -182,7 +182,7 @@ bool Syntaxioms::addRPN
     return true;
 }
 
-// Add the revPolish notation of a set of assertions. Return true iff okay.
+// Add the revPolish notation of a set of assertions. Return true if okay.
 bool Syntaxioms::addRPN
     (Assertions & assertions, struct Typecodes const & typecodes) const
 {
@@ -214,7 +214,7 @@ static bool checkRPN
     return !unexpected(!ok, "failed unification test for", RPN);
 }
 
-// Check the syntax of an assertion (& all hypotheses). Return true iff okay.
+// Check the syntax of an assertion (& all hypotheses). Return true if okay.
 bool Syntaxioms::checkRPN
     (strview label, Assertion ass, struct Typecodes const & typecodes) const
 {
@@ -236,7 +236,7 @@ bool Syntaxioms::checkRPN
     return true;
 }
 
-// Test syntax parser. Return 1 iff okay.
+// Test syntax parser. Return true if okay.
 bool Database::checkRPN() const
 {
     Progress progress;

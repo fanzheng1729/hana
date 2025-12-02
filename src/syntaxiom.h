@@ -35,15 +35,15 @@ public:
 // Return the revPolish notation of exp. Return the empty proof iff not okay.
     Proofsteps RPN
         (Expression const & exp, Assertion const & ass) const;
-// Add the revPolish notation and its AST. Return true iff okay.
+// Add the revPolish notation and its AST. Return true if okay.
     bool RPNAST
         (Expression const & exp, Assertion const & ass,
          Proofsteps & rpn, AST & tree) const;
-// Add the revPolish notation of the whole assertion. Return true iff okay.
+// Add the revPolish notation of the whole assertion. Return true if okay.
     bool addRPN(Assertion & ass, struct Typecodes const & typecodes) const;
-// Add the revPolish notation of a set of assertions. Return true iff okay.
+// Add the revPolish notation of a set of assertions. Return true if okay.
     bool addRPN(Assertions & assertions, struct Typecodes const & typecodes) const;
-// Check the syntax of an assertion (& all hypotheses). Return true iff okay.
+// Check the syntax of an assertion (& all hypotheses). Return true if okay.
     bool checkRPN
         (strview label, Assertion ass, struct Typecodes const & typecodes) const;
 private:

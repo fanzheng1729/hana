@@ -128,7 +128,7 @@ public:
         std::pair<strview, std::pair<strview, bool> > value(typecode, mapped);
         return m_commentinfo.typecodes.insert(value).second;
     }
-// Add the revPolish notation to the whole database. Return true iff okay.
+// Add the revPolish notation to the whole database. Return true if okay.
     bool addRPN()
     {
         m_syntaxioms = Syntaxioms(assertions(), *this);
@@ -140,7 +140,7 @@ public:
             m_relations[relation.second.type()].insert(relation);
         return true;
     }
-// Test syntax parser. Return 1 iff okay.
+// Test syntax parser. Return true if okay.
     bool checkRPN() const;
 // Mark duplicate assertions. Return its number.
     Assertions::size_type markduplicate();

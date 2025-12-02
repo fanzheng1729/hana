@@ -4,7 +4,7 @@
 // #include "../io.h"
 #include "../varbank.h"
 
-// Add the skeleton of an RPN to result. Return true iff okay.
+// Add the skeleton of an RPN to result. Return true if okay.
 template<class T> bool skeleton
     (SteprangeAST exp, T cansplit,
         Stepranges subs, Varbank & varbank, Proofsteps & result)

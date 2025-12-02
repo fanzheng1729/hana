@@ -49,29 +49,29 @@ private:
         m_tokens.pop();
         return readcompressed(label, hyps, proof);
     }
-// Add a floating hypothesis. Return true iff okay.
+// Add a floating hypothesis. Return true if okay.
     bool addfloatinghyp(strview label, strview type, strview var);
-// Read $e statement. Return true iff okay.
+// Read $e statement. Return true if okay.
     bool reade(strview label);
-// Read $a statement. Return true iff okay.
+// Read $a statement. Return true if okay.
     bool reada(strview label);
-// Read $p statement. Return true iff okay.
+// Read $p statement. Return true if okay.
     bool readp(strview label);
-// Read $f statement. Return true iff okay.
+// Read $f statement. Return true if okay.
     bool readf(strview label);
-// Read labeled statement. Return true iff okay.
+// Read labeled statement. Return true if okay.
     bool readlabel(strview label);
-// Read $d statement. Return true iff okay.
+// Read $d statement. Return true if okay.
     bool readd();
-// Read $c statement. Return true iff okay.
+// Read $c statement. Return true if okay.
     bool readc();
-// Read $v statement. Return true iff okay.
+// Read $v statement. Return true if okay.
     bool readv();
 public:
     Imp(Database & database, Tokens & tokens, Comments const & comments) :
         m_comments(comments), m_database(database), m_scopes(), m_tokens(tokens)
         {}
-// Read tokens. Returns true iff okay.
+// Read tokens. Returns true if okay.
     bool read(Tokens::size_type const upto);
 };
 
@@ -347,7 +347,7 @@ bool Imp::addfloatinghyp(strview label, strview type, strview var)
     return true;
 }
 
-// Read $e statement. Return true iff okay.
+// Read $e statement. Return true if okay.
 bool Imp::reade(strview label)
 {
     Expression const & exp(readexp('e', label, "$."));
@@ -357,7 +357,7 @@ bool Imp::reade(strview label)
     return true;
 }
 
-// Read $a statement. Return true iff okay.
+// Read $a statement. Return true if okay.
 bool Imp::reada(strview label)
 {
     Expression const & exp(readexp('a', label, "$."));
@@ -367,7 +367,7 @@ bool Imp::reada(strview label)
     return true;
 }
 
-// Read $p statement. Return true iff okay.
+// Read $p statement. Return true if okay.
 bool Imp::readp(strview label)
 {
     Expression const & newtheorem(readexp('p', label, "$="));
@@ -416,7 +416,7 @@ static void floatinghyperr(strview token, strview label, int err)
     std::cerr << std::endl;
 }
 
-// Read $f statement. Return true iff okay.
+// Read $f statement. Return true if okay.
 bool Imp::readf(strview label)
 {
     if (unfinishedstat(m_tokens, "$f", label)) return false;
@@ -465,7 +465,7 @@ static void printtokenreuse
     std::cerr << as << std::endl;
 }
 
-// Read labeled statement. Return true iff okay.
+// Read labeled statement. Return true if okay.
 bool Imp::readlabel(strview label)
 {
     const char * reuse[] = {"reuse constant", "reuse variable", "reuse label"};
@@ -508,7 +508,7 @@ bool Imp::readlabel(strview label)
     return okay;
 }
 
-// Read $d statement. Return true iff okay.
+// Read $d statement. Return true if okay.
 bool Imp::readd()
 {
     Symbol2s dvars;
@@ -580,7 +580,7 @@ static bool cvlistemptyerr(char type, bool isempty)
     return isempty;
 }
 
-// Read $c statement. Return true iff okay.
+// Read $c statement. Return true if okay.
 bool Imp::readc()
 {
     if (!m_scopes.isouter("$c statement occurs in inner block"))
@@ -615,7 +615,7 @@ bool Imp::readc()
     return true;
 }
 
-// Read $v statement. Return true iff okay.
+// Read $v statement. Return true if okay.
 bool Imp::readv()
 {
     strview token;
@@ -649,7 +649,7 @@ bool Imp::readv()
     return true;
 }
 
-// Read tokens. Returns true iff okay.
+// Read tokens. Returns true if okay.
 bool Imp::read(Tokens::size_type const upto)
 {
     Progress progress;
@@ -703,7 +703,7 @@ bool Imp::read(Tokens::size_type const upto)
 }
 } // anonymous namespace
 
-// Read data from tokens. Returns true iff okay.
+// Read data from tokens. Returns true if okay.
 bool Database::read(Tokens & tokens, Comments const & comments,
                     Tokens::size_type upto)
 {

@@ -40,7 +40,6 @@ static char badletter(strview token)
 }
 
 // Get sequence of letters in a compressed proof (Appendix B).
-// Returns 1 if Okay, 0 on error, -1 if the proof is incomplete.
 ReadStatus getproofletters(strview label, Tokens & tokens, std::string & letters)
 {
     strview token;

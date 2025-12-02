@@ -99,7 +99,7 @@ static bool openfile(std::ifstream & in, std::string const & name)
     return bool(in);
 }
 
-// Read tokens. Returns true iff okay.
+// Read tokens. Returns true if okay.
 static bool readtokens
     (const char * const filename, std::set<std::string> & names,
      Tokens & tokens, Comments & comments)
@@ -203,7 +203,7 @@ static bool readtokens
     return true;
 }
 
-// Read tokens. Returns true iff okay.
+// Read tokens. Returns true if okay.
 bool doread(const char * filename,
             struct Tokens & tokens, struct Comments & comments)
 {
