@@ -210,7 +210,7 @@ static bool checkRPN
     AST const & tree(ast(RPN));
     Stepranges stepranges;
     prealloc(stepranges, ass.varusage);
-    bool ok(findsubstitutions(RPN, tree, RPN, tree, stepranges));
+    bool const ok = findsubstitutions(RPN, tree, RPN, tree, stepranges);
     return !unexpected(!ok, "failed unification test for", RPN);
 }
 
