@@ -403,7 +403,7 @@ Proofsteps propskeleton
     if (RPN.empty() || RPN.size() != ast.size())
         return Proofsteps();
 
-    SteprangeAST exp(Steprange(RPN.begin(), RPN.end()), ast.begin());
+    SteprangeAST exp(Steprange(RPN), ast.begin());
     Stepranges substitutions;
     Proofsteps result;
     // Preallocate for efficiency
