@@ -1,6 +1,7 @@
 #ifndef GOAL_H_INCLUDED
 #define GOAL_H_INCLUDED
 
+#include "../proof/compranges.h"
 #include "../proof/verify.h"
 
 // Proof goal
@@ -26,6 +27,7 @@ inline bool operator==(Goal const & x, Goal const & y)
 inline bool operator<(Goal const & x, Goal const & y)
 {
     if (x.RPN < y.RPN) return true;
+    // if (compranges(x.RPN, y.RPN)) return true;
     return x.RPN == y.RPN && x.typecode < y.typecode;
 }
 
