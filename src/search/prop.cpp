@@ -72,7 +72,7 @@ static double distance
     Freqcounts::size_type const size = goal.size();
     if (unexpected(size != all.size(), "size mismatch", ""))
         return 0;
-
+    return 0;
     // Total occurrence count
     Proofsize total = std::accumulate(goal.begin(), goal.end(), Proofsize());
 
