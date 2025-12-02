@@ -20,9 +20,14 @@ struct Goal
     }
 };
 inline bool operator==(Goal const & x, Goal const & y)
-    { return x.RPN == y.RPN && x.typecode == y.typecode; }
+{
+    return x.RPN == y.RPN && x.typecode == y.typecode;
+}
 inline bool operator<(Goal const & x, Goal const & y)
-    { return x.RPN < y.RPN || x.RPN == y.RPN && x.typecode < y.typecode; }
+{
+    if (x.RPN < y.RPN) return true;
+    return x.RPN == y.RPN && x.typecode < y.typecode;
+}
 
 
 // Polymorphic context, with move generation and goal evaluation
