@@ -146,7 +146,7 @@ bool hasallvars(Steprange range1, Steprange range2)
 {
     for (Stepiter iter2 = range2.first; iter2 < range2.second; ++iter2)
     {
-        if (!iter2->isthm())
+        if (!iter2->ishyp())
             continue;
         if (std::find(range1.first, range1.second, *iter2) == range1.second)
             return false;
