@@ -11,8 +11,6 @@
 // Determine status of a goal.
 Goalstatus Prop::status(Goal const & goal) const
 {
-    if (database.typecodes().isprimitive(goal.typecode) != FALSE)
-        return GOALFALSE; // goal must start with a non-primitive type code.
     Proofsteps const & RPN = goal.RPN;
     CNFClauses cnf(hypscnf.first);
     Atom natom = hypatomcount;

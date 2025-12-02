@@ -47,6 +47,8 @@ pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 // Validate a move.
 Environ::MoveValidity Environ::valid(Move const & move) const
 {
+    if (database.typecodes().isprimitive(move.exptypecode()) != FALSE)
+        return MoveINVALID;
     if (!checkDV(move, assertion))
         return MoveINVALID;
     // Check if all goals of the move are proven.
