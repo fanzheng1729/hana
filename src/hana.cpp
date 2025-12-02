@@ -118,11 +118,8 @@ int main(int argc, char * argv[])
             printass(*iter);
             std::cout << ass.expression;
             FOR (GovernedSteprangesbystep::const_reference rstep, result)
-            {
-                std::cout << rstep.first << std::endl;
                 FOR (GovernedStepranges::const_reference rrange, rstep.second)
                     std::cout << Proofsteps(rrange.first.first, rrange.first.second);
-            }
             std::cin.get();
         }
     }
