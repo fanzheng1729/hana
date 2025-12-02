@@ -29,17 +29,6 @@ Expression & operator+=(Expression & exp, std::pair<Iter, Iter> subexp)
     return exp;
 }
 
-// Preallocate space for substitutions.
-template<class SUB>
-void prealloc(std::vector<SUB> & substitutions, Varusage const & vars)
-{
-    if (vars.empty()) return;
-    // Maximal id of variables appearing
-    Symbol2::ID const maxid=std::max_element(vars.begin(), vars.end())->first;
-    // Allocate space for 0 (not used), 1, ..., maxid.
-    substitutions.assign(maxid + 1, SUB());
-}
-
 template<class TOK, class SUB, class IDFUN>
 void makesubstitution
     (std::vector<TOK> const & src, std::vector<TOK> & dest,

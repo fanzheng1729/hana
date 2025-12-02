@@ -107,7 +107,8 @@ static bool verifystep
     Assertion const & thm = pthm->second;
 
     // Find the necessary substitutions.
-    prealloc(substitutions, thm.varusage);
+    substitutions.clear();
+    substitutions.resize(thm.maxvarid() + 1);
     std::vector<Expression>::size_type const base = findsubstitutions
         (label, pthm->first, pthm->second.hypiters, stack, substitutions);
     if (base == stack.size())

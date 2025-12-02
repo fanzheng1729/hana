@@ -40,10 +40,20 @@ struct Assertion
     // Typecode of the conclusion
     strview exptypecode() const
         { return expression.empty() ? strview() : expression[0]; }
-    // # of hypotheses
-    Hypsize hypcount() const {return hypiters.size();}
     // # of variables
     Varusage::size_type varcount() const { return varusage.size(); }
+    // Max id of variables
+    Symbol2::ID maxvarid() const
+    {
+        Symbol2::ID max = 0;
+        for (Varusage::const_iterator iter = varusage.begin();
+             iter != varusage.end(); ++iter)
+            if (iter->first.id > max)
+                max = iter->first.id;
+        return max;
+    }
+    // # of hypotheses
+    Hypsize hypcount() const {return hypiters.size();}
     // # of essential hypotheses
     Hypsize esshypcount() const { return hypcount() - varcount(); }
     // label of a hypothesis

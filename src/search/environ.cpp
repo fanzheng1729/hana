@@ -284,8 +284,7 @@ bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
     if (thm.expression.empty() || thm.exptypecode() != game.goal().typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
-    Stepranges stepranges;
-    prealloc(stepranges, thm.varusage);
+    Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions(game.goal().RPN, ast, thm.expRPN, thm.expAST, stepranges))
         return false; // Conclusion mismatch
 

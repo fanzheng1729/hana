@@ -208,8 +208,7 @@ static bool checkRPN
     (strview label, Assertion const & ass, Proofsteps const & RPN)
 {
     AST const & tree(ast(RPN));
-    Stepranges stepranges;
-    prealloc(stepranges, ass.varusage);
+    Stepranges stepranges(ass.maxvarid() + 1);
     bool const ok = findsubstitutions(RPN, tree, RPN, tree, stepranges);
     return !unexpected(!ok, "failed unification test for", RPN);
 }
