@@ -141,37 +141,51 @@ bool findsubstitutions
     return findsubstitutions(x, y, result);
 }
 
+// Return true if range1 has all the variables in range2
+bool hasallvars(Steprange range1, Steprange range2)
+{
+    for (Stepiter iter2 = range2.first; iter2 < range2.second; ++iter2)
+    {
+        if (!iter2->isthm())
+            continue;
+        if (std::find(range1.first, range1.second, *iter2) == range1.second)
+            return false;
+    }
+    return true;
+}
+
 // Map: proofstep -> is in a tree governed by the step
 typedef std::map<Proofstep, bool, std::less<const char *> > Instep;
 
 // Find all maximal ranges governed by a Proofstep.
 static void maxranges
-(SteprangeAST const & exp, Instep & instep, GovernedSteprangesbystep & result)
+(SteprangeAST subexp, Steprange exp, Instep & instep,
+    GovernedSteprangesbystep & result)
 {
-    Proofstep const root = *(exp.first.second - 1);
+    Proofstep const root = *(subexp.first.second - 1);
     if (!root.isthm())
         return;
     // Root is THM.
     bool & isinstep = instep[root];
-    if (!isinstep)
+    if (!isinstep && hasallvars(subexp.first, exp))
     {
         // Add the range.
         GovernedStepranges & ranges = result[root];
         if (ranges.empty())
             ranges = GovernedStepranges(compranges);
-        result[root][exp.first];
+        result[root][subexp.first] = true;
     }
     isinstep = true;
     // Recurse to all children.
-    for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
-        maxranges(exp.child(i), instep, result);
+    for (ASTnode::size_type i = 0; i < subexp.ASTroot().size(); ++i)
+        maxranges(subexp.child(i), exp, instep, result);
     isinstep = false;
 }
-GovernedSteprangesbystep maxranges(SteprangeAST const & exp)
+GovernedSteprangesbystep maxranges(SteprangeAST exp)
 {
     GovernedSteprangesbystep result;
     Instep instep;
-    maxranges(exp, instep, result);
+    maxranges(exp, exp.first, instep, result);
     // Remove the root.
     result.erase(*(exp.first.second - 1));
     return result;
