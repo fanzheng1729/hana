@@ -94,8 +94,8 @@ struct Termadder : Adder
 {
     Terms & terms;
     Proofstep const root;
-    Termadder(Terms & terms, Proofstep const root)
-    : terms(terms), root(root) {}
+    Termadder(Terms & terms, Proofstep const root) :
+        terms(terms), root(root) {}
     // Add a move. Return true if the move closed the goal.
     virtual bool operator()(Argtypes const & types, Genresult const & result,
                             Genstack const & stack)

@@ -9,6 +9,8 @@
 #include "../util/arith.h"
 #include "../util/for.h"
 
+typedef Value MCTSParams[2];
+
 // Monte-Carlo search tree
 template<class G>
 struct MCTS : private Tree<MCTSNode<G> >
@@ -20,8 +22,8 @@ struct MCTS : private Tree<MCTSNode<G> >
     using typename MCTSTree::Children;
 private:
     static int const digits = std::numeric_limits<size_type>::digits;
-    // Exploration constant
-    Value m_exploration[2];
+    // Exploration parameters
+    MCTSParams m_exploration;
     // Caches for square roots
     Value sqrt[2][digits];
     // Value sqrt2[digits];
@@ -48,7 +50,7 @@ private:
 public:
     // Construct a tree with 1 node.
     template<class T>
-    MCTS(T const & game, Value const exploration[2]) :
+    MCTS(T const & game, MCTSParams const exploration) :
         MCTSTree(game), m_playcount(0)
     {
         std::copy(exploration, exploration + 2, m_exploration);

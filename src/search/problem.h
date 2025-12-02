@@ -38,7 +38,7 @@ public:
     enum { STAGED = 1 };
     bool const staged;
     template<class Env>
-    Problem(Env const & env, Value const params[2]) :
+    Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params), database(env.database),
         assertion(env.assertion),
         numberlimit(std::min(assertion.number, database.assiters().size())),
