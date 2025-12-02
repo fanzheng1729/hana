@@ -34,6 +34,8 @@ typedef std::vector<std::string> Proof;
 struct Proofstep;
 // A sequence of proof steps
 typedef std::vector<Proofstep> Proofsteps;
+// Pointers to the proofs to be included
+typedef std::vector<Proofsteps const *> pProofs;
 // # of step in the proof
 typedef Proofsteps::size_type Proofsize;
 // Iterator to a proof step
@@ -42,8 +44,6 @@ typedef Proofsteps::const_iterator Stepiter;
 typedef std::pair<Stepiter, Stepiter> Steprange;
 // Ranges of steps to be substituted
 typedef std::vector<Steprange> Stepranges;
-// Pointers to the proofs to be included
-typedef std::vector<Proofsteps const *> pProofs;
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<Proofsize> ASTnode;
