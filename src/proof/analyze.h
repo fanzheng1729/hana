@@ -9,7 +9,7 @@
 AST ast(Proofsteps const & proof);
 
 // Return the indentations of all the subASTs.
-std::vector<Proofsize> indentation(AST const & ast);
+Indentations indentations(AST const & ast);
 
 // Return true if the RPN of an expression matches a template.
 bool findsubstitutions

@@ -53,8 +53,7 @@ AST ast(Proofsteps const & proof)
 }
 
 // Return the indentations of all the subASTs.
-static void indentation(ASTiter begin, ASTiter end,
-                        std::vector<Proofsize> & result)
+static void indentations(ASTiter begin, ASTiter end, Indentations & result)
 {
     // Iterator to root of subAST
     ASTiter const back = end - 1;
@@ -71,14 +70,14 @@ static void indentation(ASTiter begin, ASTiter end,
         // Recurse to the subAST.
         ASTiter const newend = end - (index - subroot);
         ASTiter const newbegin = i ? end - (index - (*back)[i - 1]): begin;
-        indentation(newbegin, newend, result);
+        indentations(newbegin, newend, result);
     }
 }
-std::vector<Proofsize> indentation(AST const & ast)
+Indentations indentations(AST const & ast)
 {
-    std::vector<Proofsize> result(ast.size());
+    Indentations result(ast.size());
     if (!ast.empty())
-        indentation(ast.begin(), ast.end(), result);
+        indentations(ast.begin(), ast.end(), result);
     return result;
 }
 

@@ -36,14 +36,6 @@ struct Proofstep;
 typedef std::vector<Proofstep> Proofsteps;
 // # of step in the proof
 typedef Proofsteps::size_type Proofsize;
-// # occurrences
-typedef Proofsize Freqcount;
-// Frequency count list
-typedef std::vector<Freqcount> Freqcounts;
-// Weight of a rev-Polish notation
-typedef Proofsize Weight;
-// Weight list
-typedef std::vector<Weight> Weights;
 // Iterator to a proof step
 typedef Proofsteps::const_iterator Stepiter;
 // Begin and end of a range of steps
@@ -59,6 +51,18 @@ typedef std::vector<Proofsize> ASTnode;
 typedef std::vector<ASTnode> AST;
 // Iterator to an AST node
 typedef AST::const_iterator ASTiter;
+
+// List of indentations
+typedef std::vector<Proofsize> Indentations;
+
+// # occurrences
+typedef Proofsize Freqcount;
+// Frequency count list
+typedef std::vector<Freqcount> Freqcounts;
+// Weight of a rev-Polish notation
+typedef Proofsize Weight;
+// Weight list
+typedef std::vector<Weight> Weights;
 
 struct Hypothesis
 {

@@ -73,7 +73,7 @@ std::string::size_type Printer::maxlabellen() const
     return max;
 }
 
-std::string Printer::str(std::vector<Proofsize> const & indentation) const
+std::string Printer::str(Indentations const & indentations) const
 {
     std::string result;
     std::string::size_type const spacing = maxlabellen() + 1;
@@ -88,7 +88,7 @@ std::string Printer::str(std::vector<Proofsize> const & indentation) const
         // Spacing
         result += std::string(spacing - std::strlen(label), ' ');
         // Indentation
-        result += std::string(indentation[step[2]], ' ');
+        result += std::string(indentations[step[2]], ' ');
         // Expression
         for (Expression::size_type i = 3; i < step.size(); ++i)
             (result += strview(step[i])) += ' ';
