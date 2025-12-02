@@ -1,8 +1,6 @@
 #include "../ass.h"
 #include "../io.h"
 #include "../util/algo.h"   // for util::equal
-#include "../util/arith.h"
-#include "../util/filter.h"
 #include "verify.h"
 
 // Subroutine for building AST.
