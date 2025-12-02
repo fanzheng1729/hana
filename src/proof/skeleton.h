@@ -10,7 +10,7 @@ template<class T> bool skeleton
         Stepranges subs, Varbank & varbank, Proofsteps & result)
 {
 // std::cout << "Analyzing " << Proofsteps(exp.first.first, exp.first.second);
-    Proofstep root = *(exp.first.second - 1);
+    Proofstep const root = *(exp.first.second - 1);
     switch (root.type)
     {
     case Proofstep::HYP:
