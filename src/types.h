@@ -217,7 +217,10 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     using std::pair<Steprange, ASTiter>::pair;
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) {}
-    // Return the subrange corresponding to child i.
+    // AST root node
+    ASTnode const & ASTroot() const
+    { return *(first.second - first.first + second - 1); }
+    // Child i's subrange
     SteprangeAST child(ASTnode::size_type index) const
     {
         ASTiter const ASTend = first.second - first.first + second;
