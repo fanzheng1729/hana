@@ -41,7 +41,11 @@ typedef Proofsteps::size_type Proofsize;
 // Iterator to a proof step
 typedef Proofsteps::const_iterator Stepiter;
 // Begin and end of a range of steps
-typedef std::pair<Stepiter, Stepiter> Steprange;
+// typedef std::pair<Stepiter, Stepiter> Steprange;
+struct Steprange : std::pair<Stepiter, Stepiter>
+{
+    using std::pair<Stepiter, Stepiter>::pair;
+};
 // Ranges of steps to be substituted
 typedef std::vector<Steprange> Stepranges;
 
