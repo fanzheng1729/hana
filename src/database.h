@@ -1,6 +1,7 @@
 #ifndef DATABASE_H_INCLUDED
 #define DATABASE_H_INCLUDED
 
+#include "proof/analyze.h"
 #include "comment.h"
 #include "def.h"
 #include "propctor.h"
@@ -134,6 +135,10 @@ public:
         m_syntaxioms = Syntaxioms(assertions(), *this);
         if (!syntaxioms().addRPN(m_assertions, typecodes()))
             return false;
+        // Find all maximal ranges of expressions of assertions.
+        FOR (Assertions::reference rass, m_assertions)
+            rass.second.expmaxranges
+            = maxranges(SteprangeAST(rass.second.expRPN, rass.second.expAST));
         // Find various relations and their justifications among syntax axioms.
         Relations relations(assertions());
         FOR (Relations::const_reference relation, relations)

@@ -49,7 +49,7 @@ bool addRPN(Database & database)
     std::cout << "done in " << timer << 's' << std::endl;
     return true;
 }
-#include "proof/analyze.h"
+
 int main(int argc, char * argv[])
 {
     if (argc < 2) return test();
@@ -112,8 +112,7 @@ int main(int argc, char * argv[])
     {
         Assiter iter = database.assiters()[i];
         Assertion const & ass = iter->second;
-        SteprangeAST exp(ass.expRPN, ass.expAST);
-        GovernedSteprangesbystep result(maxranges(exp));
+        GovernedSteprangesbystep const & result = ass.expmaxranges;
         if (!result.empty())
         {
             printass(*iter);
