@@ -1,6 +1,7 @@
 #include <algorithm>    // for std::copy
 #include "../ass.h"
 #include "../io.h"
+#include "printer.h"
 #include "../typecode.h"
 #include "../util/hex.h"
 #include "verify.h"

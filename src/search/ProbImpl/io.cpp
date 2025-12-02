@@ -3,6 +3,7 @@
 #include "../../io.h"
 #include "../problem.h"
 #include "../../proof/analyze.h"
+#include "../../proof/printer.h"
 #include "../../proof/verify.h"
 
 // Return the only open child of p.

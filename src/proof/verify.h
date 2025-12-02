@@ -2,7 +2,7 @@
 #define VERIFY_H_INCLUDED
 
 #include <algorithm>// for std::max and std::max_element
-#include "printer.h"
+#include "../types.h"
 #include "../util/for.h"
 
 // Extract proof steps from a compressed proof.
@@ -108,13 +108,11 @@ typename std::vector<EXP>::size_type findsubstitutions
     return base;
 }
 
+struct Printer;
 // Subroutine for proof verification. Verify proof steps.
 Expression verify(Proofsteps const & proof, Printer & printer, pAss pass = NULL);
-inline Expression verify(Proofsteps const & proof, pAss pass = NULL)
-{
-    Printer printer;
-    return verify(proof, printer, pass);
-}
+Expression verify(Proofsteps const & proof, pAss pass = NULL);
+
 // Verify a regular proof. The "proof" argument should be a non-empty sequence
 // of valid labels. Return the statement the "proof" proves.
 // Return the empty expression if the "proof" is invalid.

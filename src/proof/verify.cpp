@@ -2,7 +2,7 @@
 // #include "../database.h"
 #include "../disjvars.h"
 #include "../io.h"
-#include "../util/arith.h"
+#include "printer.h"
 #include "../util/filter.h"
 #include "../util/msg.h"
 #include "verify.h"
@@ -192,6 +192,11 @@ Expression verify(Proofsteps const & proof, Printer & printer, pAss pass)
     }
 
     return Expression(stack[0].begin(), stack[0].end());
+}
+Expression verify(Proofsteps const & proof, pAss pass)
+{
+    Printer printer;
+    return verify(proof, printer, pass);
 }
 
 // Verify a regular proof. The "proof" argument should be a non-empty sequence
