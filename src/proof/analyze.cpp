@@ -5,8 +5,7 @@
 
 // Subroutine for building AST.
 // Process a proof step referencing an assertion (i.e., not a hypothesis).
-// Add the corresponding node to the AST.
-// Return true if okay.
+// Add the corresponding node to the AST. Return true if okay.
 static bool addASTnode
     (Assertion const & assertion, std::vector<Proofsize> & stack,
      AST::reference node)
