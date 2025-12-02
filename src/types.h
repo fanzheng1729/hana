@@ -45,6 +45,8 @@ typedef Proofsteps::const_iterator Stepiter;
 struct Steprange : std::pair<Stepiter, Stepiter>
 {
     using std::pair<Stepiter, Stepiter>::pair;
+    Steprange(Proofsteps const & proofsteps) :
+        std::pair<Stepiter, Stepiter>(proofsteps.begin(), proofsteps.end()) {}
 };
 // Ranges of steps to be substituted
 typedef std::vector<Steprange> Stepranges;
