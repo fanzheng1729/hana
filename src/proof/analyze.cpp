@@ -106,15 +106,12 @@ static bool findsubstitutions
             return false;
         // Check the children.
         {
-            // Ends of both ASTs
-            ASTiter expASTend = exp.first.second - exp.first.first + exp.second;
-            ASTiter tmpASTend = tmp.first.second - tmp.first.first + tmp.second;
-            // Backs of both ASTs
-            ASTnode const & expASTroot = *(expASTend - 1);
-            ASTnode const & tmpASTroot = *(tmpASTend - 1);
-// std::cout << expASTroot << std::endl << tmpASTroot << std::endl;
+            // Roots of both ASTs
+            ASTnode const & expASTroot = exp.ASTroot();
+            ASTnode const & tmpASTroot = tmp.ASTroot();
+            // Check if children sizes match.
             if (expASTroot.size() != tmpASTroot.size())
-                return false; // Children size mismatch
+                return false;
             // Match the children.
             for (ASTnode::size_type i = 0; i < expASTroot.size(); ++i)
                 if (!findsubstitutions(exp.child(i), tmp.child(i), result))
@@ -161,6 +158,8 @@ static void maxranges
     isinstep = true;
     result[root][exp.first];
     // Recurse to all children.
+    for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
+        maxranges(exp.child(i), instep, result);
     isinstep = false;
 }
 GovernedSteprangesbystep maxranges(SteprangeAST const & exp)
