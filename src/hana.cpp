@@ -49,7 +49,7 @@ bool addRPN(Database & database)
     std::cout << "done in " << timer << 's' << std::endl;
     return true;
 }
-
+#include "proof/analyze.h"
 int main(int argc, char * argv[])
 {
     if (argc < 2) return test();
@@ -108,7 +108,17 @@ int main(int argc, char * argv[])
 
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
-    // return EXIT_SUCCESS;
+    for (Assertions::size_type i = 1; i < database.assiters().size(); ++i)
+    {
+        Assiter iter = database.assiters()[i];
+        printass(*iter);
+        Assertion const & ass = iter->second;
+        std::cout << ass.expression;
+        SteprangeAST exp(ass.expRPN, ass.expAST);
+        GovernedSteprangesbystep result(maxranges(exp));
+        std::cout << result;
+        std::cin.get();
+    }
 
     Value parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};

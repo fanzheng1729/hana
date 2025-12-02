@@ -35,16 +35,16 @@ struct Proofstep;
 typedef std::vector<Proofstep> Proofsteps;
 std::ostream & operator<<(std::ostream & out, Proofsteps const & steps);
 
-template<class Key, class T>
-std::ostream & operator<<(std::ostream & out, const std::map<Key, T> & map)
+template<class Key, class T, class Comp>
+std::ostream & operator<<(std::ostream & out, const std::map<Key, T, Comp> & map)
 {
     for (typename std::map<Key, T>::const_iterator
          iter(map.begin()); iter != map.end(); ++iter)
         out << iter->first << ' ';
     return out << std::endl;
 }
-template<class Key>
-std::ostream & operator<<(std::ostream & out, const std::set<Key> & set)
+template<class Key, class Comp>
+std::ostream & operator<<(std::ostream & out, const std::set<Key, Comp> & set)
 {
     std::copy(set.begin(), set.end(), std::ostream_iterator<Key>(out, " "));
     return out << std::endl;
