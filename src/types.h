@@ -209,6 +209,8 @@ inline bool operator<(Proofstep x, Proofstep y)
 struct SteprangeAST: std::pair<Steprange, ASTiter>
 {
     using std::pair<Steprange, ASTiter>::pair;
+    SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
+        std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) {}
     // Return the subrange corresponding to child i.
     SteprangeAST child(ASTnode::size_type index) const
     {

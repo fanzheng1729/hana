@@ -6,8 +6,7 @@
 
 // Add the skeleton of an RPN to result. Return true if okay.
 template<class T> bool skeleton
-    (SteprangeAST exp, T cansplit,
-        Stepranges subs, Varbank & varbank, Proofsteps & result)
+    (SteprangeAST exp, T cansplit, Varbank & varbank, Proofsteps & result)
 {
 // std::cout << "Analyzing " << Proofsteps(exp.first.first, exp.first.second);
     Proofstep const root = *(exp.first.second - 1);
@@ -26,7 +25,7 @@ template<class T> bool skeleton
                 ASTnode ASTroot = *(ASTend - 1);
                 // Recurse to children.
                 for (ASTnode::size_type i = 0; i < ASTroot.size(); ++i)
-                    if (!skeleton(exp.child(i), cansplit, subs, varbank, result))
+                    if (!skeleton(exp.child(i), cansplit, varbank, result))
                         return false;
                 // Add the root
                 result.push_back(root);

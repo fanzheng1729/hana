@@ -138,7 +138,7 @@ bool findsubstitutions
     if (exp.empty() || exp.size() != expAST.size() ||
         pattern.empty() || pattern.size() != patternAST.size())
         return false;
-    SteprangeAST const x(Steprange(exp), expAST.begin());
-    SteprangeAST const y(Steprange(pattern), patternAST.begin());
+    SteprangeAST const x(exp, expAST);
+    SteprangeAST const y(pattern, patternAST);
     return findsubstitutions(x, y, result);
 }

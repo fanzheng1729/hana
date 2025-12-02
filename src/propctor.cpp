@@ -403,12 +403,12 @@ Proofsteps propskeleton
     if (RPN.empty() || RPN.size() != ast.size())
         return Proofsteps();
 
-    SteprangeAST exp(Steprange(RPN), ast.begin());
+    SteprangeAST const exp(RPN, ast);
     Stepranges substitutions;
-    Proofsteps result;
+
     // Preallocate for efficiency
-    substitutions.reserve(RPN.size());
+    Proofsteps result;
     result.reserve(RPN.size());
 
-    return skeleton(exp, ispropctor, substitutions, varbank, result) ? result: Proofsteps();
+    return skeleton(exp, ispropctor, varbank, result) ? result: Proofsteps();
 }
