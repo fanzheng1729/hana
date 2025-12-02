@@ -111,13 +111,21 @@ int main(int argc, char * argv[])
     for (Assertions::size_type i = 1; i < database.assiters().size(); ++i)
     {
         Assiter iter = database.assiters()[i];
-        printass(*iter);
         Assertion const & ass = iter->second;
-        std::cout << ass.expression;
         SteprangeAST exp(ass.expRPN, ass.expAST);
         GovernedSteprangesbystep result(maxranges(exp));
-        std::cout << result;
-        std::cin.get();
+        if (!result.empty())
+        {
+            printass(*iter);
+            std::cout << ass.expression;
+            FOR (GovernedSteprangesbystep::const_reference rstep, result)
+            {
+                std::cout << rstep.first << std::endl;
+                FOR (GovernedStepranges::const_reference rrange, rstep.second)
+                    std::cout << Proofsteps(rrange.first.first, rrange.first.second);
+            }
+            std::cin.get();
+        }
     }
 
     Value parameters[] = {0, 1e-3, 0, 0};

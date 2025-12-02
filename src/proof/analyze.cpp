@@ -1,7 +1,7 @@
 #include "../ass.h"
 #include "../io.h"
 #include "../util/algo.h"   // for util::equal
-// #include "compranges.h"
+#include "compranges.h"
 #include "verify.h"
 
 // Subroutine for building AST.
@@ -153,11 +153,15 @@ static void maxranges
         return;
     // Root is THM.
     bool & isinstep = instep[root];
-    if (isinstep)
-        return;
-    // Not in a range governed by root.
+    if (!isinstep)
+    {
+        // Add the range.
+        GovernedStepranges & ranges = result[root];
+        if (ranges.empty())
+            ranges = GovernedStepranges(compranges);
+        result[root][exp.first];
+    }
     isinstep = true;
-    result[root][exp.first];
     // Recurse to all children.
     for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
         maxranges(exp.child(i), instep, result);
@@ -168,5 +172,7 @@ GovernedSteprangesbystep maxranges(SteprangeAST const & exp)
     GovernedSteprangesbystep result;
     Instep instep;
     maxranges(exp, instep, result);
+    // Remove the root.
+    result.erase(*(exp.first.second - 1));
     return result;
 }
