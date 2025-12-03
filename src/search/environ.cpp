@@ -142,6 +142,33 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     }
 }
 
+bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
+{
+    if (!pthm)
+        return false;
+    Assertion const & thm = pthm->second;
+    if (thm.esshypcount() > 0)
+        return false;
+    
+    SteprangeAST goalexp(goal.RPN, goal.ast.begin());
+    FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
+        FOR (GovernedStepranges::const_reference rrange, rstep.second)
+        {
+            Bank bank(database.varcount());
+            Proofsteps abstract;
+            if (skeleton(goalexp, Keeprange(rrange.first), bank, abstract) == TRUE)
+            if (thm.expRPN != goal.RPN)
+            {
+                std::cout << Proofsteps(rrange.first.first, rrange.first.second);
+                std::cout << thm.expRPN << goal.RPN << abstract;
+                std::cout << bank;
+                std::cin.get();
+            }
+        }
+    
+    return false;
+}
+
 static int const STACKEMPTY = -2;
 // Advance the stack and return the difference in # matched hypotheses.
 // Return STACKEMPTY if stack cannot be advanced.
@@ -176,33 +203,6 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
         hypstack.pop_back();
     }
     return STACKEMPTY;
-}
-
-bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
-{
-    if (!pthm)
-        return false;
-    Assertion const & thm = pthm->second;
-    if (thm.esshypcount() > 0)
-        return false;
-    
-    SteprangeAST goalexp(goal.RPN, goal.ast.begin());
-    FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
-        FOR (GovernedStepranges::const_reference rrange, rstep.second)
-        {
-            Bank bank(database.varcount());
-            Proofsteps abstract;
-            if (skeleton(goalexp, Keeprange(rrange.first), bank, abstract) == TRUE)
-            if (thm.expRPN != goal.RPN)
-            {
-                std::cout << Proofsteps(rrange.first.first, rrange.first.second);
-                std::cout << thm.expRPN << goal.RPN << abstract;
-                std::cout << bank;
-                std::cin.get();
-            }
-        }
-    
-    return false;
 }
 
 // Add Hypothesis-oriented moves. Return false.
