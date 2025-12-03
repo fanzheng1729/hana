@@ -9,7 +9,7 @@
 // Move in proof search tree
 struct Move
 {
-    enum Type { NONE, THM, CONJ, DEFER };
+    enum Type {NONE, THM, CONJ, DEFER};
     typedef std::vector<Proofsteps> Substitutions;
     union
     {
