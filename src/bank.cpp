@@ -15,11 +15,11 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     if (!typecode.c_str)
         return "";
 
-    Symbol2::ID const id = rPNSymbols().size();
     Symbol3 & var = m_RPNSymbols[RPN];
     if (var.id != 0) // old RPN
         return var;
-    // new RPN, to which variable #n is assigned
+    // new RPN, to which variable #id is assigned
+    Symbol2::ID const id = m_varlabels.size();
     // Name of variable = typecode~hex(n)
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
     // Name of hypothesis = f~typecode~hex(n)
