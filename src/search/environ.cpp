@@ -99,11 +99,10 @@ Environ::MoveValidity Environ::valid(Move const & move) const
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {
+    if (game.goal().ast.empty())
+        game.goal().ast = ast(game.goal().RPN);
 // if (stage >= 5)
 // std::cout << "Finding moves at stage " << stage << " for " << game;
-    AST & tree = game.goal().tree;
-    if (tree.empty())
-        tree = ast(game.goal().RPN);
     Moves moves;
 
     Assiters const & assvec = database.assiters();
@@ -114,7 +113,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         if ((ass.type & Asstype::USELESS) || !ontopic(ass))
             continue; // Skip non propositional theorems.
         if (stage == 0 || (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-            if (trythm(game, tree, assvec[i], stage, moves))
+            if (trythm(game, assvec[i], stage, moves))
                 break; // Move closes the goal.
     }
 // if (stage >= 5)
@@ -277,15 +276,16 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
 
 // Try applying the theorem, and add moves if successful.
 // Return true if a move closes the goal.
-bool Environ::trythm(Game const & game, AST const & ast, Assiter iter,
-                     Proofsize size, Moves & moves) const
+bool Environ::trythm
+    (Game const & game, Assiter iter, Proofsize size, Moves & moves) const
 {
     Assertion const & thm = iter->second;
     if (thm.expression.empty() || thm.exptypecode() != game.goal().typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges stepranges(thm.maxvarid() + 1);
-    if (!findsubstitutions(game.goal().RPN, ast, thm.expRPN, thm.expAST, stepranges))
+    if (!findsubstitutions
+        (game.goal().RPN, game.goal().ast, thm.expRPN, thm.expAST, stepranges))
         return false; // Conclusion mismatch
 
     // Move with all bound substitutions

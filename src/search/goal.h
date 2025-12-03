@@ -10,7 +10,7 @@ struct Goal
 {
     Proofsteps RPN;
     strview typecode;
-    AST mutable tree;
+    AST mutable ast;
     Goal(Goalview view) : RPN(view.first), typecode(view.second) {}
     Proofsize size() const { return RPN.size(); }
     Expression expression() const

@@ -119,8 +119,8 @@ private:
         { return pthm && !pthm && size && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
     // Return true if a move closes the goal.
-    bool trythm(Game const & game, AST const & ast, Assiter iter,
-                Proofsize size, Moves & moves) const;
+    bool trythm
+        (Game const & game, Assiter iter, Proofsize size, Moves & moves) const;
     // true if *this <= problem context
     bool m_subsumedbyProb;
     // Cache for context implication relations

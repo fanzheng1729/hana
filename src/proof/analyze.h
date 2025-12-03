@@ -18,6 +18,6 @@ bool findsubstitutions
      Stepranges & result);
 
 // Find all maximal ranges governed by a syntax axiom.
-GovernedSteprangesbystep maxranges(SteprangeAST exp);
+GovernedSteprangesbystep maxranges(Steprange range, AST ast);
 
 #endif // ANALYZE_H_INCLUDED

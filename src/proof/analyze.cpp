@@ -188,11 +188,12 @@ static void maxranges
 }
 
 // Find all maximal ranges governed by a syntax axiom.
-GovernedSteprangesbystep maxranges(SteprangeAST exp)
+GovernedSteprangesbystep maxranges(Steprange range, AST ast)
 {
     GovernedSteprangesbystep result;
 
     Instep instep;
+    SteprangeAST exp(range, ast.begin());
     maxranges(exp, exp.first, instep, result);
 
     return result;
