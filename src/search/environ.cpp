@@ -177,6 +177,11 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
     return STACKEMPTY;
 }
 
+bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
+{
+    return false;
+}
+
 // Add Hypothesis-oriented moves. Return false.
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
                           Stepranges const & stepranges,
@@ -285,9 +290,7 @@ bool Environ::trythm
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << goal.expression();
     if (thm.esshypcount() == 0)
-    {
-        SteprangeAST goalexp(goal.RPN, goal.ast.begin());
-    }
+        addabsmoves(goal, &*iter);
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions
         (goal.RPN, goal.ast, thm.expRPN, thm.expAST, stepranges))

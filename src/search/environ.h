@@ -107,6 +107,7 @@ private:
     // Add a move with only bound substitutions.
     // Return true if it has no essential hypotheses.
     bool addboundmove(Move const & move, Moves & moves) const;
+    bool addabsmoves(Goal const & goal, pAss pthm) const;
     // Add Hypothesis-oriented moves. Return false.
     bool addhypmoves(pAss pthm, Moves & moves,
                      Stepranges const & stepranges,
