@@ -327,7 +327,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 template <typename T>
 static void additeminorder(std::vector<T> & vec, T const & item)
 {
-    typename std::vector<T>::iterator iter =
+    typename std::vector<T>::iterator const iter =
         std::lower_bound(vec.begin(), vec.end(), item, std::less<T>());
     if (iter == vec.end() || *iter != item)
         vec.insert(iter, item);
