@@ -95,15 +95,15 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
     Assertion const & thm = pthm->second;
     if (thm.esshypcount() > 0)
         return false;
-    return false;    
+
     SteprangeAST goalexp(goal.RPN, goal.ast.begin());
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
         {
             Bank bank(database.varcount());
             Proofsteps abstract;
-            if (skeleton(goalexp, Keeprange(rrange.first), bank, abstract) == TRUE)
-            if (thm.expRPN != goal.RPN)
+            if (thm.expRPN != goal.RPN && 
+                skeleton(goalexp, Keeprange(rrange.first), bank, abstract) == TRUE)
             {
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
                 std::cout << thm.expRPN << goal.RPN << abstract;
