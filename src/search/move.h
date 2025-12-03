@@ -86,7 +86,8 @@ struct Move
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
     {
-        static const char * const msg[] = {"NONE", "", "DEFER"};
+        static const char * const msg[]
+        = {"NONE", "", "CONJ", "DEFER"};
         out << msg[move.type];
         if (move.type == THM)
             out << move.label().c_str;
