@@ -193,6 +193,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
             Varbank varbank;
             Proofsteps abstract;
             if (skeleton(goalexp, Keeprange(rrange.first), varbank, abstract) == TRUE)
+            if (thm.expRPN != goal.RPN)
             {
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
                 std::cout << thm.expRPN << goal.RPN << abstract;
