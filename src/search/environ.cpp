@@ -92,19 +92,6 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     return allproven ? MoveCLOSED : MoveVALID;
 }
 
-// Validate a move.
-Environ::MoveValidity Environ::valid(Move const & move) const
-{
-    if (database.typecodes().isprimitive(move.exptypecode()) != FALSE)
-        return MoveINVALID;
-    if (!checkDV(move, assertion))
-        return MoveINVALID;
-    if (move.type == Move::THM)
-        return validthmmove(move);
-    throw;
-    return MoveINVALID;
-}
-
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {

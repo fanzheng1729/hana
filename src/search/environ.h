@@ -66,10 +66,18 @@ struct Environ : protected Gen
     { return goal.RPN.empty() ? GOALFALSE : GOALOPEN; }
     // Validity of a move.
     enum MoveValidity { MoveINVALID = -1, MoveVALID = 0, MoveCLOSED = 1 };
-    // Validate a move applying a theorem.
-    MoveValidity validthmmove(Move const & move) const;
     // Validate a move.
-    MoveValidity valid(Move const & move) const;
+    MoveValidity valid(Move const & move) const
+    {
+        if (database.typecodes().isprimitive(move.exptypecode()) != FALSE)
+            return MoveINVALID;
+        if (!checkDV(move, assertion))
+            return MoveINVALID;
+        if (move.type == Move::THM)
+            return validthmmove(move);
+        throw;
+        return MoveINVALID;
+    }
     // Return the hypotheses of a goal to be trimmed.
     virtual Bvector hypstotrim(Goal const & goal) const
     { return Bvector(0 && &goal); }
@@ -126,6 +134,10 @@ private:
     // Return true if it has no open hypotheses.
     bool trythm
         (Game const & game, Assiter iter, Proofsize size, Moves & moves) const;
+// Move validation
+    // Validate a move applying a theorem.
+    MoveValidity validthmmove(Move const & move) const;
+// Private members
     // true if *this <= problem context
     bool m_subsumedbyProb;
     // Cache for context implication relations
