@@ -33,7 +33,6 @@ public:
     void clear() { *this = Database(); }
     Symbol2::ID varid(strview str) const { return varIDmap().at(str); }
     VarIDmap const & varIDmap() const { return m_varIDmap; }
-    std::vector<strview> const & varvec() const { return m_varvec; }
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Assertions const & assertions() const { return m_assertions; }
     Assiters const & assiters() const { return m_assiters; }
@@ -83,12 +82,10 @@ public:
     Propctors const & propctors() const { return m_propctors; }
     bool hasconst(strview str) const { return m_constants.count(str); }
     bool addconst(strview str) { return m_constants.insert(str).second; }
+    VarIDmap::size_type varcount() const { return varIDmap().size() - 1; }
     bool hasvar(strview str) const { return varIDmap().count(str); }
     void addvar(strview str)
-    {
-        if (m_varIDmap.insert(std::make_pair(str, varIDmap().size())).second)
-            m_varvec.push_back(str);
-    }
+    { m_varIDmap.insert(std::make_pair(str, varIDmap().size())); }
     bool hashyp(strview label) const { return hypotheses().count(label); }
     Hypiter addhyp(strview label, Expression const & exp, bool const floating)
     {
