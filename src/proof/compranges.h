@@ -6,13 +6,10 @@
 
 // Compare ranges of proof steps.
 inline bool compranges(Steprange x, Steprange y)
-{
-    return std::lexicographical_compare
-    (x.first, x.second, y.first, y.second);
-}
+{ return std::lexicographical_compare(x.first, x.second, y.first, y.second); }
 inline bool operator==(Steprange x, Steprange y)
-{
-    return util::equal(x.first, x.second, y.first, y.second);
-}
+{ return util::equal(x.first, x.second, y.first, y.second); }
+inline bool operator!=(Steprange x, Steprange y)
+{ return !(x ==y); }
 
 #endif // COMPRANGES_H_DEFINED
