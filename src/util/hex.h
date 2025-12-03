@@ -25,13 +25,13 @@ template<class T> const char * hex(T n)
     // Clear buffer.
     std::fill(s, s + size, 0);
     // Fill digits ########.
-    char * i = s;
-    for ( ; n > 0; n /= 16) *i++ = "0123456789ABCDEF"[n % 16];
-    if (n == 0) *i++ = '0';
+    char * p = s;
+    for ( ; n > 0; n /= 16) *p++ = "0123456789ABCDEF"[n % 16];
+    if (p == s) *p++ = '0';
     // Add "x0".
-    *i++ = 'x', *i++ = '0';
+    *p++ = 'x', *p++ = '0';
     // Reverse the string.
-    std::reverse(s, i);
+    std::reverse(s, p);
 
     return s;
 }
