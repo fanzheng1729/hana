@@ -45,53 +45,6 @@ pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
-// Validate a move applying a theorem.
-Environ::MoveValidity Environ::validthmmove(Move const & move) const
-{
-    // Check if all goals of the move are proven.
-    bool allproven = true;
-    // Record the hypotheses.
-    move.esshyps.resize(move.hypcount());
-    for (Hypsize i = 0; i < move.hypcount(); ++i)
-    {
-        if (move.hypfloats(i)) continue;
-        // Add the essential hypothesis as a goal.
-        pGoal const pgoal = pProb->addgoal
-        (move.hypRPN(i), move.hyptypecode(i), *this, GOALNEW);
-// std::cout << "Validating " << pgoal->second.goal().expression();
-        Goalstatus & s = pgoal->second.getstatus();
-        if (s == GOALFALSE) // Refuted
-            return MoveINVALID;
-        // Check if the goal is proven.
-        if (pgoal->second.proven())
-        {
-            move.esshyps[i] = pgoal;
-            continue;
-        }
-        // Not proven
-        allproven = false;
-        if (s >= GOALOPEN) // Valid
-        {
-            move.esshyps[i] = addsimpgoal(pgoal);
-            continue;
-        }
-        // New goal (s == GOALNEW)
-        Goal const & goal = pgoal->second.goal();
-        s = status(goal);
-        if (s == GOALFALSE) // Refuted
-            return MoveINVALID;
-        // Simplified context for the child, if !NULL
-        Environ const * & psimpEnv = pgoal->second.psimpEnv;
-        psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
-        // Record the goal in the hypotheses of the move.
-        move.esshyps[i] = addsimpgoal(pgoal);
-// if (psimpEnv)
-// std::cout << pgoal->second.goal().expression() << name << "\n->\n",
-// std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
-    }
-    return allproven ? MoveCLOSED : MoveVALID;
-}
-
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {
@@ -321,6 +274,53 @@ bool Environ::trythm
         return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
     else
         return addboundmove(move, moves);
+}
+
+// Validate a move applying a theorem.
+Environ::MoveValidity Environ::validthmmove(Move const & move) const
+{
+    // Check if all goals of the move are proven.
+    bool allproven = true;
+    // Record the hypotheses.
+    move.esshyps.resize(move.hypcount());
+    for (Hypsize i = 0; i < move.hypcount(); ++i)
+    {
+        if (move.hypfloats(i)) continue;
+        // Add the essential hypothesis as a goal.
+        pGoal const pgoal = pProb->addgoal
+        (move.hypRPN(i), move.hyptypecode(i), *this, GOALNEW);
+// std::cout << "Validating " << pgoal->second.goal().expression();
+        Goalstatus & s = pgoal->second.getstatus();
+        if (s == GOALFALSE) // Refuted
+            return MoveINVALID;
+        // Check if the goal is proven.
+        if (pgoal->second.proven())
+        {
+            move.esshyps[i] = pgoal;
+            continue;
+        }
+        // Not proven
+        allproven = false;
+        if (s >= GOALOPEN) // Valid
+        {
+            move.esshyps[i] = addsimpgoal(pgoal);
+            continue;
+        }
+        // New goal (s == GOALNEW)
+        Goal const & goal = pgoal->second.goal();
+        s = status(goal);
+        if (s == GOALFALSE) // Refuted
+            return MoveINVALID;
+        // Simplified context for the child, if !NULL
+        Environ const * & psimpEnv = pgoal->second.psimpEnv;
+        psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
+        // Record the goal in the hypotheses of the move.
+        move.esshyps[i] = addsimpgoal(pgoal);
+// if (psimpEnv)
+// std::cout << pgoal->second.goal().expression() << name << "\n->\n",
+// std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
+    }
+    return allproven ? MoveCLOSED : MoveVALID;
 }
 
 // Add an item to an ordered vector if not already present.
