@@ -5,6 +5,7 @@
 #include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
+#include "../proof/skeleton.h"
 #include "../util/iter.h"
 #include "../util/progress.h"
 
@@ -179,6 +180,26 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
 
 bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
 {
+    if (!pthm)
+        return false;
+    Assertion const & thm = pthm->second;
+    if (thm.esshypcount() > 0)
+        return false;
+    
+    SteprangeAST goalexp(goal.RPN, goal.ast.begin());
+    FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
+        FOR (GovernedStepranges::const_reference rrange, rstep.second)
+        {
+            Varbank varbank;
+            Proofsteps abstract;
+            if (skeleton(goalexp, Keeprange(rrange.first), varbank, abstract) == TRUE)
+            {
+                std::cout << Proofsteps(rrange.first.first, rrange.first.second);
+                std::cout << thm.expRPN << goal.RPN << abstract;
+                std::cin.get();
+            }
+        }
+    
     return false;
 }
 
