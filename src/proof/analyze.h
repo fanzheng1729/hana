@@ -17,9 +17,6 @@ bool findsubstitutions
      Proofsteps const & pattern, AST const & patternAST,
      Stepranges & result);
 
-// Return true if range1 has all the variables in range2
-bool hasallvars(Steprange range1, Steprange range2);
-
 // Find all maximal ranges governed by a syntax axiom.
 GovernedSteprangesbystep maxranges(SteprangeAST exp);
 

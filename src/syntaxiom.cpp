@@ -148,11 +148,12 @@ bool Syntaxioms::addRPN
     Expression exp(ass.expression);
     if (exp.empty())
         return false;
-
+    // Parse the expression.
     exp[0] = typecodes.normalize(exp[0]);
     if (!RPNAST(exp, ass, ass.expRPN, ass.expAST))
         return false;
-
+    ass.expmaxranges = maxranges(SteprangeAST(ass.expRPN, ass.expAST));
+    // Parse the hypotheses.
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
         if (ass.hypexp(i).empty())
@@ -161,7 +162,6 @@ bool Syntaxioms::addRPN
         Hypothesis & hyp = const_cast<Hypothesis &>(ass.hyp(i));
         if (!hyp.RPN.empty() && hyp.ast.size() == hyp.RPN.size())
             continue; // Hypothesis already parsed
-
         // Parse the hypothesis.
         if (ass.hypfloats(i))
         {

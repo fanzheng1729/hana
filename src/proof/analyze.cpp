@@ -142,7 +142,7 @@ bool findsubstitutions
 }
 
 // Return true if range1 has all the variables in range2
-bool hasallvars(Steprange range1, Steprange range2)
+static bool hasallvars(Steprange range1, Steprange range2)
 {
     for (Stepiter iter2 = range2.first; iter2 < range2.second; ++iter2)
     {
