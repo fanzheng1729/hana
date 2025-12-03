@@ -39,7 +39,8 @@ public:
     bool const staged;
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
-        MCTS(Game(), params), database(env.database),
+        MCTS(Game(), params),
+        database(env.database),
         assertion(env.assertion),
         numberlimit(std::min(assertion.number, database.assiters().size())),
         maxranks(database.assmaxranks(assertion)),
