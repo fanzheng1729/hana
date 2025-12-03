@@ -165,20 +165,26 @@ static void maxranges
     if (!root.isthm())
         return;
     // Root is THM.
-    bool & isinstep = instep[root];
-    if (!isinstep && hasallvars(subexp.first, exp))
+    bool * pinstep = NULL;
+    if (root != *(exp.second - 1))
     {
-        // Add the range.
-        GovernedStepranges & ranges = result[root];
-        if (ranges.empty())
-            ranges = GovernedStepranges(compranges);
-        result[root][subexp.first] = true;
+        // Not the same root as full expression
+        pinstep = &instep[root];
+        if (!*pinstep && hasallvars(subexp.first, exp))
+        {
+            // Record the range.
+            GovernedStepranges & ranges = result[root];
+            if (ranges.empty())
+                ranges = GovernedStepranges(compranges);
+            result[root][subexp.first] = true;
+        }
+        *pinstep = true;
     }
-    isinstep = true;
     // Recurse to all children.
     for (ASTnode::size_type i = 0; i < subexp.ASTroot().size(); ++i)
         maxranges(subexp.child(i), exp, instep, result);
-    isinstep = false;
+    if (pinstep)
+        *pinstep = false;
 }
 
 // Find all maximal ranges governed by a syntax axiom.
@@ -188,6 +194,6 @@ GovernedSteprangesbystep maxranges(SteprangeAST exp)
     Instep instep;
     maxranges(exp, exp.first, instep, result);
     // Remove the root.
-    result.erase(*(exp.first.second - 1));
+    // result.erase(*(exp.first.second - 1));
     return result;
 }
