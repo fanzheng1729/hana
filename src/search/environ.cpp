@@ -280,12 +280,17 @@ bool Environ::trythm
     (Game const & game, Assiter iter, Proofsize size, Moves & moves) const
 {
     Assertion const & thm = iter->second;
-    if (thm.expression.empty() || thm.exptypecode() != game.goal().typecode)
+    Goal const & goal = game.goal();
+    if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
         return false; // Type code mismatch
-// std::cout << "Trying " << iter->first << " with " << game.goal().expression();
+// std::cout << "Trying " << iter->first << " with " << goal.expression();
+    if (thm.esshypcount() == 0)
+    {
+        SteprangeAST goalexp(goal.RPN, goal.ast.begin());
+    }
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions
-        (game.goal().RPN, game.goal().ast, thm.expRPN, thm.expAST, stepranges))
+        (goal.RPN, goal.ast, thm.expRPN, thm.expAST, stepranges))
         return false; // Conclusion mismatch
 
     // Move with all bound substitutions
