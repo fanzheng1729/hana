@@ -16,7 +16,8 @@ class Bank
     Tokens m_varlabels;
     Hypotheses m_hypotheses;
 public:
-    Bank() : m_varlabels(1, ""), m_hyplabels(1, "")
+    Bank(Tokens::size_type reserve = 0) :
+        m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, "")
         { m_RPNSymbols[Proofsteps()]; }
     void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
