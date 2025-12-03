@@ -7,7 +7,7 @@
 #include "../util/tribool.h"
 #include "../varbank.h"
 
-enum {KEEPRANGE = 0, SPLITRANGE = 1, SPLITALL = 2};
+enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 
 // Add the skeleton of an RPN to result.
 // Return UNKNOWN if unsuccessful.
@@ -25,41 +25,42 @@ template<class T> Tribool skeleton
 // std::cout << "Result " << result;
         return FALSE;
     case Proofstep::THM:
+        switch (cansplit(exp.first))
         {
-            if (cansplit(exp.first))
+        case SPLITALL:
+            // Copy the whole range.
+            result.insert(result.end(), exp.first.first, exp.first.second);
+            return FALSE;
+        case SPLITREC:
+            // Split and recurse to children.
+            for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
             {
-                // Split and recurse to children.
-                for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
+                switch (skeleton(exp.child(i), cansplit, varbank, result))
                 {
-                    switch (skeleton(exp.child(i), cansplit, varbank, result))
-                    {
-                    case UNKNOWN:
-                        return UNKNOWN;
-                    case FALSE:
-                        continue;
-                    case TRUE:
-                        retval = TRUE;
-                    }
-                }
-                // Add the root
-                result.push_back(root);
-// std::cout << "Result " << result;
-                return retval;
-            }
-            else
-            {
-                // Don't split and abstract.
-                Proofsteps const subRPN(exp.first.first, exp.first.second);
-                // Find the abstracting variable.
-                Symbol3 const var = varbank.addRPN(subRPN);
-// std::cout << "varid " << var.id << std::endl;
-                if (var.id == 0) // bad step
+                case UNKNOWN:
                     return UNKNOWN;
-                // Add the root
-                result.push_back(var.phyp);
-// std::cout << "Result " << result;
-                return TRUE;
+                case FALSE:
+                    continue;
+                case TRUE:
+                    retval = TRUE;
+                }
             }
+            // Add the root
+            result.push_back(root);
+// std::cout << "Result " << result;
+            return retval;
+        case KEEPRANGE:
+            // Don't split and abstract.
+            Proofsteps const subRPN(exp.first.first, exp.first.second);
+            // Find the abstracting variable.
+            Symbol3 const var = varbank.addRPN(subRPN);
+// std::cout << "varid " << var.id << std::endl;
+            if (var.id == 0) // bad step
+                return UNKNOWN;
+            // Add the root
+            result.push_back(var.phyp);
+// std::cout << "Result " << result;
+            return TRUE;
         }
     default:
         return UNKNOWN;
@@ -70,11 +71,13 @@ struct Keeprange
 {
     Steprange range;
     Keeprange(Steprange steprange) : range(steprange) {}
-    bool operator()(Steprange other) const
+    Splitretval operator()(Steprange exp) const
     {
-        if (range == other)
+        if (range == exp)
             return KEEPRANGE;
-        return SPLITRANGE;
+        if (*(range.second - 1) == *(exp.second - 1))
+            return SPLITALL;
+        return SPLITREC;
     }
 };
 

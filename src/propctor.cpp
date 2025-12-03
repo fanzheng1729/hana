@@ -391,10 +391,12 @@ bool Propctors::checkpropsat(Assertions const & assertions,
 
 // Return true if the root of exp is propositional,
 // i.e., if all hypotheses and conclusion are floating and begins with "wff".
-static bool isrootprop(Steprange exp)
+static Splitretval splitroot(Steprange exp)
 {
     Proofstep const root = *(exp.second - 1);
-    return root.isthm() && root.pass && truthtablesize(root.pass->second);
+    if (!root.isthm()) return KEEPRANGE;
+    if (!root.pass) return KEEPRANGE;
+    return truthtablesize(root.pass->second) ? SPLITREC : KEEPRANGE;
 }
 
 // Return the propositional skeleton of an RPN.
@@ -410,6 +412,6 @@ Proofsteps propskeleton
     Proofsteps result;
     result.reserve(RPN.size());
 
-    return skeleton(exp, isrootprop, varbank, result) != UNKNOWN ?
+    return skeleton(exp, splitroot, varbank, result) != UNKNOWN ?
         result: Proofsteps();
 }

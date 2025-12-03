@@ -36,14 +36,14 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
     case Proofstep::HYP:
         return addstep(stacktop, index, step.phyp->first);
     case Proofstep::THM:
-        {
-            Assertion const & thm(step.pass->second);
-            if (!enoughitemonstack(thm.esshypcount(), stack.size(), ""))
-                return false;
-            // Pop all the essential hypotheses.
-            stack.resize(stack.size() - thm.esshypcount());
-            return addstep(stacktop, index, step.pass->first);
-        }
+    {
+        Assertion const & thm(step.pass->second);
+        if (!enoughitemonstack(thm.esshypcount(), stack.size(), ""))
+            return false;
+        // Pop all the essential hypotheses.
+        stack.resize(stack.size() - thm.esshypcount());
+        return addstep(stacktop, index, step.pass->first);
+    }
     case Proofstep::LOAD:
         return addstep(stacktop, index, "", Symbol2("<=", step.index + 1));
     case Proofstep::SAVE:
