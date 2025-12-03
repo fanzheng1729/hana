@@ -1,6 +1,9 @@
 #include "bank.h"
 #include "util/hex.h"
 
+// Type label delimiter
+static const std::string typedelim = "~";
+
 Symbol3 Bank::addRPN(Proofsteps const & RPN)
 {
     // First call, RPN is empty
@@ -18,8 +21,8 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
         return var;
     // new RPN, to which variable #n is assigned
     // Name of variable = hex(n) = 0x########
-    m_varvec.push_back(util::hex(n));
-    strview label(m_varvec[n]);
+    m_varlabels.push_back(typedelim + util::hex(n));
+    strview label(m_varlabels[n]);
     Hypotheses::value_type const value(label, Hypothesis());
     // Iterator to floating hypothesis associated to the variable
     Hypotheses::iterator const hypiter = m_hypotheses.insert(value).first;

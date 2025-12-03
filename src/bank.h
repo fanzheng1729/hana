@@ -12,13 +12,14 @@ class Bank
     typedef std::map<Proofsteps, Symbol3> RPNSymbols;
     RPNSymbols m_RPNSymbols;
     typedef std::deque<std::string> Tokens;
-    Tokens m_varvec;
+    Tokens m_hyplabels;
+    Tokens m_varlabels;
     Hypotheses m_hypotheses;
 public:
-    Bank() : m_varvec(1, "") { addRPN(); }
+    Bank() : m_varlabels(1, ""), m_hyplabels(1, "") { addRPN(); }
     void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
-    Tokens const & varvec() const { return m_varvec; }
+    Tokens const & varvec() const { return m_varlabels; }
     Tokens::size_type varcount() const { return varvec().size() - 1; }
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Symbol3 addRPN(Proofsteps const & RPN = Proofsteps());
