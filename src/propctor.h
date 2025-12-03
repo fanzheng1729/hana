@@ -19,10 +19,6 @@ struct Propctor: Definition
 
 std::ostream & operator<<(std::ostream & out, Propctor const & propctor);
 
-// Return true if a syntax constructor is propositional,
-// i.e., if all hypotheses and conclusion are floating and begins with "wff".
-bool ispropctor(Assertion const & ass);
-
 // Map: propositional syntax constructor label -> data
 struct Propctors : std::map<strview, Propctor>
 {

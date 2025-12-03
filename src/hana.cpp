@@ -3,10 +3,11 @@
 #include "comment.h"
 #include "database.h"
 #include "io.h"
-#include "sect.h"
-#include "token.h"
+#include "proof/skeleton.h"
 #include "search/problem.h"
 #include "search/test.h"
+#include "sect.h"
+#include "token.h"
 #include "util/timer.h"
 
 int test()
@@ -119,8 +120,13 @@ int main(int argc, char * argv[])
             std::cout << ass.expression;
             FOR (GovernedSteprangesbystep::const_reference rstep, result)
                 FOR (GovernedStepranges::const_reference rrange, rstep.second)
+                {
                     std::cout << Proofsteps(rrange.first.first, rrange.first.second);
-            std::cin.get();
+                    SteprangeAST const exp(ass.expRPN, ass.expAST);
+                    Varbank varbank;
+                    Proofsteps result;
+                    std::cin.get();
+                }
         }
     }
 

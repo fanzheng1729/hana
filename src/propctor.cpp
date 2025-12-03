@@ -47,13 +47,6 @@ static TTindex truthtablesize(Assertion const & ass)
     return result;
 }
 
-// Return true if a syntax constructor is propositional,
-// i.e., if all hypotheses and conclusion are floating and begins with "wff".
-bool ispropctor(Assertion const & ass)
-{
-    return truthtablesize(ass);
-}
-
 // Return true the data of a propositional syntax constructor is okay.
 static bool checkpropctor(Propctor const & propctor)
 {
@@ -396,6 +389,14 @@ bool Propctors::checkpropsat(Assertions const & assertions,
     return true;
 }
 
+// Return true if the root of exp is propositional,
+// i.e., if all hypotheses and conclusion are floating and begins with "wff".
+static bool isrootprop(Steprange exp)
+{
+    Proofstep const root = *(exp.second - 1);
+    return root.isthm() && root.pass && truthtablesize(root.pass->second);
+}
+
 // Return the propositional skeleton of an RPN.
 Proofsteps propskeleton
     (Proofsteps const & RPN, AST const & ast, class Varbank & varbank)
@@ -404,11 +405,10 @@ Proofsteps propskeleton
         return Proofsteps();
 
     SteprangeAST const exp(RPN, ast);
-    Stepranges substitutions;
 
     // Preallocate for efficiency
     Proofsteps result;
     result.reserve(RPN.size());
 
-    return skeleton(exp, ispropctor, varbank, result) ? result: Proofsteps();
+    return skeleton(exp, isrootprop, varbank, result) ? result: Proofsteps();
 }

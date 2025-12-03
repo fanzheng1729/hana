@@ -2,6 +2,7 @@
 #define SKELETON_H_INCLUDED
 
 // #include "../io.h"
+#include "../util/algo.h"   // for util::equal
 #include "../varbank.h"
 
 // Add the skeleton of an RPN to result. Return true if okay.
@@ -18,8 +19,7 @@ template<class T> bool skeleton
         return true;
     case Proofstep::THM:
         {
-            Assertion const & ass = root.pass->second;
-            if (cansplit(ass)) // Propositional constructor
+            if (cansplit(exp.first)) // Propositional constructor
             {
                 // Recurse to children.
                 for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
@@ -32,9 +32,9 @@ template<class T> bool skeleton
             }
             else // Not propositional constructor
             {
-                Proofsteps subRPN(exp.first.first, exp.first.second);
+                Proofsteps const subRPN(exp.first.first, exp.first.second);
                 // Find the abstracting variable.
-                Symbol3 var = varbank.addRPN(subRPN);
+                Symbol3 const var = varbank.addRPN(subRPN);
 // std::cout << "varid " << var.id << std::endl;
                 if (var.id == 0) // bad step
                     return false;
@@ -48,5 +48,15 @@ template<class T> bool skeleton
         return false;
     }
 }
+
+struct Keeprange
+{
+    Steprange range;
+    Keeprange(Steprange steprange) : range(steprange) {}
+    bool operator()(Steprange other) const
+    {
+        return util::equal(range.first, range.second, other.first, other.second);
+    }
+};
 
 #endif
