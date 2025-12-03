@@ -1,12 +1,12 @@
-#ifndef VARBANK_H_INCLUDED
-#define VARBANK_H_INCLUDED
+#ifndef BANK_H_INCLUDED
+#define BANK_H_INCLUDED
 
 #include <deque>
 #include <map>
 #include "types.h"
 
 // Storage for temporary variables
-class Varbank
+class Bank
 {
     // Map: RPN -> Symbol
     typedef std::map<Proofsteps, Symbol3> RPNSymbols;
@@ -15,8 +15,8 @@ class Varbank
     Tokens m_varvec;
     Hypotheses m_hypotheses;
 public:
-    Varbank() : m_varvec(1, "") { addRPN(); }
-    void clear() { *this = Varbank(); }
+    Bank() : m_varvec(1, "") { addRPN(); }
+    void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
     Tokens const & varvec() const { return m_varvec; }
     Tokens::size_type varcount() const { return varvec().size() - 1; }
@@ -24,4 +24,4 @@ public:
     Symbol3 addRPN(Proofsteps const & RPN = Proofsteps());
 };
 
-#endif // VARBANK_h_INCLUDED
+#endif // BANK_h_INCLUDED

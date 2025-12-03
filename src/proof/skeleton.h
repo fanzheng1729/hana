@@ -5,7 +5,7 @@
 #include "../proof/compranges.h"
 #include "../util/algo.h"   // for util::equal
 #include "../util/tribool.h"
-#include "../varbank.h"
+#include "../bank.h"
 
 enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 
@@ -13,7 +13,7 @@ enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 // Return UNKNOWN if unsuccessful.
 // Otherwise return if anything has been abstracted.
 template<class T> Tribool skeleton
-    (SteprangeAST exp, T cansplit, Varbank & varbank, Proofsteps & result)
+    (SteprangeAST exp, T cansplit, Bank & bank, Proofsteps & result)
 {
     Tribool retval = FALSE;
 // std::cout << "Analyzing " << Proofsteps(exp.first.first, exp.first.second);
@@ -35,7 +35,7 @@ template<class T> Tribool skeleton
             // Split and recurse to children.
             for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
             {
-                switch (skeleton(exp.child(i), cansplit, varbank, result))
+                switch (skeleton(exp.child(i), cansplit, bank, result))
                 {
                 case UNKNOWN:
                     return UNKNOWN;
@@ -53,7 +53,7 @@ template<class T> Tribool skeleton
             // Don't split and abstract.
             Proofsteps const subRPN(exp.first.first, exp.first.second);
             // Find the abstracting variable.
-            Symbol3 const var = varbank.addRPN(subRPN);
+            Symbol3 const var = bank.addRPN(subRPN);
 // std::cout << "varid " << var.id << std::endl;
             if (var.id == 0) // bad step
                 return UNKNOWN;

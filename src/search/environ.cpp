@@ -190,9 +190,9 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
         {
-            Varbank varbank;
+            Bank bank;
             Proofsteps abstract;
-            if (skeleton(goalexp, Keeprange(rrange.first), varbank, abstract) == TRUE)
+            if (skeleton(goalexp, Keeprange(rrange.first), bank, abstract) == TRUE)
             if (thm.expRPN != goal.RPN)
             {
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);

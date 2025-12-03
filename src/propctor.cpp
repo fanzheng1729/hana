@@ -9,7 +9,7 @@
 #include "util/arith.h"
 #include "util/find.h"
 #include "util/msg.h"
-#include "varbank.h"
+#include "bank.h"
 
 std::ostream & operator<<(std::ostream & out, Propctor const & propctor)
 {
@@ -127,13 +127,13 @@ Propctors::const_iterator Propctors::adddef
         return end();
     // Extended definition using the propositional skeleton
     Definition xdef(def);
-    Varbank varbank;
+    Bank bank;
     // RHS = propositonal skeleton
-    xdef.rhs = propskeleton(def.rhs, ast(def.rhs), varbank);
+    xdef.rhs = propskeleton(def.rhs, ast(def.rhs), bank);
     // Preallocate for efficiency.
-    xdef.lhs.reserve(xdef.lhs.size() + varbank.varcount());
+    xdef.lhs.reserve(xdef.lhs.size() + bank.varcount());
     // Add pseudo variables to LHS.
-    FOR (Hypotheses::const_reference rhyp, varbank.hypotheses())
+    FOR (Hypotheses::const_reference rhyp, bank.hypotheses())
         xdef.lhs.insert(xdef.lhs.end() - 1, &rhyp);
 // std::cout << "Def of " << label << ": " << xdef.lhs << xdef.rhs;
     // Truth table of the definition
@@ -401,7 +401,7 @@ static Splitretval splitroot(Steprange exp)
 
 // Return the propositional skeleton of an RPN.
 Proofsteps propskeleton
-    (Proofsteps const & RPN, AST const & ast, class Varbank & varbank)
+    (Proofsteps const & RPN, AST const & ast, class Bank & bank)
 {
     if (RPN.empty() || RPN.size() != ast.size())
         return Proofsteps();
@@ -412,6 +412,6 @@ Proofsteps propskeleton
     Proofsteps result;
     result.reserve(RPN.size());
 
-    return skeleton(exp, splitroot, varbank, result) != UNKNOWN ?
+    return skeleton(exp, splitroot, bank, result) != UNKNOWN ?
         result: Proofsteps();
 }

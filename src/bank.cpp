@@ -1,7 +1,7 @@
-#include "varbank.h"
+#include "bank.h"
 #include "util/hex.h"
 
-Symbol3 Varbank::addRPN(Proofsteps const & RPN)
+Symbol3 Bank::addRPN(Proofsteps const & RPN)
 {
     // First call, RPN is empty
     if (RPN.empty())
