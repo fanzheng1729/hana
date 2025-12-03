@@ -16,7 +16,6 @@ class Database
     Constants m_constants;
     typedef std::map<strview, Symbol2::ID> VarIDmap;
     VarIDmap m_varIDmap;
-    std::vector<strview> m_varvec;
     Hypotheses m_hypotheses;
     Assertions m_assertions;
     Assiters m_assiters;
