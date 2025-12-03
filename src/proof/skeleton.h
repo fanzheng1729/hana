@@ -2,6 +2,7 @@
 #define SKELETON_H_INCLUDED
 
 // #include "../io.h"
+#include "../proof/compranges.h"
 #include "../util/algo.h"   // for util::equal
 #include "../util/tribool.h"
 #include "../varbank.h"
@@ -71,9 +72,7 @@ struct Keeprange
     Keeprange(Steprange steprange) : range(steprange) {}
     bool operator()(Steprange other) const
     {
-        // return range != other;
-        return
-        !util::equal(range.first, range.second, other.first, other.second);
+        return range != other;
     }
 };
 
