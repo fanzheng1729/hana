@@ -23,7 +23,8 @@ struct Move
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Essential hypotheses needed, on our turn
-    mutable std::vector<pGoal> esshyps;
+    typedef std::vector<pGoal> pGoals;
+    mutable pGoals esshyps;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :
@@ -35,6 +36,8 @@ struct Move
         for (Hypsize i = 1; i < subst.size(); ++i)
             substitutions[i].assign(subst[i].first, subst[i].second);
     }
+    // A move making a conjecture, on our turn
+    Move(pGoals const & conjs) : type(CONJ), esshyps(conjs) {}
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
     // Expression the attempt of using an assertion proves (must be of type THM)
