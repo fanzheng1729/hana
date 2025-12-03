@@ -57,7 +57,8 @@ struct Prop : Environ
         return result;
     }
 private:
-    // Add a move with free variables. Return false.
+    // Add moves with free variables.
+    // Return true if it has no open hypotheses.
     virtual bool addhardmoves
         (pAss pthm, Proofsize size, Move & move, Moves & moves) const;
     // The CNF of all hypotheses combined

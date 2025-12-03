@@ -45,13 +45,9 @@ pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
-// Validate a move.
-Environ::MoveValidity Environ::valid(Move const & move) const
+// Validate a move applying a theorem.
+Environ::MoveValidity Environ::validthmmove(Move const & move) const
 {
-    if (database.typecodes().isprimitive(move.exptypecode()) != FALSE)
-        return MoveINVALID;
-    if (!checkDV(move, assertion))
-        return MoveINVALID;
     // Check if all goals of the move are proven.
     bool allproven = true;
     // Record the hypotheses.
@@ -67,8 +63,7 @@ Environ::MoveValidity Environ::valid(Move const & move) const
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
         // Check if the goal is proven.
-        bool const proven = pgoal->second.proven();
-        if (proven)
+        if (pgoal->second.proven())
         {
             move.hypvec[i] = pgoal;
             continue;
@@ -95,6 +90,19 @@ Environ::MoveValidity Environ::valid(Move const & move) const
 // std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
     }
     return allproven ? MoveCLOSED : MoveVALID;
+}
+
+// Validate a move.
+Environ::MoveValidity Environ::valid(Move const & move) const
+{
+    if (database.typecodes().isprimitive(move.exptypecode()) != FALSE)
+        return MoveINVALID;
+    if (!checkDV(move, assertion))
+        return MoveINVALID;
+    if (move.type == Move::THM)
+        return validthmmove(move);
+    throw;
+    return MoveINVALID;
 }
 
 // Moves generated at a given stage
@@ -144,12 +152,10 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 
 bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
 {
-    if (!pthm)
-        return false;
     Assertion const & thm = pthm->second;
     if (thm.esshypcount() > 0)
         return false;
-    
+    return false;    
     SteprangeAST goalexp(goal.RPN, goal.ast.begin());
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
@@ -205,7 +211,8 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
     return STACKEMPTY;
 }
 
-// Add Hypothesis-oriented moves. Return false.
+// Add Hypothesis-oriented moves.
+// Return true if it has no open hypotheses.
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
                           Stepranges const & stepranges,
                           Hypsize maxfreehyps) const

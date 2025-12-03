@@ -66,6 +66,8 @@ struct Environ : protected Gen
     { return goal.RPN.empty() ? GOALFALSE : GOALOPEN; }
     // Validity of a move.
     enum MoveValidity { MoveINVALID = -1, MoveVALID = 0, MoveCLOSED = 1 };
+    // Validate a move applying a theorem.
+    MoveValidity validthmmove(Move const & move) const;
     // Validate a move.
     MoveValidity valid(Move const & move) const;
     // Return the hypotheses of a goal to be trimmed.
@@ -105,21 +107,23 @@ protected:
 private:
 // Move generation
     // Add a move with only bound substitutions.
-    // Return true if it has no essential hypotheses.
+    // Return true if it has no open hypotheses.
     bool addboundmove(Move const & move, Moves & moves) const;
     bool addabsmoves(Goal const & goal, pAss pthm) const;
-    // Add Hypothesis-oriented moves. Return false.
+    // Add Hypothesis-oriented moves.
+    // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,
                      Stepranges const & stepranges,
                      Hypsize maxfreehyps) const;
     bool addhypmoves(pAss pthm, Moves & moves,
                      Stepranges const & stepranges) const;
-    // Add a move with free variables. Return false.
+    // Add moves with free variables.
+    // Return true if it has no open hypotheses.
     virtual bool addhardmoves
         (pAss pthm, Proofsize size, Move & move, Moves & moves) const
         { return pthm && !pthm && size && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
-    // Return true if a move closes the goal.
+    // Return true if it has no open hypotheses.
     bool trythm
         (Game const & game, Assiter iter, Proofsize size, Moves & moves) const;
     // true if *this <= problem context
