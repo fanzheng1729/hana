@@ -21,10 +21,8 @@ template<class T> bool skeleton
             Assertion const & ass = root.pass->second;
             if (cansplit(ass)) // Propositional constructor
             {
-                ASTiter ASTend = exp.first.second - exp.first.first + exp.second;
-                ASTnode ASTroot = *(ASTend - 1);
                 // Recurse to children.
-                for (ASTnode::size_type i = 0; i < ASTroot.size(); ++i)
+                for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
                     if (!skeleton(exp.child(i), cansplit, varbank, result))
                         return false;
                 // Add the root

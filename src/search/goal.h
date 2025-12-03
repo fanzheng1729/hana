@@ -27,7 +27,6 @@ inline bool operator==(Goal const & x, Goal const & y)
 inline bool operator<(Goal const & x, Goal const & y)
 {
     if (x.RPN < y.RPN) return true;
-    // if (compranges(x.RPN, y.RPN)) return true;
     return x.RPN == y.RPN && x.typecode < y.typecode;
 }
 

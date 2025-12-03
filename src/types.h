@@ -208,6 +208,8 @@ struct Proofstep
         Assertions const & m_assertions;
     };  // struct Proofstep::Builder
 };  // struct Proofstep
+inline bool operator==(Proofstep x, Proofstep y)
+    { return x.ptr() == y.ptr(); }
 inline bool operator<(Proofstep x, Proofstep y)
     { return std::less<const void *>()(x.ptr(), y.ptr()); }
 
