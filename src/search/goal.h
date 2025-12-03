@@ -1,7 +1,7 @@
 #ifndef GOAL_H_INCLUDED
 #define GOAL_H_INCLUDED
 
-#include "../proof/compranges.h"
+#include "../util/algo.h"   // for util::compare
 #include "../proof/verify.h"
 
 // Proof goal
@@ -26,8 +26,9 @@ inline bool operator==(Goal const & x, Goal const & y)
 }
 inline bool operator<(Goal const & x, Goal const & y)
 {
-    if (x.RPN < y.RPN) return true;
-    return x.RPN == y.RPN && x.typecode < y.typecode;
+    int const cmp
+    = util::compare(x.RPN.begin(), x.RPN.end(), y.RPN.begin(), y.RPN.end());
+    return cmp < 0 || cmp == 0 && x.typecode < y.typecode;
 }
 
 

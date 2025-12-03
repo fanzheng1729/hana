@@ -183,10 +183,8 @@ struct Proofstep
 // Return hypothesis or assertion pointer of the proof step.
     const void * ptr() const
     {
-        if (ishyp())
-            return phyp;
-        else if (isthm())
-            return pass;
+        if (ishyp()) return phyp;
+        else if (isthm()) return pass;
         return NULL;
     }
 // Return typecode. Return "" if not HYP nor THM.

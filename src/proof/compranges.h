@@ -1,8 +1,8 @@
 #ifndef COMPRANGES_H_DEFINED
 #define COMPRANGES_H_DEFINED
 
+#include <algorithm>    // for std::lexicographical_compare
 #include "../types.h"
-#include "../util/algo.h"   // for util::equal
 
 // Compare steps by content.
 inline bool compranges(Steprange x, Steprange y)

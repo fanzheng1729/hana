@@ -32,6 +32,20 @@ namespace util
         return std::mismatch(first1, last1, first2);
     }
 #endif // __cpp_lib_robust_nonmodifying_seq_ops
+    template<class II1, class II2>
+    int compare(II1 first1, II1 last1, II2 first2, II2 last2)
+    {
+        std::pair<II1, II2> last = mismatch(first1, last1, first2, last2);
+        if (last.first == last1)
+            return last.second == last2 ? 0 : -1;
+        else if (last.second == last2)
+            return 1;
+        else if (*last.first > *last.second)
+            return 1;
+        else if (*last.first == *last.second)
+            return 0;
+        return -1;
+    }
 } // namespace util
 
 #endif // ALGO_H_INCLUDED
