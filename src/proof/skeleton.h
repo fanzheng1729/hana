@@ -25,7 +25,7 @@ template<class T> Tribool skeleton
         return FALSE;
     case Proofstep::THM:
         {
-            if (cansplit(exp.first) >= SPLITRANGE)
+            if (cansplit(exp.first))
             {
                 // Split and recurse to children.
                 for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
