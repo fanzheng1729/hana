@@ -197,6 +197,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
             {
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
                 std::cout << thm.expRPN << goal.RPN << abstract;
+                std::cout << bank;
                 std::cin.get();
             }
         }
