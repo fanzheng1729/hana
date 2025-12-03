@@ -125,6 +125,8 @@ int main(int argc, char * argv[])
                     SteprangeAST const exp(ass.expRPN, ass.expAST);
                     Varbank varbank;
                     Proofsteps result;
+                    skeleton(exp, Keeprange(rrange.first), varbank, result);
+                    std::cout << result;
                     std::cin.get();
                 }
         }
