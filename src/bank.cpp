@@ -1,13 +1,7 @@
 #include "bank.h"
-#include "database.h"
 #include "io.h"
 #include "util/hex.h"
 #include "util/for.h"
-
-Bank::Bank(class Database const & database)
-{
-    //
-}
 
 // Type label delimiter
 static const std::string typedelim = "~";
@@ -16,10 +10,10 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
 {
     if (RPN.empty())
         return "";
-    // Find type code from the last step of the RPN.
+
     strview typecode = RPN.back().typecode();
     if (!typecode.c_str)
-        return ""; // Bad step
+        return "";
 
     Symbol2::ID const id = rPNSymbols().size();
     Symbol3 & var = m_RPNSymbols[RPN];

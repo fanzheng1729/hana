@@ -18,7 +18,6 @@ class Bank
 public:
     Bank() : m_varlabels(1, ""), m_hyplabels(1, "")
         { m_RPNSymbols[Proofsteps()]; }
-    Bank(class Database const & database);
     void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
     Tokens::size_type varcount() const { return m_varlabels.size() - 1; }
