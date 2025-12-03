@@ -16,6 +16,7 @@ class Bank
     Tokens m_varlabels;
     Hypotheses m_hypotheses;
 public:
+    // Variable id starts from reserve + 1.
     Bank(Tokens::size_type reserve = 0) :
         m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, "")
         { m_RPNSymbols[Proofsteps()]; }
