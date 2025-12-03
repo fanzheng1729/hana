@@ -1,5 +1,7 @@
 #include "bank.h"
+#include "io.h"
 #include "util/hex.h"
+#include "util/for.h"
 
 // Type label delimiter
 static const std::string typedelim = "~";
@@ -36,4 +38,11 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     exp[0] = typecode;
     // Symbol for the variable
     return exp[1] = var = Symbol3(varlabel, n, &*hypiter);
+}
+
+std::ostream & operator<<(std::ostream & out, const Bank & bank)
+{
+    FOR (Hypotheses::const_reference rhyp, bank.hypotheses())
+        out << rhyp.first << ' ' << rhyp.second.expression;
+    return out;
 }
