@@ -176,7 +176,7 @@ static void maxranges
             GovernedStepranges & ranges = result[root];
             if (ranges.empty())
                 ranges = GovernedStepranges(compranges);
-            result[root][subexp.first] = true;
+            ranges[subexp.first] = true;
         }
         *pinstep = true;
     }
@@ -191,9 +191,9 @@ static void maxranges
 GovernedSteprangesbystep maxranges(SteprangeAST exp)
 {
     GovernedSteprangesbystep result;
+
     Instep instep;
     maxranges(exp, exp.first, instep, result);
-    // Remove the root.
-    // result.erase(*(exp.first.second - 1));
+
     return result;
 }
