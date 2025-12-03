@@ -72,7 +72,9 @@ struct Keeprange
     Keeprange(Steprange steprange) : range(steprange) {}
     bool operator()(Steprange other) const
     {
-        return range != other;
+        if (range == other)
+            return KEEPRANGE;
+        return SPLITRANGE;
     }
 };
 
