@@ -6,6 +6,8 @@
 #include "../util/tribool.h"
 #include "../varbank.h"
 
+enum {KEEPRANGE = 0, SPLITRANGE = 1, SPLITALL = 2};
+
 // Add the skeleton of an RPN to result.
 // Return UNKNOWN if unsuccessful.
 // Otherwise return if anything has been abstracted.
@@ -23,7 +25,7 @@ template<class T> Tribool skeleton
         return FALSE;
     case Proofstep::THM:
         {
-            if (cansplit(exp.first))
+            if (cansplit(exp.first) >= SPLITRANGE)
             {
                 // Split and recurse to children.
                 for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
