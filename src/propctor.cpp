@@ -410,5 +410,6 @@ Proofsteps propskeleton
     Proofsteps result;
     result.reserve(RPN.size());
 
-    return skeleton(exp, isrootprop, varbank, result) ? result: Proofsteps();
+    return skeleton(exp, isrootprop, varbank, result) != UNKNOWN ?
+        result: Proofsteps();
 }
