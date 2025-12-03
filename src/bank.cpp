@@ -20,10 +20,13 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     if (var.id != 0) // old RPN
         return var;
     // new RPN, to which variable #n is assigned
-    // Name of variable = hex(n) = 0x########
-    m_varlabels.push_back(typedelim + util::hex(n));
-    strview label(m_varlabels[n]);
-    Hypotheses::value_type const value(label, Hypothesis());
+    // Name of variable = typecode~hex(n)
+    m_varlabels.push_back(typecode.c_str + typedelim + util::hex(n));
+    // Name of hypothesis = f~typecode~hex(n)
+    m_hyplabels.push_back('f' + typedelim + m_varlabels[n]);
+    strview hyplabel(m_hyplabels[n]);
+    strview varlabel(m_varlabels[n]);
+    Hypotheses::value_type const value(hyplabel, Hypothesis());
     // Iterator to floating hypothesis associated to the variable
     Hypotheses::iterator const hypiter = m_hypotheses.insert(value).first;
     hypiter->second.floats = true;
@@ -32,5 +35,5 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     exp.resize(2);
     exp[0] = typecode;
     // Symbol for the variable
-    return exp[1] = var = Symbol3(label, n, &*hypiter);
+    return exp[1] = var = Symbol3(varlabel, n, &*hypiter);
 }
