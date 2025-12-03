@@ -109,27 +109,6 @@ int main(int argc, char * argv[])
 
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
-    // for (Assertions::size_type i = 1; i < database.assiters().size(); ++i)
-    // {
-    //     Assiter iter = database.assiters()[i];
-    //     Assertion const & ass = iter->second;
-    //     if (!ass.expmaxranges.empty())
-    //     {
-    //         printass(*iter);
-    //         std::cout << ass.expression;
-    //         FOR (GovernedSteprangesbystep::const_reference rstep, ass.expmaxranges)
-    //             FOR (GovernedStepranges::const_reference rrange, rstep.second)
-    //             {
-    //                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
-    //                 SteprangeAST const exp(ass.expRPN, ass.expAST);
-    //                 Varbank varbank;
-    //                 Proofsteps result;
-    //                 skeleton(exp, Keeprange(rrange.first), varbank, result);
-    //                 std::cout << result;
-    //                 std::cin.get();
-    //             }
-    //     }
-    // }
 
     Value parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
