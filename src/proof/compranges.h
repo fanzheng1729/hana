@@ -1,14 +1,18 @@
 #ifndef COMPRANGES_H_DEFINED
 #define COMPRANGES_H_DEFINED
 
-#include <algorithm>    // for std::lexicographical_compare
 #include "../types.h"
+#include "../util/algo.h"   // for util::equal
 
-// Compare steps by content.
+// Compare ranges of proof steps.
 inline bool compranges(Steprange x, Steprange y)
 {
     return std::lexicographical_compare
-    (x.first, x.second, y.first, y.second, std::less<const char *>());
+    (x.first, x.second, y.first, y.second);
+}
+inline bool operator==(Steprange x, Steprange y)
+{
+    return util::equal(x.first, x.second, y.first, y.second);
 }
 
 #endif // COMPRANGES_H_DEFINED
