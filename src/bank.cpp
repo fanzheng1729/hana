@@ -1,7 +1,13 @@
 #include "bank.h"
+#include "database.h"
 #include "io.h"
 #include "util/hex.h"
 #include "util/for.h"
+
+Bank::Bank(class Database const & database)
+{
+    //
+}
 
 // Type label delimiter
 static const std::string typedelim = "~";
