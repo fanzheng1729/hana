@@ -142,11 +142,26 @@ struct Move
         return out;
     }
 private:
-    // Make substitution (must be of type THM or CONJ)
+    Proofsize substitutionsize(Proofsteps const & src) const
+    {
+        Proofsize size = 0;
+        // Make the substitution
+        FOR (Proofstep step, src)
+        {
+            Symbol2::ID id = step.id();
+            if (id > 0 && !substitutions[id].empty())
+                size += substitutions[id].size();
+            else
+                ++size;
+        }
+        return size;
+    }
     void makesubstitution(Proofsteps const & src, Proofsteps & dest) const
     {
         if (substitutions.empty())
             return dest.assign(src.begin(), src.end());
+        // Preallocate for efficiency
+        dest.reserve(substitutionsize(src));
         // Make the substitution
         FOR (Proofstep step, src)
         {

@@ -97,7 +97,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
         return false;
     if (thm.expRPN == goal.RPN)
         return false;
-
+    return false;
     SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
     SteprangeAST goalexp(goal.RPN, goal.ast.begin());
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
