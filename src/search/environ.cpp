@@ -98,6 +98,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
     if (thm.expRPN == goal.RPN)
         return false;
 
+    SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
     SteprangeAST goalexp(goal.RPN, goal.ast.begin());
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
@@ -107,7 +108,11 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
             if (skeleton(goalexp, Keeprange(rrange.first), bank, abstract) == TRUE)
             {
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
-                std::cout << thm.expRPN << goal.RPN << abstract;
+                std::cout << thm.expRPN;
+                Proofsteps thmabstract;
+                skeleton(thmexp, Keeprange(rrange.first), bank, thmabstract);
+                std::cout << thmabstract;
+                std::cout << goal.RPN << abstract;
                 std::cout << bank;
                 std::cin.get();
             }
