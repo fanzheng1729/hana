@@ -116,7 +116,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 std::cout << goal.expression();
                 std::cout << conjs[1].expression();
                 std::cout << bank;
-                std::cout << Move(conjs).exptypecode();
+                std::cout << valid(Move(conjs));
                 std::cin.get();
             }
         }

@@ -5,6 +5,7 @@
 
 // Type label delimiter
 static const std::string typedelim = "~";
+static const std::string floatinghypheader = "f" + typedelim;
 
 Symbol3 Bank::addRPN(Proofsteps const & RPN)
 {
@@ -23,7 +24,7 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     // Name of variable = typecode~hex(n)
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
     // Name of hypothesis = f~typecode~hex(n)
-    m_hyplabels.push_back('f' + typedelim + m_varlabels[id]);
+    m_hyplabels.push_back(floatinghypheader + m_varlabels[id]);
     strview hyplabel(m_hyplabels[id]);
     strview varlabel(m_varlabels[id]);
     Hypotheses::value_type const value(hyplabel, Hypothesis());

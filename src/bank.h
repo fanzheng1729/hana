@@ -11,17 +11,21 @@ class Bank
     // Map: RPN -> Symbol
     typedef std::map<Proofsteps, Symbol3> RPNSymbols;
     RPNSymbols m_RPNSymbols;
+    // Vector of substitutions
+    typedef std::vector<Proofsteps const *> Substitutions;
+    Substitutions m_substitutions;
     typedef std::deque<std::string> Tokens;
     Tokens m_hyplabels;
     Tokens m_varlabels;
     Hypotheses m_hypotheses;
 public:
     // Variable id starts from reserve + 1.
-    Bank(Tokens::size_type reserve = 0) :
+    Bank(Tokens::size_type reserve = 0) : m_substitutions(1 + reserve),
         m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, "")
         { m_RPNSymbols[Proofsteps()]; }
     void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
+    Substitutions const & substitutions() const { return m_substitutions; }
     Tokens::size_type varcount() const { return m_varlabels.size() - 1; }
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Symbol3 addRPN(Proofsteps const & RPN = Proofsteps());
