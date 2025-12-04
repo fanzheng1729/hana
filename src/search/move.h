@@ -42,8 +42,10 @@ struct Move
     }
     // A move making conjectures, on our turn
     Move(Conjectures const & conjs, Bank const & bank) :
-        type(CONJ), pthm(NULL), absconjs(conjs)
+        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
     {
+        if (type == NONE)
+            return;
         // Max id of abstracted variable
         Symbol2::ID maxid = 0;
         FOR (Goal const & goal, absconjs)
@@ -65,7 +67,7 @@ struct Move
     }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
-    // Theorem (must be of type THM)
+    // Theorem the move uses
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
     // Type code of goal the move proves (must be of type THM or CONJ)
@@ -77,12 +79,11 @@ struct Move
             return absconjs.empty() ? strview() : absconjs.back().typecode;
         return "";
     }
-    // Goal the move proves (must be of type THM)
+    // Goal the move proves (must be of type THM or CONJ)
     Goal goal() const
     {
-        if (!pthm) return Goal();
         Goal result;
-        Proofsteps const & expRPN = pthm->second.expRPN;
+        Proofsteps const & expRPN = pthm ? pthm->second.expRPN : absconjs.back().RPN;
         makesubstitution
         (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id));
         result.typecode = goaltypecode();
