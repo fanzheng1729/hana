@@ -22,9 +22,12 @@ struct Move
     pAss pthm;
     // Substitutions to be used, on our turn
     Substitutions substitutions;
+    // Conjectures, last one = the abstracted goal
+    typedef std::vector<Proofsteps> Conjectures;
+    // Conjectures for conjectural moves on our turn
+    Conjectures conjectures;
     // Essential hypotheses needed, on our turn
-    typedef std::vector<pGoal> pGoals;
-    mutable pGoals esshyps;
+    mutable std::vector<pGoal> esshyps;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :
@@ -36,20 +39,21 @@ struct Move
         for (Hypsize i = 1; i < subst.size(); ++i)
             substitutions[i].assign(subst[i].first, subst[i].second);
     }
-    // A move making a conjecture, on our turn
-    Move(pGoals const & conjs) : type(CONJ), esshyps(conjs) {}
+    // A move making conjectures, on our turn
+    Move(Conjectures const & conjs) : type(CONJ), conjectures(conjs) {}
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
     // Expression the attempt of using an assertion proves (must be of type THM)
     Proofsteps expRPN() const
     {
+        if (!pthm) return Proofsteps();
         Proofsteps result;
         makesubstitution
         (pthm->second.expRPN, result, substitutions,
             util::mem_fn(&Proofstep::id));
         return result;
     }
-    strview label() const { return pthm->first; }
+    strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
     strview exptypecode() const { return theorem().exptypecode(); }
     // Hypothesis (must be of type THM)

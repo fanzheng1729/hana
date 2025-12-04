@@ -24,7 +24,7 @@ bool checkDV(Move const & move, Assertion const & ass, bool verbose)
     if (move.type != Move::THM || !move.pthm)
         return false;
 // std::cout << "Checking DV of move " << move.label() << std::endl;
-    FOR (Disjvars::const_reference vars, move.pthm->second.disjvars)
+    FOR (Disjvars::const_reference vars, move.theorem().disjvars)
     {
         const Proofsteps & RPN1 = move.substitutions[vars.first];
         const Proofsteps & RPN2 = move.substitutions[vars.second];

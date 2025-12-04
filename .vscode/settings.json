@@ -71,6 +71,7 @@
         "ratio": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "print": "cpp"
     }
 }
