@@ -124,7 +124,7 @@ private:
                      Stepranges const & stepranges,
                      Hypsize maxfreehyps) const;
     bool addhypmoves(pAss pthm, Moves & moves,
-                     Stepranges const & stepranges) const;
+                     Stepranges const & substitutions) const;
     // Add moves with free variables.
     // Return true if it has no open hypotheses.
     virtual bool addhardmoves

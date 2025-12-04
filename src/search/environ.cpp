@@ -213,7 +213,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     return false;
 }
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
-                          Stepranges const & stepranges) const
+                          Stepranges const & substitutions) const
 {
     Assertion const & thm = pthm->second;
     FOR (Hypsize thmhyp, thm.hypsorder)
@@ -228,10 +228,10 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 assertion.hyptypecode(asshyp) != thmhyptype)
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
-            Stepranges newsubst(stepranges);
+            Stepranges newsubstitutions(substitutions);
             if (findsubstitutions(assertion.hypRPN(asshyp), assertion.hypAST(asshyp),
                                   thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
-                                  newsubst))
+                                  newsubstitutions))
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
                 Move move(pthm, newsubst);
