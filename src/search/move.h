@@ -60,7 +60,7 @@ struct Move
                 if (Symbol2::ID id = step.id())
                 {
                     Proofsteps const & RPN = bank.substitution(id);
-                    if (!RPN.empty())
+                    if (!RPN.empty() && substitutions[id].empty())
                         substitutions[id] = RPN;
                 }
     }
