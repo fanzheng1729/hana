@@ -90,7 +90,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     }
 }
 
-bool Environ::addabsmoves(Goal const & goal, pAss pthm) const
+bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
     if (thm.esshypcount() > 0)
