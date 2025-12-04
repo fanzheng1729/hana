@@ -16,7 +16,9 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     if (!typecode.c_str)
         return "";
 
-    Symbol3 & var = m_RPNSymbols[RPN];
+    std::pair<Proofsteps const &, Symbol3> const value(RPN, "");
+    RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(value).first;
+    Symbol3 & var = RPNiter->second;
     if (var.id != 0) // old RPN
         return var;
     // new RPN, to which variable #id is assigned
@@ -25,11 +27,13 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
     // Name of hypothesis = f~typecode~hex(n)
     m_hyplabels.push_back(floatinghypheader + m_varlabels[id]);
+    // Substitution of the variable = RPN
+    m_substitutions.push_back(&RPNiter->first);
     strview hyplabel(m_hyplabels[id]);
     strview varlabel(m_varlabels[id]);
-    Hypotheses::value_type const value(hyplabel, Hypothesis());
     // Iterator to floating hypothesis associated to the variable
-    Hypotheses::iterator const hypiter = m_hypotheses.insert(value).first;
+    Hypotheses::iterator const hypiter
+    = m_hypotheses.insert(std::make_pair(hyplabel, Hypothesis())).first;
     hypiter->second.floats = true;
     // Expression of the hypothesis = {type code, variable}
     Expression & exp = hypiter->second.expression;

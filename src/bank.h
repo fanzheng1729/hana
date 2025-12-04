@@ -26,6 +26,8 @@ public:
     void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
     Substitutions const & substitutions() const { return m_substitutions; }
+    Proofsteps const & substitution(Symbol2::ID id) const
+    { return *substitutions()[id]; }
     Tokens::size_type varcount() const { return m_varlabels.size() - 1; }
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Symbol3 addRPN(Proofsteps const & RPN = Proofsteps());
