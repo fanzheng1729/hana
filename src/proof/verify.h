@@ -32,7 +32,8 @@ Expression & operator+=(Expression & exp, std::pair<Iter, Iter> subexp)
 template<class TOK, class SUB, class IDFUN>
 void makesubstitution
     (std::vector<TOK> const & src, std::vector<TOK> & dest,
-     std::vector<SUB> const & substitutions, IDFUN idfun)
+     std::vector<SUB> const & substitutions, IDFUN idfun,
+     Symbol2::ID threshold = 0)
 {
     if (substitutions.empty())
         return dest.assign(src.begin(), src.end());
@@ -40,7 +41,7 @@ void makesubstitution
     FOR (TOK symbol, src)
     {
         Symbol2::ID const id = idfun(symbol);
-        if (id > 0)
+        if (id > threshold)
             dest += substitutions[id];  // variable with an id
         else
             dest.push_back(symbol);     // constant with no id

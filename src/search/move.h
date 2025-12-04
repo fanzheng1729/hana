@@ -89,7 +89,7 @@ struct Move
         Goal result;
         Proofsteps const & expRPN = pthm ? pthm->second.expRPN : absconjs.back().RPN;
         makesubstitution
-        (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id));
+        (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
         result.typecode = goaltypecode();
         return result;
     }
