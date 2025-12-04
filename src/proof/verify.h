@@ -38,10 +38,13 @@ void makesubstitution
         return dest.assign(src.begin(), src.end());
     // Make the substitution
     FOR (TOK symbol, src)
-        if (Symbol2::ID const id = idfun(symbol))
+    {
+        Symbol2::ID const id = idfun(symbol);
+        if (id > 0)
             dest += substitutions[id];  // variable with an id
         else
             dest.push_back(symbol);     // constant with no id
+    }
 }
 
 // Find the substitution. Increase the size of the stack by 1.
