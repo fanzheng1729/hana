@@ -131,6 +131,17 @@ struct Move
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
     // # of essential hypotheses the move needs (must be of type THM)
     Hypsize esshypcount() const { return hypcount() - varcount(); }
+    // Output the move (must be our move).
+    friend std::ostream & operator<<(std::ostream & out, Move const & move)
+    {
+        static const char * const msg[]
+        = {"NONE", "", "CONJ", "DEFER"};
+        out << msg[move.type];
+        if (move.type == THM)
+            out << move.label().c_str;
+        return out;
+    }
+private:
     // Make substitution (must be of type THM or CONJ)
     void makesubstitution(Proofsteps const & src, Proofsteps & dest) const
     {
@@ -145,16 +156,6 @@ struct Move
             else
                 dest.push_back(step);     // constant with no id
         }
-    }
-    // Output the move (must be our move).
-    friend std::ostream & operator<<(std::ostream & out, Move const & move)
-    {
-        static const char * const msg[]
-        = {"NONE", "", "CONJ", "DEFER"};
-        out << msg[move.type];
-        if (move.type == THM)
-            out << move.label().c_str;
-        return out;
     }
 };
 
