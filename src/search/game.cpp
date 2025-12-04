@@ -111,7 +111,7 @@ bool Game::writeproof() const
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)
     {
         if (attempt.hypfloats(i))
-            hyps[i] = &attempt.substitutions[attempt.hypexp(i)[1]];
+            hyps[i] = &attempt.substitutions[attempt.hypvar(i)];
         else
             hyps[i] = &attempt.esshyps[i]->second.proofsrc();
 // std::cout << "Added hyp\n" << *hyps[i];

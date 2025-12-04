@@ -97,8 +97,11 @@ struct Move
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
     bool hypfloats(Hypsize index) const { return theorem().hypfloats(index); }
-    Expression const & hypexp(Hypsize index) const
-        { return theorem().hypexp(index); }
+    Symbol3 hypvar(Hypsize index) const
+    {
+        Expression const & hypexp = theorem().hypexp(index);
+        return hypexp.size() == 2 ? hypexp[1] : Symbol3();
+    }
     strview hyptypecode(Hypsize index) const
         { return theorem().hyptypecode(index); }
     // Subgoal the attempt (must be of type THM) needs
