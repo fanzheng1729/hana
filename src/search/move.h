@@ -58,7 +58,16 @@ struct Move
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
     // Type code of expression the move proves (must be of type THM)
-    strview exptypecode() const { return theorem().exptypecode(); }
+    strview exptypecode() const
+    {
+        if (type == THM)
+            return theorem().exptypecode();
+        if (type == CONJ)
+            if (conjectures.empty()) return "";
+            else if (conjectures.back().empty()) return "";
+            else return conjectures.back().back().typecode();
+        return "";
+    }
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
     bool hypfloats(Hypsize index) const { return theorem().hypfloats(index); }
