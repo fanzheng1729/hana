@@ -17,10 +17,6 @@ Proofsteps regular
 bool enoughitemonstack
     (std::size_t hypcount, std::size_t stacksize, strview label);
 
-void printunificationfailure
-    (strview label, strview thmlabel, Hypothesis const & hyp,
-     Expression const & dest, Expression const & stackitem);
-
 // Append a subexpression to an expression.
 template<class Iter>
 Expression & operator+=(Expression & exp, std::pair<Iter, Iter> subexp)

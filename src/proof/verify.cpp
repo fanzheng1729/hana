@@ -56,7 +56,7 @@ bool enoughitemonstack
     return printinproofof(label, okay);
 }
 
-void printunificationfailure
+static void printunificationfailure
     (strview label, strview thmlabel, Hypothesis const & hyp,
      Expression const & dest, Expression const & stackitem)
 {
