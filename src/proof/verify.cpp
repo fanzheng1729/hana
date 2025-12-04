@@ -100,11 +100,9 @@ static bool checkDV
 // Find the substitution. Increase the size of the stack by 1.
 // Return index of the base of the substitution in the stack.
 // Return the size of the stack if not okay.
-template<class SUB>
 static typename std::vector<Expression>::size_type findsubstitutions
     (strview label, strview thmlabel, Hypiters const & hypiters,
-     std::vector<Expression> & stack,
-     std::vector<SUB> & substitutions)
+     std::vector<Expression> & stack, Substitutions & substitutions)
 {
     Hypsize const hypcount = hypiters.size();
     if (!enoughitemonstack(hypcount, stack.size(), label))
@@ -130,8 +128,8 @@ static typename std::vector<Expression>::size_type findsubstitutions
             }
             Symbol2::ID const id = hypothesis.expression[1];
             substitutions.resize(std::max(id + 1, substitutions.size()));
-            substitutions[id] = SUB(&stack[base + i][1],
-                                    &stack[base + i].back() + 1);
+            substitutions[id]
+            = std::make_pair(&stack[base + i][1], &stack[base + i].back() + 1);
         }
         else
         {
