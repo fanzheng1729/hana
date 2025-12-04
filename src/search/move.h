@@ -44,7 +44,8 @@ struct Move
     }
     // A move making conjectures, on our turn
     Move(Conjectures const & conjs, Bank const & bank) :
-        type(conjs.empty() ? NONE : CONJ), pthm(NULL), nReserve(bank.nReserve),
+        type(conjs.empty() ? NONE : CONJ), pthm(NULL),
+        nReserve(type == NONE ? 0 : bank.nReserve),
         absconjs(conjs)
     {
         if (type == NONE)
@@ -69,7 +70,7 @@ struct Move
                 }
     }
     // A move verifying a hypothesis, on their turn
-    Move(Hypsize i) : index(i), pthm(NULL) {}
+    Move(Hypsize i) : index(i), pthm(NULL), nReserve(0) {}
     // Theorem the move uses
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
