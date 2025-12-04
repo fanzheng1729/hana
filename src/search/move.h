@@ -136,7 +136,7 @@ struct Move
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
     // # of essential hypotheses the move needs (must be of type THM)
     Hypsize esshypcount() const { return hypcount() - varcount(); }
-    // Make substitution
+    // Make substitution (must be of type THM or CONJ)
     void makesubstitution(Proofsteps const & src, Proofsteps & dest) const
     {
         if (substitutions.empty())
