@@ -38,7 +38,7 @@ void makesubstitution
         return dest.assign(src.begin(), src.end());
     // Make the substitution
     FOR (Symbol3 symbol, src)
-        if (Symbol2::ID const id = idfun(symbol))
+        if (Symbol3::ID const id = symbol.id)
             dest += substitutions[id];  // variable with an id
         else
             dest.push_back(symbol);     // constant with no id
