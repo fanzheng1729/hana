@@ -89,8 +89,7 @@ struct Move
         Goal result;
         Proofsteps const & expRPN
         = pthm ? pthm->second.expRPN : absconjs.back().RPN;
-        ::makesubstitution
-        (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
+        makesubstitution(expRPN, result.RPN);
         result.typecode = goaltypecode();
         return result;
     }
@@ -112,14 +111,13 @@ struct Move
             else return absconjs[index].typecode;
         return "";
     }
-    // Subgoal the move needs (must be of type THM)
+    // Subgoal the move needs (must be of type THM or CONJ)
     Goal subgoal(Hypsize index) const
     {
         Goal result;
         Proofsteps const & hypRPN
         = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
-        ::makesubstitution
-        (hypRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
+        makesubstitution(hypRPN, result.RPN);
         result.typecode = subgoaltypecode(index);
         return result;
     }
@@ -138,8 +136,21 @@ struct Move
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
     // # of essential hypotheses the attempt (must be of type THM) needs
     Hypsize esshypcount() const { return hypcount() - varcount(); }
-    // Concrete conjecture
-    Proofstep fullconj(Hypsize index) const;
+    // Make substitution
+    void makesubstitution(Proofsteps const & src, Proofsteps & dest) const
+    {
+        if (substitutions.empty())
+            return dest.assign(src.begin(), src.end());
+        // Make the substitution
+        FOR (Proofstep step, src)
+        {
+            Symbol2::ID id = step.id();
+            if (id > 0 && !substitutions[id].empty())
+                dest += substitutions[id];  // variable with an id
+            else
+                dest.push_back(step);     // constant with no id
+        }
+    }
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
     {
