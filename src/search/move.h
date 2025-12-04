@@ -68,25 +68,25 @@ struct Move
     // Theorem (must be of type THM)
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
-    // Goal the move proves (must be of type THM)
-    Goal goal() const
-    {
-        if (!pthm) return Goal();
-        Goal result;
-        makesubstitution
-        (pthm->second.expRPN, result.RPN, substitutions,
-            util::mem_fn(&Proofstep::id));
-        result.typecode = theorem().exptypecode();
-        return result;
-    }
     // Type code of goal the move proves (must be of type THM or CONJ)
-    strview exptypecode() const
+    strview goaltypecode() const
     {
         if (type == THM)
             return theorem().exptypecode();
         if (type == CONJ)
             return absconjs.empty() ? strview() : absconjs.back().typecode;
         return "";
+    }
+    // Goal the move proves (must be of type THM)
+    Goal goal() const
+    {
+        if (!pthm) return Goal();
+        Goal result;
+        Proofsteps const & expRPN = pthm->second.expRPN;
+        makesubstitution
+        (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id));
+        result.typecode = goaltypecode();
+        return result;
     }
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }

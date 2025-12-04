@@ -69,7 +69,7 @@ struct Environ : protected Gen
     // Validate a move.
     MoveValidity valid(Move const & move) const
     {
-        if (database.typecodes().isprimitive(move.exptypecode()) != FALSE)
+        if (database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
             return MoveINVALID;
         if (!checkDV(move, assertion))
             return MoveINVALID;
