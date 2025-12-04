@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../ass.h"
+#include "../bank.h"
 #include "goal.h"
 #include "../proof/verify.h"
 

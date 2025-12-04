@@ -2,7 +2,6 @@
 #define BANK_H_INCLUDED
 
 #include <deque>
-#include <map>
 #include "types.h"
 
 // Storage for temporary variables
