@@ -18,12 +18,9 @@ class Bank
     Tokens m_varlabels;
     Hypotheses m_hypotheses;
 public:
-    // # reserved variables
-    Symbol2::ID const nReserve;
     // Variable id starts from reserve + 1.
     Bank(Symbol2::ID reserve = 0) :
-        m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, ""),
-        nReserve(reserve)
+        m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, "")
     {
         m_RPNSymbols[Proofsteps()];
         m_substitutions.assign(1 + reserve, &m_RPNSymbols.begin()->first);
