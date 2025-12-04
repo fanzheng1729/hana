@@ -100,24 +100,25 @@ static bool checkDV
 // Find the substitution. Increase the size of the stack by 1.
 // Return index of the base of the substitution in the stack.
 // Return the size of the stack if not okay.
-template<class HYPS, class EXP, class SUB>
-static typename std::vector<EXP>::size_type findsubstitutions
-    (strview label, strview thmlabel, HYPS const & hypotheses,
-     std::vector<EXP> & stack, std::vector<SUB> & substitutions)
+template<class SUB>
+static typename std::vector<Expression>::size_type findsubstitutions
+    (strview label, strview thmlabel, Hypiters const & hypiters,
+     std::vector<Expression> & stack,
+     std::vector<SUB> & substitutions)
 {
-    typename HYPS::size_type const hypcount = hypotheses.size();
+    Hypsize const hypcount = hypiters.size();
     if (!enoughitemonstack(hypcount, stack.size(), label))
         return stack.size();
 
     // Space for new statement onto stack
     stack.resize(stack.size() + 1);
-
-    typename HYPS::size_type const base(stack.size() - 1 - hypcount);
+    
+    Hypsize const base = stack.size() - 1 - hypcount;
 
     // Determine substitutions and check that we can unify
-    for (typename HYPS::size_type i = 0; i < hypcount; ++i)
+    for (Hypsize i = 0; i < hypcount; ++i)
     {
-        Hypothesis const & hypothesis = hypotheses[i]->second;
+        Hypothesis const & hypothesis = hypiters[i]->second;
         if (hypothesis.floats)
         {
             // Floating hypothesis of the referenced assertion
