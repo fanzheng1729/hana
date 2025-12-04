@@ -266,7 +266,7 @@ bool Environ::trythm
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << goal.expression();
     if (thm.esshypcount() == 0)
-        addabsmoves(goal, &*iter);
+        addabsmoves(goal, &*iter, moves);
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions
         (goal.RPN, goal.ast, thm.expRPN, thm.expAST, stepranges))
