@@ -40,7 +40,8 @@ struct Move
             substitutions[i].assign(subst[i].first, subst[i].second);
     }
     // A move making conjectures, on our turn
-    Move(Conjectures const & conjs) : type(CONJ), conjectures(conjs) {}
+    Move(Conjectures const & conjs) :
+        type(CONJ), pthm(NULL), conjectures(conjs) {}
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
     // Expression the attempt of using an assertion proves (must be of type THM)
