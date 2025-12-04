@@ -72,7 +72,7 @@ struct Move
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL), nReserve(0) {}
     // Theorem the move uses
-    strview label() const { return pthm ? pthm->first : ""; }
+    strview label() const { return pthm ? pthm->first : strview(); }
     Assertion const & theorem() const { return pthm->second; }
     // Type code of goal the move proves (must be of type THM or CONJ)
     strview goaltypecode() const
@@ -102,9 +102,17 @@ struct Move
         Expression const & hypexp = theorem().hypexp(index);
         return hypexp.size() == 2 ? hypexp[1] : Symbol3();
     }
-    strview hyptypecode(Hypsize index) const
-        { return theorem().hyptypecode(index); }
-    // Subgoal the attempt (must be of type THM) needs
+    // Type code of subgoal the move needs (must be of type THM or CONJ)
+    strview subgoaltypecode(Hypsize index) const
+    {
+        if (type == THM)
+            return theorem().hyptypecode(index);
+        if (type == CONJ)
+            if (index >= absconjs.size() - 1) return "";
+            else return absconjs[index].typecode;
+        return "";
+    }
+    // Subgoal the move needs (must be of type THM)
     Goal subgoal(Hypsize index) const
     {
         Goal result;
@@ -112,7 +120,7 @@ struct Move
         = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
         makesubstitution
         (hypRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
-        result.typecode = theorem().hyptypecode(index);
+        result.typecode = subgoaltypecode(index);
         return result;
     }
     // Find the index of hypothesis by goal.
