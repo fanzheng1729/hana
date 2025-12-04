@@ -115,7 +115,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 std::cout << move.substitutions.back();
                 FOR (Goal const & goal, move.absconjs)
                     std::cout << goal.expression();
-                std::cout << move.goal().RPN;
+                std::cout << move.goal().expression();
                 std::cout << valid(move);
                 std::cin.get();
             }
