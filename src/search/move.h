@@ -54,6 +54,7 @@ struct Move
             util::mem_fn(&Proofstep::id));
         return result;
     }
+    // Theorem (must be of type THM)
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
     strview exptypecode() const { return theorem().exptypecode(); }

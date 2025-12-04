@@ -75,7 +75,8 @@ struct Environ : protected Gen
             return MoveINVALID;
         if (move.type == Move::THM)
             return validthmmove(move);
-        throw;
+        if (move.type == Move::CONJ)
+            return validconjmove(move);
         return MoveINVALID;
     }
     // Return the hypotheses of a goal to be trimmed.
@@ -137,6 +138,8 @@ private:
 // Move validation
     // Validate a move applying a theorem.
     MoveValidity validthmmove(Move const & move) const;
+    // Validate a conjectural move.
+    MoveValidity validconjmove(Move const & move) const;
 // Private members
     // true if *this <= problem context
     bool m_subsumedbyProb;

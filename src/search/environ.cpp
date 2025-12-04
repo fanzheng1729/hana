@@ -329,6 +329,12 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     return allproven ? MoveCLOSED : MoveVALID;
 }
 
+Environ::MoveValidity Environ::validconjmove(Move const & move) const
+{
+    std::cerr << "Not implemented" << std::endl;
+    throw;
+}
+
 // Add an item to an ordered vector if not already present.
 template <typename T>
 static void additeminorder(std::vector<T> & vec, T const & item)
