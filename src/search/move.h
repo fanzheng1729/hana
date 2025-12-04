@@ -21,8 +21,6 @@ struct Move
     };
     // Pointer to the theorem to be used, on our turn
     pAss pthm;
-    // # reserved variables
-    Symbol2::ID nReserve;
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Conjectures, last one = the abstracted goal
@@ -31,12 +29,11 @@ struct Move
     Conjectures absconjs;
     // Essential hypotheses needed, on our turn
     mutable std::vector<pGoal> esshyps;
-    Move(Type t = NONE) : type(t), pthm(NULL), nReserve(0) {}
+    Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :
-        type(THM), pthm(ptr), nReserve(0), substitutions(subst) {}
-    Move(pAss ptr, Stepranges const & subst) :
-        type(THM), pthm(ptr), nReserve(0)
+        type(THM), pthm(ptr), substitutions(subst) {}
+    Move(pAss ptr, Stepranges const & subst) : type(THM), pthm(ptr)
     {
         substitutions.resize(subst.size());
         for (Hypsize i = 1; i < subst.size(); ++i)
@@ -44,9 +41,7 @@ struct Move
     }
     // A move making conjectures, on our turn
     Move(Conjectures const & conjs, Bank const & bank) :
-        type(conjs.empty() ? NONE : CONJ), pthm(NULL),
-        nReserve(type == NONE ? 0 : bank.nReserve),
-        absconjs(conjs)
+        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
     {
         if (type == NONE)
             return;
@@ -70,7 +65,7 @@ struct Move
                 }
     }
     // A move verifying a hypothesis, on their turn
-    Move(Hypsize i) : index(i), pthm(NULL), nReserve(0) {}
+    Move(Hypsize i) : index(i), pthm(NULL) {}
     // Theorem the move uses
     strview label() const { return pthm ? pthm->first : strview(); }
     Assertion const & theorem() const { return pthm->second; }
