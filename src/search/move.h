@@ -130,11 +130,11 @@ struct Move
                 return i;
         return i;
     }
-    // # of hypotheses the attempt (must be of type THM) needs
+    // # of hypotheses the move needs (must be of type THM)
     Hypsize hypcount() const { return theorem().hypcount(); }
-    // # of variables the attempt (must be of type THM) needs
+    // # of variables the move needs (must be of type THM)
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
-    // # of essential hypotheses the attempt (must be of type THM) needs
+    // # of essential hypotheses the move needs (must be of type THM)
     Hypsize esshypcount() const { return hypcount() - varcount(); }
     // Make substitution
     void makesubstitution(Proofsteps const & src, Proofsteps & dest) const
