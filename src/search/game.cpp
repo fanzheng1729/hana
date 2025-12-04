@@ -27,8 +27,7 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
 bool Game::legal(Move const & move, bool ourturn) const
 {
     if (ourturn && move.type == Move::THM) // Check if the goal matches.
-        return goal().RPN == move.expRPN() &&
-                goal().typecode == move.exptypecode();
+        return goal() == move.goal();
     if (!ourturn && attempt.type == Move::THM) // Check index bound.
         return move.index < attempt.hypcount();
     return true;

@@ -25,8 +25,8 @@ struct Move
     Substitutions substitutions;
     // Conjectures, last one = the abstracted goal
     typedef std::vector<Goal> Conjectures;
-    // Conjectures for conjectural moves on our turn
-    Conjectures conjectures;
+    // Abstract conjectures for conjectural moves on our turn
+    Conjectures absconjs;
     // Essential hypotheses needed, on our turn
     mutable std::vector<pGoal> esshyps;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
@@ -42,22 +42,19 @@ struct Move
     }
     // A move making conjectures, on our turn
     Move(Conjectures const & conjs, Bank const & bank) :
-        type(CONJ), pthm(NULL), conjectures(conjs)
+        type(CONJ), pthm(NULL), absconjs(conjs)
     {
         // Max id of abstracted variable
         Symbol2::ID maxid = 0;
-        FOR (Goal const & goal, conjectures)
+        FOR (Goal const & goal, absconjs)
             FOR (Proofstep step, goal.RPN)
                 if (Symbol2::ID id = step.id())
-                {
-                    Proofsteps const & RPN = bank.substitution(id);
-                    if (!RPN.empty())
+                    if (!bank.substitution(id).empty())
                         if (id > maxid) maxid = id;
-                }
         // Preallocate for efficiency
         substitutions.resize(maxid + 1);
         // Fill in abstractions.
-        FOR (Goal const & goal, conjectures)
+        FOR (Goal const & goal, absconjs)
             FOR (Proofstep step, goal.RPN)
                 if (Symbol2::ID id = step.id())
                 {
@@ -68,26 +65,27 @@ struct Move
     }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
-    // Expression the move proves (must be of type THM)
-    Proofsteps expRPN() const
-    {
-        if (!pthm) return Proofsteps();
-        Proofsteps result;
-        makesubstitution
-        (pthm->second.expRPN, result, substitutions,
-            util::mem_fn(&Proofstep::id));
-        return result;
-    }
     // Theorem (must be of type THM)
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
-    // Type code of expression the move proves (must be of type THM)
+    // Goal the move proves (must be of type THM)
+    Goal goal() const
+    {
+        if (!pthm) return Goal();
+        Goal result;
+        makesubstitution
+        (pthm->second.expRPN, result.RPN, substitutions,
+            util::mem_fn(&Proofstep::id));
+        result.typecode = theorem().exptypecode();
+        return result;
+    }
+    // Type code of goal the move proves (must be of type THM or CONJ)
     strview exptypecode() const
     {
         if (type == THM)
             return theorem().exptypecode();
         if (type == CONJ)
-            return conjectures.empty() ? strview() : conjectures.back().typecode;
+            return absconjs.empty() ? strview() : absconjs.back().typecode;
         return "";
     }
     // Hypothesis (must be of type THM)
@@ -97,13 +95,15 @@ struct Move
         { return theorem().hypexp(index); }
     strview hyptypecode(Hypsize index) const
         { return theorem().hyptypecode(index); }
-    // Hypothesis the attempt (must be of type THM) needs
-    Proofsteps hypRPN(Hypsize index) const
+    // Subgoal the attempt (must be of type THM) needs
+    Goal subgoal(Hypsize index) const
     {
-        Proofsteps result;
+        if (!pthm) return Goal();
+        Goal result;
         makesubstitution
-        (theorem().hypRPN(index), result, substitutions,
+        (theorem().hypRPN(index), result.RPN, substitutions,
             util::mem_fn(&Proofstep::id));
+        result.typecode = theorem().hyptypecode(index);
         return result;
     }
     // Find the index of hypothesis by goal.
@@ -111,7 +111,7 @@ struct Move
     {
         Hypsize i = 0;
         for ( ; i < hypcount(); ++i)
-            if (hypRPN(i) == goal.RPN && hyptypecode(i) == goal.typecode)
+            if (goal == subgoal(i))
                 return i;
         return i;
     }
@@ -121,6 +121,8 @@ struct Move
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
     // # of essential hypotheses the attempt (must be of type THM) needs
     Hypsize esshypcount() const { return hypcount() - varcount(); }
+    // Concrete conjecture
+    Proofstep fullconj(Hypsize index) const;
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
     {

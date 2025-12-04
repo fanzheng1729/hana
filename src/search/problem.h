@@ -205,9 +205,13 @@ private:
         Goaldatas::value_type const value(&env, Goaldata(s, &env, pbigGoal));
         return &*pbigGoal->second.insert(value).first;
     }
-    pGoal addgoal
-        (Proofsteps const & RPN, strview type, Environ const & env, Goalstatus s)
-    { return addgoal(Goalview(RPN, type), env, s); }
+    pGoal addgoal(Goal const & goal, Environ const & env, Goalstatus s)
+    {
+        std::pair<Goal const &, Goaldatas> goalpair(goal, Goaldatas());
+        pBIGGOAL const pbigGoal = &*goals.insert(goalpair).first;
+        Goaldatas::value_type const value(&env, Goaldata(s, &env, pbigGoal));
+        return &*pbigGoal->second.insert(value).first;
+    }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);

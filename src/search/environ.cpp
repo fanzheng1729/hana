@@ -112,7 +112,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 conjs[0].typecode = thm.exptypecode();
                 std::cout << Move(conjs, bank).substitutions.size();
                 std::cout << Move(conjs, bank).substitutions.back();
-                FOR (Goal const & goal, Move(conjs, bank).conjectures)
+                FOR (Goal const & goal, Move(conjs, bank).absconjs)
                     std::cout << goal.expression();
                 std::cout << valid(Move(conjs, bank));
                 std::cin.get();
@@ -294,8 +294,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     {
         if (move.hypfloats(i)) continue;
         // Add the essential hypothesis as a goal.
-        pGoal const pgoal = pProb->addgoal
-        (move.hypRPN(i), move.hyptypecode(i), *this, GOALNEW);
+        pGoal const pgoal = pProb->addgoal(move.subgoal(i), *this, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
         Goalstatus & s = pgoal->second.getstatus();
         if (s == GOALFALSE) // Refuted
