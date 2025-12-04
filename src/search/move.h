@@ -5,7 +5,7 @@
 #include "../ass.h"
 #include "../bank.h"
 #include "goal.h"
-#include "../proof/verify.h"
+#include "../util/for.h"
 
 // Move in proof search tree
 struct Move
@@ -41,8 +41,31 @@ struct Move
             substitutions[i].assign(subst[i].first, subst[i].second);
     }
     // A move making conjectures, on our turn
-    Move(Conjectures const & conjs) :
-        type(CONJ), pthm(NULL), conjectures(conjs) {}
+    Move(Conjectures const & conjs, Bank const & bank) :
+        type(CONJ), pthm(NULL), conjectures(conjs)
+    {
+        // Max id of abstracted variable
+        Symbol2::ID maxid = 0;
+        FOR (Goal const & goal, conjectures)
+            FOR (Proofstep step, goal.RPN)
+                if (Symbol2::ID id = step.id())
+                {
+                    Proofsteps const & RPN = bank.substitution(id);
+                    if (!RPN.empty())
+                        if (id > maxid) maxid = id;
+                }
+        // Preallocate for efficiency
+        substitutions.resize(maxid + 1);
+        // Fill in abstractions.
+        FOR (Goal const & goal, conjectures)
+            FOR (Proofstep step, goal.RPN)
+                if (Symbol2::ID id = step.id())
+                {
+                    Proofsteps const & RPN = bank.substitution(id);
+                    if (!RPN.empty())
+                        substitutions[id] = RPN;
+                }
+    }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
     // Expression the move proves (must be of type THM)
