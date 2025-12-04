@@ -22,7 +22,7 @@ struct Move
     // Pointer to the theorem to be used, on our turn
     pAss pthm;
     // # reserved variables
-    Substitutions::size_type nReserve;
+    Symbol2::ID nReserve;
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Conjectures, last one = the abstracted goal

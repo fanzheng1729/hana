@@ -19,9 +19,9 @@ class Bank
     Hypotheses m_hypotheses;
 public:
     // # reserved variables
-    Tokens::size_type const nReserve;
+    Symbol2::ID const nReserve;
     // Variable id starts from reserve + 1.
-    Bank(Tokens::size_type reserve = 0) :
+    Bank(Symbol2::ID reserve = 0) :
         m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, ""),
         nReserve(reserve)
     {
