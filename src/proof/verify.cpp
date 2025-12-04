@@ -97,6 +97,34 @@ static bool checkDV
     return true;
 }
 
+static Expression::size_type substitutionsize
+    (Expression const & src, Substitutions const & substitutions)
+{
+    Expression::size_type size = 0;
+    FOR (Symbol3 symbol, src)
+        if (Symbol3::ID const id = symbol.id)
+            size += substitutions[id].second - substitutions[id].first;
+        else
+            ++size;
+    return size;
+}
+
+static void makesubstitution
+    (Expression const & src, Expression & dest,
+     Substitutions const & substitutions)
+{
+    if (substitutions.empty())
+        return dest.assign(src.begin(), src.end());
+    // Preallocate for efficiency
+    dest.reserve(substitutionsize(src, substitutions));
+    // Make the substitution
+    FOR (Symbol3 symbol, src)
+        if (Symbol3::ID const id = symbol.id)
+            dest += substitutions[id];  // variable with an id
+        else
+            dest.push_back(symbol);     // constant with no id
+}
+
 // Find the substitution. Increase the size of the stack by 1.
 // Return index of the base of the substitution in the stack.
 // Return the size of the stack if not okay.

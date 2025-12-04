@@ -29,21 +29,6 @@ Expression & operator+=(Expression & exp, std::pair<Iter, Iter> subexp)
     return exp;
 }
 
-template<class SUB>
-void makesubstitution
-    (Expression const & src, Expression & dest,
-     std::vector<SUB> const & substitutions)
-{
-    if (substitutions.empty())
-        return dest.assign(src.begin(), src.end());
-    // Make the substitution
-    FOR (Symbol3 symbol, src)
-        if (Symbol3::ID const id = symbol.id)
-            dest += substitutions[id];  // variable with an id
-        else
-            dest.push_back(symbol);     // constant with no id
-}
-
 struct Printer;
 // Subroutine for proof verification. Verify proof steps.
 Expression verify(Proofsteps const & proof, Printer & printer, pAss pass = NULL);
