@@ -234,7 +234,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                                   newsubstitutions))
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
-                Move move(pthm, newsubst);
+                Move move(pthm, newsubstitutions);
                 switch (valid(move))
                 {
                 case MoveCLOSED:
