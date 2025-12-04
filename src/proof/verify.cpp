@@ -123,8 +123,7 @@ static bool verifystep
     }
 
     // Insert new statement onto stack.
-    makesubstitution(thm.expression, stack.back(), substitutions,
-        util::mem_fn(&Symbol3::id));
+    makesubstitution(thm.expression, stack.back(), substitutions);
     // Remove hypotheses from stack.
     stack.erase(stack.begin() + base, stack.end() - 1);
 

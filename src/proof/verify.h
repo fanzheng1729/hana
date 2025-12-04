@@ -29,10 +29,10 @@ Expression & operator+=(Expression & exp, std::pair<Iter, Iter> subexp)
     return exp;
 }
 
-template<class TOK, class SUB, class IDFUN>
+template<class SUB>
 void makesubstitution
-    (std::vector<TOK> const & src, std::vector<TOK> & dest,
-     std::vector<SUB> const & substitutions, IDFUN idfun)
+    (Expression const & src, Expression & dest,
+     std::vector<SUB> const & substitutions)
 {
     if (substitutions.empty())
         return dest.assign(src.begin(), src.end());
@@ -83,8 +83,7 @@ typename std::vector<EXP>::size_type findsubstitutions
         {
             // Essential hypothesis
             Expression dest;
-            makesubstitution(hypothesis.expression, dest, substitutions,
-                util::mem_fn(&Symbol3::id));
+            makesubstitution(hypothesis.expression, dest, substitutions);
             if (dest != stack[base + i])
             {
                 printunificationfailure(label, thmlabel, hypothesis,
