@@ -87,7 +87,8 @@ struct Move
     Goal goal() const
     {
         Goal result;
-        Proofsteps const & expRPN = pthm ? pthm->second.expRPN : absconjs.back().RPN;
+        Proofsteps const & expRPN
+        = pthm ? pthm->second.expRPN : absconjs.back().RPN;
         makesubstitution
         (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
         result.typecode = goaltypecode();
@@ -103,11 +104,11 @@ struct Move
     // Subgoal the attempt (must be of type THM) needs
     Goal subgoal(Hypsize index) const
     {
-        if (!pthm) return Goal();
         Goal result;
+        Proofsteps const & hypRPN
+        = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
         makesubstitution
-        (theorem().hypRPN(index), result.RPN, substitutions,
-            util::mem_fn(&Proofstep::id));
+        (hypRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
         result.typecode = theorem().hyptypecode(index);
         return result;
     }
