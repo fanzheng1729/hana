@@ -44,58 +44,6 @@ void makesubstitution
             dest.push_back(symbol);     // constant with no id
 }
 
-// Find the substitution. Increase the size of the stack by 1.
-// Return index of the base of the substitution in the stack.
-// Return the size of the stack if not okay.
-template<class HYPS, class EXP, class SUB>
-typename std::vector<EXP>::size_type findsubstitutions
-    (strview label, strview thmlabel, HYPS const & hypotheses,
-     std::vector<EXP> & stack, std::vector<SUB> & substitutions)
-{
-    typename HYPS::size_type const hypcount = hypotheses.size();
-    if (!enoughitemonstack(hypcount, stack.size(), label))
-        return stack.size();
-
-    // Space for new statement onto stack
-    stack.resize(stack.size() + 1);
-
-    typename HYPS::size_type const base(stack.size() - 1 - hypcount);
-
-    // Determine substitutions and check that we can unify
-    for (typename HYPS::size_type i = 0; i < hypcount; ++i)
-    {
-        Hypothesis const & hypothesis = hypotheses[i]->second;
-        if (hypothesis.floats)
-        {
-            // Floating hypothesis of the referenced assertion
-            if (hypothesis.expression[0] != stack[base + i][0])
-            {
-                printunificationfailure(label, thmlabel, hypothesis,
-                                        hypothesis.expression, stack[base + i]);
-                return stack.size();
-            }
-            Symbol2::ID const id = hypothesis.expression[1];
-            substitutions.resize(std::max(id + 1, substitutions.size()));
-            substitutions[id] = SUB(&stack[base + i][1],
-                                    &stack[base + i].back() + 1);
-        }
-        else
-        {
-            // Essential hypothesis
-            Expression dest;
-            makesubstitution(hypothesis.expression, dest, substitutions);
-            if (dest != stack[base + i])
-            {
-                printunificationfailure(label, thmlabel, hypothesis,
-                                        dest, stack[base + i]);
-                return stack.size();
-            }
-        }
-    }
-
-    return base;
-}
-
 struct Printer;
 // Subroutine for proof verification. Verify proof steps.
 Expression verify(Proofsteps const & proof, Printer & printer, pAss pass = NULL);
