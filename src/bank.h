@@ -17,15 +17,16 @@ class Bank
     Tokens m_hyplabels;
     Tokens m_varlabels;
     Hypotheses m_hypotheses;
+    Tokens::size_type const nReserve;
 public:
     // Variable id starts from reserve + 1.
     Bank(Tokens::size_type reserve = 0) :
-        m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, "")
+        m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, ""),
+        nReserve(reserve)
     {
         m_RPNSymbols[Proofsteps()];
         m_substitutions.assign(1 + reserve, &m_RPNSymbols.begin()->first);
     }
-    void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
     Substitutions const & substitutions() const { return m_substitutions; }
     Proofsteps const & substitution(Symbol2::ID id) const
