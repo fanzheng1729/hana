@@ -109,11 +109,12 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
             {
                 conjs[1].typecode = goal.typecode;
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
-                std::cout << thm.expRPN;
+                std::cout << thm.expression;
                 skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
                 conjs[0].typecode = thm.exptypecode();
-                std::cout << conjs[0].RPN;
-                std::cout << goal.RPN << conjs[1].RPN;
+                std::cout << conjs[0].expression();
+                std::cout << goal.expression();
+                std::cout << conjs[1].expression();
                 std::cout << bank;
                 std::cout << Move(conjs).exptypecode();
                 std::cin.get();
