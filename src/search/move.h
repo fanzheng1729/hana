@@ -89,7 +89,7 @@ struct Move
         Goal result;
         Proofsteps const & expRPN
         = pthm ? pthm->second.expRPN : absconjs.back().RPN;
-        makesubstitution
+        ::makesubstitution
         (expRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
         result.typecode = goaltypecode();
         return result;
@@ -118,7 +118,7 @@ struct Move
         Goal result;
         Proofsteps const & hypRPN
         = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
-        makesubstitution
+        ::makesubstitution
         (hypRPN, result.RPN, substitutions, util::mem_fn(&Proofstep::id), nReserve);
         result.typecode = subgoaltypecode(index);
         return result;
