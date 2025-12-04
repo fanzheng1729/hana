@@ -103,16 +103,19 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
         {
-            Move::Conjectures conjectures(2);
+            Move::Conjectures conjs(2);
             Bank bank(database.varcount());
-            if (skeleton(goalexp, Keeprange(rrange.first), bank, conjectures[1]) == TRUE)
+            if (skeleton(goalexp, Keeprange(rrange.first), bank, conjs[1].RPN) == TRUE)
             {
+                conjs[1].typecode = goal.typecode;
                 std::cout << Proofsteps(rrange.first.first, rrange.first.second);
                 std::cout << thm.expRPN;
-                skeleton(thmexp, Keeprange(rrange.first), bank, conjectures[0]);
-                std::cout << conjectures[0];
-                std::cout << goal.RPN << conjectures[1];
+                skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
+                conjs[0].typecode = thm.exptypecode();
+                std::cout << conjs[0].RPN;
+                std::cout << goal.RPN << conjs[1].RPN;
                 std::cout << bank;
+                std::cout << Move(conjs).exptypecode();
                 std::cin.get();
             }
         }

@@ -23,7 +23,7 @@ struct Move
     // Substitutions to be used, on our turn
     Substitutions substitutions;
     // Conjectures, last one = the abstracted goal
-    typedef std::vector<Proofsteps> Conjectures;
+    typedef std::vector<Goal> Conjectures;
     // Conjectures for conjectural moves on our turn
     Conjectures conjectures;
     // Essential hypotheses needed, on our turn
@@ -63,9 +63,7 @@ struct Move
         if (type == THM)
             return theorem().exptypecode();
         if (type == CONJ)
-            if (conjectures.empty()) return "";
-            else if (conjectures.back().empty()) return "";
-            else return conjectures.back().back().typecode();
+            return conjectures.empty() ? strview() : conjectures.back().typecode;
         return "";
     }
     // Hypothesis (must be of type THM)
