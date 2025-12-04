@@ -21,8 +21,8 @@ static Symbol3s symbols(Proofsteps const & RPN)
 // Return true if a move satisfies disjoint variable hypotheses.
 bool checkDV(Move const & move, Assertion const & ass, bool verbose)
 {
-    if (move.type != Move::THM || !move.pthm)
-        return false;
+    if (!move.pthm)
+        return true;
 // std::cout << "Checking DV of move " << move.label() << std::endl;
     FOR (Disjvars::const_reference vars, move.theorem().disjvars)
     {

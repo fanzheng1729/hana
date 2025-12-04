@@ -44,7 +44,7 @@ struct Move
         type(CONJ), pthm(NULL), conjectures(conjs) {}
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
-    // Expression the attempt of using an assertion proves (must be of type THM)
+    // Expression the move proves (must be of type THM)
     Proofsteps expRPN() const
     {
         if (!pthm) return Proofsteps();
@@ -57,6 +57,7 @@ struct Move
     // Theorem (must be of type THM)
     strview label() const { return pthm ? pthm->first : ""; }
     Assertion const & theorem() const { return pthm->second; }
+    // Type code of expression the move proves (must be of type THM)
     strview exptypecode() const { return theorem().exptypecode(); }
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
