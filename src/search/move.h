@@ -6,6 +6,9 @@
 #include "../bank.h"
 #include "goal.h"
 #include "../util/for.h"
+#include "../util/hex.h"
+
+static const std::string strconjecture = "CONJECTURE";
 
 // Move in proof search tree
 struct Move
@@ -116,6 +119,15 @@ struct Move
     {
         Expression const & hypexp = theorem().hypexp(index);
         return hypexp.size() == 2 ? hypexp[1] : Symbol3();
+    }
+    // Label for subgoal the move needs (must be of type THM or CONJ)
+    std::string subgoallabel(Hypsize index) const
+    {
+        if (type == THM)
+            return theorem().hyplabel(index);
+        if (type == CONJ)
+            return strconjecture + util::hex(index);
+        return "";
     }
     // Type code of subgoal the move needs (must be of type THM or CONJ)
     strview subgoaltypecode(Hypsize index) const
