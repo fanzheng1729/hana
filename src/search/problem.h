@@ -232,7 +232,7 @@ public:
     void printmainline(pNode p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
         { printmainline(root(), detail); }
-    virtual void checkmainline(pNode p) const;
+    void checkmainline(pNode p) const;
     void printstats() const;
     void printenvs() const;
     void printranksinfo() const;
