@@ -132,9 +132,11 @@ public:
         size_type size() const { return *this ? m_ptr->size : 0; }
         // Return true if a node has a child. Return 0 if *this is NULL.
         bool haschild() const { return size() > 1; }
+        // Return # children of a node. Return 0 if *this is NULL.
+        size_type childcount() const
+            { return *this ? m_ptr->children.size() : 0; }
         // Return true if a node has grand child. Return 0 if *this is NULL.
-        bool hasgrandchild() const
-            { return size() > m_ptr->children.size() + 1; }
+        bool hasgrandchild() const { return size() > childcount() + 1; }
         // Return the content of a node. *this != NULL.
         T & operator*() const { return m_ptr->value; }
         T * operator->()const { return&m_ptr->value; }
