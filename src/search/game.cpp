@@ -41,7 +41,7 @@ Game Game::play(Move const & move, bool ourturn) const
     if (ourturn) // Record the move.
     {
         game.attempt = move;
-        game.nDefer = (move.type == Move::DEFER) * (nDefer + 1);
+        game.nDefer = move.isdefer() * (nDefer + 1);
     }
     else if (attempt.type == Move::THM) // Pick the hypothesis.
         game.pgoal = attempt.subgoals[move.index];
@@ -64,7 +64,7 @@ Moves Game::theirmoves() const
 // std::cout << result.size() << " moves added" << std::endl;
         return result;
     }
-    return Moves(attempt.type == Move::DEFER, Move::DEFER);
+    return Moves(attempt.isdefer(), Move::DEFER);
 }
 
 // Our moves are supplied by the environment.
