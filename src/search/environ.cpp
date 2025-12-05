@@ -291,7 +291,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     move.esshyps.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
-        if (move.hypfloats(i)) continue;
+        if (move.subgoalfloats(i)) continue;
         // Add the essential hypothesis as a goal.
         pGoal const pgoal = pProb->addgoal(move.subgoal(i), *this, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
