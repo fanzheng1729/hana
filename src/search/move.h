@@ -69,6 +69,12 @@ struct Move
     // Theorem the move uses
     strview thmlabel() const { return pthm ? pthm->first : strview(); }
     Assertion const & theorem() const { return pthm->second; }
+    strview label() const
+    {
+        static const char * const msg[]
+        = {"NONE", "", "CONJ", "DEFER"};
+        return type == THM ? thmlabel() : msg[type];
+    }
     // Type code of goal the move proves (must be of type THM or CONJ)
     strview goaltypecode() const
     {
@@ -133,14 +139,7 @@ struct Move
     Hypsize esshypcount() const { return hypcount() - varcount(); }
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
-    {
-        static const char * const msg[]
-        = {"NONE", "", "CONJ", "DEFER"};
-        out << msg[move.type];
-        if (move.type == THM)
-            out << move.thmlabel().c_str;
-        return out;
-    }
+    { return out << move.label(); }
 private:
     Proofsize substitutionsize(Proofsteps const & src) const
     {
