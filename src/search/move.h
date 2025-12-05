@@ -132,13 +132,9 @@ struct Move
     { return isthm() ? theorem().hypfloats(index) : false; }
     strview subgoaltypecode(Hypsize index) const
     {
-        if (index >= subgoalcount())
-            return "";
-        if (isthm())
-            return theorem().hyptypecode(index);
-        if (isconj())
-            return absconjs[index].typecode;
-        return "";
+        return index >= subgoalcount() ? "" :
+                isthm() ? theorem().hyptypecode(index) :
+                isconj() ? absconjs[index].typecode : "";
     }
     // Subgoal the move needs (must be of type THM or CONJ)
     Goal subgoal(Hypsize index) const
