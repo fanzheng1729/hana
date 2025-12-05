@@ -47,7 +47,7 @@ struct Move
     Move(Conjectures const & conjs, Bank const & bank) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
     {
-        if (type == NONE)
+        if (!isconj())
             return;
         // Max id of abstracted variable
         Symbol2::ID maxid = 0;

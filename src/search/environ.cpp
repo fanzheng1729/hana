@@ -330,6 +330,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
+    std::cout << validthmmove(move);
     std::cerr << "Not implemented" << std::endl;
     throw;
 }
