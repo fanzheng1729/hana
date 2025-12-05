@@ -83,6 +83,8 @@ Indentations indentations(AST const & ast)
 static bool dofindsubstitutions
     (SteprangeAST exp, SteprangeAST tmp, Stepranges & result)
 {
+    if (exp.empty() || tmp.empty())
+        return false;
 // std::cout << "Matching " << Proofsteps(exp.first.first, exp.first.second);
 // std::cout << "Against " << Proofsteps(tmp.first.first, tmp.first.second);
     Proofstep exproot = *(exp.first.second-1), tmproot = *(tmp.first.second-1);
@@ -135,7 +137,7 @@ bool findsubstitutions
 {
     SteprangeAST const x(exp, expAST);
     SteprangeAST const y(pattern, patternAST);
-    return !x.empty() && !y.empty() && dofindsubstitutions(x, y, result);
+    return dofindsubstitutions(x, y, result);
 }
 
 // Return true if range1 has all the variables in range2
