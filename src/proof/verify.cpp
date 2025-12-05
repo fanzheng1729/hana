@@ -128,7 +128,7 @@ static void makesubstitution
 // Find the substitution. Increase the size of the stack by 1.
 // Return index of the base of the substitution in the stack.
 // Return the size of the stack if not okay.
-static typename std::vector<Expression>::size_type findsubstitutions
+static std::vector<Expression>::size_type findsubstitutions
     (strview label, strview thmlabel, Hypiters const & hypiters,
      std::vector<Expression> & stack, Substitutions & substitutions)
 {
