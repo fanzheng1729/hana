@@ -111,12 +111,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
                 conjs[0].typecode = thm.exptypecode();
                 Move move(conjs, bank);
-                FOR (Goal const & goal, move.absconjs)
-                    std::cout << goal.expression();
-                for (Hypsize i = 0; i < move.absconjs.size(); ++i)
-                    std::cout << move.subgoal(i).expression();
                 std::cout << valid(move);
-                std::cin.get();
             }
         }
     
@@ -331,6 +326,10 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
+    FOR (Goal const & goal, move.absconjs)
+        std::cout << goal.expression();
+    for (Hypsize i = 0; i < move.absconjs.size(); ++i)
+        std::cout << move.subgoal(i).expression();
     std::cout << validthmmove(move);
     std::cerr << "Not implemented" << std::endl;
     throw;
