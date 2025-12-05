@@ -91,6 +91,8 @@ struct Move
     // Goal the move proves (must be of type THM or CONJ)
     Goal goal() const
     {
+        if (type != THM && type != CONJ)
+            return Goal();
         Goal result;
         Proofsteps const & expRPN
         = pthm ? pthm->second.expRPN : absconjs.back().RPN;
@@ -107,8 +109,25 @@ struct Move
         return hypexp.size() == 2 ? hypexp[1] : Symbol3();
     }
     // Subgoal the move needs
+    Hypsize subgoalcount() const
+    {
+        switch (type)
+        {
+        case THM:
+            return theorem().hypcount();
+        case CONJ:
+            return absconjs.size();
+        case DEFER:
+            return 1;
+        default:
+            return 0;
+        }
+        return 0;
+    }
     std::string subgoallabel(Hypsize index) const
     {
+        if (index >= subgoalcount())
+            return "";
         if (type == THM)
             return theorem().hyplabel(index);
         if (type == CONJ)
@@ -120,16 +139,19 @@ struct Move
     { return type == THM ? theorem().hypfloats(index) : false; }
     strview subgoaltypecode(Hypsize index) const
     {
+        if (index >= subgoalcount())
+            return "";
         if (type == THM)
             return theorem().hyptypecode(index);
         if (type == CONJ)
-            if (index >= absconjs.size()) return "";
-            else return absconjs[index].typecode;
+            return absconjs[index].typecode;
         return "";
     }
     // Subgoal the move needs (must be of type THM or CONJ)
     Goal subgoal(Hypsize index) const
     {
+        if (index >= subgoalcount() || type != THM && type != CONJ)
+            return Goal();
         Goal result;
         Proofsteps const & hypRPN
         = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
@@ -140,9 +162,10 @@ struct Move
     // Index of subgoal (must be of type THM or CONJ)
     Hypsize matchsubgoal(Goal const & goal) const
     {
-        Hypsize imax = type == THM ? hypcount() : type == CONJ * absconjs.size();
+        if (type != THM && type != CONJ)
+            return subgoalcount();
         Hypsize i = 0;
-        for ( ; i < imax; ++i)
+        for ( ; i < subgoalcount(); ++i)
             if (goal == subgoal(i))
                 return i;
         return i;
