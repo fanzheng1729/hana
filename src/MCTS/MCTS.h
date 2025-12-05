@@ -207,13 +207,11 @@ public:
     }
     size_type playcount() const { return m_playcount; }
     virtual void playoncecallback() {}
-    virtual void checkmainline(pNode p) const {}
     // Play out once. Return the value at the root.
     Value playonce()
     {
 // std::cout << playcount() << '\t' << size() << std::endl;
 // std::cout << *root();
-// checkmainline(root());
         pNode p = pickleaf(root());
 // std::cout << "Expanding " << *p;
         if (size_type const n = expand<&G::moves>(p))
