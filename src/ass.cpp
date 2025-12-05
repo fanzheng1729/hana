@@ -31,9 +31,15 @@ Bvector & Assertion::trimvars
 // Set the hypotheses, trimming away specified ones.
 void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
 {
-    if (hypstotrim.empty()) return;
+    if (hypstotrim.empty())
+        return;
+    // # hypotheses in new assertion
+    Hypsize const newhypcount
+    = ass.hypcount() - std::count(hypstotrim.begin(), hypstotrim.end(), true);
 
     hypiters.clear();
+    // Preallocate for efficiency
+    hypiters.reserve(newhypcount);
     varusage.clear();
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
@@ -47,7 +53,11 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
         {
             // Floating hypothesis of used variable
             Symbol3 const var = iter->second.expression[1];
+            // Use of var in new assertion
             Bvector & usage = varusage[var];
+            usage.clear();
+            // Preallocate for efficiency
+            usage.reserve(newhypcount);
             Bvector const & assusage = ass.varusage.at(var);
             for (Hypsize j = 0; j < ass.hypcount(); ++j)
                 if (!hypstotrim[j])
