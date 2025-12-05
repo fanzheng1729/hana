@@ -155,10 +155,10 @@ public:
     virtual void playoncecallback()
     {
         re_eval();
-        checkmainline(root());
+        // checkmainline(root());
     }
     // Refocus the tree on simpler sub-tree, if almost won.
-    virtual void re_eval();
+    void re_eval();
     // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode p);
     // Prune the sub-tree at p and update maxranks, if almost won.
