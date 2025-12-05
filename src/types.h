@@ -216,7 +216,9 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
 {
     using std::pair<Steprange, ASTiter>::pair;
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
-        std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) {}
+        std::pair<Steprange, ASTiter>(proofsteps, ast.begin())
+    { if (proofsteps.size() != ast.size()) first.second = first.first; }
+    bool empty() const { return first.first == first.second; }
     // AST root node
     ASTnode const & ASTroot() const
     { return *(first.second - first.first + second - 1); }

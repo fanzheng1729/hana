@@ -80,7 +80,7 @@ Indentations indentations(AST const & ast)
 }
 
 // Return true if the RPN of an expression matches a template.
-static bool findsubstitutions
+static bool dofindsubstitutions
     (SteprangeAST exp, SteprangeAST tmp, Stepranges & result)
 {
 // std::cout << "Matching " << Proofsteps(exp.first.first, exp.first.second);
@@ -115,7 +115,7 @@ static bool findsubstitutions
                 return false;
             // Match the children.
             for (ASTnode::size_type i = 0; i < expASTroot.size(); ++i)
-                if (!findsubstitutions(exp.child(i), tmp.child(i), result))
+                if (!dofindsubstitutions(exp.child(i), tmp.child(i), result))
                     return false;
             // All children match.
             return true;
@@ -133,12 +133,9 @@ bool findsubstitutions
      Proofsteps const & pattern, AST const & patternAST,
      Stepranges & result)
 {
-    if (exp.empty() || exp.size() != expAST.size() ||
-        pattern.empty() || pattern.size() != patternAST.size())
-        return false;
     SteprangeAST const x(exp, expAST);
     SteprangeAST const y(pattern, patternAST);
-    return findsubstitutions(x, y, result);
+    return !x.empty() && !y.empty() && dofindsubstitutions(x, y, result);
 }
 
 // Return true if range1 has all the variables in range2
