@@ -13,14 +13,14 @@ Bvector & Assertion::trimvars
     {
         Hypothesis const & hyp = hypiters[i]->second;
         if (!hypfloats(i)) continue;
-        // Appearance of the variable in hypotheses
+        // Use of the variable in hypotheses
         Bvector const & usage = varusage.at(hypexp(i)[1]);
 // std::cout << "use of " << hypexp(i)[1] << ' ';
         Hypsize j = hypcount() - 1;
-        for ( ; j != Hypsize(-1); --j)
+        for ( ; j != static_cast<Hypsize>(-1); --j)
             if (hypstotrim[j] && usage[j]) break;
 // std::cout << j << ' ';
-        hypstotrim[i] = (j != Hypsize(-1) ||
+        hypstotrim[i] = (j != static_cast<Hypsize>(-1) ||
                         util::filter(conclusion)(hyplabel(i).c_str));
     }
     hypstotrim.flip();

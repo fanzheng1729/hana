@@ -32,7 +32,8 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 
     bool trimmed = false;
 
-    for (Hypsize i = assertion.hypcount() - 1; i != Hypsize(-1); --i)
+    for (Hypsize i = assertion.hypcount() - 1;
+        i != static_cast<Hypsize>(-1); --i)
     {
         if (assertion.hypfloats(i)) continue;
 // std::cout << "Trimming hypothesis " << assertion.hyplabel(i) << std::endl;
