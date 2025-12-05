@@ -47,7 +47,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
             continue;
 
         Hypiter const iter = ass.hypiters[i];
-        // *iter is used.
+        // *iter in use
         hypiters.push_back(iter);
         if (ass.hypfloats(i))
         {
