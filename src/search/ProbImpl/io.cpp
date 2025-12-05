@@ -39,7 +39,7 @@ static const char strproven[] = "V";
 // Format: ax-mp[!]
 static void printrefname(pNode p)
 {
-    std::cout << p->game().attempt.label();
+    std::cout << p->game().attempt.thmlabel();
     if (onlyopenchild(p)) std::cout << '!';
 }
 
@@ -277,7 +277,7 @@ static bool findourchild(pNode & p, strview ass, std::size_t index)
     FOR (pNode child, *p.children())
     {
         Move const & move = child->game().attempt;
-        if (move.type == Move::THM && move.label() == ass && index-- == 0)
+        if (move.type == Move::THM && move.thmlabel() == ass && index-- == 0)
             return p = child;
     }
     return false;
