@@ -80,7 +80,7 @@ Indentations indentations(AST const & ast)
 }
 
 // Return true if the RPN of an expression matches a template.
-static bool dofindsubstitutions
+bool findsubstitutions
     (SteprangeAST exp, SteprangeAST tmp, Stepranges & result)
 {
     if (exp.empty() || tmp.empty())
@@ -117,7 +117,7 @@ static bool dofindsubstitutions
                 return false;
             // Match the children.
             for (ASTnode::size_type i = 0; i < expASTroot.size(); ++i)
-                if (!dofindsubstitutions(exp.child(i), tmp.child(i), result))
+                if (!findsubstitutions(exp.child(i), tmp.child(i), result))
                     return false;
             // All children match.
             return true;
@@ -137,7 +137,7 @@ bool findsubstitutions
 {
     SteprangeAST const x(exp, expAST);
     SteprangeAST const y(pattern, patternAST);
-    return dofindsubstitutions(x, y, result);
+    return findsubstitutions(x, y, result);
 }
 
 // Return true if range1 has all the variables in range2
