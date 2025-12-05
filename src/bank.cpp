@@ -43,6 +43,8 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     exp[1] = var = Symbol3(varlabel, id, &*hypiter);
     // rev-Polish notation of the hypothesis
     hypiter->second.RPN.assign(1, hypiter);
+    // Abstract syntax tree of the hypothesis
+    hypiter->second.ast.resize(1);
 
     return var;
 }
