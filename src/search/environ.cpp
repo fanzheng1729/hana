@@ -113,8 +113,8 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 Move move(conjs, bank);
                 FOR (Goal const & goal, move.absconjs)
                     std::cout << goal.expression();
-                std::cout << move.subgoal(0).expression();
-                std::cout << move.goal().expression();
+                for (Hypsize i = 0; i < move.childcount(); ++i)
+                    std::cout << move.subgoal(i).expression();
                 std::cout << valid(move);
                 std::cin.get();
             }
