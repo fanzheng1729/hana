@@ -63,9 +63,10 @@ struct Move
             FOR (Proofstep step, goal.RPN)
                 if (Symbol2::ID id = step.id())
                 {
-                    Proofsteps const & RPN = bank.substitution(id);
-                    if (!RPN.empty() && substitutions[id].empty())
-                        substitutions[id] = RPN;
+                    Proofsteps const & src = bank.substitution(id);
+                    Proofsteps & dest = substitutions[id];
+                    if (dest.empty())
+                        dest = src;
                 }
     }
     // A move verifying a hypothesis, on their turn
