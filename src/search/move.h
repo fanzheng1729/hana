@@ -123,7 +123,7 @@ struct Move
         if (type == THM)
             return theorem().hyptypecode(index);
         if (type == CONJ)
-            if (index >= absconjs.size() - 1) return "";
+            if (index >= absconjs.size()) return "";
             else return absconjs[index].typecode;
         return "";
     }
