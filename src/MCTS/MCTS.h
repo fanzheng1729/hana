@@ -172,7 +172,7 @@ public:
     // p should != NULL.
     void evalnewleaves(pNode p) const
     {
-        for (size_type i = p->index(); i < p.children()->size(); ++i)
+        for (size_type i = p->index(); i < p.childcount(); ++i)
         {
             pNode const child = (*p.children())[i];
             // Evaluate child.
@@ -185,7 +185,7 @@ public:
             if (!isourturn(p) && eval == EvalLOSS)
                 break;
         }
-        p->setindex(p.children()->size());
+        p->setindex(p.childcount());
     }
     // Evaluate the node. Return {value, sure?}.
     // p should != NULL.
@@ -250,7 +250,7 @@ private:
     size_type addchildren(pNode p, Moves const & moves)
     {
 // std::cout << "Adding " << moves.size() << " moves to " << *p;
-        size_type const oldsize = p.children()->size();
+        size_type const oldsize = p.childcount();
         if (p.reserve(oldsize + moves.size()))
             expandcallback(p);
 
@@ -261,8 +261,8 @@ private:
             pNode child(this->insert(p, p->play(move)));
         }
 // if (p->stage() >= 5)
-// std::cout << p.children()->size() - oldsize << " moves added to " << *p;
-        return p.children()->size() - oldsize;
+// std::cout << p.childcount() - oldsize << " moves added to " << *p;
+        return p.childcount() - oldsize;
     }
 };
 
