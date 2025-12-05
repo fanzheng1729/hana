@@ -204,13 +204,12 @@ bool Syntaxioms::addRPN
 }
 
 // Determine if proof is the revPolish notation for the expression of ass.
-static bool checkRPN(Assertion const & ass, Proofsteps const & RPN)
+static bool checkRPN(Assertion const & ass, SteprangeAST exp)
 {
-    AST const & tree(ast(RPN));
-    SteprangeAST exp(RPN, tree);
     Stepranges stepranges(ass.maxvarid() + 1);
     bool const ok = findsubstitutions(exp, exp, stepranges);
-    return !unexpected(!ok, "failed unification test for", RPN);
+    return !unexpected(!ok, "failed unification test for",
+                        Proofsteps(exp.first.first, exp.first.second));
 }
 
 // Check the syntax of an assertion (& all hypotheses). Return true if okay.
@@ -222,19 +221,20 @@ bool Syntaxioms::checkRPN
         return false;
 
     exp[0] = typecodes.normalize(exp[0]);
-    if (!::checkRPN(ass, ass.expRPN))
+    if (!::checkRPN(ass, ass.expRPNAST()))
         return false;
 
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
         if (ass.hypfloats(i))
             continue;
+
         exp = ass.hypexp(i);
         if (exp.empty())
             return false;
 
         exp[0] = typecodes.normalize(exp[0]);
-        if (!::checkRPN(ass, ass.hypRPN(i)))
+        if (!::checkRPN(ass, ass.hypRPNAST(i)))
             return false;
     }
 
