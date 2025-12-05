@@ -30,8 +30,9 @@ public:
     Proofsteps const & substitution(Symbol2::ID id) const
     { return *substitutions()[id]; }
     Tokens::size_type varcount() const { return m_varlabels.size() - 1; }
+    Symbol3 addRPN(Proofsteps const & RPN);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
-    Symbol3 addRPN(Proofsteps const & RPN = Proofsteps());
+    Hypiter addhyp(Proofsteps const & RPN, strview typecode);
 };
 
 #endif // BANK_h_INCLUDED

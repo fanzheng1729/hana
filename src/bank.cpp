@@ -1,10 +1,13 @@
 #include "bank.h"
 #include "io.h"
+#include "proof/analyze.h"
+#include "proof/verify.h"
 #include "util/hex.h"
 #include "util/for.h"
 
 // Type label delimiter
 static const std::string typedelim = "~";
+static const std::string essentialhypheader = "e" + typedelim;
 static const std::string floatinghypheader = "f" + typedelim;
 
 Symbol3 Bank::addRPN(Proofsteps const & RPN)
@@ -18,10 +21,11 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
 
     std::pair<Proofsteps const &, Symbol3> const value(RPN, "");
     RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(value).first;
+    // New variable
     Symbol3 & var = RPNiter->second;
     if (var.id != 0) // old RPN
         return var;
-    // new RPN, to which variable #id is assigned
+    // New RPN, to which variable #id is assigned
     Symbol2::ID const id = m_varlabels.size();
     // Name of variable = typecode~hex(n)
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
@@ -47,6 +51,31 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     hypiter->second.ast.resize(1);
 
     return var;
+}
+
+Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
+{
+    Hypothesis hyp;
+    // Expression of the hypothesis
+    Expression & exp = hyp.expression = verify(RPN);
+    if (exp.empty())
+        return Hypiter();
+    else
+        exp[0] = typecode;
+    // Abstract syntax tree of the hypothesis
+    hyp.ast = ast(RPN);
+    if (hyp.ast.empty())
+        return Hypiter();
+
+    hyp.floats = false;
+    hyp.RPN = RPN;
+    // # of the hypothesis
+    Hypsize const n = m_hyplabels.size();
+    // label of the hypothesis
+    m_hyplabels.push_back(essentialhypheader + util::hex(n));
+
+    std::pair<strview, Hypothesis const &> value(m_hyplabels.back(), hyp);
+    return m_hypotheses.insert(value).first;
 }
 
 std::ostream & operator<<(std::ostream & out, const Bank & bank)
