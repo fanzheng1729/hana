@@ -66,16 +66,16 @@ struct Move
     }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
-    // Theorem the move uses
     strview thmlabel() const { return pthm ? pthm->first : strview(); }
-    Assertion const & theorem() const { return pthm->second; }
     strview label() const
     {
         static const char * const msg[]
         = {"NONE", "", "CONJ", "DEFER"};
         return type == THM ? thmlabel() : msg[type];
     }
-    // Type code of goal the move proves (must be of type THM or CONJ)
+    // Theorem the move uses (must be of type THM)
+    Assertion const & theorem() const { return pthm->second; }
+    // Type code of goal the move proves
     strview goaltypecode() const
     {
         if (type == THM)
