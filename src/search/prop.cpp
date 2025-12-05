@@ -60,10 +60,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         ntotrim += result[i] = !cnf2.sat();
     }
 
-    if (ntotrim == 0)
-        return Bvector();
-    assertion.trimvars(result, goal.RPN);
-    return result;
+    return ntotrim ? assertion.trimvars(result, goal.RPN) : Bvector();
 }
 
 static double distance
