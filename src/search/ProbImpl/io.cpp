@@ -110,8 +110,8 @@ static void printhypsline(pNode p)
     Hypsize i = 0;
     FOR (pNode child, *p.children())
     {
-        while (p->game().attempt.hypfloats(i)) ++i;
-        std::cout << p->game().attempt.hyplabel(i++);
+        while (p->game().attempt.subgoalfloats(i)) ++i;
+        std::cout << p->game().attempt.subgoallabel(i++);
         printeval(child);
         std::cout << ' ';
     }
