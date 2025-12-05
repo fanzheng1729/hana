@@ -70,6 +70,9 @@ struct Move
     }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
+    bool isthm() const  { return type == THM; }
+    bool isconj() const { return type == CONJ; }
+    bool isdefer() const{ return type == DEFER; }
     strview thmlabel() const { return pthm ? pthm->first : strview(); }
     strview label() const
     {
@@ -82,16 +85,16 @@ struct Move
     // Type code of goal the move proves
     strview goaltypecode() const
     {
-        if (type == THM)
+        if (isthm())
             return theorem().exptypecode();
-        if (type == CONJ)
+        if (isconj())
             return absconjs.empty() ? strview() : absconjs.back().typecode;
         return "";
     }
     // Goal the move proves (must be of type THM or CONJ)
     Goal goal() const
     {
-        if (type != THM && type != CONJ)
+        if (!isthm() && !isconj())
             return Goal();
         Goal result;
         Proofsteps const & expRPN
@@ -111,26 +114,21 @@ struct Move
     // Subgoal the move needs
     Hypsize subgoalcount() const
     {
-        switch (type)
-        {
-        case THM:
+        if (isthm())
             return theorem().hypcount();
-        case CONJ:
+        if (isconj())
             return absconjs.size();
-        case DEFER:
+        if (isdefer())
             return 1;
-        default:
-            return 0;
-        }
         return 0;
     }
     std::string subgoallabel(Hypsize index) const
     {
         if (index >= subgoalcount())
             return "";
-        if (type == THM)
+        if (isthm())
             return theorem().hyplabel(index);
-        if (type == CONJ)
+        if (isconj())
             if (index == absconjs.size() - 1) return strcombination;
             else return strconjecture + util::hex(index);
         return "";
@@ -141,16 +139,16 @@ struct Move
     {
         if (index >= subgoalcount())
             return "";
-        if (type == THM)
+        if (isthm())
             return theorem().hyptypecode(index);
-        if (type == CONJ)
+        if (isconj())
             return absconjs[index].typecode;
         return "";
     }
     // Subgoal the move needs (must be of type THM or CONJ)
     Goal subgoal(Hypsize index) const
     {
-        if (index >= subgoalcount() || type != THM && type != CONJ)
+        if (index >= subgoalcount() || !isthm() && !isconj())
             return Goal();
         Goal result;
         Proofsteps const & hypRPN
@@ -162,7 +160,7 @@ struct Move
     // Index of subgoal (must be of type THM or CONJ)
     Hypsize matchsubgoal(Goal const & goal) const
     {
-        if (type != THM && type != CONJ)
+        if (!isthm() && !isconj())
             return subgoalcount();
         Hypsize i = 0;
         for ( ; i < subgoalcount(); ++i)

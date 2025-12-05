@@ -289,7 +289,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     bool allproven = true;
     // Record the hypotheses.
     move.subgoals.resize(move.subgoalcount());
-    for (Hypsize i = 0; i < move.hypcount(); ++i)
+    for (Hypsize i = 0; i < move.subgoalcount() - (move.type==Move::CONJ); ++i)
     {
         if (move.subgoalfloats(i)) continue;
         // Add the essential hypothesis as a goal.
