@@ -12,8 +12,7 @@ AST ast(Proofsteps const & proof);
 Indentations indentations(AST const & ast);
 
 // Return true if the RPN of an expression matches a template.
-bool findsubstitutions
-    (SteprangeAST exp, SteprangeAST tmp, Stepranges & result);
+bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
 
 // Find all maximal ranges governed by a syntax axiom.
 GovernedSteprangesbystep maxranges(Steprange range, AST ast);

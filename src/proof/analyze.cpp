@@ -80,8 +80,7 @@ Indentations indentations(AST const & ast)
 }
 
 // Return true if the RPN of an expression matches a template.
-bool findsubstitutions
-    (SteprangeAST exp, SteprangeAST tmp, Stepranges & result)
+bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 {
     if (exp.empty() || tmp.empty())
         return false;
@@ -97,10 +96,10 @@ bool findsubstitutions
             if (id == 0)
                 return false;
             // Template hypothesis is floating. Check if it has been seen.
-            if (result[id].second > result[id].first) // seen
+            if (subst[id].second > subst[id].first) // seen
                 return util::equal(exp.first.first, exp.first.second,
-                                   result[id].first, result[id].second);
-            result[id] = exp.first;// unseen
+                                   subst[id].first, subst[id].second);
+            subst[id] = exp.first;// unseen
             return true;
         }
     case Proofstep::THM:
@@ -117,7 +116,7 @@ bool findsubstitutions
                 return false;
             // Match the children.
             for (ASTnode::size_type i = 0; i < expASTroot.size(); ++i)
-                if (!findsubstitutions(exp.child(i), tmp.child(i), result))
+                if (!findsubstitutions(exp.child(i), tmp.child(i), subst))
                     return false;
             // All children match.
             return true;
