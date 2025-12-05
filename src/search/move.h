@@ -124,7 +124,7 @@ struct Move
         if (isthm())
             return theorem().hyplabel(index);
         if (isconj())
-            if (index == absconjs.size() - 1) return strcombination;
+            if (index == conjcount()) return strcombination;
             else return strconjecture + util::hex(index);
         return "";
     }
@@ -165,9 +165,8 @@ struct Move
     Symbol3s::size_type varcount() const { return theorem().varcount(); }
     // # of essential hypotheses the move needs (must be of type THM)
     Hypsize esshypcount() const { return hypcount() - varcount(); }
-    // Output the move (must be our move).
-    friend std::ostream & operator<<(std::ostream & out, Move const & move)
-    { return out << move.label().c_str; }
+    // # of conjectures made (must be of type CONJ)
+    Hypsize conjcount() const { return absconjs.size() - 1; }
 private:
     Proofsize substitutionsize(Proofsteps const & src) const
     {

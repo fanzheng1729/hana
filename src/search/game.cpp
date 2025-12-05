@@ -19,7 +19,7 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
         out << "Proof: " << game.proof();
     if (game.attempt.type != Move::NONE)
         out << "Proof attempt (" << game.nDefer << ") "
-            << game.attempt << std::endl;
+            << game.attempt.label() << std::endl;
     return out;
 }
 
@@ -85,7 +85,7 @@ Moves Game::ourmoves(stage_t stage) const
 static void writeprooferr
     (Game const & game, Expression const & exp, pProofs const & hyps)
 {
-    std::cerr << "In attempt to use " << game.attempt << ", the proof\n";
+    std::cerr << "When using " << game.attempt.label() << ", the proof\n";
     std::cerr << game.proof() << "proves\n" << exp;
     std::cerr << "instead of\n" << game.goal().expression();
     std::cerr << "Proofs of hypotheses are" << std::endl;
