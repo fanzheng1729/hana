@@ -204,8 +204,7 @@ bool Syntaxioms::addRPN
 }
 
 // Determine if proof is the revPolish notation for the expression of ass.
-static bool checkRPN
-    (strview label, Assertion const & ass, Proofsteps const & RPN)
+static bool checkRPN(Assertion const & ass, Proofsteps const & RPN)
 {
     AST const & tree(ast(RPN));
     Stepranges stepranges(ass.maxvarid() + 1);
@@ -218,20 +217,26 @@ bool Syntaxioms::checkRPN
     (strview label, Assertion ass, struct Typecodes const & typecodes) const
 {
     Expression & exp = ass.expression;
-    if (exp.empty()) return false;
+    if (exp.empty())
+        return false;
 
     exp[0] = typecodes.normalize(exp[0]);
-    if (!::checkRPN(label, ass, ass.expRPN)) return false;
+    if (!::checkRPN(ass, ass.expRPN))
+        return false;
 
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
-        if (ass.hypfloats(i)) continue;
+        if (ass.hypfloats(i))
+            continue;
         exp = ass.hypexp(i);
-        if (exp.empty()) return false;
-//std::cout << "Checking hypothesis " << ass.hyplabel(i) << ": " << exp;
+        if (exp.empty())
+            return false;
+
         exp[0] = typecodes.normalize(exp[0]);
-        if (!::checkRPN(label, ass, ass.hypRPN(i))) return false;
+        if (!::checkRPN(ass, ass.hypRPN(i)))
+            return false;
     }
+
     return true;
 }
 

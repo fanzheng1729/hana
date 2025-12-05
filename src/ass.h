@@ -11,8 +11,7 @@ static const std::string hypdelim = "~";
 // An axiom or a theorem
 struct Assertion
 {
-    Assertion()
-    : number(0), tokenpos(0), type(0) {}
+    Assertion() : number(0), tokenpos(0), type(0) {}
 // Essential properties:
     // Hypotheses of this axiom or theorem
     Hypiters hypiters;
@@ -39,6 +38,7 @@ struct Assertion
     // Type (propositional, predicate, etc)
     unsigned type;
 // Functions:
+    SteprangeAST expRPNAST() const { return SteprangeAST(expRPN, expAST); }
     // Typecode of the conclusion
     strview exptypecode() const
         { return expression.empty() ? strview() : expression[0]; }
@@ -69,10 +69,11 @@ struct Assertion
     // Typecode of a hypothesis
     strview hyptypecode(Hypsize index) const
         { return hypexp(index).empty() ? strview() : hypexp(index)[0]; }
-    // RPN of a hypothesis
+    // Rev-Polish notation and abstract syntax tree of a hypothesis
     Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
-    // AST of a hypothesis
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
+    SteprangeAST hypRPNAST(Hypsize index) const
+        { return SteprangeAST(hypRPN(index), hypAST(index)); }
     // Length of a hypothesis
     Proofsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
     // Total length of RPNs of hypotheses

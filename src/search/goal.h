@@ -14,6 +14,7 @@ struct Goal
     Goal() {}
     Goal(Goalview view) : RPN(view.first), typecode(view.second) {}
     Proofsize size() const { return RPN.size(); }
+    operator SteprangeAST() const { return SteprangeAST(RPN, ast); }
     Expression expression() const
     {
         Expression result(verify(RPN));

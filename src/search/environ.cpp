@@ -149,8 +149,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
             if (asshyp == ass.hypcount())
                 return delta; // No new match
             if (findsubstitutions
-                (ass.hypRPN(asshyp), ass.hypAST(asshyp),
-                 thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
+                (ass.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp),
                  substack[hypstack.size()]))
                 return ++delta; // New match
         }
@@ -231,9 +230,9 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
             Stepranges newsubstitutions(substitutions);
-            if (findsubstitutions(assertion.hypRPN(asshyp), assertion.hypAST(asshyp),
-                                  thm.hypRPN(thmhyp), thm.hypAST(thmhyp),
-                                  newsubstitutions))
+            if (findsubstitutions
+                (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp),
+                 newsubstitutions))
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
                 Move move(pthm, newsubstitutions);
@@ -270,8 +269,7 @@ bool Environ::trythm
     if (thm.esshypcount() == 0)
         addabsmoves(goal, &*iter, moves);
     Stepranges stepranges(thm.maxvarid() + 1);
-    if (!findsubstitutions
-        (goal.RPN, goal.ast, thm.expRPN, thm.expAST, stepranges))
+    if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
         return false; // Conclusion mismatch
 
     // Move with all bound substitutions
