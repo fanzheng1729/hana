@@ -137,11 +137,11 @@ struct Move
         result.typecode = subgoaltypecode(index);
         return result;
     }
-    // Index of hypothesis by goal (must be of type THM or CONJ)
-    Hypsize matchhyp(Goal const & goal) const
+    // Index of subgoal (must be of type THM or CONJ)
+    Hypsize matchsubgoal(Goal const & goal) const
     {
         Hypsize i = 0;
-        for ( ; i < hypcount(); ++i)
+        for ( ; i < childcount(); ++i)
             if (goal == subgoal(i))
                 return i;
         return i;

@@ -89,7 +89,7 @@ static void printournode(pNode p, stage_t stage)
 {
     Move const & lastmove = p.parent()->game().attempt;
     printstage(stage);
-    std::cout << lastmove.hyplabel(lastmove.matchhyp(p->game().goal()));
+    std::cout << lastmove.hyplabel(lastmove.matchsubgoal(p->game().goal()));
     printeval(p);
     std::cout << '\t';
     std::cout << &strproven[!p->game().proven()];
