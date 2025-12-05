@@ -288,7 +288,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     // Check if all goals of the move are proven.
     bool allproven = true;
     // Record the hypotheses.
-    move.esshyps.resize(move.hypcount());
+    move.subgoals.resize(move.hypcount());
     for (Hypsize i = 0; i < move.hypcount(); ++i)
     {
         if (move.subgoalfloats(i)) continue;
@@ -301,14 +301,14 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         // Check if the goal is proven.
         if (pgoal->second.proven())
         {
-            move.esshyps[i] = pgoal;
+            move.subgoals[i] = pgoal;
             continue;
         }
         // Not proven
         allproven = false;
         if (s >= GOALOPEN) // Valid
         {
-            move.esshyps[i] = addsimpgoal(pgoal);
+            move.subgoals[i] = addsimpgoal(pgoal);
             continue;
         }
         // New goal (s == GOALNEW)
@@ -320,7 +320,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         Environ const * & psimpEnv = pgoal->second.psimpEnv;
         psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
-        move.esshyps[i] = addsimpgoal(pgoal);
+        move.subgoals[i] = addsimpgoal(pgoal);
 // if (psimpEnv)
 // std::cout << pgoal->second.goal().expression() << name << "\n->\n",
 // std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;

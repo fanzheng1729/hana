@@ -64,11 +64,11 @@ bool loops(pNode p)
     {
         if (move.hypfloats(i))
             continue;
-        if (move.esshyps[i]->second.proven())
+        if (move.subgoals[i]->second.proven())
             continue;
-        if (cycles(move.esshyps[i], p.parent()))
+        if (cycles(move.subgoals[i], p.parent()))
             return true;
-        allgoals.insert(move.esshyps[i]);
+        allgoals.insert(move.subgoals[i]);
     }
     // Check if these hypotheses combined prove a parent node.
     while (pGoal const pgoal = allgoals.saturate())

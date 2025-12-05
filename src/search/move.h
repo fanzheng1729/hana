@@ -31,8 +31,8 @@ struct Move
     typedef std::vector<Goal> Conjectures;
     // Abstract conjectures for conjectural moves on our turn
     Conjectures absconjs;
-    // Essential hypotheses needed, on our turn
-    mutable std::vector<pGoal> esshyps;
+    // Sub-goals needed, on our turn
+    mutable std::vector<pGoal> subgoals;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :
