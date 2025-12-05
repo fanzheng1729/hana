@@ -30,7 +30,8 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 {
     Bvector result(assertion.hypcount(), false);
 
-    Hypsize ntotrim = 0; // # essential hypothesis to trim
+    bool trimmed = false;
+
     for (Hypsize i = assertion.hypcount() - 1; i != Hypsize(-1); --i)
     {
         if (assertion.hypfloats(i)) continue;
@@ -57,10 +58,11 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         (goal.RPN, assertion.hypiters, cnf2, natom);
         // Negate conclusion.
         cnf2.closeoff((natom - 1) * 2 + 1);
-        ntotrim += result[i] = !cnf2.sat();
+        if ((result[i] = !cnf2.sat()))
+            trimmed = true;
     }
 
-    return ntotrim ? assertion.trimvars(result, goal.RPN) : Bvector();
+    return trimmed ? assertion.trimvars(result, goal.RPN) : Bvector();
 }
 
 static double distance
