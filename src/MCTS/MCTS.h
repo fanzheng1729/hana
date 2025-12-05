@@ -191,7 +191,7 @@ public:
     // p should != NULL.
     Eval evaluate(pNode p) const
         { return p.haschild() ? evalparent(p) : evalleaf(p); }
-    // Call back for back propagation.
+    // Called after each backprop()
     virtual void backpropcallback(pNode p) {}
     // Back propagate from the node pointed.
     // DO NOTHING if p is NULL.
@@ -206,6 +206,7 @@ public:
         }
     }
     size_type playcount() const { return m_playcount; }
+    // Called after each playonce()
     virtual void playoncecallback() {}
     // Play out once. Return the value at the root.
     Value playonce()

@@ -151,8 +151,14 @@ public:
         else if (p->won() && p->game().writeproof())
             closenodes(p);
     }
+    // Called after each playonce()
+    virtual void playoncecallback()
+    {
+        re_eval();
+        checkmainline(root());
+    }
     // Refocus the tree on simpler sub-tree, if almost won.
-    virtual void playoncecallback();
+    virtual void re_eval();
     // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode p);
     // Prune the sub-tree at p and update maxranks, if almost won.
