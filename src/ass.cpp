@@ -39,7 +39,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
     {
         if (i < hypstotrim.size() && hypstotrim[i])
             continue;
-        // *iter is used.
+        // Hypothesis used
         Hypiter const iter = ass.hypiters[i];
         hypiters.push_back(iter);
         if (ass.hypfloats(i))
