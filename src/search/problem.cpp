@@ -103,11 +103,9 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         return newEnviter->second;
     // If it does not exist, add the simplified assertion.
     Assertion & subAss = assertions[newEnviter->first];
-    if (!subAss.expression.empty())
+    if (subAss.number > 0)
         return NULL;
     Assertion const & ass = env.makeAss(hypstotrim);
-    if (ass.expression.empty())
-        return NULL;
     // Add the sub-context.
     Environ * const psubEnv = env.makeEnv(subAss = ass);
     if (psubEnv)

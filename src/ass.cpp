@@ -1,4 +1,5 @@
 #include "ass.h"
+#include "disjvars.h"
 // #include "io.h"
 #include "util/filter.h"
 
@@ -64,4 +65,14 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
                     usage.push_back(assusage[j]);
         }
     }
+}
+
+// Return the simplified assertion for the goal of the game to hold.
+Assertion makeAss(Assertion const & ass, Bvector const & hypstotrim)
+{
+    Assertion result;
+    result.number = ass.number;
+    result.sethyps(ass, hypstotrim);
+    result.disjvars = ass.disjvars & result.varusage;
+    return result;
 }

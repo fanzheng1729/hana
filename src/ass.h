@@ -142,4 +142,7 @@ struct Assertion
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());
 };
 
+// Return the simplified assertion for the goal of the game to hold.
+Assertion makeAss(Assertion const & ass, Bvector const & hypstotrim);
+
 #endif // ASS_H_INCLUDED

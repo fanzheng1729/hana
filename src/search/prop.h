@@ -46,16 +46,6 @@ struct Prop : Environ
         return new(std::nothrow)
         Prop(ass, database, m_maxmoves, frequencybias, staged);
     }
-    // Return the simplified assertion for the goal of the game to hold.
-    virtual Assertion makeAss(Bvector const & hypstotrim) const
-    {
-        Assertion result;
-        result.number = assertion.number;
-        result.sethyps(assertion, hypstotrim);
-        result.expression.resize(1);
-        result.disjvars = assertion.disjvars & result.varusage;
-        return result;
-    }
 private:
     // Add moves with free variables.
     // Return true if it has no open hypotheses.
