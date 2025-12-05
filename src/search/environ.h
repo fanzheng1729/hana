@@ -139,10 +139,12 @@ private:
     // Return true if it has no open hypotheses.
     bool trythm
         (Game const & game, Assiter iter, Proofsize size, Moves & moves) const;
-// Move validation
-    // Validate a move applying a theorem.
+// Validate
+    // a subgoal of the move.
+    Goalstatus validsubgoal(Move const & move, Hypsize i) const;
+    // a move applying a theorem.
     MoveValidity validthmmove(Move const & move) const;
-    // Validate a conjectural move.
+    // a conjectural move.
     MoveValidity validconjmove(Move const & move) const;
 // Private members
     // true if *this <= problem context
