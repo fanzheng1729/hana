@@ -114,13 +114,8 @@ struct Move
     // Subgoal the move needs
     Hypsize subgoalcount() const
     {
-        if (isthm())
-            return theorem().hypcount();
-        if (isconj())
-            return absconjs.size();
-        if (isdefer())
-            return 1;
-        return 0;
+        return isthm() ? theorem().hypcount() :
+                isconj() ? absconjs.size() : isdefer();
     }
     std::string subgoallabel(Hypsize index) const
     {

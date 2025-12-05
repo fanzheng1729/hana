@@ -328,7 +328,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
     FOR (Goal const & goal, move.absconjs)
         std::cout << goal.expression();
-    for (Hypsize i = 0; i < move.absconjs.size(); ++i)
+    for (Hypsize i = 0; i < move.subgoalcount(); ++i)
         std::cout << move.subgoal(i).expression();
     std::cout << validthmmove(move);
     std::cerr << "Not implemented" << std::endl;
