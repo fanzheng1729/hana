@@ -291,7 +291,8 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     move.subgoals.resize(move.subgoalcount());
     for (Hypsize i = 0; i < move.subgoalcount() - move.isconj(); ++i)
     {
-        if (move.subgoalfloats(i)) continue;
+        if (move.subgoalfloats(i))
+            continue;
         // Add the essential hypothesis as a goal.
         pGoal const pgoal = pProb->addgoal(move.subgoal(i), *this, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
