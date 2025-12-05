@@ -78,7 +78,7 @@ struct Move
     {
         static const char * const msg[]
         = {"NONE", "", "CONJ", "DEFER"};
-        return type == THM ? thmlabel() : msg[type];
+        return isthm() ? thmlabel() : msg[type];
     }
     // Theorem the move uses (must be of type THM)
     Assertion const & theorem() const { return pthm->second; }
@@ -134,7 +134,7 @@ struct Move
         return "";
     }
     bool subgoalfloats(Hypsize index) const
-    { return type == THM ? theorem().hypfloats(index) : false; }
+    { return isthm() ? theorem().hypfloats(index) : false; }
     strview subgoaltypecode(Hypsize index) const
     {
         if (index >= subgoalcount())
