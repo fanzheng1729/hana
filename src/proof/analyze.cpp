@@ -129,17 +129,6 @@ bool findsubstitutions
     return true;
 }
 
-// Return true if the RPN of an expression matches a template.
-bool findsubstitutions
-    (Proofsteps const & exp, AST const & expAST,
-     Proofsteps const & pattern, AST const & patternAST,
-     Stepranges & result)
-{
-    SteprangeAST const x(exp, expAST);
-    SteprangeAST const y(pattern, patternAST);
-    return findsubstitutions(x, y, result);
-}
-
 // Return true if range1 has all the variables in range2
 static bool hasallvars(Steprange range1, Steprange range2)
 {
