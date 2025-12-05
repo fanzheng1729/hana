@@ -69,7 +69,7 @@ struct Assertion
     // Typecode of a hypothesis
     strview hyptypecode(Hypsize index) const
         { return hypexp(index).empty() ? strview() : hypexp(index)[0]; }
-    // Rev-Polish notation and abstract syntax tree of a hypothesis
+    // rev-Polish notation and abstract syntax tree of a hypothesis
     Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
     SteprangeAST hypRPNAST(Hypsize index) const
