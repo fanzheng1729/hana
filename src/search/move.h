@@ -139,7 +139,7 @@ struct Move
     Hypsize esshypcount() const { return hypcount() - varcount(); }
     // Output the move (must be our move).
     friend std::ostream & operator<<(std::ostream & out, Move const & move)
-    { return out << move.label(); }
+    { return out << move.label().c_str; }
 private:
     Proofsize substitutionsize(Proofsteps const & src) const
     {
