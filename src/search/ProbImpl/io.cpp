@@ -150,9 +150,9 @@ static void printgoal(pNode p)
 /**
  | Goal score |- ...
  | [Hyps hyp1 hyp2]
- | ax-mp score*size=UCB ...
- | DEFER(n) score*size OR
- | min score*size maj score*size
+ | ax-mp score*size=UCB ... OR
+ | min score*size maj score*size OR
+ | DEFER(n) score*size
 **/
 // n.   (n) ax-mp[!] score*size score*size
 //      maj score*size  |- ...
@@ -163,7 +163,7 @@ void Problem::printmainline(pNode p, size_type detail) const
     static void (*const printfn[])(pNode) = {&printhypsline, &printdeferline};
     if (detail)
         isourturn(p) ? printourchildren(p, *this) :
-            (*printfn[p->game().attempt.type == Move::DEFER])(p);
+            (*printfn[p->game().attempt.isdefer()])(p);
 // std::cout << "Children printed" << std::endl;
     size_type level = 0, nDefer = 0;
     while (p = pickchild(p))
