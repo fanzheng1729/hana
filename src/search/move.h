@@ -76,21 +76,6 @@ struct Move
         = {"NONE", "", "CONJ", "DEFER"};
         return type == THM ? thmlabel() : msg[type];
     }
-    Hypsize childcount() const
-    {
-        switch (type)
-        {
-        case THM:
-            return hypcount();
-        case CONJ:
-            return absconjs.size();
-        case DEFER:
-            return 1;
-        default:
-            return 0;
-        }
-        return 0;
-    }
     // Theorem the move uses (must be of type THM)
     Assertion const & theorem() const { return pthm->second; }
     // Type code of goal the move proves
@@ -152,8 +137,9 @@ struct Move
     // Index of subgoal (must be of type THM or CONJ)
     Hypsize matchsubgoal(Goal const & goal) const
     {
+        Hypsize imax = type == THM ? hypcount() : type == CONJ * absconjs.size();
         Hypsize i = 0;
-        for ( ; i < childcount(); ++i)
+        for ( ; i < imax; ++i)
             if (goal == subgoal(i))
                 return i;
         return i;
