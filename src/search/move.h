@@ -165,7 +165,7 @@ private:
         // Make the substitution
         FOR (Proofstep step, src)
         {
-            Symbol2::ID id = step.id();
+            Symbol2::ID const id = step.id();
             if (id > 0 && !substitutions[id].empty())
                 dest += substitutions[id];  // variable with an id
             else
