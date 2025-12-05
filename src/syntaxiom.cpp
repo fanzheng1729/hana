@@ -214,7 +214,7 @@ static bool checkRPN(Assertion const & ass, Proofsteps const & RPN)
 
 // Check the syntax of an assertion (& all hypotheses). Return true if okay.
 bool Syntaxioms::checkRPN
-    (strview label, Assertion ass, struct Typecodes const & typecodes) const
+    (Assertion ass, struct Typecodes const & typecodes) const
 {
     Expression & exp = ass.expression;
     if (exp.empty())
@@ -246,11 +246,11 @@ bool Database::checkRPN() const
     Progress progress;
 
     Assertions::size_type count = 0, all = assertions().size();
-    FOR (Assertions::const_reference ass, assertions())
+    FOR (Assertions::const_reference rass, assertions())
     {
-        if (!syntaxioms().checkRPN(ass.first, ass.second, typecodes()))
+        if (!syntaxioms().checkRPN(rass.second, typecodes()))
         {
-            printass(ass, count);
+            printass(rass, count);
             std::cerr << "\nRPN error!" << std::endl;
             return false;
         }

@@ -45,7 +45,7 @@ public:
     bool addRPN(Assertions & assertions, struct Typecodes const & typecodes) const;
 // Check the syntax of an assertion (& all hypotheses). Return true if okay.
     bool checkRPN
-        (strview label, Assertion ass, struct Typecodes const & typecodes) const;
+        (Assertion ass, struct Typecodes const & typecodes) const;
 private:
     M_map_type m_map;
     friend class Database;
