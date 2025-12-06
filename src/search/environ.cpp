@@ -344,9 +344,11 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     for (Hypsize i = 0; i < move.subgoalcount(); ++i)
         std::cout << move.subgoal(i).expression();
     std::cout << move.absvars(pProb->bank);
-    Hypiters const hypiters(move.addconjsto(pProb->bank));
-    for (Hypsize i = 0; i < hypiters.size(); ++i)
-        std::cout << hypiters[i]->first << ' ' << hypiters[i]->second.expression;
+    Hypiters const newhypiters(move.addconjsto(pProb->bank));
+    for (Hypsize i = 0; i < newhypiters.size(); ++i)
+        std::cout << newhypiters[i]->first << ' ',
+        std::cout << newhypiters[i]->second.expression;
+    Assertion().sethyps(assertion, move.absvars(pProb->bank), newhypiters);
     std::cerr << "Not implemented" << std::endl;
     throw;
 }
