@@ -27,12 +27,11 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
         return var;
     // New RPN, to which variable #id is assigned
     Symbol2::ID const id = m_varlabels.size();
-    // Name of variable = typecode~hex(n)
+
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
-    // Name of hypothesis = f~typecode~hex(n)
     m_fhyplabels.push_back(floatinghypheader + m_varlabels[id]);
-    // Substitution of the variable = RPN
-    m_substitutions.push_back(&RPNiter->first);
+    m_RPNSymbolsbyid.push_back(RPNiter);
+
     strview hyplabel(m_fhyplabels[id]);
     strview varlabel(m_varlabels[id]);
     // Iterator to floating hypothesis associated to the variable

@@ -7,12 +7,12 @@
 // Storage for temporary variables
 class Bank
 {
-    // Map: RPN -> Symbol
+    // Map: revPolish notation -> Symbol
     typedef std::map<Proofsteps, Symbol3> RPNSymbols;
     RPNSymbols m_RPNSymbols;
     // Vector of substitutions
-    typedef std::vector<Proofsteps const *> Substitutions;
-    Substitutions m_substitutions;
+    typedef std::vector<RPNSymbols::const_iterator> RPNSymbolsbyid;
+    RPNSymbolsbyid m_RPNSymbolsbyid;
     typedef std::deque<std::string> Tokens;
     Tokens m_varlabels;
     Tokens m_ehyplabels;
@@ -25,12 +25,12 @@ public:
         m_fhyplabels(1 + reserve, ""), m_ehyplabels(1, "")
     {
         m_RPNSymbols[Proofsteps()];
-        m_substitutions.assign(1 + reserve, &m_RPNSymbols.begin()->first);
+        m_RPNSymbolsbyid.assign(1 + reserve, m_RPNSymbols.begin());
     }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
-    Substitutions const & substitutions() const { return m_substitutions; }
     Proofsteps const & substitution(Symbol2::ID id) const
-    { return *substitutions()[id]; }
+    { return m_RPNSymbolsbyid[id]->first; }
+    Symbol3 var(Symbol2::ID id) const { return m_RPNSymbolsbyid[id]->second; }
     Tokens::size_type varcount() const { return m_varlabels.size() - 1; }
     Symbol3 addRPN(Proofsteps const & RPN);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
