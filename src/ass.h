@@ -15,6 +15,7 @@ struct Assertion
 // Essential properties:
     // Hypotheses of this axiom or theorem
     Hypiters hypiters;
+    // Disjoint variable hypotheses of this axiom or theorem
     Disjvars disjvars;
     // Statement of axiom or theorem
     Expression expression;
