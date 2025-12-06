@@ -112,12 +112,11 @@ static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
     // Preallocate for efficiency
     pproofs.reserve(ass.varcount());
 
-    FOR (Hypiter iter, ass.hypiters)
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
-        Hypothesis const & hyp(iter->second);
+        strview var = ass.hypexp(i)[1];
         // Frame for the substitution
-        strview var(hyp.expression[1]);
-        Substframe const * pframe(findframe(var, stack));
+        Substframe const * pframe = findframe(var, stack);
         if (unexpected(!pframe, "variable", var))
             return pProofs(1);
         // *iterframe is the right frame. Record the proof pointer.
