@@ -45,8 +45,8 @@ static bool checkDV
     (Symbol3s const & set1, Symbol3s const & set2,
      Disjvars const & DV, bool verbose = true)
 {
-    FOR (Symbol3 var1, set1)
-        FOR (Symbol3 var2, set2)
+    FOR (Symbol3 const var1, set1)
+        FOR (Symbol3 const var2, set2)
             if (!checkDV(var1, var2, DV))
             {
                 if (verbose)
