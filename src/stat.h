@@ -18,7 +18,7 @@ Assertions::size_type maxsymboldefnumber
 {
     Assertions::size_type max = 1;
 //std::cout << definitions << syntaxioms;
-    FOR (Proofstep step, RPN)
+    FOR (Proofstep const step, RPN)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
     {
@@ -80,7 +80,7 @@ inline Assertions::size_type maxsymboldefnumber
 {
     Assertions::size_type max = 0;
 
-    FOR (Proofstep step, RPN)
+    FOR (Proofstep const step, RPN)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
                 if (syntaxioms.count(label))
@@ -122,7 +122,7 @@ Labels labels(T const & definitions)
 template<class T>
 void addfreqcount(Proofsteps const & RPN, T & definitions)
 {
-    FOR (Proofstep step, RPN)
+    FOR (Proofstep const step, RPN)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
@@ -146,7 +146,7 @@ void addfreqcount(Assertion const & ass, T & definitions)
 inline void addfreqcounts
     (Proofsteps const & RPN, Labels const & labels, Freqcounts & result)
 {
-    FOR (Proofstep step, RPN)
+    FOR (Proofstep const step, RPN)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
@@ -201,7 +201,7 @@ void addweight(T & definitions, typename T::mapped_type & definition)
     else if (definition.weight == 0)
     {
         Weight & sum = definition.weight;
-        FOR (Proofstep step, definition.rhs)
+        FOR (Proofstep const step, definition.rhs)
             if (step.ishyp() && step.phyp)
                 ++sum;
             else if (step.isthm() && step.pass)
@@ -223,7 +223,7 @@ Weight weight(Proofsteps const & RPN, T const & definitions)
 {
     Weight sum = 0;
 
-    FOR (Proofstep step, RPN)
+    FOR (Proofstep const step, RPN)
         if (step.ishyp())
             ++sum;
         else if (step.isthm() && step.pass)
