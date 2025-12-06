@@ -104,7 +104,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
         {
             Move::Conjectures conjs(2);
-            Bank bank(database.varcount());
+            Bank & bank = pProb->bank;
             if (skeleton(goalexp, Keeprange(rrange.first), bank, conjs[1].RPN) == TRUE)
             {
                 conjs[1].typecode = goal.typecode;

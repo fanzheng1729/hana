@@ -20,6 +20,8 @@ class Problem : public MCTS<Game>
 public:
     // Database used
     Database const & database;
+    // Bank of variables and hypotheses
+    Bank bank;
     // The assertion to be proved
     Assertion const & assertion;
 private:
@@ -41,6 +43,7 @@ public:
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
         database(env.database),
+        bank(database.varcount()),
         assertion(env.assertion),
         numberlimit(std::min(assertion.number, database.assiters().size())),
         maxranks(database.assmaxranks(assertion)),
