@@ -167,11 +167,13 @@ struct Move
     // # of essential hypotheses the move needs (must be of type THM)
     Hypsize esshypcount() const { return hypcount() - varcount(); }
     // # of conjectures made (must be of type CONJ)
-    Hypsize conjcount() const { return absconjs.size() - 1; }
+    Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
     // Add conjectures to a bank (must be of type CONJ).
     // Return iterators to the hypotheses.
     Hypiters addconjsto(Bank & bank) const
     {
+        if (!isconj())
+            return Hypiters();
         Hypiters result(conjcount());
         for (Hypsize i = 0; i < result.size(); ++i)
             result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);

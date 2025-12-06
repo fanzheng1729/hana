@@ -29,6 +29,16 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
+// Return the simplified assertion with hypotheses trimmed.
+Assertion Assertion::makeAss(Bvector const & hypstotrim) const
+{
+    Assertion result;
+    result.number = number;
+    result.sethyps(*this, hypstotrim);
+    result.disjvars = disjvars & result.varusage;
+    return result;
+}
+
 // Set the hypotheses, trimming away specified ones.
 void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
 {
@@ -65,14 +75,4 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
                     usage.push_back(assusage[j]);
         }
     }
-}
-
-// Return the simplified assertion for the goal of the game to hold.
-Assertion makeAss(Assertion const & ass, Bvector const & hypstotrim)
-{
-    Assertion result;
-    result.number = ass.number;
-    result.sethyps(ass, hypstotrim);
-    result.disjvars = ass.disjvars & result.varusage;
-    return result;
 }

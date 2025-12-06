@@ -128,6 +128,8 @@ struct Assertion
         std::sort(labels.begin(), labels.end());
         return std::accumulate(labels.begin(), labels.end(), std::string());
     }
+    // Return the simplified assertion with hypotheses trimmed.
+    Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;
     // Return true if all variables in the assertion have been substituted.
     bool allvarsfilled(Stepranges const & stepranges) const
     {
@@ -141,8 +143,5 @@ struct Assertion
     // Set the hypotheses, trimming away specified ones.
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());
 };
-
-// Return the simplified assertion for the goal of the game to hold.
-Assertion makeAss(Assertion const & ass, Bvector const & hypstotrim);
 
 #endif // ASS_H_INCLUDED

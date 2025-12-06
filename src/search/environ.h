@@ -98,7 +98,7 @@ struct Environ : protected Gen
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
     // Return the simplified assertion for the goal of the game to hold.
     virtual Assertion makeAss(Bvector const & hypstotrim) const
-    { return ::makeAss(assertion, hypstotrim); }
+    { return assertion.makeAss(hypstotrim); }
 // Data members 
     // Database used
     Database const & database;
