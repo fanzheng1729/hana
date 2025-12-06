@@ -333,11 +333,9 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         std::cout << goal.expression();
     for (Hypsize i = 0; i < move.subgoalcount(); ++i)
         std::cout << move.subgoal(i).expression();
-    Hypiters hypiters(move.conjcount());
+    Hypiters const hypiters(move.addconjsto(pProb->bank));
     for (Hypsize i = 0; i < hypiters.size(); ++i)
-        hypiters[i] = pProb->bank.addhyp
-            (move.absconjs[i].RPN, move.absconjs[i].typecode),
-            std::cout << hypiters[i]->first << ' ';
+        std::cout << hypiters[i]->first << ' ' << hypiters[i]->second.expression;
     std::cerr << "Not implemented" << std::endl;
     throw;
 }
