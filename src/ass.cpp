@@ -62,7 +62,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
         hypiters.push_back(iter);
         if (ass.hypfloats(i))
         {
-            // Floating hypothesis of used variable
+            // var in use
             Symbol3 const var = iter->second.expression[1];
             // Use of var in new assertion
             Bvector & usage = varusage[var];
