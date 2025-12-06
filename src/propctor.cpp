@@ -206,7 +206,7 @@ int Propctors::calcbool
     Proofsteps const & lhs = def.lhs, & rhs = def.rhs;
     Bvector stack;
 // std::cout << rhs;
-    FOR (Proofstep step, rhs)
+    FOR (Proofstep const step, rhs)
     {
         // Iterator to the variable in the LHS
         Stepiter const itervar = std::find(lhs.begin(), lhs.end() - 1, step);

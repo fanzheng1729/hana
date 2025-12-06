@@ -52,16 +52,16 @@ struct Move
         // Max id of abstracted variable
         Symbol2::ID maxid = 0;
         FOR (Goal const & goal, absconjs)
-            FOR (Proofstep step, goal.RPN)
-                if (Symbol2::ID id = step.id())
+            FOR (Proofstep const step, goal.RPN)
+                if (Symbol2::ID const id = step.id())
                     if (!bank.substitution(id).empty())
                         if (id > maxid) maxid = id;
         // Preallocate for efficiency
         substitutions.resize(maxid + 1);
         // Fill in abstractions.
         FOR (Goal const & goal, absconjs)
-            FOR (Proofstep step, goal.RPN)
-                if (Symbol2::ID id = step.id())
+            FOR (Proofstep const step, goal.RPN)
+                if (Symbol2::ID const id = step.id())
                 {
                     Proofsteps const & src = bank.substitution(id);
                     Proofsteps & dest = substitutions[id];
@@ -179,14 +179,24 @@ struct Move
             result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
         return result;
     }
+    // Abstract variables in use
+    Expression absvars(Bank const & bank) const
+    {
+        Expression result;
+        // Preallocate for efficiency
+        result.reserve(substitutions.size());
+        for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
+            if (Symbol3 const var = bank.var(id))
+                result.push_back(var);
+    }
 private:
     Proofsize substitutionsize(Proofsteps const & src) const
     {
         Proofsize size = 0;
         // Make the substitution
-        FOR (Proofstep step, src)
+        FOR (Proofstep const step, src)
         {
-            Symbol2::ID id = step.id();
+            Symbol2::ID const id = step.id();
             if (id > 0 && !substitutions[id].empty())
                 size += substitutions[id].size();
             else
@@ -201,7 +211,7 @@ private:
         // Preallocate for efficiency
         dest.reserve(substitutionsize(src));
         // Make the substitution
-        FOR (Proofstep step, src)
+        FOR (Proofstep const step, src)
         {
             Symbol2::ID const id = step.id();
             if (id > 0 && !substitutions[id].empty())

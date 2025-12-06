@@ -24,7 +24,7 @@ public:
         m_varlabels(1 + reserve, ""),
         m_fhyplabels(1 + reserve, ""), m_ehyplabels(1, "")
     {
-        m_RPNSymbols[Proofsteps()];
+        m_RPNSymbols[Proofsteps()] = Symbol3();
         m_RPNSymbolsbyid.assign(1 + reserve, m_RPNSymbols.begin());
     }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
