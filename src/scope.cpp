@@ -151,8 +151,8 @@ void Scopes::completeass(struct Assertion & ass) const
 
     // Determine variables used and find mandatory hypotheses
     Symbol2s vars;
-    FOR (Symbol3 var, exp)
-        if (var)
+    FOR (Symbol3 const var, exp)
+        if (var.id > 0)
         {
             vars.insert(var);
             ass.varusage[var].assign(1, true);
@@ -181,8 +181,8 @@ void Scopes::completeass(struct Assertion & ass) const
 //std::cout << "Essential hypothesis: " << hypexp;
                 ass.hypiters.push_back(hypiter);
                 // Add variables used in hypotheses
-                FOR (Symbol3 var, hypexp)
-                    if (var)
+                FOR (Symbol3 const var, hypexp)
+                    if (var.id > 0)
                     {
                         hasfreevar |= vars.insert(var).second;
                         Bvector & usage = ass.varusage[var];
