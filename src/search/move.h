@@ -188,6 +188,7 @@ struct Move
         for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
             if (Symbol3 const var = bank.var(id))
                 result.push_back(var);
+        return result;
     }
 private:
     Proofsize substitutionsize(Proofsteps const & src) const
