@@ -343,6 +343,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         std::cout << goal.expression();
     for (Hypsize i = 0; i < move.subgoalcount(); ++i)
         std::cout << move.subgoal(i).expression();
+    std::cout << move.absvars(pProb->bank);
     Hypiters const hypiters(move.addconjsto(pProb->bank));
     for (Hypsize i = 0; i < hypiters.size(); ++i)
         std::cout << hypiters[i]->first << ' ' << hypiters[i]->second.expression;

@@ -1,7 +1,8 @@
 #include "ass.h"
 #include "disjvars.h"
-// #include "io.h"
+#include "io.h"
 #include "util/filter.h"
+#include "util/for.h"
 
 // Remove unnecessary variables.
 Bvector & Assertion::trimvars
@@ -75,4 +76,16 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
                     usage.push_back(assusage[j]);
         }
     }
+}
+
+// Set the hypotheses, adding new variables and new hypotheses.
+void Assertion::sethyps(Assertion const & ass,
+                        Expression const & newvars, Hypiters const & newhypiters)
+{
+    // Add floating hypotheses for new variables.
+    FOR (Symbol3 var, newvars)
+        if (var.id > 0 && ass.varusage.count(var) == 0)
+        {
+            std::cout << var;
+        }
 }

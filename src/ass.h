@@ -133,6 +133,9 @@ struct Assertion
 // Modifying functions
     // Set the hypotheses, trimming away specified ones.
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());
+    // Set the hypotheses, adding new variables and new hypotheses.
+    void sethyps(Assertion const & ass,
+                 Expression const & newvars, Hypiters const & newhypiters);
 };
 
 #endif // ASS_H_INCLUDED
