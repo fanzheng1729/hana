@@ -130,15 +130,6 @@ struct Assertion
     }
     // Return the simplified assertion with hypotheses trimmed.
     Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;
-    // Return true if all variables in the assertion have been substituted.
-    bool allvarsfilled(Stepranges const & stepranges) const
-    {
-        for (Varusage::const_iterator iter = varusage.begin();
-             iter != varusage.end(); ++iter)
-            if (stepranges[iter->first].first == stepranges[iter->first].second)
-                return false;
-        return true;
-    }
 // Modifying functions
     // Set the hypotheses, trimming away specified ones.
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());

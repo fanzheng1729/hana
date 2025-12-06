@@ -118,6 +118,16 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     return false;
 }
 
+// Return true if all variables in use have been substituted.
+bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
+{
+    FOR (Varusage::const_reference rvar, varusage)
+        if (Symbol2::ID id = rvar.first)
+            if (subst[id].first == subst[id].second)
+                return false;
+    return true;
+}
+
 static int const STACKEMPTY = -2;
 // Advance the stack and return the difference in # matched hypotheses.
 // Return STACKEMPTY if stack cannot be advanced.
@@ -178,7 +188,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     do
     {
         // std::cout << hypstack;
-        if (thm.allvarsfilled(substack[hypstack.size()]))
+        if (allvarsfilled(thm.varusage, substack[hypstack.size()]))
         {
             Move move(pthm, substack[hypstack.size()]);
             switch (valid(move))
