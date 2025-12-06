@@ -336,8 +336,8 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     Hypiters hypiters(move.conjcount());
     for (Hypsize i = 0; i < hypiters.size(); ++i)
         hypiters[i] = pProb->bank.addhyp
-            (move.absconjs[i].RPN, move.absconjs[i].typecode);
-    std::cout << hypiters;
+            (move.absconjs[i].RPN, move.absconjs[i].typecode),
+            std::cout << hypiters[i]->first << ' ';
     std::cerr << "Not implemented" << std::endl;
     throw;
 }
