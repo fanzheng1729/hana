@@ -14,13 +14,15 @@ class Bank
     typedef std::vector<Proofsteps const *> Substitutions;
     Substitutions m_substitutions;
     typedef std::deque<std::string> Tokens;
-    Tokens m_hyplabels;
     Tokens m_varlabels;
+    Tokens m_ehyplabels;
+    Tokens m_fhyplabels;
     Hypotheses m_hypotheses;
 public:
     // Variable id starts from reserve + 1.
     Bank(Symbol2::ID reserve = 0) :
-        m_varlabels(1 + reserve, ""), m_hyplabels(1 + reserve, "")
+        m_varlabels(1 + reserve, ""),
+        m_fhyplabels(1 + reserve, ""), m_ehyplabels(1, "")
     {
         m_RPNSymbols[Proofsteps()];
         m_substitutions.assign(1 + reserve, &m_RPNSymbols.begin()->first);

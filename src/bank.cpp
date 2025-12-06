@@ -30,10 +30,10 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     // Name of variable = typecode~hex(n)
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
     // Name of hypothesis = f~typecode~hex(n)
-    m_hyplabels.push_back(floatinghypheader + m_varlabels[id]);
+    m_fhyplabels.push_back(floatinghypheader + m_varlabels[id]);
     // Substitution of the variable = RPN
     m_substitutions.push_back(&RPNiter->first);
-    strview hyplabel(m_hyplabels[id]);
+    strview hyplabel(m_fhyplabels[id]);
     strview varlabel(m_varlabels[id]);
     // Iterator to floating hypothesis associated to the variable
     Hypotheses::iterator const hypiter
@@ -70,11 +70,11 @@ Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
     hyp.floats = false;
     hyp.RPN = RPN;
     // # of the hypothesis
-    Hypsize const n = m_hyplabels.size();
+    Hypsize const n = m_ehyplabels.size();
     // label of the hypothesis
-    m_hyplabels.push_back(essentialhypheader + util::hex(n));
-
-    std::pair<strview, Hypothesis const &> value(m_hyplabels.back(), hyp);
+    m_ehyplabels.push_back(essentialhypheader + util::hex(n));
+    // Add the hypothesis.
+    std::pair<strview, Hypothesis const &> value(m_ehyplabels[n], hyp);
     return m_hypotheses.insert(value).first;
 }
 
