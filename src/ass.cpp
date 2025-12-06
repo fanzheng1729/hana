@@ -87,9 +87,9 @@ void Assertion::sethyps(Assertion const & ass,
     hypiters.reserve(ass.hypcount() + newvars.size() + newhypiters.size());
     varusage.clear();
     // Add floating hypotheses for new variables.
-    FOR (Symbol3 var, newvars)
+    FOR (Symbol3 const var, newvars)
         if (var.id > 0 && ass.varusage.count(var) == 0)
         {
-            std::cout << var;
+            std::cout << var.phyp->second.RPN;
         }
 }
