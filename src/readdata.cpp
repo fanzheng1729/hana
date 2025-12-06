@@ -86,7 +86,7 @@ ReadStatus Imp::readexprest
     {
         m_tokens.pop();
 
-        pHyp phyp(m_scopes.getfloatinghyp(token));
+        pHyp const phyp = m_scopes.getfloatinghyp(token);
 
         if (!phyp && !m_database.hasconst(token))
         {
