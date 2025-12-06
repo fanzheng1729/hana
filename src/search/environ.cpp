@@ -326,11 +326,18 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
+    if (validthmmove(move) == MoveINVALID)
+        return MoveINVALID;
+
     FOR (Goal const & goal, move.absconjs)
         std::cout << goal.expression();
     for (Hypsize i = 0; i < move.subgoalcount(); ++i)
         std::cout << move.subgoal(i).expression();
-    std::cout << validthmmove(move);
+    Hypiters hypiters(move.conjcount());
+    for (Hypsize i = 0; i < hypiters.size(); ++i)
+        hypiters[i] = pProb->bank.addhyp
+            (move.absconjs[i].RPN, move.absconjs[i].typecode);
+    std::cout << hypiters;
     std::cerr << "Not implemented" << std::endl;
     throw;
 }
