@@ -106,6 +106,8 @@ struct Move
     }
     // Return true if a move satisfies disjoint variable hypotheses.
     bool checkDV(Assertion const & ass, bool verbose = false) const;
+    // Return the disjoint variable hypotheses of a move.
+    Disjvars findDV(Assertion const & ass) const;
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
     bool hypfloats(Hypsize index) const { return theorem().hypfloats(index); }
