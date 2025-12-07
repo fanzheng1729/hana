@@ -114,9 +114,18 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
 
 // Add a super-context with hypotheses trimmed.
 // Return pointer to the new context. Return NULL if unsuccessful.
-Environ const * Problem::addsupEnv
-(Environ const & env, Expression const & newvars, Hypiters const & newhypiters)
+Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
+    Expression const & newvars(move.absvars(bank));
+    std::cout << newvars;
+    Hypiters const & newhypiters(move.addconjsto(bank));
+    for (Hypsize i = 0; i < newhypiters.size(); ++i)
+        std::cout << newhypiters[i]->first << ' ',
+        std::cout << newhypiters[i]->second.expression;
+    Assertion().sethyps(assertion, newvars, newhypiters);
+    std::cout << assertion.hypslabel(newvars, newhypiters);
+    std::cerr << "Not implemented" << std::endl;
+    throw;
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
     // Try add the context.

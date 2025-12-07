@@ -343,15 +343,8 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         std::cout << goal.expression();
     for (Hypsize i = 0; i < move.subgoalcount(); ++i)
         std::cout << move.subgoal(i).expression();
-    std::cout << move.absvars(pProb->bank);
-    Hypiters const newhypiters(move.addconjsto(pProb->bank));
-    for (Hypsize i = 0; i < newhypiters.size(); ++i)
-        std::cout << newhypiters[i]->first << ' ',
-        std::cout << newhypiters[i]->second.expression;
-    Assertion().sethyps(assertion, move.absvars(pProb->bank), newhypiters);
-    std::cout << assertion.hypslabel(move.absvars(pProb->bank), newhypiters);
-    std::cerr << "Not implemented" << std::endl;
-    throw;
+    pProb->addsupEnv(*this, move);
+    return MoveINVALID;
 }
 
 // Add an item to an ordered vector if not already present.
@@ -379,7 +372,7 @@ static int comphypiters(Hypiter x, Hypiter y)
     return std::less<pHyp>()(&*x, &*y);
 }
 
-// Check inclusion relation.
+// Return true if x includes y.
 template <class C, class Comp>
 static bool includes(C const & x, C const & y, Comp comp)
 {
