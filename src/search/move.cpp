@@ -17,12 +17,12 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
 {
     if (!pthm)
         return true;
-// std::cout << "Checking DV of move " << label() << std::endl;
+
     FOR (Disjvars::const_reference vars, theorem().disjvars)
     {
         const Proofsteps & RPN1 = substitutions[vars.first];
         const Proofsteps & RPN2 = substitutions[vars.second];
-// std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
+
         if (!::checkDV
             (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, verbose))
             return false;
@@ -31,15 +31,24 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
     return true;
 }
 
+// Return the disjoint variable hypotheses of a move.
+Disjvars Move::findDV(Assertion const & ass) const
+{
+    //
+}
+
 // Abstract variables in use
 Expression Move::absvars(Bank const & bank) const
 {
     Expression result;
+
     // Preallocate for efficiency
     result.reserve(substitutions.size());
+
     for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
         if (Symbol3 const var = bank.var(id))
             result.push_back(var);
+
     return result;
 }
 
@@ -49,9 +58,12 @@ Hypiters Move::addconjsto(Bank & bank) const
 {
     if (!isconj())
         return Hypiters();
+
     Hypiters result(conjcount());
+
     for (Hypsize i = 0; i < result.size(); ++i)
         result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
+
     return result;
 }
 
@@ -59,6 +71,7 @@ Hypiters Move::addconjsto(Bank & bank) const
 Proofsize Move::substitutionsize(Proofsteps const & src) const
 {
     Proofsize size = 0;
+
     // Make the substitution
     FOR (Proofstep const step, src)
     {
@@ -68,6 +81,7 @@ Proofsize Move::substitutionsize(Proofsteps const & src) const
         else
             ++size;
     }
+
     return size;
 }
 
@@ -76,8 +90,10 @@ void Move::makesubstitution(Proofsteps const & src, Proofsteps & dest) const
 {
     if (substitutions.empty())
         return dest.assign(src.begin(), src.end());
+
     // Preallocate for efficiency
     dest.reserve(substitutionsize(src));
+
     // Make the substitution
     FOR (Proofstep const step, src)
     {
