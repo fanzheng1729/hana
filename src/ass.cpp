@@ -13,7 +13,6 @@ Bvector & Assertion::trimvars
     hypstotrim.flip();
     for (Hypsize i = 0; i < hypcount(); ++i)
     {
-        Hypothesis const & hyp = hypiters[i]->second;
         if (!hypfloats(i)) continue;
         // Use of the variable in hypotheses
         Bvector const & usage = varusage.at(hypexp(i)[1]);
@@ -57,14 +56,12 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
     {
         if (i < hypstotrim.size() && hypstotrim[i])
             continue;
-
-        Hypiter const iter = ass.hypiters[i];
-        // *iter in use
-        hypiters.push_back(iter);
+        // hypothesis in use
+        hypiters.push_back(ass.hypiters[i]);
         if (ass.hypfloats(i))
         {
             // var in use
-            Symbol3 const var = iter->second.expression[1];
+            Symbol3 const var = ass.hypexp(i)[1];
             // Use of var in new assertion
             Bvector & usage = varusage[var];
             usage.clear();
