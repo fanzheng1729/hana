@@ -117,6 +117,8 @@ struct Symbol3 : Symbol2
     strview typecode() const { return phyp->second.expression[0]; }
     Symbol3(strview str = "", ID n = 0, pHyp p = NULL) :
         Symbol2(str, n), phyp(p) {}
+    Symbol3(strview str, ID n, Hypiter hypiter) :
+        Symbol2(str, n), phyp(&*hypiter) {}
 };
 
 // Functor returning the id of an object, and 0 for anything else
