@@ -27,8 +27,7 @@ struct Definition
     // Return true if the defined syntax appears on the RHS (rule 2).
     bool iscircular() const { return util::filter(rhs)(lhs.back()); }
     // Return true if a variable is dummy, i.e., does not appear on the LHS.
-    bool isdummy(Symbol3 var) const
-    { return !util::filter(lhs)(Proofstep(var.phyp)); }
+    bool isdummy(Symbol3 var) const { return !util::filter(lhs)(var.phyp); }
     // Check the required disjoint variable hypotheses (rules 3 & 4).
     bool checkdv() const;
     // Return true if all dummy variables are bound (not fully implemented).

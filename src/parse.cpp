@@ -168,7 +168,7 @@ Substframe::Subexpends const & RPNmap
     Substframe::Subexpends & result(iter.first);
 
     // Check if exp contains a type declaration.
-    if (expbegin != expend && expbegin->phyp != NULL &&
+    if (expbegin != expend && expbegin->id > 0 &&
         expbegin->typecode() == type)
         result[expbegin + 1].assign(1, expbegin->phyp);
 
