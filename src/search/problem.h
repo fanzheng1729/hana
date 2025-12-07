@@ -224,6 +224,10 @@ private:
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
+    // Add a super-context with hypotheses trimmed.
+    // Return pointer to the new context. Return NULL if unsuccessful.
+    Environ const * addsupEnv
+    (Environ const & env, Expression const & newvars, Hypiters const & newhypiters);
     // Initialize a context if existent.
     void initEnv(Environ * p)
     {

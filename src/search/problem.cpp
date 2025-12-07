@@ -98,19 +98,39 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     environs.insert(std::pair<strview, Environ const *>(name, NULL));
     // Iterator to the new context
     Environs::iterator const newEnviter = result.first;
-    // If it already exists, set the game's context pointer.
-    if (!result.second)
+    if (!result.second) // already added
         return newEnviter->second;
-    // If it does not exist, add the simplified assertion.
+    // Simplified assertion
     Assertion & subAss = assertions[newEnviter->first];
     if (subAss.number > 0)
         return NULL;
     Assertion const & ass = env.assertion.makeAss(hypstotrim);
-    // Pointer to the sub-context.
+    // Pointer to the sub-context
     Environ * const psubEnv = env.makeEnv(subAss = ass);
     newEnviter->second = psubEnv;
     initEnv(psubEnv);
     return psubEnv;
+}
+
+// Add a super-context with hypotheses trimmed.
+// Return pointer to the new context. Return NULL if unsuccessful.
+Environ const * Problem::addsupEnv
+(Environ const & env, Expression const & newvars, Hypiters const & newhypiters)
+{
+    // Name of new context
+    std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
+    // Try add the context.
+    std::pair<Environs::iterator, bool> const result =
+    environs.insert(std::pair<strview, Environ const *>(name, NULL));
+    // Iterator to the new context
+    Environs::iterator const newEnviter = result.first;
+    if (!result.second) // already added
+        return newEnviter->second;
+    // Simplified assertion
+    Assertion & subAss = assertions[newEnviter->first];
+    if (subAss.number > 0)
+        return NULL;
+    return NULL;
 }
 
 // Test proof search.
