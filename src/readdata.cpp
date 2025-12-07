@@ -325,22 +325,22 @@ ReadStatus Imp::readregular(strview label, Proofsteps & proof)
 bool Imp::addfloatinghyp(strview label, strview type, strview var)
 {
     // Check if there is an active hypothesis on the var ($4.2.5).
-    pHyp const phyp = m_scopes.getfloatinghyp(var);
-    if (phyp)
+    Hypiter const iter = m_scopes.getfloatinghypiter(var);
+    if (iter != Hypiter())
     {
         std::cerr << "Variable " << var << " already has a floating ";
-        std::cerr << "hypothesis " << phyp->first << std::endl;
+        std::cerr << "hypothesis " << iter->first << std::endl;
         return false;
     }
     // Expression of the hypothesis
     Expression exp(2);
     exp[0] = type, exp[1] = Symbol3(var, m_database.varid(var));
     // Add the hypothesis.
-    Hypiter const iter = m_database.addhyp(label, exp, true);
-    Hypothesis & hyp = const_cast<Hypothesis &>(iter->second);
-    hyp.expression[1].phyp = &*iter;
-    m_scopes.back().activehyp.push_back(iter);
-    m_scopes.back().floatinghyp[var] = iter;
+    Hypiter const hypiter = m_database.addhyp(label, exp, true);
+    Hypothesis & hyp = const_cast<Hypothesis &>(hypiter->second);
+    hyp.expression[1].phyp = &*hypiter;
+    m_scopes.back().activehyp.push_back(hypiter);
+    m_scopes.back().floatinghyp[var] = hypiter;
     // Add the type code.
     m_database.addtypecode(type);
 
