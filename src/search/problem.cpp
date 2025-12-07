@@ -137,7 +137,8 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
         return NULL;
     Assertion ass(assertion.number);
     ass.sethyps(assertion, newvars, newhypiters);
-    std::cout << move.findDV(ass).size();
+    ass.disjvars = move.findDV(ass);
+    std::cout << ass.disjvars.size();
     std::cerr << "Not implemented" << std::endl;
     throw;
 }
