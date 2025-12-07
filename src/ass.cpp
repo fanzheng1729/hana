@@ -81,6 +81,7 @@ void Assertion::sethyps(Assertion const & ass,
 {
     // # hypotheses in new assertion
     Hypsize hypcount = ass.hypcount() + newvars.size() + newhypiters.size();
+
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(hypcount);
