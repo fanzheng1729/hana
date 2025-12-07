@@ -145,6 +145,4 @@ void Assertion::sethyps(Assertion const & ass,
             }
         hypiters.push_back(hypiter);
     }
-    FOR (Varusage::const_reference rvar, varusage)
-        std::cout << rvar.first << ' ' << rvar.second;
 }
