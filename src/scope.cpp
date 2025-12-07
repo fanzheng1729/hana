@@ -30,19 +30,8 @@ bool Scopes::pop_back()
 }
 
 // Find active floating hypothesis corresponding to variable.
-// Return its name or NULL if there isn't one.
-pHyp Scopes::getfloatinghyp(strview var) const
-{
-    FOR (const_reference scope, *this)
-    {
-        std::map<strview, Hypiter>::const_iterator const loc
-        = scope.floatinghyp.find(var);
-        if (loc != scope.floatinghyp.end())
-            return &*loc->second;
-    }
-    return NULL;
-}
-Hypiter Scopes::getfloatinghypiter(strview var) const
+// Return its iterator or NULL if there isn't one.
+Hypiter Scopes::getfloatinghyp(strview var) const
 {
     FOR (const_reference scope, *this)
     {
@@ -83,7 +72,7 @@ int Scopes::erraddfloatinghyp(strview var) const
 {
     if (!isactivevariable(var))
         return VARNOTACTIVE;
-    return (getfloatinghypiter(var) != Hypiter()) * VARDEFINED;
+    return (getfloatinghyp(var) != Hypiter()) * VARDEFINED;
 }
 
 // Determine if there is an active disjoint variable restriction on

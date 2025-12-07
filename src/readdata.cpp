@@ -86,9 +86,9 @@ ReadStatus Imp::readexprest
     {
         m_tokens.pop();
 
-        pHyp const phyp = m_scopes.getfloatinghyp(token);
+        Hypiter const iter = m_scopes.getfloatinghyp(token);
 
-        if (!phyp && !m_database.hasconst(token))
+        if (iter == Hypiter() && !m_database.hasconst(token))
         {
             std::cerr << "In $" << type << " statement " << label;
             std::cerr << " token " << token;
@@ -97,7 +97,10 @@ ReadStatus Imp::readexprest
             return ReadStatus::PROOFBAD;
         }
 
-        exp.push_back(Symbol3(token, phyp ? m_database.varid(token) : 0, phyp));
+        if (iter != Hypiter())
+            exp.push_back(Symbol3(token, m_database.varid(token), iter));
+        else
+            exp.push_back(token);
     }
 
     if (unfinishedstat(m_tokens, "$" + type, label))
@@ -325,7 +328,7 @@ ReadStatus Imp::readregular(strview label, Proofsteps & proof)
 bool Imp::addfloatinghyp(strview label, strview type, strview var)
 {
     // Check if there is an active hypothesis on the var ($4.2.5).
-    Hypiter const iter = m_scopes.getfloatinghypiter(var);
+    Hypiter const iter = m_scopes.getfloatinghyp(var);
     if (iter != Hypiter())
     {
         std::cerr << "Variable " << var << " already has a floating ";
