@@ -117,7 +117,6 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
 Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
     Expression const & newvars(move.absvars(bank));
-    std::cout << newvars;
     Hypiters const & newhypiters(move.addconjsto(bank));
     for (Hypsize i = 0; i < newhypiters.size(); ++i)
         std::cout << newhypiters[i]->first << ' ',
@@ -125,7 +124,9 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
     std::cout << name << std::endl;
-    Assertion().sethyps(assertion, newvars, newhypiters);
+    Assertion ass(assertion.number);
+    ass.sethyps(assertion, newvars, newhypiters);
+    std::cout << move.findDV(ass).size();
     std::cerr << "Not implemented" << std::endl;
     throw;
     // Try add the context.

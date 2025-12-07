@@ -55,7 +55,7 @@ Disjvars Move::findDV(Assertion const & ass) const
             Proofsteps const & RPN2
             = subst2.empty() ? var2.iter->second.RPN : subst2;
 
-        if (!::checkDV
+        if (::checkDV
             (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, false))
             result.insert(std::make_pair(var1, var2));
         }

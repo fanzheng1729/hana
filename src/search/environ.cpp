@@ -309,10 +309,6 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     if (validthmmove(move) == MoveINVALID)
         return MoveINVALID;
 
-    FOR (Goal const & goal, move.absconjs)
-        std::cout << goal.expression();
-    for (Hypsize i = 0; i < move.subgoalcount(); ++i)
-        std::cout << move.subgoal(i).expression();
     pProb->addsupEnv(*this, move);
     return MoveINVALID;
 }
