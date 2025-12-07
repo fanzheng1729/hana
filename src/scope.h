@@ -28,6 +28,7 @@ struct Scopes : std::vector<Scope>
     // Find active floating hypothesis corresponding to variable.
     // Return its pointer or NULL if there isn't one.
     pHyp getfloatinghyp(strview var) const;
+    Hypiter getfloatinghypiter(strview var) const;
     // Determine if a string is an active variable.
     bool isactivevariable(strview var) const;
     // Determine if a string is the label of an active hypothesis.

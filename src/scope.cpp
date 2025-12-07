@@ -42,6 +42,17 @@ pHyp Scopes::getfloatinghyp(strview var) const
     }
     return NULL;
 }
+Hypiter Scopes::getfloatinghypiter(strview var) const
+{
+    FOR (const_reference scope, *this)
+    {
+        std::map<strview, Hypiter>::const_iterator const loc
+        = scope.floatinghyp.find(var);
+        if (loc != scope.floatinghyp.end())
+            return loc->second;
+    }
+    return Hypiter();
+}
 
 // Determine if a string is an active variable.
 bool Scopes::isactivevariable(strview var) const
