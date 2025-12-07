@@ -120,7 +120,6 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     Hypiters const & newhypiters(move.addconjsto(bank));
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
-    std::cout << name << std::endl;
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
     environs.insert(std::pair<strview, Environ const *>(name, NULL));
