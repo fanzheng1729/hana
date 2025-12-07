@@ -28,9 +28,8 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
         const Proofsteps & RPN1 = substitutions[vars.first];
         const Proofsteps & RPN2 = substitutions[vars.second];
 // std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
-        const Symbol3s & set1(symbols(RPN1));
-        const Symbol3s & set2(symbols(RPN2));
-        if (!::checkDV(set1, set2, ass.disjvars, ass.varusage, verbose))
+        if (!::checkDV
+            (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, verbose))
             return false;
     }
 
