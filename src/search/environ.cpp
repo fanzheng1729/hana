@@ -309,8 +309,8 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     if (validthmmove(move) == MoveINVALID)
         return MoveINVALID;
 
-    pProb->addsupEnv(*this, move);
-    std::cout << "Not implemented"; throw;
+    Environ const * const penv = pProb->addsupEnv(*this, move);
+    std::cout << penv->status(move.goal()); throw;
     return MoveINVALID;
 }
 
