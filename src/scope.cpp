@@ -35,13 +35,10 @@ pHyp Scopes::getfloatinghyp(strview var) const
 {
     FOR (const_reference scope, *this)
     {
-//std::cout << "scope " << &scope - data() << " has "
-//          << scope.floatinghyp.size() << " variables\n";
         std::map<strview, Hypiter>::const_iterator const loc
             (scope.floatinghyp.find(var));
         if (loc != scope.floatinghyp.end())
             return &*loc->second;
-//std::cout << var << " not found" << std::endl;
     }
     return NULL;
 }
