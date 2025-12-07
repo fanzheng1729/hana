@@ -34,7 +34,9 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
 // Return the disjoint variable hypotheses of a move.
 Disjvars Move::findDV(Assertion const & ass) const
 {
-    //
+    Disjvars result;
+
+    return result;
 }
 
 // Abstract variables in use
