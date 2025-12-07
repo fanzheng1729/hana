@@ -11,9 +11,11 @@
 static Symbol3s symbols(Proofsteps const & RPN)
 {
     Symbol3s set;
+
     FOR (Proofstep step, RPN)
         if (Symbol3 var = step.var())
             set.insert(var);
+
     return set;
 }
 
