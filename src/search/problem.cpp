@@ -118,9 +118,6 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
     Expression const & newvars(move.absvars(bank));
     Hypiters const & newhypiters(move.addconjsto(bank));
-    for (Hypsize i = 0; i < newhypiters.size(); ++i)
-        std::cout << newhypiters[i]->first << ' ',
-        std::cout << newhypiters[i]->second.expression;
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
     std::cout << name << std::endl;
@@ -135,12 +132,14 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     Assertion & supAss = assertions[newEnviter->first];
     if (supAss.number > 0)
         return NULL;
-    Assertion ass(assertion.number);
-    ass.sethyps(assertion, newvars, newhypiters);
-    ass.disjvars = move.findDV(ass);
-    std::cout << ass.disjvars.size();
-    std::cerr << "Not implemented" << std::endl;
-    throw;
+    supAss.number = assertion.number;
+    supAss.sethyps(assertion, newvars, newhypiters);
+    supAss.disjvars = move.findDV(supAss);
+    // Pointer to the sub-context
+    Environ * const psubEnv = env.makeEnv(supAss);
+    newEnviter->second = psubEnv;
+    initEnv(psubEnv);
+    return psubEnv;
 }
 
 // Test proof search.

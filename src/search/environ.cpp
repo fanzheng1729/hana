@@ -310,6 +310,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         return MoveINVALID;
 
     pProb->addsupEnv(*this, move);
+    std::cout << "Not implemented"; throw;
     return MoveINVALID;
 }
 
