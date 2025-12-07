@@ -23,7 +23,7 @@ Symbol3 Bank::addRPN(Proofsteps const & RPN)
     RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(value).first;
     // New variable
     Symbol3 & var = RPNiter->second;
-    if (var.id != 0) // old RPN
+    if (var.id > 0) // old RPN
         return var;
     // New RPN, to which variable #id is assigned
     Symbol2::ID const id = m_varlabels.size();

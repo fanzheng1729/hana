@@ -90,22 +90,39 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Symbol3 const var, newvars)
         if (var.id > 0 && ass.varusage.count(var) == 0)
         {
-            Bvector & usage = varusage[var];
-            usage.resize(hypcount);
-            usage[hypiters.size()] = true;
+            varusage[var].resize(hypcount);
             hypiters.push_back(var.iter);
         }
     // Old variable usage
+    Hypsize const asshypcount = ass.hypcount();
     FOR (Varusage::const_reference rvar, ass.varusage)
     {
         Bvector & usage = varusage[rvar.first];
         usage.resize(hypcount);
-        Bvector const & src = rvar.second;
-        std::cout << rvar.first << ' ' << src;
-        std::copy(src.begin(), src.end(), usage.begin() + hypiters.size());
+        Bvector const & assuage = rvar.second;
+        std::cout << rvar.first << ' ' << assuage;
+        std::copy
+        (assuage.begin(), assuage.begin() + asshypcount,
+         usage.begin() + hypiters.size());
     }
     // Old hypotheses
     hypiters += ass.hypiters;
+    // Use of old variables in new hypotheses
+    FOR (Hypiter hypiter, newhypiters)
+    {
+        FOR (Symbol3 var, hypiter->second.expression)
+            if (var.id > 0)
+            {
+                Varusage::iterator const usageiter = varusage.find(var);
+                if (unexpected(usageiter == varusage.end(), "variable", var))
+                {
+                    *this = Assertion();
+                    return;
+                }
+                usageiter->second[hypiters.size()] = true;
+            }
+        hypiters.push_back(hypiter);
+    }
     FOR (Varusage::const_reference rvar, varusage)
         std::cout << rvar.first << ' ' << rvar.second;
 }
