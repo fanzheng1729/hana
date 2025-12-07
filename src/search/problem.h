@@ -224,6 +224,17 @@ private:
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
+    // Initialize a context if existent.
+    void initEnv(Environ * p)
+    {
+        if (!p) return;
+        p->pProb = this;
+        p->m_subsumedbyProb = (probEnv().compare(*p) == 1);
+        p->m_rankssimplerthanProb
+        = database.syntaxDAG().simplerthan(p->maxranks, maxranks);
+        addhypproofs(*p);
+        addimps(*p);
+    }
     // close all the nodes except p
     void closenodesexcept(pNodes const & pnodes, pNode p = pNode())
     {

@@ -96,9 +96,6 @@ struct Environ : protected Gen
     // Allocate a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
-    // Return the simplified assertion for the goal of the game to hold.
-    virtual Assertion makeAss(Bvector const & hypstotrim) const
-    { return assertion.makeAss(hypstotrim); }
 // Data members 
     // Database used
     Database const & database;

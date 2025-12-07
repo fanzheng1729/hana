@@ -349,6 +349,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         std::cout << newhypiters[i]->first << ' ',
         std::cout << newhypiters[i]->second.expression;
     Assertion().sethyps(assertion, move.absvars(pProb->bank), newhypiters);
+    std::cout << assertion.hypslabel(move.absvars(pProb->bank), newhypiters);
     std::cerr << "Not implemented" << std::endl;
     throw;
 }

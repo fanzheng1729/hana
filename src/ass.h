@@ -116,7 +116,7 @@ struct Assertion
     }
     Bvector & trimvars
         (Bvector & hypstotrim, Proofsteps const & conclusion) const;
-    // Returns a label for a collection of hypotheses.
+    // Label with hypotheses trimmed
     std::string hypslabel(Bvector const & hypstotrim = Bvector()) const
     {
         // Preallocate for efficiency.
@@ -131,7 +131,10 @@ struct Assertion
         std::sort(labels.begin(), labels.end());
         return std::accumulate(labels.begin(), labels.end(), std::string());
     }
-    // Return the simplified assertion with hypotheses trimmed.
+    // Label with new variables and new hypotheses added
+    std::string hypslabel
+        (Expression const & newvars, Hypiters const & newhypiters) const;
+    // Simplified assertion with hypotheses trimmed
     Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;
 // Modifying functions
     // Set the hypotheses, trimming away specified ones.

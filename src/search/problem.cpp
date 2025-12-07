@@ -105,19 +105,11 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     Assertion & subAss = assertions[newEnviter->first];
     if (subAss.number > 0)
         return NULL;
-    Assertion const & ass = env.makeAss(hypstotrim);
-    // Add the sub-context.
+    Assertion const & ass = env.assertion.makeAss(hypstotrim);
+    // Pointer to the sub-context.
     Environ * const psubEnv = env.makeEnv(subAss = ass);
-    if (psubEnv)
-    {
-        psubEnv->pProb = this;
-        psubEnv->m_subsumedbyProb = (probEnv().compare(*psubEnv) == 1);
-        psubEnv->m_rankssimplerthanProb
-        = database.syntaxDAG().simplerthan(psubEnv->maxranks, maxranks);
-        newEnviter->second = psubEnv;
-        addhypproofs(*psubEnv);
-        addimps(*psubEnv);
-    }
+    newEnviter->second = psubEnv;
+    initEnv(psubEnv);
     return psubEnv;
 }
 

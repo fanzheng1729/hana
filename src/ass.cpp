@@ -30,6 +30,27 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
+// Label with new variables and new hypotheses added
+std::string Assertion::hypslabel
+    (Expression const & newvars, Hypiters const & newhypiters) const
+{
+    // # hypotheses in new assertion
+    Hypsize newhypcount = hypcount() + newvars.size() + newhypiters.size();
+    // Preallocate for efficiency.
+    std::vector<std::string> labels;
+    labels.reserve(newhypcount);
+    // Floating hypotheses for new variables
+    FOR (Symbol3 const var, newvars)
+        if (var.id > 0 && varusage.count(var) == 0)
+            labels.push_back(hypdelim + var.iter->first.c_str);
+    // Old hypothesis
+    FOR (Hypiter hypiter, hypiters)
+        labels.push_back(hypdelim + hypiter->first.c_str);
+    // New hypothesis
+    FOR (Hypiter hypiter, newhypiters)
+        labels.push_back(hypdelim + hypiter->first.c_str);
+}
+
 // Return the simplified assertion with hypotheses trimmed.
 Assertion Assertion::makeAss(Bvector const & hypstotrim) const
 {
@@ -80,17 +101,17 @@ void Assertion::sethyps(Assertion const & ass,
                         Expression const & newvars, Hypiters const & newhypiters)
 {
     // # hypotheses in new assertion
-    Hypsize hypcount = ass.hypcount() + newvars.size() + newhypiters.size();
+    Hypsize newhypcount = ass.hypcount() + newvars.size() + newhypiters.size();
 
     hypiters.clear();
     // Preallocate for efficiency
-    hypiters.reserve(hypcount);
+    hypiters.reserve(newhypcount);
     varusage.clear();
     // Floating hypotheses for new variables
     FOR (Symbol3 const var, newvars)
         if (var.id > 0 && ass.varusage.count(var) == 0)
         {
-            varusage[var].resize(hypcount);
+            varusage[var].resize(newhypcount);
             hypiters.push_back(var.iter);
         }
     // Old variable usage
@@ -98,12 +119,10 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Varusage::const_reference rvar, ass.varusage)
     {
         Bvector & usage = varusage[rvar.first];
-        usage.resize(hypcount);
-        Bvector const & assuage = rvar.second;
-        std::cout << rvar.first << ' ' << assuage;
+        usage.resize(newhypcount);
+        Bvector::const_iterator const begin = rvar.second.begin();
         std::copy
-        (assuage.begin(), assuage.begin() + asshypcount,
-         usage.begin() + hypiters.size());
+        (begin, begin + asshypcount, usage.begin() + hypiters.size());
     }
     // Old hypotheses
     hypiters += ass.hypiters;
