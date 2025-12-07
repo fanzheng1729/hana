@@ -166,7 +166,7 @@ bool Syntaxioms::addRPN
         if (ass.hypfloats(i))
         {
             // Floating hypothesis
-            hyp.RPN.assign(1, ass.hypiters[i]);
+            hyp.RPN.assign(1, ass.hypptr(i));
             hyp.ast.assign(1, ASTnode());
         }
         else

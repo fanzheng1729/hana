@@ -59,10 +59,12 @@ struct Assertion
     Hypsize hypcount() const {return hypiters.size();}
     // # of essential hypotheses
     Hypsize esshypcount() const { return hypcount() - varcount(); }
+    // hypothesis pointer
+    pHyp hypptr(Hypsize index) const { return &*hypiters[index]; }
     // label of a hypothesis
-    strview hyplabel(Hypsize index) const { return hypiters[index]->first; }
+    strview hyplabel(Hypsize index) const { return hypptr(index)->first; }
     // Hypothesis
-    Hypothesis const & hyp(Hypsize index) const { return hypiters[index]->second; }
+    Hypothesis const & hyp(Hypsize index) const { return hypptr(index)->second; }
     // Return true if a hypothesis is floating
     bool hypfloats(Hypsize index) const { return hyp(index).floats; }
     // Expression of a hypothesis
@@ -122,9 +124,9 @@ struct Assertion
         labels.reserve(hypiters.size());
         for (Hypsize i = 0; i < hypstotrim.size(); ++i)
             if (!hypstotrim[i])
-                labels.push_back(hypdelim + std::string(hypiters[i]->first));
+                labels.push_back(hypdelim + hyplabel(i).c_str);
         for (Hypsize i = hypstotrim.size(); i < hypiters.size(); ++i)
-            labels.push_back(hypdelim + std::string(hypiters[i]->first));
+            labels.push_back(hypdelim + hyplabel(i).c_str);
 
         std::sort(labels.begin(), labels.end());
         return std::accumulate(labels.begin(), labels.end(), std::string());

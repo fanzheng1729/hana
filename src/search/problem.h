@@ -74,7 +74,7 @@ public:
         {
             if (assertion.hypfloats(i)) continue;
             Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
-            goals[goal].proof.assign(1, assertion.hypiters[i]);
+            goals[goal].proof.assign(1, assertion.hypptr(i));
         }
     }
     // Add 1-step proof of all the hypotheses to a context.
@@ -86,7 +86,7 @@ public:
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
             addgoal(goal, env, GOALTRUE)
-            ->second.proofdst().assign(1, env.assertion.hypiters[i]);
+            ->second.proofdst().assign(1, env.assertion.hypptr(i));
         }
     }
     // Add implication relation for newly added context.
