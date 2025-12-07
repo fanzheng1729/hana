@@ -11,7 +11,7 @@ static const std::string hypdelim = "~";
 // An axiom or a theorem
 struct Assertion
 {
-    Assertion() : number(0), tokenpos(0), type(0) {}
+    Assertion(Assertions::size_type n = 0) : number(n), tokenpos(0), type(0) {}
 // Essential properties:
     // Hypotheses of this axiom or theorem
     Hypiters hypiters;

@@ -1,3 +1,4 @@
+#include <algorithm>    // for std::copy
 #include "ass.h"
 #include "disjvars.h"
 #include "io.h"
@@ -32,11 +33,10 @@ Bvector & Assertion::trimvars
 // Return the simplified assertion with hypotheses trimmed.
 Assertion Assertion::makeAss(Bvector const & hypstotrim) const
 {
-    Assertion result;
-    result.number = number;
-    result.sethyps(*this, hypstotrim);
-    result.disjvars = disjvars & result.varusage;
-    return result;
+    Assertion ass(number);
+    ass.sethyps(*this, hypstotrim);
+    ass.disjvars = disjvars & ass.varusage;
+    return ass;
 }
 
 // Set the hypotheses, trimming away specified ones.
@@ -86,10 +86,26 @@ void Assertion::sethyps(Assertion const & ass,
     // Preallocate for efficiency
     hypiters.reserve(hypcount);
     varusage.clear();
-    // Add floating hypotheses for new variables.
+    // Floating hypotheses for new variables
     FOR (Symbol3 const var, newvars)
         if (var.id > 0 && ass.varusage.count(var) == 0)
         {
-            std::cout << var.iter->second.RPN;
+            Bvector & usage = varusage[var];
+            usage.resize(hypcount);
+            usage[hypiters.size()] = true;
+            hypiters.push_back(var.iter);
         }
+    // Old variable usage
+    FOR (Varusage::const_reference rvar, ass.varusage)
+    {
+        Bvector & usage = varusage[rvar.first];
+        usage.resize(hypcount);
+        Bvector const & src = rvar.second;
+        std::cout << rvar.first << ' ' << src;
+        std::copy(src.begin(), src.end(), usage.begin() + hypiters.size());
+    }
+    // Old hypotheses
+    hypiters += ass.hypiters;
+    FOR (Varusage::const_reference rvar, varusage)
+        std::cout << rvar.first << ' ' << rvar.second;
 }
