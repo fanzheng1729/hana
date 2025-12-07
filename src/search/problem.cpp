@@ -123,11 +123,11 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
         std::cout << newhypiters[i]->first << ' ',
         std::cout << newhypiters[i]->second.expression;
     Assertion().sethyps(assertion, newvars, newhypiters);
-    std::cout << assertion.hypslabel(newvars, newhypiters);
-    std::cerr << "Not implemented" << std::endl;
-    throw;
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
+    std::cout << name;
+    std::cerr << "Not implemented" << std::endl;
+    throw;
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
     environs.insert(std::pair<strview, Environ const *>(name, NULL));
