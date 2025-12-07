@@ -49,6 +49,9 @@ std::string Assertion::hypslabel
     // New hypothesis
     FOR (Hypiter hypiter, newhypiters)
         labels.push_back(hypdelim + hypiter->first.c_str);
+
+    std::sort(labels.begin(), labels.end());
+    return std::accumulate(labels.begin(), labels.end(), std::string());
 }
 
 // Return the simplified assertion with hypotheses trimmed.
