@@ -115,11 +115,8 @@ struct Symbol3 : Symbol2
     // Pointer to the floating hypothesis for variable, NULL for constant
     pHyp phyp;
     strview typecode() const { return phyp->second.expression[0]; }
-    Symbol3(strview str, ID n, pHyp p = NULL) :
-        Symbol2(str, n), phyp(p) {}
-    Symbol3(strview str, ID n, Hypiter hypiter) :
-        Symbol2(str, n), phyp(&*hypiter) {}
-    Symbol3(strview str = "") : Symbol2(str), phyp(NULL) {}
+    Symbol3(strview str = "", ID n = 0) : Symbol2(str, n), phyp(NULL) {}
+    Symbol3(strview str, ID n, Hypiter iter) : Symbol2(str, n), phyp(&*iter) {}
 };
 
 // Functor returning the id of an object, and 0 for anything else
