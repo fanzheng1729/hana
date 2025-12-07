@@ -79,9 +79,11 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
 void Assertion::sethyps(Assertion const & ass,
                         Expression const & newvars, Hypiters const & newhypiters)
 {
+    // # hypotheses in new assertion
+    Hypsize hypcount = ass.hypcount() + newvars.size() + newhypiters.size();
     hypiters.clear();
     // Preallocate for efficiency
-    hypiters.reserve(ass.hypcount() + newvars.size() + newhypiters.size());
+    hypiters.reserve(hypcount);
     varusage.clear();
     // Add floating hypotheses for new variables.
     FOR (Symbol3 const var, newvars)
