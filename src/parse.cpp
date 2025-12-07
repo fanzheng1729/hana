@@ -170,7 +170,7 @@ Substframe::Subexpends const & RPNmap
     // Check if exp contains a type declaration.
     if (expbegin != expend && expbegin->id > 0 &&
         expbegin->typecode() == type)
-        result[expbegin + 1].assign(1, expbegin->phyp);
+        result[expbegin + 1].assign(1, expbegin->iter);
 
     // Match syntax axioms.
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)

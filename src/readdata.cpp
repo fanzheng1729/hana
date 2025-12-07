@@ -341,7 +341,7 @@ bool Imp::addfloatinghyp(strview label, strview type, strview var)
     // Add the hypothesis.
     Hypiter const hypiter = m_database.addhyp(label, exp, true);
     Hypothesis & hyp = const_cast<Hypothesis &>(hypiter->second);
-    hyp.expression[1].phyp = &*hypiter;
+    hyp.expression[1].iter = hypiter;
     m_scopes.back().activehyp.push_back(hypiter);
     m_scopes.back().floatinghyp[var] = hypiter;
     // Add the type code.

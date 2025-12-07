@@ -87,6 +87,6 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Symbol3 const var, newvars)
         if (var.id > 0 && ass.varusage.count(var) == 0)
         {
-            std::cout << var.phyp->second.RPN;
+            std::cout << var.iter->second.RPN;
         }
 }

@@ -93,7 +93,7 @@ public:
         Expression & hypexp = iter->second.expression;
         hypexp = exp;
         if (floating) // Point the defined variable to the hypothesis
-            hypexp[1].phyp = &*iter;
+            hypexp[1].iter = iter;
         return iter;
     }
     bool hasass(strview label) const { return assertions().count(label); }

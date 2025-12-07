@@ -115,7 +115,7 @@ Terms Gen::generateupto1(strview type) const
     // Generate all variables of the type.
     FOR (Varusage::const_reference var, m_varusage)
         if (var.first.typecode() == type)
-            terms.push_back(Proofsteps(1, var.first.phyp));
+            terms.push_back(Proofsteps(1, var.first.iter));
 
     // Generate all 1-step syntax axioms.
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)

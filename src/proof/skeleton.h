@@ -58,7 +58,7 @@ template<class T> Tribool skeleton
             if (var.id == 0) // bad step
                 return UNKNOWN;
             // Add the root
-            result.push_back(var.phyp);
+            result.push_back(var.iter);
 // std::cout << "Result " << result;
             return TRUE;
         }
