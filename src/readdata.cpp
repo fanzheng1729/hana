@@ -271,9 +271,9 @@ ReadStatus Imp::readcompressed
 
     // Get proof letters
     std::string letters;
-    ReadStatus const okay(getproofletters(label, m_tokens, letters));
-    if (okay != ReadStatus::PROOFOKAY)
-        return okay;
+    ReadStatus const s = getproofletters(label, m_tokens, letters);
+    if (s != ReadStatus::PROOFOKAY)
+        return s;
 
     // Get proof numbers
     Proofnumbers const & proofnumbers(getproofnumbers(label, letters));
@@ -288,7 +288,7 @@ ReadStatus Imp::readcompressed
 // Read a regular proof. Discard tokens up to and including $.
 ReadStatus Imp::readregular(strview label, Proofsteps & proof)
 {
-    bool incomplete(false);
+    bool incomplete = false;
     strview token;
 
     while (!m_tokens.empty() && (token = m_tokens.front()) != "$.")
