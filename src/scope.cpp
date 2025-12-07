@@ -81,8 +81,9 @@ pHyp Scopes::activehypptr(strview label) const
 // Return 0 if Okay. Otherwise return error code.
 int Scopes::erraddfloatinghyp(strview var) const
 {
-    return isactivevariable(var) ? !!getfloatinghyp(var) * VARDEFINED :
-        VARNOTACTIVE;
+    if (!isactivevariable(var))
+        return VARNOTACTIVE;
+    return (getfloatinghypiter(var) != Hypiter()) * VARDEFINED;
 }
 
 // Determine if there is an active disjoint variable restriction on
