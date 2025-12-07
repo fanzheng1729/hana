@@ -128,11 +128,12 @@ static void makesubstitution
 // Find the substitution. Increase the size of the stack by 1.
 // Return index of the base of the substitution in the stack.
 // Return the size of the stack if not okay.
+template<class HYPS>
 static std::vector<Expression>::size_type findsubstitutions
-    (strview label, strview thmlabel, Hypiters const & hypiters,
+    (strview label, strview thmlabel, HYPS const & hyps,
      std::vector<Expression> & stack, Substitutions & substitutions)
 {
-    Hypsize const hypcount = hypiters.size();
+    Hypsize const hypcount = hyps.size();
     if (!enoughitemonstack(hypcount, stack.size(), label))
         return stack.size();
 
@@ -144,7 +145,7 @@ static std::vector<Expression>::size_type findsubstitutions
     // Determine substitutions and check that we can unify
     for (Hypsize i = 0; i < hypcount; ++i)
     {
-        Hypothesis const & hypothesis = hypiters[i]->second;
+        Hypothesis const & hypothesis = hyps[i]->second;
         if (hypothesis.floats)
         {
             // Floating hypothesis of the referenced assertion
