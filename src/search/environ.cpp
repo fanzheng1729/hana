@@ -1,4 +1,4 @@
-#include <algorithm>    // for std::transform, std::min and ordered algorithms
+#include <algorithm>    // for std::min and ordered algorithms
 #include "../proof/analyze.h"
 #include "../disjvars.h"
 #include "environ.h"
@@ -6,32 +6,31 @@
 #include "goaldata.h"
 #include "problem.h"
 #include "../proof/skeleton.h"
-#include "../util/iter.h"
 #include "../util/progress.h"
 
 static Symbol3s symbols(Proofsteps const & RPN)
 {
     Symbol3s set;
-    std::transform(RPN.begin(), RPN.end(), end_inserter(set),
-                   util::mem_fn(&Proofstep::var));
-    set.erase(Symbol3());
+    FOR (Proofstep step, RPN)
+        if (Symbol3 var = step.var())
+            set.insert(var);
     return set;
 }
 
 // Return true if a move satisfies disjoint variable hypotheses.
-bool checkDV(Move const & move, Assertion const & ass, bool verbose)
+bool Move::checkDV(Assertion const & ass, bool verbose) const
 {
-    if (!move.pthm)
+    if (!pthm)
         return true;
-// std::cout << "Checking DV of move " << move.label() << std::endl;
-    FOR (Disjvars::const_reference vars, move.theorem().disjvars)
+// std::cout << "Checking DV of move " << label() << std::endl;
+    FOR (Disjvars::const_reference vars, theorem().disjvars)
     {
-        const Proofsteps & RPN1 = move.substitutions[vars.first];
-        const Proofsteps & RPN2 = move.substitutions[vars.second];
+        const Proofsteps & RPN1 = substitutions[vars.first];
+        const Proofsteps & RPN2 = substitutions[vars.second];
 // std::cout << vars.first << ":\t" << RPN1 << vars.second << ":\t" << RPN2;
         const Symbol3s & set1(symbols(RPN1));
         const Symbol3s & set2(symbols(RPN2));
-        if (!checkDV(set1, set2, ass.disjvars, ass.varusage, verbose))
+        if (!::checkDV(set1, set2, ass.disjvars, ass.varusage, verbose))
             return false;
     }
 

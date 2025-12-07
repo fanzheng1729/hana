@@ -104,7 +104,7 @@ bool Game::writeproof() const
         return false;
     // attempt.type == Move::THM, goal not proven
 // std::cout << "Writing proof: " << goal().expression();
-    if (!checkDV(attempt, env().assertion, true))
+    if (!attempt.checkDV(env().assertion, true))
         return false;
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());

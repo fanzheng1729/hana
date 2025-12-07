@@ -104,6 +104,8 @@ struct Move
         result.typecode = goaltypecode();
         return result;
     }
+    // Return true if a move satisfies disjoint variable hypotheses.
+    bool checkDV(Assertion const & ass, bool verbose = false) const;
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
     bool hypfloats(Hypsize index) const { return theorem().hypfloats(index); }

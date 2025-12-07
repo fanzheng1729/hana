@@ -23,9 +23,6 @@ typedef std::vector<Environ const *> pEnvs;
 inline Value score(Weight w) { return 1. / (w + 1); }
 inline Value score(double w) { return 1. / ((w < 1 ? 1 : w) + 1); }
 
-// Return true if a move satisfies disjoint variable hypotheses.
-bool checkDV(Move const & move, Assertion const & ass, bool verbose = false);
-
 // Map: name -> polymorphic contexts
 typedef std::map<std::string, Environ const *> Environs;
 // Iterator to polymorphic contexts
@@ -71,7 +68,7 @@ struct Environ : protected Gen
     {
         if (database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
             return MoveINVALID;
-        if (!checkDV(move, assertion))
+        if (!move.checkDV(assertion))
             return MoveINVALID;
         if (move.isthm())
             return validthmmove(move);
