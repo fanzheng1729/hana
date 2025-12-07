@@ -121,11 +121,11 @@ struct Assertion
     {
         // Preallocate for efficiency.
         std::vector<std::string> labels;
-        labels.reserve(hypiters.size());
+        labels.reserve(hypcount());
         for (Hypsize i = 0; i < hypstotrim.size(); ++i)
             if (!hypstotrim[i])
                 labels.push_back(hypdelim + hyplabel(i).c_str);
-        for (Hypsize i = hypstotrim.size(); i < hypiters.size(); ++i)
+        for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
             labels.push_back(hypdelim + hyplabel(i).c_str);
 
         std::sort(labels.begin(), labels.end());
