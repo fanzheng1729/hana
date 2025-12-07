@@ -36,7 +36,7 @@ pHyp Scopes::getfloatinghyp(strview var) const
     FOR (const_reference scope, *this)
     {
         std::map<strview, Hypiter>::const_iterator const loc
-            (scope.floatinghyp.find(var));
+        = scope.floatinghyp.find(var);
         if (loc != scope.floatinghyp.end())
             return &*loc->second;
     }
@@ -47,10 +47,8 @@ pHyp Scopes::getfloatinghyp(strview var) const
 bool Scopes::isactivevariable(strview var) const
 {
     FOR (const_reference scope, *this)
-    {
         if (scope.activevariables.count(var) > 0)
             return true;
-    }
     return false;
 }
 
