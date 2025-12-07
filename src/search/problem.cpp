@@ -122,10 +122,10 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     for (Hypsize i = 0; i < newhypiters.size(); ++i)
         std::cout << newhypiters[i]->first << ' ',
         std::cout << newhypiters[i]->second.expression;
-    Assertion().sethyps(assertion, newvars, newhypiters);
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
     std::cout << name;
+    Assertion().sethyps(assertion, newvars, newhypiters);
     std::cerr << "Not implemented" << std::endl;
     throw;
     // Try add the context.
