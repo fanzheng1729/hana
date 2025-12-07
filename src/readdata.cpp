@@ -143,8 +143,8 @@ Assertions::iterator Database::addass
     (strview label, Expression const & exp, struct Scopes const & scopes,
      Tokens::size_type tokenpos)
 {
-    Assertions::value_type value(label, Assertion());
-    Assertions::iterator iter = m_assertions.insert(value).first;
+    Assertions::value_type const value(label, Assertion());
+    Assertions::iterator const iter = m_assertions.insert(value).first;
     Assertion & ass = iter->second;
     ass.expression = exp;
     scopes.completeass(ass);
