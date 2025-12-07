@@ -124,11 +124,6 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
     std::cout << name << std::endl;
-    Assertion ass(assertion.number);
-    ass.sethyps(assertion, newvars, newhypiters);
-    std::cout << move.findDV(ass).size();
-    std::cerr << "Not implemented" << std::endl;
-    throw;
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
     environs.insert(std::pair<strview, Environ const *>(name, NULL));
@@ -137,10 +132,14 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     if (!result.second) // already added
         return newEnviter->second;
     // Simplified assertion
-    Assertion & subAss = assertions[newEnviter->first];
-    if (subAss.number > 0)
+    Assertion & supAss = assertions[newEnviter->first];
+    if (supAss.number > 0)
         return NULL;
-    return NULL;
+    Assertion ass(assertion.number);
+    ass.sethyps(assertion, newvars, newhypiters);
+    std::cout << move.findDV(ass).size();
+    std::cerr << "Not implemented" << std::endl;
+    throw;
 }
 
 // Test proof search.
