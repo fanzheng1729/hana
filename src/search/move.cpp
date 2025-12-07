@@ -20,8 +20,8 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
 
     FOR (Disjvars::const_reference vars, theorem().disjvars)
     {
-        const Proofsteps & RPN1 = substitutions[vars.first];
-        const Proofsteps & RPN2 = substitutions[vars.second];
+        Proofsteps const & RPN1 = substitutions[vars.first];
+        Proofsteps const & RPN2 = substitutions[vars.second];
 
         if (!::checkDV
             (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, verbose))
@@ -35,6 +35,31 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
 Disjvars Move::findDV(Assertion const & ass) const
 {
     Disjvars result;
+
+    Varusage const & varusage = ass.varusage;
+
+    for (Varusage::const_iterator iter1 = varusage.begin(); 
+         iter1 != varusage.end(); ++iter1)
+    {
+        Symbol3 const var1 = iter1->first;
+        for (Varusage::const_iterator iter2 = (++iter1, iter1--);
+             iter2 != varusage.end(); ++iter2)
+        {
+            Symbol3 const var2 = iter2->first;
+
+            Proofsteps const & subst1 = substitutions[var1];
+            Proofsteps const & subst2 = substitutions[var2];
+
+            Proofsteps const & RPN1
+            = subst1.empty() ? var1.iter->second.RPN : subst1;
+            Proofsteps const & RPN2
+            = subst2.empty() ? var2.iter->second.RPN : subst2;
+
+        if (!::checkDV
+            (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, false))
+            result.insert(std::make_pair(var1, var2));
+        }
+    }
 
     return result;
 }
