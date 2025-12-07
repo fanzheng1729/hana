@@ -311,19 +311,18 @@ bool Propctors::addclause
 Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
                            Bvector const & hypstotrim) const
 {
-    Hypiters const & hyps = ass.hypiters;
-    natom = hyps.size(); // One atom for each floating hypotheses
+    natom = ass.hypcount(); // One atom for each floating hypotheses
 
     Hypscnf result;
     CNFClauses & cnf = result.first;
-    result.second.resize(hyps.size());
-//std::cout << "Adding clauses for ";
-    for (Hypsize i = 0; i < hyps.size(); ++i)
+    result.second.resize(ass.hypcount());
+// std::cout << "Adding clauses for ";
+    for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
         if (!ass.hypfloats(i) && !(i < hypstotrim.size() && hypstotrim[i]))
         {
-//std::cout << hyps[i]->first << ' ' << std::endl;
-            if (!addclause(ass.hypRPN(i), hyps, cnf, natom))
+// std::cout << ass.hyplabel(i) << ' ' << std::endl;
+            if (!addclause(ass.hypRPN(i), ass.hypiters, cnf, natom))
                 return Hypscnf();
             // Assume the hypothesis.
             cnf.closeoff((natom - 1) * 2);
