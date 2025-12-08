@@ -11,6 +11,7 @@ struct Goal
     Proofsteps RPN;
     strview typecode;
     AST mutable ast;
+    GovernedSteprangesbystep mutable maxranges;
     Goal() {}
     Goal(Goalview view) : RPN(view.first), typecode(view.second) {}
     Proofsize size() const { return RPN.size(); }

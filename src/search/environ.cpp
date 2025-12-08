@@ -73,6 +73,8 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     {
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
             std::cout << Proofsteps(rrange.first.first, rrange.first.second);
+        std::cout << thm.expression;
+        std::cout << goal.expression();
         std::cin.get();
         // FOR (GovernedStepranges::const_reference rrange, rstep.second)
         // {
