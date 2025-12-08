@@ -3,7 +3,6 @@
 
 // #include "../io.h"
 #include "compranges.h"
-#include "../util/algo.h"   // for util::equal
 #include "../util/tribool.h"
 #include "../bank.h"
 

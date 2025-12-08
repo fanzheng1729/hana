@@ -1,6 +1,5 @@
 #include "../ass.h"
 #include "../io.h"
-#include "../util/algo.h"   // for util::equal
 #include "compranges.h"
 #include "verify.h"
 
@@ -95,8 +94,7 @@ bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 // std::cout << "Var " << tmproot << " ID = " << id << std::endl;
             // Template hypothesis is floating. Check if it has been seen.
             if (subst[id].second > subst[id].first) // seen
-                return util::equal(exp.first.first, exp.first.second,
-                                   subst[id].first, subst[id].second);
+                return exp.first == subst[id];
             subst[id] = exp.first;// unseen
             return true;
         }
@@ -106,21 +104,11 @@ bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 //std::cout << "Ctor " << tmproot << std::endl;
         if (exproot != tmproot)
             return false;
-        // Check the children.
-        {
-            // Roots of both ASTs
-            ASTnode const & expASTroot = exp.ASTroot();
-            ASTnode const & tmpASTroot = tmp.ASTroot();
-            // Check if children sizes match.
-            if (expASTroot.size() != tmpASTroot.size())
+        // Match the children.
+        for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
+            if (!findsubstitutions(exp.child(i), tmp.child(i), subst))
                 return false;
-            // Match the children.
-            for (ASTnode::size_type i = 0; i < expASTroot.size(); ++i)
-                if (!findsubstitutions(exp.child(i), tmp.child(i), subst))
-                    return false;
-            // All children match.
-            return true;
-        }
+        return true;
     default:
         return false;
     }
