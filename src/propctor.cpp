@@ -263,9 +263,14 @@ bool Propctors::addclause
     (Proofsteps const & RPN, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
 {
-    AST const & tree(ast(RPN));
-    if (unexpected(tree.empty(), "bad proof tree when adding CNF of", RPN))
-        return false;
+    return addclause(RPN, ast(RPN), hyps, cnf, natom);
+}
+bool Propctors::addclause
+    (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
+     CNFClauses & cnf, Atom & natom) const
+{
+    if (unexpected(ast.empty(), "bad proof tree when adding CNF of", RPN))
+        return throw, false;
 
     std::vector<Literal> literals(RPN.size());
     for (Proofsize i = 0; i < RPN.size(); ++i)
@@ -295,9 +300,9 @@ bool Propctors::addclause
         if (unexpected(itercnf == end(), "connective", step))
             return false;
         // Its arguments
-        std::vector<Literal> args(tree[i].size());
+        std::vector<Literal> args(ast[i].size());
         for (ASTnode::size_type j = 0; j < args.size(); ++j)
-            args[j] = literals[tree[i][j]];
+            args[j] = literals[ast[i][j]];
         // Add the CNF.
         cnf.append(itercnf->second.cnf, natom, args.data(), args.size());
         literals[i] = natom++ * 2;
@@ -322,7 +327,8 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
         if (!ass.hypfloats(i) && !(i < hypstotrim.size() && hypstotrim[i]))
         {
 // std::cout << ass.hyplabel(i) << ' ' << std::endl;
-            if (!addclause(ass.hypRPN(i), ass.hypiters, cnf, natom))
+            if (!addclause
+                (ass.hypRPN(i), ass.hypAST(i), ass.hypiters, cnf, natom))
                 return Hypscnf();
             // Assume the hypothesis.
             cnf.closeoff((natom - 1) * 2);

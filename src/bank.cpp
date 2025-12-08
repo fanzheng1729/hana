@@ -60,6 +60,10 @@ Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
     if (exp.empty())
         return Hypiter();
     exp[0] = typecode;
+    // Abstract syntax tree of the hypothesis
+    hyp.ast = ast(RPN);
+    if (hyp.ast.empty())
+        return Hypiter();
 
     Hypiter & hypiter = m_hypitersbyexp[exp];
     if (hypiter != Hypiter())

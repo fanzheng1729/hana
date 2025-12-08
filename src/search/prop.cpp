@@ -12,10 +12,13 @@
 Goalstatus Prop::status(Goal const & goal) const
 {
     Proofsteps const & RPN = goal.RPN;
+    if (goal.ast.empty())
+        goal.ast = ast(RPN);
     CNFClauses cnf(hypscnf.first);
     Atom natom = hypatomcount;
     // Add hypotheses.
-    if (!database.propctors().addclause(RPN, assertion.hypiters, cnf, natom))
+    if (!database.propctors().addclause
+        (RPN, goal.ast, assertion.hypiters, cnf, natom))
     {
         std::cerr << "Bad CNF from\n" << RPN << "in " << name << std::endl;
         return GOALFALSE;
@@ -28,6 +31,9 @@ Goalstatus Prop::status(Goal const & goal) const
 // Return the hypotheses of a goal to trim.
 Bvector Prop::hypstotrim(Goal const & goal) const
 {
+    if (goal.ast.empty())
+        goal.ast = ast(goal.RPN);
+
     Bvector result(assertion.hypcount(), false);
 
     bool trimmed = false;
@@ -56,7 +62,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         Atom natom = cnf2.empty() ? assertion.hypcount() : cnf2.atomcount();
         // Add conclusion.
         database.propctors().addclause
-        (goal.RPN, assertion.hypiters, cnf2, natom);
+        (goal.RPN, goal.ast, assertion.hypiters, cnf2, natom);
         // Negate conclusion.
         cnf2.closeoff((natom - 1) * 2 + 1);
         if ((result[i] = !cnf2.sat()))

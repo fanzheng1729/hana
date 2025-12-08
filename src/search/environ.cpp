@@ -86,8 +86,8 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
-    Assertion const & thm = pthm->second;
     // return false;
+    Assertion const & thm = pthm->second;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
 
