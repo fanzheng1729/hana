@@ -22,6 +22,7 @@ Goalstatus Prop::status(Goal const & goal) const
     {
         std::cerr << "Bad CNF from\n" << RPN << goal.expression();
         std::cerr << "in " << name << std::endl;
+        std::cerr << " in Prob #" << prob().assertion.number << std::endl;
         std::cin.get();
         return GOALFALSE;
     }
