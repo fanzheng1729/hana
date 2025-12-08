@@ -64,7 +64,11 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
     if (thm.expRPN == goal.RPN)
-        return std::cout << pthm->first << ' ', false;
+    {
+        std::cout << thm.expRPN << goal.RPN;
+        std::cin.get();
+        return false;
+    }
     // return false;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
@@ -273,11 +277,10 @@ bool Environ::trythm
     if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << goal.expression();
-    if (thm.esshypcount() == 0)
-        addabsmoves(goal, &*iter, moves);
     Stepranges stepranges(thm.maxvarid() + 1);
-    if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
-        return thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
+    if (!findsubstitutions(goal, thm.expRPNAST(), stepranges)
+        & thm.esshypcount() == 0)
+        return addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
     Move move(&*iter, stepranges);
