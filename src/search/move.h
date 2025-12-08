@@ -205,10 +205,9 @@ struct Move
     {
         for (Hypsize i = 0; i < conjcount(); ++i)
         {
-            Goal const & goal(subgoal(i));
             Expression const & hypexp = hyp.expression;
-            if (!hypexp.empty() && goal.RPN == hyp.RPN
-                && goal.typecode == hypexp[0])
+            if (!hypexp.empty() && absconjs[i].RPN == hyp.RPN
+                && absconjs[i].typecode == hypexp[0])
                 return i;
         }
         return conjcount();
