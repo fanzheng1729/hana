@@ -184,7 +184,7 @@ bool checkdefinitions
     {
 //std::cout << "Checking definition for " << r.first << std::endl;
         Definition const & definition = rdef.second;
-        // Points to the corresponding assertion.
+        // Pointer to the corresponding assertion
         pAss pdef = definition.pdef;
         if (unexpected(!pdef, "empty definition for", rdef.first))
             continue;
@@ -192,10 +192,10 @@ bool checkdefinitions
         Proofsteps RPN(definition.lhs);
         RPN += definition.rhs;
         RPN.push_back(pdef->second.expRPN.back());
-        Expression const & result(verify(RPN, pdef));
         // Check if it agrees with the expression.
+        Expression const & result(verify(RPN, pdef));
         Expression const & exp = pdef->second.expression;
-        bool okay(!result.empty() && result[0]==typecodes.normalize(exp[0]));
+        bool okay = !result.empty() && result[0]==typecodes.normalize(exp[0]);
         okay &= util::equal(result.begin() + 1, result.end(),
                             exp.begin() + 1, exp.end());
         if (!okay)
