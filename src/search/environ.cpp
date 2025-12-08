@@ -306,11 +306,12 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
-    if (validthmmove(move) == MoveINVALID)
+    if (move.absconjs.empty() || validthmmove(move) == MoveINVALID)
         return MoveINVALID;
 
     Environ const * const penv = pProb->addsupEnv(*this, move);
-    std::cout << penv->status(move.goal()); throw;
+    std::cout << move.absconjs.back().expression();
+    std::cout << penv->status(move.absconjs.back()); throw;
     return MoveINVALID;
 }
 
