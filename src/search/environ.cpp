@@ -73,8 +73,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
         = goal.maxranges.find(rstep.first);
         if (iter == goal.maxranges.end())
             continue;
-        std::cout << thm.expression;
-        std::cout << goal.expression();
+
         FOR (GovernedStepranges::const_reference thmrange, rstep.second)
         {
             Proofsteps thmrangeRPN(thmrange.first.first, thmrange.first.second);
@@ -90,21 +89,6 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                     addabsmove(goal, goalrange.first, Move(pthm, subst), moves);
             }
         }
-        // FOR (GovernedStepranges::const_reference rrange, rstep.second)
-        // {
-        //     Move::Conjectures conjs(2);
-        //     Bank & bank = pProb->bank;
-        //     if (skeleton(goalexp, Keeprange(rrange.first), bank, conjs[1].RPN) == TRUE)
-        //     {
-        //         conjs[1].typecode = goal.typecode;
-        //         skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
-        //         conjs[0].typecode = thm.exptypecode();
-        //         std::cout << conjs[0].expression() << conjs[1].expression();
-        //         Move move(conjs, bank);
-        //         std::cout << valid(move);
-        //         std::cin.get();
-        //     }
-        // }
     }
     
     return false;
@@ -128,7 +112,7 @@ bool Environ::addabsmove
     if (skeleton(goalexp, Keeprange(abstraction), bank, conjs[1].RPN) != TRUE)
         return false;
     conjs[1].typecode = goal.typecode;
-    std::cout << conjs[0].expression() << conjs[1].expression();
+std::cout << conjs[0].expression() << conjs[1].expression();
     Move conjmove(conjs, bank);
     std::cout << valid(conjmove);
     std::cin.get();
@@ -361,9 +345,9 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     Environ const * const penv = pProb->addsupEnv(*this, move);
     // Add the essential hypothesis as a goal.
     pGoal const pgoal = pProb->addgoal(move.absconjs.back(), *penv, GOALNEW);
-std::cout << "Validating " << pgoal->second.goal().expression();
+// std::cout << "Validating " << pgoal->second.goal().expression();
+// std::cout << "In env " << penv->name << std::endl;
     Goalstatus & s = pgoal->second.getstatus();
-std::cout << "s = " << s << std::endl;
     if (s == GOALFALSE) // Refuted
         return MoveINVALID;
     // Check if the goal is proven.
