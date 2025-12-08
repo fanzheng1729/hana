@@ -26,10 +26,12 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
 // Return true if a move is legal.
 bool Game::legal(Move const & move, bool ourturn) const
 {
-    if (ourturn && move.type == Move::THM) // Check if the goal matches.
+    if (ourturn && move.isthm()) // Check if the goal matches.
         return goal() == move.goal();
-    if (!ourturn && attempt.type == Move::THM) // Check index bound.
+    if (!ourturn && attempt.isthm()) // Check index bound.
         return move.index < attempt.hypcount();
+    if (move.isconj())
+        std::cout << "Not imp", throw;
     return true;
 }
 
