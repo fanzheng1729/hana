@@ -70,12 +70,8 @@ struct Environ : protected Gen
             return MoveINVALID;
         if (!move.checkDV(assertion))
             return MoveINVALID;
-        if (move.isthm())
-            return validthmmove(move);
-        if (move.isconj())
-            return validconjmove(move);
-        else
-            return MoveINVALID;
+        return move.isthm() ? validthmmove(move) :
+                move.isconj() ? validconjmove(move) : MoveINVALID;
     }
     // Return the hypotheses of a goal to be trimmed.
     virtual Bvector hypstotrim(Goal const & goal) const
