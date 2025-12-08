@@ -116,14 +116,23 @@ bool Environ::addabsmove
      Move const & move, Moves & moves) const
 {
     Goal const & thmgoal(move.goal());
-    AST  const & thmgoalAST(ast(thmgoal.RPN));
-    SteprangeAST thmexp(thmgoal.RPN, thmgoalAST);
-    std::cout << thmgoal.expression();
-    std::cout << Proofsteps(abstraction.first, abstraction.second) << std::endl;
+    AST  const & thmgoalast(ast(thmgoal.RPN));
+    SteprangeAST thmexp(thmgoal.RPN, thmgoalast);
+    SteprangeAST goalexp(goal.RPN, goal.ast);
+
     Move::Conjectures conjs(2);
     Bank & bank = pProb->bank;
-    // if (skeleton(thmexp, Keeprange(abstraction), bank, ))
-    std::cout << "Not implemented"; throw;
+    if (skeleton(thmexp, Keeprange(abstraction), bank, conjs[0].RPN) != TRUE)
+        return false;
+    conjs[0].typecode = thmgoal.typecode;
+    if (skeleton(goalexp, Keeprange(abstraction), bank, conjs[1].RPN) != TRUE)
+        return false;
+    conjs[1].typecode = goal.typecode;
+    std::cout << conjs[0].expression() << conjs[1].expression();
+    Move conjmove(conjs, bank);
+    std::cout << valid(conjmove);
+    std::cin.get();
+    return false;
 }
 
 // Return true if all variables in use have been substituted.
@@ -352,8 +361,9 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     Environ const * const penv = pProb->addsupEnv(*this, move);
     // Add the essential hypothesis as a goal.
     pGoal const pgoal = pProb->addgoal(move.absconjs.back(), *penv, GOALNEW);
-// std::cout << "Validating " << pgoal->second.goal().expression();
+std::cout << "Validating " << pgoal->second.goal().expression();
     Goalstatus & s = pgoal->second.getstatus();
+std::cout << "s = " << s << std::endl;
     if (s == GOALFALSE) // Refuted
         return MoveINVALID;
     // Check if the goal is proven.

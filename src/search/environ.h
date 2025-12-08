@@ -96,7 +96,7 @@ struct Environ : protected Gen
     Assertion const & assertion;
     // Maximal ranks of all the hypotheses combined
     SyntaxDAG::Ranks const maxranks;
-    std::string name;
+    std::string const name;
     // Weight of all the hypotheses combined
     Weight hypsweight;
     // Is staged move generation used?
