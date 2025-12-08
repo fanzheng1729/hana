@@ -64,6 +64,34 @@ Disjvars Move::findDV(Assertion const & ass) const
     return result;
 }
 
+// Size of full proof (must be of type CONJ)
+Proofsize Move::fullproofsize(pProofs const & phyps) const
+{
+    Proofsize sum = 0;
+    FOR (Proofstep step, *phyps.back())
+        switch (step.type)
+        {
+        case Proofstep::THM:
+            ++sum;
+            break;
+        case Proofstep::HYP:
+            if (step.phyp->second.floats)
+                if (Proofsize size = substitutions[step.id()].size())
+                    sum += size;
+                else
+                    ++sum;
+            else
+            {
+                Hypsize const index = findconj(step.phyp->second);
+                if (index >= conjcount())
+                    ++sum;
+                else
+                    sum += phyps[index]->size();
+            }
+        }
+    return sum;
+}
+
 // Size of a substitution
 Proofsize Move::substitutionsize(Proofsteps const & src) const
 {

@@ -212,7 +212,7 @@ struct Move
         return conjcount();
     }
     // Size of full proof (must be of type CONJ)
-    Proofsize fullproofsize(Proofstep const & abstractproof) const;
+    Proofsize fullproofsize(pProofs const & phyps) const;
 private:
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;

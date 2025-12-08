@@ -115,29 +115,7 @@ bool Game::writeproof() const
         std::cout << *phyps[1];
         std::cout << goal().expression();
         std::cout << *phyps.back();
-        Proofsize sum = 0;
-        FOR (Proofstep step, *phyps.back())
-            switch (step.type)
-            {
-            case Proofstep::THM:
-                ++sum;
-                break;
-            case Proofstep::HYP:
-                if (step.phyp->second.floats)
-                    if (Proofsize size = attempt.substitutions[step.id()].size())
-                        sum += size;
-                    else
-                        ++sum;
-                else
-                {
-                    Hypsize const index = attempt.findconj(step.phyp->second);
-                    if (index >= attempt.conjcount())
-                        ++sum;
-                    else
-                        sum += phyps[index]->size();
-                }
-            }
-        std::cout << sum;
+        std::cout << attempt.fullproofsize(phyps);
         std::cout << "Not imp writeproof" << std::endl, throw;
     }
     if (!::writeproof(dest, attempt.pthm, phyps))
