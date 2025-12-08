@@ -107,8 +107,6 @@ bool Game::writeproof() const
         std::cout << goal().expression();
         Environ const & env = *attempt.subgoals[1]->first;
         std::cout << env.name << std::endl;
-        FOR (Hypiter iter, env.assertion.hypiters)
-            std::cout << iter->first << ' ';
         std::cout << "Not imp writeproof" << std::endl, throw;
     }
     // attempt.type == Move::THM, goal not proven
