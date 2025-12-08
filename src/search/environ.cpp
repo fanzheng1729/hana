@@ -89,7 +89,11 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
                 Stepranges subst(thm.maxvarid() + 1);
                 if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst))
+                {
                     std::cout << thmrangeRPN << goalrangeRPN;
+                    Move move(pthm, subst);
+                    std::cout << move.goal().expression();
+                }
             }
         }
         std::cin.get();
