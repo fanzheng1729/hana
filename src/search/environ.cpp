@@ -295,7 +295,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
             return MoveINVALID;
         // Simplified context for the child, if !NULL
         Environ const * & psimpEnv = pgoal->second.psimpEnv;
-        psimpEnv = pProb->addsubEnv(*this, hypstotrim(goal));
+        psimpEnv = pProb->addsubEnv(*pgoal->first, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
         move.subgoals[i] = addsimpgoal(pgoal);
 // if (psimpEnv)
