@@ -59,8 +59,11 @@ Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
     Expression & exp = hyp.expression = verify(RPN);
     if (exp.empty())
         return Hypiter();
-
     exp[0] = typecode;
+
+    Hypiter & hypiter = m_hypitersbyexp[exp];
+    if (hypiter != Hypiter())
+        throw;
     hyp.floats = false;
     hyp.RPN = RPN;
     // # of the hypothesis

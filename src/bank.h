@@ -18,6 +18,8 @@ class Bank
     Tokens m_ehyplabels;
     Tokens m_fhyplabels;
     Hypotheses m_hypotheses;
+    typedef std::map<Expression, Hypiter> Hypitersbyexp;
+    Hypitersbyexp m_hypitersbyexp;
 public:
     // Variable id starts from reserve + 1.
     Bank(Symbol2::ID reserve = 0) :
