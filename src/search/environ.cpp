@@ -63,17 +63,10 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
-    if (thm.expRPN == goal.RPN)
-    {
-        std::cout << thm.expRPN << goal.RPN;
-        std::cin.get();
-        return false;
-    }
     // return false;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
-    SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
-    SteprangeAST goalexp(goal.RPN, goal.ast.begin());
+
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
     {
         GovernedSteprangesbystep::const_iterator const iter
@@ -94,7 +87,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
                 Stepranges subst(thm.maxvarid() + 1);
                 if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst))
-                    addabsmove(goal, Move(pthm, subst), moves);
+                    addabsmove(goal, goalrange.first, Move(pthm, subst), moves);
             }
         }
         // FOR (GovernedStepranges::const_reference rrange, rstep.second)
@@ -118,9 +111,18 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 }
 
 // Add an abstraction move. Return true if it has no open hypotheses.
-bool Environ::addabsmove(Goal const & goal, Move const & move, Moves & moves) const
+bool Environ::addabsmove
+    (Goal const & goal, Steprange abstraction,
+     Move const & move, Moves & moves) const
 {
-    std::cout << move.goal().expression();
+    Goal const & thmgoal(move.goal());
+    AST  const & thmgoalAST(ast(thmgoal.RPN));
+    SteprangeAST thmexp(thmgoal.RPN, thmgoalAST);
+    std::cout << thmgoal.expression();
+    std::cout << Proofsteps(abstraction.first, abstraction.second) << std::endl;
+    Move::Conjectures conjs(2);
+    Bank & bank = pProb->bank;
+    // if (skeleton(thmexp, Keeprange(abstraction), bank, ))
     std::cout << "Not implemented"; throw;
 }
 

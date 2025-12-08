@@ -113,7 +113,9 @@ private:
     // Add abstraction moves. Return true if it has no open hypotheses.
     bool addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const;
     // Add an abstraction move. Return true if it has no open hypotheses.
-    bool addabsmove(Goal const & goal, Move const & move, Moves & moves) const;
+    bool addabsmove
+        (Goal const & goal, Steprange abstraction,
+         Move const & move, Moves & moves) const;
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,

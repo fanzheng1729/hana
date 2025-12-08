@@ -74,8 +74,8 @@ struct Keeprange
     {
         if (range == exp)
             return KEEPRANGE;
-        // if (*(range.second - 1) == *(exp.second - 1))
-        //     return SPLITALL;
+        if (range.second - range.first > exp.second - exp.first)
+            return SPLITALL;
         return SPLITREC;
     }
 };
