@@ -78,15 +78,18 @@ Moves Game::ourmoves(stage_t stage) const
     return moves;
 }
 
-static void writeprooferr
-    (Game const & game, Expression const & exp, pProofs const & hyps)
+void Game::writeprooferr(Expression const & exp) const
 {
-    std::cerr << "When using " << game.attempt.label() << ", the proof\n";
-    std::cerr << game.proof() << "proves\n" << exp;
-    std::cerr << "instead of\n" << game.goal().expression();
+    std::cerr << "When using " << attempt.label() << ", the proof\n";
+    std::cerr << proof() << "proves\n" << exp;
+    std::cerr << "instead of\n" << goal().expression();
+}
+
+static void printthmhypproofs(Move const & move, pProofs const & phyps)
+{
     std::cerr << "Proofs of hypotheses are" << std::endl;
-    for (Hypsize i = 0; i < game.attempt.subgoalcount(); ++i)
-        std::cerr << game.attempt.subgoallabel(i) << '\t' << *hyps[i];
+    for (Hypsize i = 0; i < move.subgoalcount(); ++i)
+        std::cerr << move.subgoallabel(i) << '\t' << *phyps[i];
 }
 
 // Add proof for a node using a theorem.
@@ -100,8 +103,10 @@ bool Game::writeproof() const
 // std::cout << "Writing proof: " << goal().expression();
     if (attempt.isconj())
     {
+        std::cout << attempt.subgoal(0).expression();
         std::cout << attempt.subgoals[0]->second.goal().expression();
         std::cout << attempt.subgoals[0]->second.proofsrc();
+        std::cout << attempt.subgoal(1).expression();
         std::cout << attempt.subgoals[1]->second.goal().expression();
         std::cout << attempt.subgoals[1]->second.proofsrc();
         std::cout << goal().expression();
@@ -112,20 +117,21 @@ bool Game::writeproof() const
     // attempt.type == Move::THM, goal not proven
     Proofsteps & dest = goaldata().proofdst();
     // Pointers to proofs of hypotheses
-    pProofs hyps(attempt.hypcount());
-    for (Hypsize i = 0; i < hyps.size(); ++i)
+    pProofs phyps(attempt.hypcount());
+    for (Hypsize i = 0; i < phyps.size(); ++i)
     {
         if (attempt.hypfloats(i))
-            hyps[i] = &attempt.substitutions[attempt.hypvar(i)];
+            phyps[i] = &attempt.substitutions[attempt.hypvar(i)];
         else
-            hyps[i] = &attempt.subgoals[i]->second.proofsrc();
-// std::cout << "Added hyp\n" << *hyps[i];
+            phyps[i] = &attempt.subgoals[i]->second.proofsrc();
     }
-    if (!::writeproof(dest, attempt.pthm, hyps))
+    if (!::writeproof(dest, attempt.pthm, phyps))
         return false;
     // Verification
     const Expression & exp(verify(dest));
     const bool okay = (exp == goal().expression());
+    if (!okay)
+        printthmhypproofs(attempt, phyps);
     if (okay)
     {
 // std::cout << "Built proof for " << goal().expression();
@@ -133,7 +139,7 @@ bool Game::writeproof() const
     }
     else
     {
-        writeprooferr(*this, exp, hyps);
+        writeprooferr(exp);
         dest.clear();
     }
     return okay;

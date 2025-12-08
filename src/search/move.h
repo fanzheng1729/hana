@@ -1,7 +1,6 @@
 #ifndef MOVE_H_INCLUDED
 #define MOVE_H_INCLUDED
 
-#include <iostream>
 #include "../ass.h"
 #include "../bank.h"
 #include "goal.h"

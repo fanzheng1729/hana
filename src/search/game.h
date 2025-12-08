@@ -42,6 +42,7 @@ struct Game
     // Add proof for a node using a theorem.
     // Return true if a new proof is written.
     bool writeproof() const;
+    void writeprooferr(Expression const & exp) const;
 };
 
 #endif // GAME_H_INCLUDED
