@@ -25,7 +25,7 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
         Proofsteps const & RPN2 = substitutions[vars.second];
 
         if (!::checkDV
-            (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, verbose))
+            (symbols(RPN1),symbols(RPN2),ass.disjvars,ass.varusage,verbose))
             return false;
     }
 
