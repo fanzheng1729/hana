@@ -94,29 +94,44 @@ bool Game::writeproof() const
     if (!attempt.checkDV(env().assertion, true))
         return false;
 // std::cout << "Writing proof: " << goal().expression();
+    // attempt.type == Move::THM || Move::CONJ, goal not proven
+    Proofsteps & dest = goaldata().proofdst();
+    // Pointers to proofs of hypotheses
+    pProofs phyps(attempt.subgoalcount());
+    for (Hypsize i = 0; i < phyps.size(); ++i)
+    {
+        if (attempt.subgoalfloats(i))
+            phyps[i] = &attempt.substitutions[attempt.hypvar(i)];
+        else
+            phyps[i] = &attempt.subgoals[i]->second.proofsrc();
+    }
     if (attempt.isconj())
     {
         std::cout << attempt.subgoal(0).expression();
         std::cout << attempt.subgoals[0]->second.goal().expression();
-        std::cout << attempt.subgoals[0]->second.proofsrc();
+        std::cout << *phyps[0];
         std::cout << attempt.subgoal(1).expression();
         std::cout << attempt.subgoals[1]->second.goal().expression();
-        std::cout << attempt.subgoals[1]->second.proofsrc();
+        std::cout << *phyps[1];
         std::cout << goal().expression();
-        Environ const & env = *attempt.subgoals[1]->first;
-        std::cout << env.name << std::endl;
+        std::cout << *phyps.back();
+        Proofsize sum = 0;
+        FOR (Proofstep step, *phyps.back())
+            switch (step.type)
+            {
+            case Proofstep::THM:
+                ++sum;
+                break;
+            case Proofstep::HYP:
+                if (step.phyp->second.floats)
+                    if (Proofsize size = attempt.substitutions[step.id()].size())
+                        sum += size;
+                    else
+                        ++sum;
+                else
+                    ;
+            }
         std::cout << "Not imp writeproof" << std::endl, throw;
-    }
-    // attempt.type == Move::THM, goal not proven
-    Proofsteps & dest = goaldata().proofdst();
-    // Pointers to proofs of hypotheses
-    pProofs phyps(attempt.hypcount());
-    for (Hypsize i = 0; i < phyps.size(); ++i)
-    {
-        if (attempt.hypfloats(i))
-            phyps[i] = &attempt.substitutions[attempt.hypvar(i)];
-        else
-            phyps[i] = &attempt.subgoals[i]->second.proofsrc();
     }
     if (!::writeproof(dest, attempt.pthm, phyps))
         return false;
