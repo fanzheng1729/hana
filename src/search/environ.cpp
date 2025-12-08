@@ -281,6 +281,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         }
         // Not proven
         allproven = false;
+
         if (s >= GOALOPEN) // Valid
         {
             move.subgoals[i] = addsimpgoal(pgoal);
