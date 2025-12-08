@@ -82,6 +82,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 std::cout << conjs[0].expression() << conjs[1].expression();
                 Move move(conjs, bank);
                 std::cout << valid(move);
+                std::cin.get();
             }
         }
     
@@ -294,29 +295,51 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         s = status(goal);
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
-        // Simplified context for the child, if !NULL
+// std::cout << "Simplifying " << goal.expression();
         Environ const * & psimpEnv = pgoal->second.psimpEnv;
         psimpEnv = pProb->addsubEnv(*pgoal->first, hypstotrim(goal));
         // Record the goal in the hypotheses of the move.
         move.subgoals[i] = addsimpgoal(pgoal);
-// if (psimpEnv)
-// std::cout << pgoal->second.goal().expression() << name << "\n->\n",
-// std::cout << (psimpEnv ? psimpEnv->name : "") << std::endl;
+// std::cout << name << "\n->\n" << (psimpEnv ? psimpEnv->name : "") << std::endl;
     }
     return allproven ? MoveCLOSED : MoveVALID;
 }
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
-    if (move.absconjs.empty() || validthmmove(move) == MoveINVALID)
+    if (move.absconjs.empty())
+        return MoveINVALID;
+
+    MoveValidity const validity = validthmmove(move);
+    if (validity == MoveINVALID)
         return MoveINVALID;
 
     Environ const * const penv = pProb->addsupEnv(*this, move);
     // Add the essential hypothesis as a goal.
     pGoal const pgoal = pProb->addgoal(move.absconjs.back(), *penv, GOALNEW);
-std::cout << "Validating " << pgoal->second.goal().expression();
-    std::cout << penv->status(pgoal->second.goal()); throw;
-    return MoveINVALID;
+// std::cout << "Validating " << pgoal->second.goal().expression();
+    Goalstatus & s = pgoal->second.getstatus();
+    if (s == GOALFALSE) // Refuted
+        return MoveINVALID;
+    // Check if the goal is proven.
+    if (pgoal->second.proven())
+        return move.subgoals.back() = pgoal, validity;
+    // Not proven
+    if (s >= GOALOPEN)
+        return move.subgoals.back() = addsimpgoal(pgoal), MoveVALID;
+    // New goal (s == GOALNEW)
+    Goal const & goal = pgoal->second.goal();
+// std::cout << "New goal " << goal.expression();
+    s = penv->status(goal);
+    if (s == GOALFALSE) // Refuted
+        return MoveINVALID;
+// std::cout << "Simplifying " << goal.expression();
+    Environ const * & psimpEnv = pgoal->second.psimpEnv;
+    psimpEnv = pProb->addsubEnv(*pgoal->first, penv->hypstotrim(goal));
+    // Record the goal in the hypotheses of the move.
+    move.subgoals.back() = addsimpgoal(pgoal);
+// std::cout << penv->name << "\n->\n" << (psimpEnv ? psimpEnv->name : "") << std::endl;
+    return MoveVALID;
 }
 
 // Add an item to an ordered vector if not already present.
