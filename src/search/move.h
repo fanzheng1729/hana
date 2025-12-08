@@ -181,6 +181,20 @@ struct Move
     // Add conjectures to a bank (must be of type CONJ).
     // Return iterators to the hypotheses.
     Hypiters addconjsto(Bank & bank) const;
+    // Find index of conjecture matching the concrete hypothesis.
+    // Must be of type CONJ.
+    Hypsize findconj(Hypothesis const & hyp) const
+    {
+        for (Hypsize i = 0; i < conjcount(); ++i)
+        {
+            Goal const & goal(subgoal(i));
+            Expression const & hypexp = hyp.expression;
+            if (!hypexp.empty() && goal.RPN == hyp.RPN
+                && goal.typecode == hypexp[0])
+                return i;
+        }
+        return conjcount();
+    }
 private:
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;
