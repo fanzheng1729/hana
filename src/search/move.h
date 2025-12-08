@@ -180,7 +180,14 @@ struct Move
     Expression absvars(Bank const & bank) const;
     // Add conjectures to a bank (must be of type CONJ).
     // Return iterators to the hypotheses.
-    Hypiters addconjsto(Bank & bank) const;
+    Hypiters addconjsto(Bank & bank) const
+    {
+        if (!isconj()) return Hypiters();
+        Hypiters result(conjcount());
+        for (Hypsize i = 0; i < result.size(); ++i)
+            result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
+        return result;
+    }
     // Find index of conjecture matching the concrete hypothesis.
     // Must be of type CONJ.
     Hypsize findconj(Hypothesis const & hyp) const
@@ -195,6 +202,8 @@ struct Move
         }
         return conjcount();
     }
+    // Size of full proof (must be of type CONJ)
+    Proofsize fullproofsize(Proofstep const & abstractproof) const;
 private:
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;

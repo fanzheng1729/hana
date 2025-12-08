@@ -129,8 +129,15 @@ bool Game::writeproof() const
                     else
                         ++sum;
                 else
-                    ;
+                {
+                    Hypsize const index = attempt.findconj(step.phyp->second);
+                    if (index >= attempt.conjcount())
+                        ++sum;
+                    else
+                        sum += phyps[index]->size();
+                }
             }
+        std::cout << sum;
         std::cout << "Not imp writeproof" << std::endl, throw;
     }
     if (!::writeproof(dest, attempt.pthm, phyps))

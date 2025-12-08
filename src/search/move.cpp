@@ -79,21 +79,6 @@ Expression Move::absvars(Bank const & bank) const
     return result;
 }
 
-// Add conjectures to a bank (must be of type CONJ).
-// Return iterators to the hypotheses.
-Hypiters Move::addconjsto(Bank & bank) const
-{
-    if (!isconj())
-        return Hypiters();
-
-    Hypiters result(conjcount());
-
-    for (Hypsize i = 0; i < result.size(); ++i)
-        result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
-
-    return result;
-}
-
 // Size of a substitution
 Proofsize Move::substitutionsize(Proofsteps const & src) const
 {
