@@ -63,7 +63,8 @@ Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
 
     Hypiter & hypiter = m_hypitersbyexp[exp];
     if (hypiter != Hypiter())
-        throw;
+        return hypiter;
+
     hyp.floats = false;
     hyp.RPN = RPN;
     // # of the hypothesis
@@ -72,7 +73,7 @@ Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
     m_ehyplabels.push_back(essentialhypheader + util::hex(n));
     // Add the hypothesis.
     std::pair<strview, Hypothesis const &> value(m_ehyplabels[n], hyp);
-    return m_hypotheses.insert(value).first;
+    return hypiter = m_hypotheses.insert(value).first;
 }
 
 std::ostream & operator<<(std::ostream & out, const Bank & bank)
