@@ -101,19 +101,22 @@ bool Environ::addabsmove
 {
     Goal const & thmgoal(move.goal());
     AST  const & thmgoalast(ast(thmgoal.RPN));
+
     SteprangeAST thmexp(thmgoal.RPN, thmgoalast);
     SteprangeAST goalexp(goal.RPN, goal.ast);
 
     Move::Conjectures conjs(2);
     Bank & bank = pProb->bank;
+
     if (skeleton(thmexp, Keeprange(abstraction), bank, conjs[0].RPN) != TRUE)
         return false;
-    conjs[0].typecode = thmgoal.typecode;
     if (skeleton(goalexp, Keeprange(abstraction), bank, conjs[1].RPN) != TRUE)
         return false;
+
+    conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
-std::cout << conjs[0].expression() << conjs[1].expression();
     Move conjmove(conjs, bank);
+std::cout << move.absconjs[0].expression() << move.absconjs[1].expression();
     std::cout << valid(conjmove);
     std::cin.get();
     return false;
