@@ -214,6 +214,8 @@ struct Move
     }
     // Size of full proof (must be of type CONJ)
     Proofsize fullproofsize(pProofs const & phyps) const;
+    // Write proof (must be of type CONJ).
+    bool writeproof(Proofsteps & dest, pProofs const & phyps) const;
 private:
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;

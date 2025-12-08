@@ -110,7 +110,7 @@ bool Game::writeproof() const
         std::cout << *phyps[1];
         std::cout << goal().expression();
         std::cout << *phyps.back();
-        std::cout << attempt.fullproofsize(phyps);
+        std::cout << attempt.writeproof(dest, phyps);
         std::cout << "Not imp writeproof" << std::endl, throw;
     }
     if (!::writeproof(dest, attempt.pthm, phyps))

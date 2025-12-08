@@ -106,6 +106,45 @@ Proofsize Move::fullproofsize(pProofs const & phyps) const
     return sum;
 }
 
+// Write proof (must be of type CONJ).
+bool Move::writeproof(Proofsteps & dest, pProofs const & phyps) const
+{
+    dest.clear();
+
+    Proofsize const size = fullproofsize(phyps);
+    if (size == 0)
+        return false;
+    // Preallocate for efficiency.
+    dest.reserve(size);
+
+    FOR (Proofstep step, *phyps.back())
+        switch (step.type)
+        {
+        case Proofstep::THM:
+            dest.push_back(step);
+            break;
+        case Proofstep::HYP:
+            if (step.phyp->second.floats)
+            {
+                Proofsteps const & subst = substitutions[step.id()];
+                if (!subst.empty())
+                    dest += subst;
+                else
+                    dest.push_back(step);
+            }
+            else
+            {
+                Hypsize const index = findabsconj(step.phyp->second);
+                if (index >= conjcount())
+                    dest.push_back(step);
+                else
+                    dest += *phyps[index];
+            }
+        }
+    
+    return true;
+}
+
 // Size of a substitution
 Proofsize Move::substitutionsize(Proofsteps const & src) const
 {
