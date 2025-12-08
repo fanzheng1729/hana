@@ -70,21 +70,26 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
     SteprangeAST goalexp(goal.RPN, goal.ast.begin());
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
+    {
         FOR (GovernedStepranges::const_reference rrange, rstep.second)
-        {
-            Move::Conjectures conjs(2);
-            Bank & bank = pProb->bank;
-            if (skeleton(goalexp, Keeprange(rrange.first), bank, conjs[1].RPN) == TRUE)
-            {
-                conjs[1].typecode = goal.typecode;
-                skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
-                conjs[0].typecode = thm.exptypecode();
-                std::cout << conjs[0].expression() << conjs[1].expression();
-                Move move(conjs, bank);
-                std::cout << valid(move);
-                std::cin.get();
-            }
-        }
+            std::cout << Proofsteps(rrange.first.first, rrange.first.second);
+        std::cin.get();
+        // FOR (GovernedStepranges::const_reference rrange, rstep.second)
+        // {
+        //     Move::Conjectures conjs(2);
+        //     Bank & bank = pProb->bank;
+        //     if (skeleton(goalexp, Keeprange(rrange.first), bank, conjs[1].RPN) == TRUE)
+        //     {
+        //         conjs[1].typecode = goal.typecode;
+        //         skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
+        //         conjs[0].typecode = thm.exptypecode();
+        //         std::cout << conjs[0].expression() << conjs[1].expression();
+        //         Move move(conjs, bank);
+        //         std::cout << valid(move);
+        //         std::cin.get();
+        //     }
+        // }
+    }
     
     return false;
 }
