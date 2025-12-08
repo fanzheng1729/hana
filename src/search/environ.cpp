@@ -289,6 +289,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         }
         // New goal (s == GOALNEW)
         Goal const & goal = pgoal->second.goal();
+// std::cout << "New goal " << goal.expression();
         s = status(goal);
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
