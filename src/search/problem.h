@@ -197,13 +197,13 @@ private:
     template<class Env>
     Environ const * addProbEnv(Env const & env)
     {
-        Environ * const pEnv = new Env(env);
-        environs[env.name] = pEnv;
-        pEnv->pProb = this;
-        pEnv->m_subsumedbyProb = true;
-        pEnv->m_rankssimplerthanProb
-        = database.syntaxDAG().simplerthan(pEnv->maxranks, maxranks);
-        return pEnv;
+        Environ * const p = new Env(env);
+        environs[env.name] = p;
+        p->pProb = this;
+        p->m_subsumedbyProb = true;
+        p->m_rankssimplerthanProb
+        = database.syntaxDAG().simplerthan(p->maxranks, maxranks);
+        return p;
     }
     friend Environ;
     // Add a goal. Return its pointer.
