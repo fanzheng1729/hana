@@ -96,19 +96,23 @@ bool Game::writeproof() const
 {
     if (attempt.type == Move::NONE || proven())
         return false;
+    if (!attempt.checkDV(env().assertion, true))
+        return false;
+// std::cout << "Writing proof: " << goal().expression();
     if (attempt.isconj())
     {
         std::cout << attempt.subgoals[0]->second.goal().expression();
         std::cout << attempt.subgoals[0]->second.proofsrc();
         std::cout << attempt.subgoals[1]->second.goal().expression();
         std::cout << attempt.subgoals[1]->second.proofsrc();
+        std::cout << goal().expression();
+        Environ const & env = *attempt.subgoals[1]->first;
+        std::cout << env.name << std::endl;
+        FOR (Hypiter iter, env.assertion.hypiters)
+            std::cout << iter->first << ' ';
         std::cout << "Not imp writeproof" << std::endl, throw;
     }
     // attempt.type == Move::THM, goal not proven
-// std::cout << "Writing proof: " << goal().expression();
-    if (!attempt.checkDV(env().assertion, true))
-        return false;
-
     Proofsteps & dest = goaldata().proofdst();
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());

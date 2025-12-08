@@ -316,13 +316,13 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         Goalstatus & s = pgoal->second.getstatus();
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
-        // Check if the goal is proven.
+
         if (pgoal->second.proven())
         {
             move.subgoals[i] = pgoal;
             continue;
         }
-        // Not proven
+        // Goal not proven
         allproven = false;
 
         if (s >= GOALOPEN) // Valid
@@ -330,7 +330,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
             move.subgoals[i] = addsimpgoal(pgoal);
             continue;
         }
-        // New goal (s == GOALNEW)
+
         Goal const & goal = pgoal->second.goal();
 // std::cout << "New goal " << goal.expression();
         s = status(goal);
@@ -363,13 +363,13 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     Goalstatus & s = pgoal->second.getstatus();
     if (s == GOALFALSE) // Refuted
         return MoveINVALID;
-    // Check if the goal is proven.
+
     if (pgoal->second.proven())
         return move.subgoals.back() = pgoal, validity;
-    // Not proven
+    // Goal not proven
     if (s >= GOALOPEN)
         return move.subgoals.back() = addsimpgoal(pgoal), MoveVALID;
-    // New goal (s == GOALNEW)
+
     Goal const & goal = pgoal->second.goal();
 // std::cout << "New goal " << goal.expression();
     s = penv->status(goal);
