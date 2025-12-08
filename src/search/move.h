@@ -168,6 +168,8 @@ struct Move
                 return i;
         return i;
     }
+    // Return pointer to proof of subgoal. Return null if out of bound.
+    Proofsteps const * psubgoalproof(Hypsize index) const;
     // # of hypotheses the move needs (must be of type THM)
     Hypsize hypcount() const { return theorem().hypcount(); }
     // # of variables the move needs (must be of type THM)

@@ -1,4 +1,5 @@
 #include "../disjvars.h"
+#include "goaldata.h"
 #include "move.h"
 
 static Symbol3s symbols(Proofsteps const & RPN)
@@ -62,6 +63,14 @@ Disjvars Move::findDV(Assertion const & ass) const
     }
 
     return result;
+}
+
+// Return pointer to proof of subgoal. Return null if out of bound.
+Proofsteps const * Move::psubgoalproof(Hypsize index) const
+{
+    return index >= subgoalcount() ? NULL :
+            subgoalfloats(index) ? &substitutions[hypvar(index)] :
+            &subgoals[index]->second.proofsrc();
 }
 
 // Size of full proof (must be of type CONJ)

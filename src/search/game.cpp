@@ -96,15 +96,10 @@ bool Game::writeproof() const
 // std::cout << "Writing proof: " << goal().expression();
     // attempt.type == Move::THM || Move::CONJ, goal not proven
     Proofsteps & dest = goaldata().proofdst();
-    // Pointers to proofs of hypotheses
+    // Return pointers to proofs of sub-goals
     pProofs phyps(attempt.subgoalcount());
     for (Hypsize i = 0; i < phyps.size(); ++i)
-    {
-        if (attempt.subgoalfloats(i))
-            phyps[i] = &attempt.substitutions[attempt.hypvar(i)];
-        else
-            phyps[i] = &attempt.subgoals[i]->second.proofsrc();
-    }
+        phyps[i] = attempt.psubgoalproof(i);
     if (attempt.isconj())
     {
         std::cout << attempt.subgoal(0).expression();
