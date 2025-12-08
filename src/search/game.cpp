@@ -115,7 +115,7 @@ bool Game::writeproof() const
     Proofsteps & dest = goaldata().proofdst();
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());
-    for (Hypsize i = 0; i < attempt.hypcount(); ++i)
+    for (Hypsize i = 0; i < hyps.size(); ++i)
     {
         if (attempt.hypfloats(i))
             hyps[i] = &attempt.substitutions[attempt.hypvar(i)];
