@@ -87,10 +87,7 @@ static void writeprooferr
     std::cerr << "instead of\n" << game.goal().expression();
     std::cerr << "Proofs of hypotheses are" << std::endl;
     for (Hypsize i = 0; i < game.attempt.hypcount(); ++i)
-    {
-        Proofsteps const & steps = *hyps[i];
-        std::cerr << game.attempt.hyplabel(i) << '\t' << steps;
-    }
+        std::cerr << game.attempt.hyplabel(i) << '\t' << *hyps[i];
 }
 
 // Add proof for a node using a theorem.
