@@ -21,6 +21,7 @@ Goalstatus Prop::status(Goal const & goal) const
         (RPN, goal.ast, assertion.hypiters, cnf, natom))
     {
         std::cerr << "Bad CNF from\n" << RPN << "in " << name << std::endl;
+        std::cin.get();
         return GOALFALSE;
     }
     // Negate conclusion.

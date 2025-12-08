@@ -269,7 +269,7 @@ bool Propctors::addclause
     (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
 {
-    if (unexpected(ast.empty(), "bad proof tree when adding CNF of", RPN))
+    if (unexpected(ast.empty(), "empty proof tree when adding CNF of", RPN))
         return throw, false;
 
     std::vector<Literal> literals(RPN.size());
