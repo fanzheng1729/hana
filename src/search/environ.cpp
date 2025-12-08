@@ -59,7 +59,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     }
 }
 
-// Add an abstraction move. Return true if it has no open hypotheses.
+// Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
