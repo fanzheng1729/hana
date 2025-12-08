@@ -199,9 +199,9 @@ struct Move
             result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
         return result;
     }
-    // Find index of conjecture matching the concrete hypothesis.
+    // Find index of conjecture matching the abstract hypothesis.
     // Must be of type CONJ.
-    Hypsize findconj(Hypothesis const & hyp) const
+    Hypsize findabsconj(Hypothesis const & hyp) const
     {
         for (Hypsize i = 0; i < conjcount(); ++i)
         {

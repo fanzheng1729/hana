@@ -91,7 +91,7 @@ Proofsize Move::fullproofsize(pProofs const & phyps) const
                     ++sum;
             else
             {
-                Hypsize const index = findconj(step.phyp->second);
+                Hypsize const index = findabsconj(step.phyp->second);
                 if (index >= conjcount())
                     ++sum;
                 else
