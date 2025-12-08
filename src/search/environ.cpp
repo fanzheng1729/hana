@@ -62,19 +62,33 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
-    if (thm.esshypcount() > 0)
-        return false;
     if (thm.expRPN == goal.RPN)
         return false;
     // return false;
+    if (!goal.maxrangescomputed)
+        goal.maxranges = maxranges(goal.RPN, goal.ast);
     SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
     SteprangeAST goalexp(goal.RPN, goal.ast.begin());
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxranges)
     {
-        FOR (GovernedStepranges::const_reference rrange, rstep.second)
-            std::cout << Proofsteps(rrange.first.first, rrange.first.second);
+        GovernedSteprangesbystep::const_iterator const iter
+        = goal.maxranges.find(rstep.first);
+        if (iter == goal.maxranges.end())
+            continue;
         std::cout << thm.expression;
         std::cout << goal.expression();
+        FOR (GovernedStepranges::const_reference thmrange, rstep.second)
+        {
+            Proofsteps thmrangeRPN(thmrange.first.first, thmrange.first.second);
+            AST const & thmrangeAST(ast(thmrangeRPN));
+            FOR (GovernedStepranges::const_reference goalrange, iter->second)
+            {
+                Proofsteps goalrangeRPN(goalrange.first.first, goalrange.first.second);
+                AST const & goalrangeAST(ast(goalrangeRPN));
+                std::cout << thmrangeRPN << goalrangeRPN;
+                Stepranges substitutions(thm.maxvarid());
+            }
+        }
         std::cin.get();
         // FOR (GovernedStepranges::const_reference rrange, rstep.second)
         // {
