@@ -30,8 +30,8 @@ bool Game::legal(Move const & move, bool ourturn) const
         return goal() == move.goal();
     if (!ourturn && attempt.isthm()) // Check index bound.
         return move.index < attempt.hypcount();
-    if (move.isconj())
-        std::cout << "Not imp", throw;
+    if (ourturn && move.isconj() && !(goal() == move.goal()))
+        std::cout << "???", throw;
     return true;
 }
 
@@ -45,8 +45,10 @@ Game Game::play(Move const & move, bool ourturn) const
         game.attempt = move;
         game.nDefer = move.isdefer() * (nDefer + 1);
     }
-    else if (attempt.type == Move::THM) // Pick the hypothesis.
+    else if (attempt.isthm()) // Pick the hypothesis.
         game.pgoal = attempt.subgoals[move.index];
+    else if (attempt.isconj())
+        std::cout << "Not imp2", throw;
 
     return game;
 }
