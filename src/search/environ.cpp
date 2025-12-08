@@ -150,9 +150,10 @@ bool Environ::addabsmove
     case MoveVALID:
         moves.push_back(conjmove);
         return false;
-    case MoveINVALID:
+    default:
         return false;
     }
+    return false;
 }
 
 // Return true if all variables in use have been substituted.
