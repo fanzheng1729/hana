@@ -90,11 +90,9 @@ bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
     switch(tmproot.type)
     {
     case Proofstep::HYP:
+        if (Symbol2::ID const id = tmproot.id())
         {
-            Symbol2::ID const id = tmproot.id();
 // std::cout << "Var " << tmproot << " ID = " << id << std::endl;
-            if (id == 0)
-                return false;
             // Template hypothesis is floating. Check if it has been seen.
             if (subst[id].second > subst[id].first) // seen
                 return util::equal(exp.first.first, exp.first.second,
@@ -102,6 +100,8 @@ bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
             subst[id] = exp.first;// unseen
             return true;
         }
+        else
+            return false;
     case Proofstep::THM:
 //std::cout << "Ctor " << tmproot << std::endl;
         if (exproot != tmproot)

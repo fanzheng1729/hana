@@ -81,12 +81,15 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
         {
             Proofsteps thmrangeRPN(thmrange.first.first, thmrange.first.second);
             AST const & thmrangeAST(ast(thmrangeRPN));
+            SteprangeAST const thmrangeRPNAST(thmrangeRPN, thmrangeAST);
             FOR (GovernedStepranges::const_reference goalrange, iter->second)
             {
                 Proofsteps goalrangeRPN(goalrange.first.first, goalrange.first.second);
                 AST const & goalrangeAST(ast(goalrangeRPN));
+                SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
                 std::cout << thmrangeRPN << goalrangeRPN;
                 Stepranges substitutions(thm.maxvarid());
+                std::cout << findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, substitutions);
             }
         }
         std::cin.get();
