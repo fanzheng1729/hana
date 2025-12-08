@@ -116,7 +116,8 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
     Move conjmove(conjs, bank);
-std::cout << move.absconjs[0].expression() << move.absconjs[1].expression();
+std::cout << conjmove.absconjs[0].expression();
+std::cout << conjmove.absconjs[1].expression();
     std::cout << valid(conjmove);
     std::cin.get();
     return false;
