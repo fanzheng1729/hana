@@ -102,12 +102,10 @@ bool Game::writeproof() const
         phyps[i] = attempt.psubgoalproof(i);
     if (attempt.isconj())
     {
-        std::cout << *phyps.back();
-        attempt.writeproof(dest, phyps);
-        std::cout << dest;
-        std::cout << "Not imp writeproof" << std::endl, throw;
+        if (!attempt.writeproof(dest, phyps))
+            return false;
     }
-    if (!::writeproof(dest, attempt.pthm, phyps))
+    else if (!::writeproof(dest, attempt.pthm, phyps))
         return false;
     // Verification
     const Expression & exp(verify(dest));
