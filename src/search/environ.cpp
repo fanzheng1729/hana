@@ -312,6 +312,9 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         return MoveINVALID;
 
     Environ const * const penv = pProb->addsupEnv(*this, move);
+    // Add the essential hypothesis as a goal.
+    pGoal const pgoal = pProb->addgoal(move.absconjs.back(), *penv, GOALNEW);
+std::cout << "Validating " << pgoal->second.goal().expression();
     Goalstatus const s = penv->status(move.absconjs.back());
     std::cout << s; throw;
     return MoveINVALID;

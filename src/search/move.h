@@ -144,7 +144,7 @@ struct Move
     // Subgoal the move needs (must be of type THM or CONJ)
     Goal subgoal(Hypsize index) const
     {
-        if (index >= subgoalcount() || !isthm() && !isconj())
+        if (!isthm() && !isconj() || index >= subgoalcount())
             return Goal();
         Goal result;
         Proofsteps const & hypRPN
