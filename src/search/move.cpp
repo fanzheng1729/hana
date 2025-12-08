@@ -64,21 +64,6 @@ Disjvars Move::findDV(Assertion const & ass) const
     return result;
 }
 
-// Abstract variables in use
-Expression Move::absvars(Bank const & bank) const
-{
-    Expression result;
-
-    // Preallocate for efficiency
-    result.reserve(substitutions.size());
-
-    for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
-        if (Symbol3 const var = bank.var(id))
-            result.push_back(var);
-
-    return result;
-}
-
 // Size of a substitution
 Proofsize Move::substitutionsize(Proofsteps const & src) const
 {

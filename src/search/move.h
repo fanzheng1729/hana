@@ -177,7 +177,16 @@ struct Move
     // # of conjectures made (must be of type CONJ)
     Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
     // Abstract variables in use
-    Expression absvars(Bank const & bank) const;
+    Expression absvars(Bank const & bank) const
+    {
+        Expression vars;
+        vars.reserve(substitutions.size());
+        for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
+            if (Symbol3 const var = bank.var(id))
+                if (!substitutions[id].empty())
+                    vars.push_back(var);
+        return vars;
+    }
     // Add conjectures to a bank (must be of type CONJ).
     // Return iterators to the hypotheses.
     Hypiters addconjsto(Bank & bank) const
