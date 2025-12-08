@@ -62,8 +62,10 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
-    // return false;
     Assertion const & thm = pthm->second;
+    if (thm.expRPN == goal.RPN)
+        return std::cout << pthm->first, false;
+    // return false;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
     SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
@@ -275,7 +277,7 @@ bool Environ::trythm
         addabsmoves(goal, &*iter, moves);
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
-        return false; // Conclusion mismatch
+        return thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
     Move move(&*iter, stepranges);
@@ -284,8 +286,7 @@ bool Environ::trythm
     else if (thm.nfreevar() > 0)
         return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
     else
-        return addboundmove(move, moves) ||
-                thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
+        return addboundmove(move, moves);
 }
 
 // Validate a move applying a theorem.
