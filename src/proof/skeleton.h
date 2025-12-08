@@ -2,7 +2,7 @@
 #define SKELETON_H_INCLUDED
 
 // #include "../io.h"
-#include "../proof/compranges.h"
+#include "compranges.h"
 #include "../util/algo.h"   // for util::equal
 #include "../util/tribool.h"
 #include "../bank.h"
