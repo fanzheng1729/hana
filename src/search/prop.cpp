@@ -20,7 +20,8 @@ Goalstatus Prop::status(Goal const & goal) const
     if (!database.propctors().addclause
         (RPN, goal.ast, assertion.hypiters, cnf, natom))
     {
-        std::cerr << "Bad CNF from\n" << RPN << "in " << name << std::endl;
+        std::cerr << "Bad CNF from\n" << RPN << goal.expression();
+        std::cerr << "in " << name << std::endl;
         std::cin.get();
         return GOALFALSE;
     }
