@@ -40,7 +40,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 }
 
 // Add a move with only bound substitutions.
-// Return true if it has no essential hypotheses.
+// Return true if it has no open hypotheses.
 bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
     switch (valid(move))
@@ -62,10 +62,8 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
-    Assertion const & thm = pthm->second;
-    if (thm.expRPN == goal.RPN)
-        return false;
     // return false;
+    Assertion const & thm = pthm->second;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
     SteprangeAST thmexp(thm.expRPN, thm.expAST.begin());
@@ -90,13 +88,9 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
                 Stepranges subst(thm.maxvarid() + 1);
                 if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst))
-                {
-                    Move const substmove(pthm, subst);
-                    std::cout << substmove.goal().expression();
-                }
+                    addabsmove(goal, Move(pthm, subst), moves);
             }
         }
-        std::cin.get();
         // FOR (GovernedStepranges::const_reference rrange, rstep.second)
         // {
         //     Move::Conjectures conjs(2);
@@ -115,6 +109,13 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     }
     
     return false;
+}
+
+// Add an abstraction move. Return true if it has no open hypotheses.
+bool Environ::addabsmove(Goal const & goal, Move const & move, Moves & moves) const
+{
+    std::cout << move.goal().expression();
+    std::cout << "Not implemented"; throw;
 }
 
 // Return true if all variables in use have been substituted.
@@ -283,7 +284,8 @@ bool Environ::trythm
     else if (thm.nfreevar() > 0)
         return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
     else
-        return addboundmove(move, moves);
+        return addboundmove(move, moves) ||
+                thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
 }
 
 // Validate a move applying a theorem.
