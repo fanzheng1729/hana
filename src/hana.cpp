@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
 
     Value parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
-    Problem::size_type maxsize = 1u << 10;
+    Problem::size_type maxsize = 1u << 12;
     if (!testpropsearch(database, maxsize, parameters))
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
