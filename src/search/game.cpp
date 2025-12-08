@@ -78,13 +78,6 @@ Moves Game::ourmoves(stage_t stage) const
     return moves;
 }
 
-void Game::writeprooferr(Expression const & exp) const
-{
-    std::cerr << "When using " << attempt.label() << ", the proof\n";
-    std::cerr << proof() << "proves\n" << exp;
-    std::cerr << "instead of\n" << goal().expression();
-}
-
 static void printthmhypproofs(Move const & move, pProofs const & phyps)
 {
     std::cerr << "Proofs of hypotheses are" << std::endl;
@@ -143,4 +136,11 @@ bool Game::writeproof() const
         dest.clear();
     }
     return okay;
+}
+
+void Game::writeprooferr(Expression const & exp) const
+{
+    std::cerr << "When using " << attempt.label() << ", the proof\n";
+    std::cerr << proof() << "proves\n" << exp;
+    std::cerr << "instead of\n" << goal().expression();
 }
