@@ -2,7 +2,6 @@
 #include "game.h"
 #include "goaldata.h"
 #include "../io.h"
-#include "../util/iter.h"
 #include "problem.h"
 #include "../proof/write.h"
 
