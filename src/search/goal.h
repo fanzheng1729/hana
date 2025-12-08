@@ -12,8 +12,10 @@ struct Goal
     strview typecode;
     AST mutable ast;
     GovernedSteprangesbystep mutable maxranges;
-    Goal() {}
-    Goal(Goalview view) : RPN(view.first), typecode(view.second) {}
+    bool mutable maxrangescomputed;
+    Goal() : maxrangescomputed(false) {}
+    Goal(Goalview view) :
+        RPN(view.first), typecode(view.second), maxrangescomputed(false) {}
     Proofsize size() const { return RPN.size(); }
     operator SteprangeAST() const { return SteprangeAST(RPN, ast); }
     Expression expression() const
