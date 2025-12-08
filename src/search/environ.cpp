@@ -59,6 +59,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
     }
 }
 
+// Add an abstraction move. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
@@ -90,9 +91,8 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 Stepranges subst(thm.maxvarid() + 1);
                 if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst))
                 {
-                    std::cout << thmrangeRPN << goalrangeRPN;
-                    Move move(pthm, subst);
-                    std::cout << move.goal().expression();
+                    Move const substmove(pthm, subst);
+                    std::cout << substmove.goal().expression();
                 }
             }
         }
