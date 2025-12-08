@@ -39,6 +39,30 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     return moves;
 }
 
+// Try applying the theorem, and add moves if successful.
+// Return true if a move closes the goal.
+bool Environ::trythm
+    (Game const & game, Assiter iter, Proofsize size, Moves & moves) const
+{
+    Assertion const & thm = iter->second;
+    Goal const & goal = game.goal();
+    if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
+        return false; // Type code mismatch
+// std::cout << "Trying " << iter->first << " with " << goal.expression();
+    Stepranges stepranges(thm.maxvarid() + 1);
+    if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
+        return thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
+
+    // Move with all bound substitutions
+    Move move(&*iter, stepranges);
+    if (size > 0)
+        return thm.nfreevar() > 0 && addhardmoves(move.pthm, size, move, moves);
+    else if (thm.nfreevar() > 0)
+        return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
+    else
+        return addboundmove(move, moves);
+}
+
 // Add a move with only bound substitutions.
 // Return true if it has no open hypotheses.
 bool Environ::addboundmove(Move const & move, Moves & moves) const
@@ -116,11 +140,19 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
     Move const conjmove(conjs, bank);
-std::cout << conjmove.absconjs[0].expression();
-std::cout << conjmove.absconjs[1].expression();
-    std::cout << valid(conjmove);
-    std::cin.get();
-    return false;
+// std::cout << conjmove.absconjs[0].expression();
+// std::cout << conjmove.absconjs[1].expression();
+    switch (valid(conjmove))
+    {
+    case MoveCLOSED:
+        moves.assign(1, conjmove);
+        return true;
+    case MoveVALID:
+        moves.push_back(conjmove);
+        return false;
+    case MoveINVALID:
+        return false;
+    }
 }
 
 // Return true if all variables in use have been substituted.
@@ -264,30 +296,6 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
         }
     }
     return false;
-}
-
-// Try applying the theorem, and add moves if successful.
-// Return true if a move closes the goal.
-bool Environ::trythm
-    (Game const & game, Assiter iter, Proofsize size, Moves & moves) const
-{
-    Assertion const & thm = iter->second;
-    Goal const & goal = game.goal();
-    if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
-        return false; // Type code mismatch
-// std::cout << "Trying " << iter->first << " with " << goal.expression();
-    Stepranges stepranges(thm.maxvarid() + 1);
-    if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
-        return thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
-
-    // Move with all bound substitutions
-    Move move(&*iter, stepranges);
-    if (size > 0)
-        return thm.nfreevar() > 0 && addhardmoves(move.pthm, size, move, moves);
-    else if (thm.nfreevar() > 0)
-        return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
-    else
-        return addboundmove(move, moves);
 }
 
 // Validate a move applying a theorem.
