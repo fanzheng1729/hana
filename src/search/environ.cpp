@@ -1,6 +1,5 @@
 #include <algorithm>    // for std::min and ordered algorithms
 #include "../proof/analyze.h"
-#include "../disjvars.h"
 #include "environ.h"
 #include "../io.h"
 #include "goaldata.h"
