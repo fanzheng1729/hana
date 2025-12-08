@@ -79,6 +79,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 conjs[1].typecode = goal.typecode;
                 skeleton(thmexp, Keeprange(rrange.first), bank, conjs[0].RPN);
                 conjs[0].typecode = thm.exptypecode();
+                std::cout << conjs[0].expression() << conjs[1].expression();
                 Move move(conjs, bank);
                 std::cout << valid(move);
             }
