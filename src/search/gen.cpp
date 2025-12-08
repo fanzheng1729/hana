@@ -3,7 +3,6 @@
 #include "../syntaxiom.h"
 #include "../util/FMA.h"
 #include "../util/for.h"
-#include "../util/iter.h"
 
 // Return the typecodes of the arguments of a syntax axiom.
 static Argtypes argtypes(Proofsteps const & assRPN)

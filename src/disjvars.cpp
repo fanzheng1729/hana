@@ -3,7 +3,6 @@
 #include "types.h"
 #include "util/filter.h"// for is_disjoint
 #include "util/for.h"
-#include "util/iter.h"
 
 std::ostream & operator<<(std::ostream & out, Disjvars const & disjvars)
 {
