@@ -136,7 +136,7 @@ struct Move
         if (isconj())
             if (index == conjcount()) return strcombination;
             else return strconjecture + util::hex(index);
-        return "";
+        return isdefer() ? "DEFER" : "";
     }
     bool subgoalfloats(Hypsize index) const
     { return isthm() ? theorem().hypfloats(index) : false; }
