@@ -104,7 +104,7 @@ bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 //std::cout << "Ctor " << tmproot << std::endl;
         if (exproot != tmproot)
             return false;
-        // Match the children.
+        // Match children.
         for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
             if (!findsubstitutions(exp.child(i), tmp.child(i), subst))
                 return false;
