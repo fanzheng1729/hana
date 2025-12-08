@@ -64,7 +64,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
     if (thm.expRPN == goal.RPN)
-        return std::cout << pthm->first, false;
+        return std::cout << pthm->first << ' ', false;
     // return false;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
