@@ -122,6 +122,11 @@ struct Move
         return isthm() ? theorem().hypcount() :
                 isconj() ? absconjs.size() : isdefer();
     }
+    Hypsize esssubgoalcount() const
+    {
+        return isthm() ? theorem().esshypcount() :
+                isconj() ? absconjs.size() : isdefer();
+    }
     std::string subgoallabel(Hypsize index) const
     {
         if (index >= subgoalcount())

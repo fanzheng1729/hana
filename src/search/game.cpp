@@ -26,12 +26,12 @@ std::ostream & operator<<(std::ostream & out, Game const & game)
 // Return true if a move is legal.
 bool Game::legal(Move const & move, bool ourturn) const
 {
-    if (ourturn && move.isthm()) // Check if the goal matches.
+    if (move.isdefer())
+        return true;
+    if (ourturn && (move.isthm() || move.isconj()))
         return goal() == move.goal();
-    if (!ourturn && attempt.isthm()) // Check index bound.
-        return move.index < attempt.hypcount();
-    if (ourturn && move.isconj() && !(goal() == move.goal()))
-        std::cout << "???", throw;
+    if (!ourturn && (attempt.isthm())) // Check index bound.
+        return move.index < attempt.subgoalcount();
     return true;
 }
 
@@ -44,6 +44,7 @@ Game Game::play(Move const & move, bool ourturn) const
     {
         game.attempt = move;
         game.nDefer = move.isdefer() * (nDefer + 1);
+        if (move.isconj()) std::cout << game.nDefer;
     }
     else if (attempt.isthm()) // Pick the hypothesis.
         game.pgoal = attempt.subgoals[move.index];
@@ -56,18 +57,19 @@ Game Game::play(Move const & move, bool ourturn) const
 // Their moves correspond to essential hypotheses.
 Moves Game::theirmoves() const
 {
-// std::cout << "Finding thr moves ";
-    if (attempt.type == Move::THM)
+    if (attempt.isthm())
     {
         Moves result;
-        result.reserve(attempt.esshypcount());
-// std::cout << "for " << attempt.label() << ": ";
+        result.reserve(attempt.esssubgoalcount());
+
         for (Hypsize i = 0; i < attempt.hypcount(); ++i)
             if (!attempt.hypfloats(i))
                 result.push_back(i);
-// std::cout << result.size() << " moves added" << std::endl;
+
         return result;
     }
+    else if (attempt.isconj())
+        std::cout << "Not imp", throw;
     return Moves(attempt.isdefer(), Move::DEFER);
 }
 
