@@ -111,6 +111,8 @@ bool Game::writeproof() const
 // std::cout << "Writing proof: " << goal().expression();
     if (!attempt.checkDV(env().assertion, true))
         return false;
+
+    Proofsteps & dest = goaldata().proofdst();
     // Pointers to proofs of hypotheses
     pProofs hyps(attempt.hypcount());
     for (Hypsize i = 0; i < attempt.hypcount(); ++i)
@@ -121,8 +123,6 @@ bool Game::writeproof() const
             hyps[i] = &attempt.subgoals[i]->second.proofsrc();
 // std::cout << "Added hyp\n" << *hyps[i];
     }
-    // The whole proof
-    Proofsteps & dest = goaldata().proofdst();
     if (!::writeproof(dest, attempt.pthm, hyps))
         return false;
     // Verification
