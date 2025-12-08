@@ -44,7 +44,6 @@ Game Game::play(Move const & move, bool ourturn) const
     {
         game.attempt = move;
         game.nDefer = move.isdefer() * (nDefer + 1);
-        if (move.isconj()) std::cout << game.nDefer;
     }
     else if (attempt.isthm()) // Pick the hypothesis.
         game.pgoal = attempt.subgoals[move.index];
@@ -57,20 +56,18 @@ Game Game::play(Move const & move, bool ourturn) const
 // Their moves correspond to essential hypotheses.
 Moves Game::theirmoves() const
 {
-    if (attempt.isthm())
+    if (attempt.isthm() || attempt.isconj())
     {
         Moves result;
         result.reserve(attempt.esssubgoalcount());
 
-        for (Hypsize i = 0; i < attempt.hypcount(); ++i)
-            if (!attempt.hypfloats(i))
+        for (Hypsize i = 0; i < attempt.subgoalcount(); ++i)
+            if (!attempt.subgoalfloats(i))
                 result.push_back(i);
 
         return result;
     }
-    else if (attempt.isconj())
-        std::cout << "Not imp", throw;
-    return Moves(attempt.isdefer(), Move::DEFER);
+    return Moves(attempt.isdefer(), 0);
 }
 
 // Our moves are supplied by the environment.
