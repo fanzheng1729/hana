@@ -172,10 +172,6 @@ struct Move
     Proofsteps const * psubgoalproof(Hypsize index) const;
     // # of hypotheses the move needs (must be of type THM)
     Hypsize hypcount() const { return theorem().hypcount(); }
-    // # of variables the move needs (must be of type THM)
-    Symbol3s::size_type varcount() const { return theorem().varcount(); }
-    // # of essential hypotheses the move needs (must be of type THM)
-    Hypsize esshypcount() const { return hypcount() - varcount(); }
     // # of conjectures made (must be of type CONJ)
     Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
     // Abstract variables in use

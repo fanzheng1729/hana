@@ -102,13 +102,6 @@ bool Game::writeproof() const
         phyps[i] = attempt.psubgoalproof(i);
     if (attempt.isconj())
     {
-        std::cout << attempt.absconjs[0].expression();
-        std::cout << attempt.subgoals[0]->second.goal().expression();
-        std::cout << *phyps[0];
-        std::cout << attempt.absconjs[1].expression();
-        std::cout << attempt.subgoals[1]->second.goal().expression();
-        std::cout << *phyps[1];
-        std::cout << goal().expression();
         std::cout << *phyps.back();
         attempt.writeproof(dest, phyps);
         std::cout << dest;
