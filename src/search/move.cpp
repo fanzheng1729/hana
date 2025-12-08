@@ -1,6 +1,7 @@
 #include "../disjvars.h"
 #include "goaldata.h"
 #include "move.h"
+#include "../util/filter.h"
 
 static Symbol3s symbols(Proofsteps const & RPN)
 {
@@ -76,6 +77,8 @@ Proofsteps const * Move::psubgoalproof(Hypsize index) const
 // Size of full proof (must be of type CONJ)
 Proofsize Move::fullproofsize(pProofs const & phyps) const
 {
+    if (util::filter(phyps)(static_cast<Proofsteps *>(NULL)))
+        return 0;
     Proofsize sum = 0;
     FOR (Proofstep step, *phyps.back())
         switch (step.type)
