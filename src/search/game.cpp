@@ -45,10 +45,8 @@ Game Game::play(Move const & move, bool ourturn) const
         game.attempt = move;
         game.nDefer = move.isdefer() * (nDefer + 1);
     }
-    else if (attempt.isthm()) // Pick the hypothesis.
+    else if (attempt.isthm() || attempt.isconj()) // Pick the hyp.
         game.pgoal = attempt.subgoals[move.index];
-    else if (attempt.isconj())
-        std::cout << "Not imp2", throw;
 
     return game;
 }
@@ -56,18 +54,14 @@ Game Game::play(Move const & move, bool ourturn) const
 // Their moves correspond to essential hypotheses.
 Moves Game::theirmoves() const
 {
-    if (attempt.isthm() || attempt.isconj())
-    {
-        Moves result;
-        result.reserve(attempt.esssubgoalcount());
+    Moves result;
+    result.reserve(attempt.esssubgoalcount());
 
-        for (Hypsize i = 0; i < attempt.subgoalcount(); ++i)
-            if (!attempt.subgoalfloats(i))
-                result.push_back(i);
+    for (Hypsize i = 0; i < attempt.subgoalcount(); ++i)
+        if (!attempt.subgoalfloats(i))
+            result.push_back(i);
 
-        return result;
-    }
-    return Moves(attempt.isdefer(), 0);
+    return result;
 }
 
 // Our moves are supplied by the environment.
@@ -105,6 +99,14 @@ bool Game::writeproof() const
 {
     if (attempt.type == Move::NONE || proven())
         return false;
+    if (attempt.isconj())
+    {
+        std::cout << attempt.subgoals[0]->second.goal().expression();
+        std::cout << attempt.subgoals[0]->second.proofsrc();
+        std::cout << attempt.subgoals[1]->second.goal().expression();
+        std::cout << attempt.subgoals[1]->second.proofsrc();
+        std::cout << "Not imp writeproof" << std::endl, throw;
+    }
     // attempt.type == Move::THM, goal not proven
 // std::cout << "Writing proof: " << goal().expression();
     if (!attempt.checkDV(env().assertion, true))
