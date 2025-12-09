@@ -110,8 +110,9 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 AST const & goalrangeAST(ast(goalrangeRPN));
                 SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
                 Stepranges subst(thm.maxvarid() + 1);
-                if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst))
-                    addabsmove(goal, goalrange.first, Move(pthm, subst), moves);
+                if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst) &&
+                    addabsmove(goal, goalrange.first, Move(pthm, subst), moves))
+                    return true;
             }
         }
     }
@@ -354,6 +355,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
     if (move.absconjs.empty())
         return MoveINVALID;
+
     MoveValidity const validity = validthmmove(move);
     if (validity == MoveINVALID)
         return MoveINVALID;
