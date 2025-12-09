@@ -56,6 +56,7 @@ static void printattempt(pNode p)
         break;
     case Move::CONJ:
         std::cout << "CONJ";
+        break;
     default :
         std::cout << "NONE";
     }
