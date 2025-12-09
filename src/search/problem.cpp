@@ -1,4 +1,3 @@
-#include "goaldata.h"
 #include "problem.h"
 
 // UCB threshold for generating a new batch of moves
