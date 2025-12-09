@@ -132,7 +132,7 @@ static void printtheirnode(pNode p)
 
 // Format:
 // Goal score [V]|- ...
-// [Hyps hyo1 hyp2]
+// [Hyps hyp1 hyp2]
 static void printgoal(pNode p)
 {
     std::cout << "Goal " << Problem::value(p) << ' ';
