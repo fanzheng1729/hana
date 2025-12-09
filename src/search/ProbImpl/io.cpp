@@ -29,7 +29,7 @@ static pNode onlyopenchild(pNode p)
 // Move to the only open child of a node. Return true if it exists.
 static bool gotoonlyopenchild(pNode & p)
 {
-    if (pNode child = onlyopenchild(p))
+    if (pNode const child = onlyopenchild(p))
         return p = child;
     return false;
 }
@@ -43,17 +43,19 @@ static void printrefname(pNode p)
     if (onlyopenchild(p)) std::cout << '!';
 }
 
-// Format: ax-mp[!] or DEFER(n)
+// Format: ax-mp[!] or DEFER(n) or CONJ
 static void printattempt(pNode p)
 {
     switch (p->game().attempt.type)
     {
-    case Move::DEFER :
+    case Move::DEFER:
         std::cout << "DEFER(" << p->game().nDefer << ')';
         break;
-    case Move::THM :
+    case Move::THM:
         printrefname(p);
         break;
+    case Move::CONJ:
+        std::cout << "CONJ";
     default :
         std::cout << "NONE";
     }
