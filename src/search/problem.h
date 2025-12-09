@@ -36,6 +36,11 @@ public:
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
+    Assertion const & probAss() const
+    {
+        if (&assertion != &probEnv().assertion) throw;
+        return probEnv().assertion;
+    }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
@@ -45,15 +50,15 @@ public:
         database(env.database),
         bank(database.varcount()),
         assertion(env.assertion),
-        numberlimit(std::min(assertion.number, database.assiters().size())),
-        maxranks(database.assmaxranks(assertion)),
+        numberlimit(std::min(env.assertion.number,database.assiters().size())),
+        maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
-        pProbEnv(assertion.expression.empty() ? NULL : addProbEnv(env)),
+        pProbEnv(env.assertion.expression.empty() ? NULL : addProbEnv(env)),
         staged(env.staged & STAGED)
     {
         if (!pProbEnv) return;
         // Check goal.
-        Goalview const goal(assertion.expRPN, assertion.exptypecode());
+        Goalview const goal(probAss().expRPN, probAss().exptypecode());
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         // Add proofs of hypotheses.
