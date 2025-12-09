@@ -20,9 +20,7 @@ template<class T> Tribool skeleton
     switch (root.type)
     {
     case Proofstep::HYP:
-        result.push_back(root);
-// std::cout << "Result " << result;
-        return FALSE;
+        return result.push_back(root), FALSE;
     case Proofstep::THM:
         switch (cansplit(exp.first))
         {
@@ -45,19 +43,12 @@ template<class T> Tribool skeleton
                 }
             }
             // Add the root
-            result.push_back(root);
-// std::cout << "Result " << result;
-            return retval;
+            return result.push_back(root), retval;
         case KEEPRANGE:
             // Don't split and abstract. Find the abstracting variable.
             Symbol3 const var = bank.addrange(exp.first);
 // std::cout << "varid " << var.id << std::endl;
-            if (var.id == 0) // bad step
-                return UNKNOWN;
-            // Add the root
-            result.push_back(var.iter);
-// std::cout << "Result " << result;
-            return TRUE;
+            return var ? (result.push_back(var.iter), TRUE) : UNKNOWN;
         }
     default:
         return UNKNOWN;
