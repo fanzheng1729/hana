@@ -90,11 +90,8 @@ struct Move
     }
     // Return true if a move satisfies disjoint variable hypotheses.
     bool checkDV(Assertion const & ass, bool verbose = false) const;
-    // Return the disjoint variable hypotheses of a CONJ move.
+    // Find the disjoint variable hypotheses of a CONJ move.
     Disjvars findDV(Assertion const & ass) const;
-    // Hypothesis (must be of type THM)
-    strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
-    bool hypfloats(Hypsize index) const { return theorem().hypfloats(index); }
     Symbol3 hypvar(Hypsize index) const
     {
         Expression const & hypexp = theorem().hypexp(index);
@@ -155,8 +152,6 @@ struct Move
     }
     // Return pointer to proof of subgoal. Return null if out of bound.
     Proofsteps const * psubgoalproof(Hypsize index) const;
-    // # of hypotheses the move needs (must be of type THM)
-    Hypsize hypcount() const { return theorem().hypcount(); }
     // # of conjectures made (must be of type CONJ)
     Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
     // Abstract variables in use (must be of type CONJ)
