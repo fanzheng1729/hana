@@ -132,8 +132,8 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     Assertion & supAss = assertions[newEnviter->first];
     if (supAss.number > 0)
         return NULL;
-    // std::cout << "addsupEnv to " << env.name << ' ' << newvars;
-    // std::cout << "env vars " << env.assertion.varusage;
+// std::cout << "addsupEnv to " << env.name << ' ' << newvars;
+// std::cout << "env vars " << env.assertion.varusage;
     supAss.number = env.assertion.number;
     supAss.sethyps(env.assertion, newvars, newhypiters);
     supAss.disjvars = move.findDV(supAss);

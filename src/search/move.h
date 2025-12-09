@@ -46,31 +46,6 @@ struct Move
     Move(Conjectures const & conjs, Substitutions const & subst) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs),
         substitutions(subst) {}
-    Move(Conjectures const & conjs, Bank const & bank) :
-        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
-    {
-        if (!isconj())
-            return;
-        // Max id of abstracted variable
-        Symbol2::ID maxid = 0;
-        FOR (Goal const & goal, absconjs)
-            FOR (Proofstep const step, goal.RPN)
-                if (Symbol2::ID const id = step.id())
-                    if (!bank.substitution(id).empty())
-                        if (id > maxid) maxid = id;
-        // Preallocate for efficiency
-        substitutions.resize(maxid + 1);
-        // Fill in abstractions.
-        FOR (Goal const & goal, absconjs)
-            FOR (Proofstep const step, goal.RPN)
-                if (Symbol2::ID const id = step.id())
-                {
-                    Proofsteps const & src = bank.substitution(id);
-                    Proofsteps & dest = substitutions[id];
-                    if (dest.empty())
-                        dest = src;
-                }
-    }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
     bool isthm() const  { return type == THM; }

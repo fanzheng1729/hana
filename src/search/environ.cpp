@@ -44,11 +44,12 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 bool Environ::trythm
     (Game const & game, Assiter iter, Proofsize size, Moves & moves) const
 {
+// std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Assertion const & thm = iter->second;
     Goal const & goal = game.goal();
     if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
         return false; // Type code mismatch
-// std::cout << "Trying " << iter->first << " with " << goal.expression();
+// std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
         return thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
@@ -144,9 +145,8 @@ bool Environ::addabsmove
     Move::Substitutions subst(var.id + 1);
     subst[var.id] = Proofsteps(abstraction.first, abstraction.second);
     Move const conjmove(conjs, subst);
-    // Move const conjmove(conjs, bank);
 
-    switch (valid(conjmove))
+    switch (validconjmove(conjmove))
     {
     case MoveCLOSED:
         moves.assign(1, conjmove);
@@ -354,7 +354,6 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
     if (move.absconjs.empty())
         return MoveINVALID;
-
     MoveValidity const validity = validthmmove(move);
     if (validity == MoveINVALID)
         return MoveINVALID;

@@ -1,6 +1,7 @@
 #include "../disjvars.h"
 #include "goaldata.h"
 #include "move.h"
+#include "../util/for.h"
 
 static Symbol3s symbols(Proofsteps const & RPN)
 {
@@ -38,13 +39,15 @@ Disjvars Move::findDV(Assertion const & ass) const
     Disjvars result;
 
     Varusage const & varusage = ass.varusage;
+    FOR (Varusage::const_reference rvar, varusage)
+        std::cout << rvar.first.c_str << ' ' << rvar.first.iter->second.RPN.size() << std::endl;
 
     for (Varusage::const_iterator iter1 = varusage.begin(); 
          iter1 != varusage.end(); ++iter1)
     {
         Symbol3 const var1 = iter1->first;
-        for (Varusage::const_iterator iter2 = (++iter1, iter1--);
-             iter2 != varusage.end(); ++iter2)
+        Varusage::const_iterator iter2 = iter1;
+        for (++iter2; iter2 != varusage.end(); ++iter2)
         {
             Symbol3 const var2 = iter2->first;
 
@@ -56,6 +59,7 @@ Disjvars Move::findDV(Assertion const & ass) const
             Proofsteps const & RPN2
             = subst2.empty() ? var2.iter->second.RPN : subst2;
 
+std::cout << "DV " << var2.c_str << ' ' << RPN2.size() << std::endl;
         if (::checkDV
             (symbols(RPN1), symbols(RPN2), ass.disjvars, ass.varusage, false))
             result.insert(std::make_pair(var1, var2));
