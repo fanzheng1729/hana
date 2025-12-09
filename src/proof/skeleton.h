@@ -11,8 +11,9 @@ enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 // Add the skeleton of an RPN to result.
 // Return UNKNOWN if unsuccessful.
 // Otherwise return if anything has been abstracted.
-template<class T> Tribool skeleton
-    (SteprangeAST exp, T cansplit, Bank & bank, Proofsteps & result)
+template<class T, class B>
+Tribool skeleton
+    (SteprangeAST exp, T cansplit, B & bank, Proofsteps & result)
 {
     Tribool retval = FALSE;
 // std::cout << "Analyzing " << Proofsteps(exp.first.first, exp.first.second);
