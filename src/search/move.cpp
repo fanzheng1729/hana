@@ -44,15 +44,12 @@ Disjvars Move::findDV(Assertion const & ass) const
          iter1 != varusage.end(); ++iter1)
     {
         Symbol3 const var1 = iter1->first;
+        Proofsteps const & RPN1 = abstraction(var1);
+
         Varusage::const_iterator iter2 = iter1;
         for (++iter2; iter2 != varusage.end(); ++iter2)
         {
             Symbol3 const var2 = iter2->first;
-
-            Proofsteps const & subst1 = substitutions[var1];
-            Proofsteps const & subst2 = substitutions[var2];
-
-            Proofsteps const & RPN1 = abstraction(var1);
             Proofsteps const & RPN2 = abstraction(var2);
 
             if (::checkDV
