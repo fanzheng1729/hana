@@ -7,8 +7,8 @@
 #include "../util/for.h"
 #include "../util/hex.h"
 
-static const std::string strconjecture = "CONJECTURE";
-static const std::string strcombination = "COMBINATION";
+static const std::string strconj = "CONJ";
+static const std::string strcomb = "COMB";
 
 // Move in proof search tree
 struct Move
@@ -118,8 +118,8 @@ struct Move
         if (isthm())
             return theorem().hyplabel(index);
         if (isconj())
-            if (index == conjcount()) return strcombination;
-            else return strconjecture + util::hex(index);
+            if (index == conjcount()) return strcomb;
+            else return strconj + util::hex(index);
         return isdefer() ? "DEFER" : "";
     }
     bool subgoalfloats(Hypsize index) const
