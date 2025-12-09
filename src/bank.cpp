@@ -10,7 +10,7 @@ static const std::string typedelim = "~";
 static const std::string essentialhypheader = "e" + typedelim;
 static const std::string floatinghypheader = "f" + typedelim;
 
-Symbol3 Bank::addrange(Steprange range)
+Symbol3 Bank::addvar(Steprange range)
 {
     if (range.first == range.second)
         return "";

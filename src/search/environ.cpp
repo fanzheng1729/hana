@@ -142,7 +142,7 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
 
-    Stepranges subst(bank.addrange(abstraction).id + 1);
+    Stepranges subst(bank.addvar(abstraction).id + 1);
     subst.back() = abstraction;
     Move const conjmove(conjs, subst);
 
