@@ -52,7 +52,8 @@ bool Environ::trythm
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
-        return thm.esshypcount() == 0 && addabsmoves(goal, &*iter, moves);
+        return size == 0 && thm.esshypcount() == 0
+                && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
     Move move(&*iter, stepranges);
