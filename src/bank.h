@@ -38,6 +38,7 @@ public:
     Symbol3 addvar(Steprange range);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Hypiter addhyp(Proofsteps const & RPN, strview typecode);
+    bool hashyp(strview label) const { return hypotheses().count(label); }
 };
 
 #endif // BANK_h_INCLUDED
