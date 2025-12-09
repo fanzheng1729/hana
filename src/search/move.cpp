@@ -2,6 +2,7 @@
 #include "goaldata.h"
 #include "move.h"
 #include "../util/for.h"
+#include "../io.h"
 
 static Symbol3s symbols(Proofsteps const & RPN)
 {
@@ -33,7 +34,7 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
     return true;
 }
 
-// Return the disjoint variable hypotheses of a move.
+// Return the disjoint variable hypotheses of a CONJ move.
 Disjvars Move::findDV(Assertion const & ass) const
 {
     Disjvars result;
@@ -92,11 +93,10 @@ Proofsize Move::fullproofsize(pProofs const & phyps) const
                 Hypsize const index = findabsconj(step.phyp->second);
                 if (index >= conjcount())
                     ++sum;
+                else if (!phyps[index] || phyps[index]->empty())
+                    return 0;
                 else
-                    if (!phyps[index] || phyps[index]->empty())
-                        return 0;
-                    else
-                        sum += phyps[index]->size();
+                    sum += phyps[index]->size();
             }
         }
     return sum;
@@ -122,23 +122,42 @@ bool Move::writeproof(Proofsteps & dest, pProofs const & phyps) const
         case Proofstep::HYP:
             if (step.phyp->second.floats)
             {
+                // Floating hypothesis. Check if it refers to an abstract var.
                 Proofsteps const & subst = substitutions[step.id()];
                 if (!subst.empty())
-                    dest += subst;
+                    dest += subst; // Abstract variable
                 else
-                    dest.push_back(step);
+                    dest.push_back(step); // Concrete variable
             }
             else
             {
+                // Essential hypothesis. Check if it is abstract.
                 Hypsize const index = findabsconj(step.phyp->second);
                 if (index >= conjcount())
-                    dest.push_back(step);
+                    dest.push_back(step); // Concrete hypothesis
                 else
-                    dest += *phyps[index];
+printconj(), std::cin.get(),
+                    dest += *phyps[index];// Abstract hypothesis
             }
         }
     
     return true;
+}
+
+void Move::printconj() const
+{
+    if (!isconj())
+        return;
+
+    std::cout << "Conjectured";
+    for (Hypsize i = 0; i < conjcount(); ++i)
+    {
+        std::cout << subgoal(i).expression() << "->";
+        std::cout << absconjs[i].expression();
+    }
+    std::cout << "in order to prove";
+    std::cout << goal().expression() << "->";
+    std::cout << absconjs.back().expression();
 }
 
 // Size of a substitution

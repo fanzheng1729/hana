@@ -90,7 +90,7 @@ struct Move
     }
     // Return true if a move satisfies disjoint variable hypotheses.
     bool checkDV(Assertion const & ass, bool verbose = false) const;
-    // Return the disjoint variable hypotheses of a move.
+    // Return the disjoint variable hypotheses of a CONJ move.
     Disjvars findDV(Assertion const & ass) const;
     // Hypothesis (must be of type THM)
     strview hyplabel(Hypsize index) const { return theorem().hyplabel(index); }
@@ -204,6 +204,8 @@ struct Move
     Proofsize fullproofsize(pProofs const & phyps) const;
     // Write proof (must be of type CONJ).
     bool writeproof(Proofsteps & dest, pProofs const & phyps) const;
+    // Print a CONJ move.
+    void printconj() const;
 private:
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;
