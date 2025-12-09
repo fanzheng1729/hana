@@ -22,8 +22,6 @@ public:
     Database const & database;
     // Bank of variables and hypotheses
     Bank bank;
-    // The assertion to be proved
-    Assertion const & assertion;
 private:
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
@@ -36,11 +34,8 @@ public:
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
-    Assertion const & probAss() const
-    {
-        if (&assertion != &probEnv().assertion) throw;
-        return probEnv().assertion;
-    }
+    // Assertion to be proven
+    Assertion const & probAss() const {return probEnv().assertion; }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
@@ -49,7 +44,6 @@ public:
         MCTS(Game(), params),
         database(env.database),
         bank(database.varcount()),
-        assertion(env.assertion),
         numberlimit(std::min(env.assertion.number,database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
@@ -75,11 +69,11 @@ public:
     // Add 1-step proof of all the hypotheses of the problem context.
     void addhypproofs()
     {
-        for (Hypsize i = 0; i < assertion.hypcount(); ++i)
+        for (Hypsize i = 0; i < probAss().hypcount(); ++i)
         {
-            if (assertion.hypfloats(i)) continue;
-            Goalview const goal(assertion.hypRPN(i), assertion.hyptypecode(i));
-            goals[goal].proof.assign(1, assertion.hypptr(i));
+            if (probAss().hypfloats(i)) continue;
+            Goalview const goal(probAss().hypRPN(i), probAss().hyptypecode(i));
+            goals[goal].proof.assign(1, probAss().hypptr(i));
         }
     }
     // Add 1-step proof of all the hypotheses to a context.
