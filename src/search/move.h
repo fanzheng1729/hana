@@ -46,6 +46,13 @@ struct Move
     Move(Conjectures const & conjs, Substitutions const & subst) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs),
         substitutions(subst) {}
+    Move(Conjectures const & conjs, Stepranges const & subst) :
+        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
+    {
+        substitutions.resize(subst.size());
+        for (Hypsize i = 1; i < subst.size(); ++i)
+            substitutions[i].assign(subst[i].first, subst[i].second);
+    }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
     bool isthm() const  { return type == THM; }

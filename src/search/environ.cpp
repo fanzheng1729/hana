@@ -52,7 +52,7 @@ bool Environ::trythm
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges stepranges(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
-        return size == 0 && thm.esshypcount() == 0
+        return size == 0 && thm.esshypcount() == 0// && false
                 && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
@@ -88,7 +88,6 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
-    // return false;
     Assertion const & thm = pthm->second;
     if (!goal.maxrangescomputed)
         goal.maxranges = maxranges(goal.RPN, goal.ast);
@@ -143,9 +142,8 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
 
-    Symbol3 const var = bank.addrange(abstraction);
-    Move::Substitutions subst(var.id + 1);
-    subst[var.id] = Proofsteps(abstraction.first, abstraction.second);
+    Stepranges subst(bank.addrange(abstraction).id + 1);
+    subst.back() = abstraction;
     Move const conjmove(conjs, subst);
 
     switch (validconjmove(conjmove))
