@@ -331,9 +331,6 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         }
 
         Goal const & goal = pgoal->second.goal();
-std::cout << "New goal when validating thm move " << goal.expression();
-if (move.isconj())
-std::cout << move.absconjs.back().expression() << move.goal().expression();
         s = status(goal);
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;

@@ -43,6 +43,9 @@ struct Move
             substitutions[i].assign(subst[i].first, subst[i].second);
     }
     // A move making conjectures, on our turn
+    Move(Conjectures const & conjs, Substitutions const & subst) :
+        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs),
+        substitutions(subst) {}
     Move(Conjectures const & conjs, Bank const & bank) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
     {
