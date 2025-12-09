@@ -167,7 +167,7 @@ Problem::size_type testsearch
     }
     else if (unexpected(tree.empty(), "empty tree for", iter->first))
         return 0;
-    else if (unexpected(tree.value() != 1, "game value", tree.value()))
+    else if (unexpected(tree.value() < WDL::WIN, "game value", tree.value()))
         return tree.navigate(), 0;
     else if (unexpected(!checkconclusion(iter->first,
                                          verify(tree.proof(), &*iter),
