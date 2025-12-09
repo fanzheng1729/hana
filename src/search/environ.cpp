@@ -140,8 +140,7 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
     Move const conjmove(conjs, bank);
-// std::cout << conjmove.absconjs[0].expression();
-// std::cout << conjmove.absconjs[1].expression();
+
     switch (valid(conjmove))
     {
     case MoveCLOSED:
@@ -332,10 +331,13 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         }
 
         Goal const & goal = pgoal->second.goal();
-// std::cout << "New goal " << goal.expression();
+std::cout << "New goal when validating thm move " << goal.expression();
+if (move.isconj())
+std::cout << move.absconjs.back().expression() << move.goal().expression();
         s = status(goal);
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
+// if (!hypstotrim(goal).empty())
 // std::cout << "Simplifying " << goal.expression();
         Environ const * & psimpEnv = pgoal->second.psimpEnv;
         psimpEnv = pProb->addsubEnv(*pgoal->first, hypstotrim(goal));
@@ -371,10 +373,11 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
         return move.subgoals.back() = addsimpgoal(pgoal), MoveVALID;
 
     Goal const & goal = pgoal->second.goal();
-// std::cout << "New goal " << goal.expression();
+// std::cout << "New goal when validating conj move " << goal.expression();
     s = penv->status(goal);
     if (s == GOALFALSE) // Refuted
         return MoveINVALID;
+// if (!penv->hypstotrim(goal).empty())
 // std::cout << "Simplifying " << goal.expression();
     Environ const * & psimpEnv = pgoal->second.psimpEnv;
     psimpEnv = pProb->addsubEnv(*pgoal->first, penv->hypstotrim(goal));

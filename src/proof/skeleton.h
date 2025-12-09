@@ -49,10 +49,8 @@ template<class T> Tribool skeleton
 // std::cout << "Result " << result;
             return retval;
         case KEEPRANGE:
-            // Don't split and abstract.
-            Proofsteps const subRPN(exp.first.first, exp.first.second);
-            // Find the abstracting variable.
-            Symbol3 const var = bank.addRPN(subRPN);
+            // Don't split and abstract. Find the abstracting variable.
+            Symbol3 const var = bank.addrange(exp.first);
 // std::cout << "varid " << var.id << std::endl;
             if (var.id == 0) // bad step
                 return UNKNOWN;

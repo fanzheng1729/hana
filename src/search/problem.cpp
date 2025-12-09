@@ -93,6 +93,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         return NULL;
     // Name of new context
     std::string const & name(env.assertion.hypslabel(hypstotrim));
+    std::cout << env.name << ' ' << name << std::endl;
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
     environs.insert(std::pair<strview, Environ const *>(name, NULL));

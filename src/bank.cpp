@@ -10,16 +10,16 @@ static const std::string typedelim = "~";
 static const std::string essentialhypheader = "e" + typedelim;
 static const std::string floatinghypheader = "f" + typedelim;
 
-Symbol3 Bank::addRPN(Proofsteps const & RPN)
+Symbol3 Bank::addrange(Steprange range)
 {
-    if (RPN.empty())
+    if (range.first == range.second)
         return "";
 
-    strview typecode = RPN.back().typecode();
+    strview typecode = (range.second - 1)->typecode();
     if (!typecode.c_str)
         return "";
 
-    std::pair<Proofsteps const &, Symbol3> const value(RPN, "");
+    RPNSymbols::value_type value(Proofsteps(range.first, range.second), "");
     RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(value).first;
     // New variable
     Symbol3 & var = RPNiter->second;
