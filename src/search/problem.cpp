@@ -168,10 +168,7 @@ Problem::size_type testsearch
         return 0;
     else if (unexpected(tree.value() < WDL::WIN, "game value", tree.value()))
         return tree.navigate(), 0;
-    else if (unexpected(!checkconclusion(iter->first,
-                                         verify(tree.proof(), &*iter),
-                                         iter->second.expression),
-                        "wrong proof", tree.proof()))
+    else if (unexpected(!tree.checkproof(iter), "wrong proof", tree.proof()))
         return tree.navigate(), 0;
     else if (iter->first == "biass_")
         tree.writeproof((std::string(iter->first) + ".txt").c_str());

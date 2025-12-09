@@ -172,6 +172,11 @@ public:
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
     // Return true if proof() is okay.
+    bool checkproof(Assiter iter) const
+    {
+        return checkconclusion
+        (iter->first, verify(proof(), &*iter), iter->second.expression);
+    }
     // # goals of a given status
     Goals::size_type countgoal(int status) const
     {
