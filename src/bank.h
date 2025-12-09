@@ -29,6 +29,7 @@ public:
         m_RPNSymbols[Proofsteps()] = Symbol3();
         m_RPNSymbolsbyid.assign(1 + reserve, m_RPNSymbols.begin());
     }
+    void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
     Proofsteps const & substitution(Symbol2::ID id) const
     { return m_RPNSymbolsbyid[id]->first; }

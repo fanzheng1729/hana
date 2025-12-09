@@ -169,7 +169,7 @@ Problem::size_type testsearch
         return 0;
     else if (unexpected(tree.value() != 1, "game value", tree.value()))
         return tree.navigate(), 0;
-    else if (unexpected(!checkconclusion(iter->first,
+    else if (unexpected(!checkconclusion((tree.bank.clear(), iter->first),
                                          verify(tree.proof(), &*iter),
                                          iter->second.expression),
                         "wrong proof", tree.proof()))

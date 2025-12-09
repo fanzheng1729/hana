@@ -136,7 +136,7 @@ bool Move::writeproof(Proofsteps & dest, pProofs const & phyps) const
                 if (index >= conjcount())
                     dest.push_back(step); // Concrete hypothesis
                 else
-printconj(), std::cin.get(),
+// printconj(), std::cin.get(),
                     dest += *phyps[index];// Abstract hypothesis
             }
         }
