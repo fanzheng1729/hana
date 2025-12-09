@@ -133,6 +133,7 @@ bool Environ::addabsmove
 
     Move::Conjectures conjs(2);
     Bank & bank = pProb->bank;
+    Symbol2::ID const id = bank.addvar(abstraction).id;
 
     if (skeleton(thmexp, Keeprange(abstraction), bank, conjs[0].RPN) != TRUE)
         return false;
@@ -142,7 +143,7 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
 
-    Stepranges subst(bank.addvar(abstraction).id + 1);
+    Stepranges subst(id + 1);
     subst.back() = abstraction;
     Move const conjmove(conjs, subst);
 
