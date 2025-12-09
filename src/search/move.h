@@ -158,9 +158,8 @@ struct Move
         Expression vars;
         vars.reserve(substitutions.size());
         for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
-            if (Symbol3 const var = bank.var(id))
-                if (!substitutions[id].empty())
-                    vars.push_back(var);
+            if (!substitutions[id].empty())
+                vars.push_back(bank.var(id));
         return vars;
     }
     // Add conjectures to a bank (must be of type CONJ).
