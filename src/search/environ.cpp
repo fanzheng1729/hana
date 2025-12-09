@@ -111,7 +111,8 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
                 Stepranges subst(thm.maxvarid() + 1);
                 if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst) &&
-                    addabsmove(goal, goalrange.first, Move(pthm, subst), moves))
+                    addabsmove(goal, goalrange.first,
+                        Move(pthm, subst), moves))
                     return true;
             }
         }
