@@ -174,6 +174,9 @@ public:
     // Return true if proof() is okay.
     bool checkproof(Assiter iter) const
     {
+        FOR (Proofstep step, proof())
+            if (step.isthm() && step.pass->second.number >= numberlimit)
+                return false;
         return checkconclusion
         (iter->first, verify(proof(), &*iter), iter->second.expression);
     }
