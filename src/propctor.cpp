@@ -326,7 +326,7 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
     {
         if (!ass.hypfloats(i) && !(i < hypstotrim.size() && hypstotrim[i]))
         {
-// std::cout << ass.hyplabel(i) << ' ' << std::endl;
+// std::cout << ass.hypexp(i);
             if (!addclause
                 (ass.hypRPN(i), ass.hypAST(i), ass.hypiters, cnf, natom))
                 return Hypscnf();

@@ -6,7 +6,7 @@
 #include "environ.h"
 #include "../util/find.h"
 #include "../util/for.h"
-
+#include "../io.h"
 // Propositional proof search, using SAT pruning
 struct Prop : Environ
 {
@@ -19,6 +19,7 @@ struct Prop : Environ
         hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
         frequencybias(freqbias)
     {
+        // std::cout << "newEnv " << name << ' ' << ass.varusage;
         // Reinitialize weights of all hypotheses combined.
         hypsweight = 0;
         for (Hypsize i = 0; i < ass.hypcount(); ++i)

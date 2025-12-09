@@ -139,7 +139,12 @@ bool Environ::addabsmove
 
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
-    Move const conjmove(conjs, bank);
+
+    Symbol3 const var = bank.addrange(abstraction);
+    Move::Substitutions subst(var.id + 1);
+    subst[var.id] = Proofsteps(abstraction.first, abstraction.second);
+    Move const conjmove(conjs, subst);
+    // Move const conjmove(conjs, bank);
 
     switch (valid(conjmove))
     {

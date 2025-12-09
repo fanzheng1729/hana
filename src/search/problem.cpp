@@ -93,7 +93,6 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         return NULL;
     // Name of new context
     std::string const & name(env.assertion.hypslabel(hypstotrim));
-    std::cout << env.name << ' ' << name << std::endl;
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
     environs.insert(std::pair<strview, Environ const *>(name, NULL));
@@ -105,6 +104,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     Assertion & subAss = assertions[newEnviter->first];
     if (subAss.number > 0)
         return NULL;
+    // std::cout << "addsubEnv to " << env.name << ' ' << env.assertion.varusage;
     Assertion const & ass = env.assertion.makeAss(hypstotrim);
     // Pointer to the sub-context
     Environ * const psubEnv = env.makeEnv(subAss = ass);
@@ -132,14 +132,16 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     Assertion & supAss = assertions[newEnviter->first];
     if (supAss.number > 0)
         return NULL;
-    supAss.number = assertion.number;
-    supAss.sethyps(assertion, newvars, newhypiters);
+    // std::cout << "addsupEnv to " << env.name << ' ' << newvars;
+    // std::cout << "env vars " << env.assertion.varusage;
+    supAss.number = env.assertion.number;
+    supAss.sethyps(env.assertion, newvars, newhypiters);
     supAss.disjvars = move.findDV(supAss);
-    // Pointer to the sub-context
-    Environ * const psubEnv = env.makeEnv(supAss);
-    newEnviter->second = psubEnv;
-    initEnv(psubEnv);
-    return psubEnv;
+    // Pointer to the super-context
+    Environ * const psupEnv = env.makeEnv(supAss);
+    newEnviter->second = psupEnv;
+    initEnv(psupEnv);
+    return psupEnv;
 }
 
 // Test proof search.
@@ -147,7 +149,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 Problem::size_type testsearch
     (Assiter iter, Problem & tree, Problem::size_type maxsize)
 {
-    // printass(*iter);
+    printass(*iter);
     tree.play(maxsize);
     // tree.printstats();
     // std::cin.get();

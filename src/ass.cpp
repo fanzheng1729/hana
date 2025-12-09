@@ -111,6 +111,7 @@ void Assertion::sethyps(Assertion const & ass,
     hypiters.reserve(newhypcount);
     varusage.clear();
     // Floating hypotheses for new variables
+    // std::cout << "newvars " << newvars;
     FOR (Symbol3 const var, newvars)
         if (var.id > 0 && ass.varusage.count(var) == 0)
         {
@@ -119,6 +120,7 @@ void Assertion::sethyps(Assertion const & ass,
         }
     // Old variable usage
     Hypsize const asshypcount = ass.hypcount();
+    // std::cout << "oldvars " << ass.varusage;
     FOR (Varusage::const_reference rvar, ass.varusage)
     {
         Bvector & usage = varusage[rvar.first];
