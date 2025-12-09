@@ -152,7 +152,7 @@ struct Move
     Hypsize hypcount() const { return theorem().hypcount(); }
     // # of conjectures made (must be of type CONJ)
     Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
-    // Abstract variables in use
+    // Abstract variables in use (must be of type CONJ)
     Expression absvars(Bank const & bank) const
     {
         Expression vars;
@@ -161,6 +161,14 @@ struct Move
             if (!substitutions[id].empty())
                 vars.push_back(bank.var(id));
         return vars;
+    }
+    // Abstraction of a variable (must be of type CONJ)
+    Proofsteps const & abstraction(Symbol3 var) const
+    {
+        Symbol2::ID const id = var.id;
+        if (id >= substitutions.size() || substitutions[id].empty())
+            return var.iter->second.RPN;
+        return substitutions[id];
     }
     // Add conjectures to a bank (must be of type CONJ).
     // Return iterators to the hypotheses.
