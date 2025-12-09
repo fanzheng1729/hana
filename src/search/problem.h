@@ -171,6 +171,7 @@ public:
     void focus(pNode p);
     // Proof of the assertion, if not empty
     Proofsteps const & proof() const { return root()->game().proof(); }
+    // Return true if proof() is okay.
     // # goals of a given status
     Goals::size_type countgoal(int status) const
     {
