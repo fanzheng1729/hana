@@ -149,7 +149,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 Problem::size_type testsearch
     (Assiter iter, Problem & tree, Problem::size_type maxsize)
 {
-    printass(*iter);
+    // printass(*iter);
     tree.play(maxsize);
     // tree.printstats();
     // std::cin.get();
