@@ -275,12 +275,12 @@ static bool gototheirchild(pNode & p)
 }
 
 // Move to the child with given assertion and index. Return true if successful.
-static bool findourchild(pNode & p, strview ass, std::size_t index)
+static bool findourchild(pNode & p, strview token, std::size_t index)
 {
     FOR (pNode child, *p.children())
     {
         Move const & move = child->game().attempt;
-        if (move.type == Move::THM && move.thmlabel() == ass && index-- == 0)
+        if (move.label() == token && index-- == 0)
             return p = child;
     }
     return false;
