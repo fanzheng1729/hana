@@ -132,18 +132,18 @@ bool Environ::addabsmove
     SteprangeAST goalexp(goal.RPN, goal.ast);
 
     Move::Conjectures conjs(2);
-    Bank & bank = pProb->bank;
-    Symbol2::ID const id = bank.addvar(abstraction).id;
 
-    if (skeleton(thmexp, Keeprange(abstraction), bank, conjs[0].RPN) != TRUE)
+    ConstBank const var = pProb->bank.addvar(abstraction);
+
+    if (skeleton(thmexp, Keeprange(abstraction), var, conjs[0].RPN) != TRUE)
         return false;
-    if (skeleton(goalexp, Keeprange(abstraction), bank, conjs[1].RPN) != TRUE)
+    if (skeleton(goalexp, Keeprange(abstraction), var, conjs[1].RPN) != TRUE)
         return false;
 
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
 
-    Stepranges subst(id + 1);
+    Stepranges subst(var.id + 1);
     subst.back() = abstraction;
     Move const conjmove(conjs, subst);
 
