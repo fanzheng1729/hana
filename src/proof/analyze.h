@@ -14,7 +14,7 @@ Indentations indentations(AST const & ast);
 // Return true if the RPN of an expression matches a template.
 bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
 
-// Find all maximal ranges governed by a syntax axiom.
-GovernedSteprangesbystep maxranges(Steprange range, AST ast);
+// Find all maximal abstractions governed by a syntax axiom.
+GovernedSteprangesbystep maxabs(Steprange range, AST ast);
 
 #endif // ANALYZE_H_INCLUDED

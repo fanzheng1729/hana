@@ -152,7 +152,7 @@ bool Syntaxioms::addRPN
     exp[0] = typecodes.normalize(exp[0]);
     if (!RPNAST(exp, ass, ass.expRPN, ass.expAST))
         return false;
-    ass.expmaxranges = maxranges(ass.expRPN, ass.expAST);
+    ass.expmaxranges = maxabs(ass.expRPN, ass.expAST);
     // Parse the hypotheses.
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
