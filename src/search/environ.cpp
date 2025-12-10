@@ -1,7 +1,6 @@
 #include <algorithm>    // for ordered algorithms
-#include "../proof/analyze.h"
 #include "environ.h"
-#include "../io.h"
+// #include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
 #include "../util/progress.h"
