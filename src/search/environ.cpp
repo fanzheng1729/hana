@@ -89,7 +89,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
-    if (!goal.maxrangescomputed)
+    if (!goal.maxabscomputed)
         goal.maxranges = maxabs(goal.RPN, goal.ast);
 
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
