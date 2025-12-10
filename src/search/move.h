@@ -195,17 +195,16 @@ struct Move
         }
         return conjcount();
     }
+    // Size of a substitution
+    Proofsize substitutionsize(Proofsteps const & src) const;
+    // Make a substitution.
+    void makesubstitution(Proofsteps const & src, Proofsteps & dest) const;
     // Size of full proof (must be of type CONJ)
     Proofsize fullproofsize(pProofs const & phyps) const;
     // Write proof (must be of type CONJ).
     bool writeproof(Proofsteps & dest, pProofs const & phyps) const;
     // Print a CONJ move.
     void printconj() const;
-private:
-    // Size of a substitution
-    Proofsize substitutionsize(Proofsteps const & src) const;
-    // Make a substitution.
-    void makesubstitution(Proofsteps const & src, Proofsteps & dest) const;
 };
 
 // List of moves

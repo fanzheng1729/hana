@@ -70,6 +70,44 @@ Proofsteps const * Move::psubgoalproof(Hypsize index) const
             &subgoals[index]->second.proofsrc();
 }
 
+// Size of a substitution
+Proofsize Move::substitutionsize(Proofsteps const & src) const
+{
+    Proofsize size = 0;
+
+    // Make the substitution
+    FOR (Proofstep const step, src)
+    {
+        Symbol2::ID const id = step.id();
+        if (id > 0 && !substitutions[id].empty())
+            size += substitutions[id].size();
+        else
+            ++size;
+    }
+
+    return size;
+}
+
+// Make a substitution.
+void Move::makesubstitution(Proofsteps const & src, Proofsteps & dest) const
+{
+    if (substitutions.empty())
+        return dest.assign(src.begin(), src.end());
+
+    // Preallocate for efficiency
+    dest.reserve(substitutionsize(src));
+
+    // Make the substitution
+    FOR (Proofstep const step, src)
+    {
+        Symbol2::ID const id = step.id();
+        if (id > 0 && !substitutions[id].empty())
+            dest += substitutions[id];  // variable with an id
+        else
+            dest.push_back(step);     // constant with no id
+    }
+}
+
 // Size of full proof (must be of type CONJ)
 Proofsize Move::fullproofsize(pProofs const & phyps) const
 {
@@ -158,42 +196,4 @@ void Move::printconj() const
     std::cout << "in order to prove";
     std::cout << goal().expression() << "->";
     std::cout << absconjs.back().expression();
-}
-
-// Size of a substitution
-Proofsize Move::substitutionsize(Proofsteps const & src) const
-{
-    Proofsize size = 0;
-
-    // Make the substitution
-    FOR (Proofstep const step, src)
-    {
-        Symbol2::ID const id = step.id();
-        if (id > 0 && !substitutions[id].empty())
-            size += substitutions[id].size();
-        else
-            ++size;
-    }
-
-    return size;
-}
-
-// Make a substitution.
-void Move::makesubstitution(Proofsteps const & src, Proofsteps & dest) const
-{
-    if (substitutions.empty())
-        return dest.assign(src.begin(), src.end());
-
-    // Preallocate for efficiency
-    dest.reserve(substitutionsize(src));
-
-    // Make the substitution
-    FOR (Proofstep const step, src)
-    {
-        Symbol2::ID const id = step.id();
-        if (id > 0 && !substitutions[id].empty())
-            dest += substitutions[id];  // variable with an id
-        else
-            dest.push_back(step);     // constant with no id
-    }
 }
