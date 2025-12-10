@@ -39,10 +39,11 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 switch (valid(move))
                 {
                 case MoveCLOSED:
-                    moves.assign(1, move);
+                    moves.clear();
+                    moves.push_back(move);
                     return true;
                 case MoveVALID:
-                    // std::cout << move << std::endl;
+                    // std::cout << move.label() << std::endl;
                     // std::cout << move.substitutions;
                     moves.push_back(move);
                     // std::cin.get();
