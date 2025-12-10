@@ -92,6 +92,8 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     if (!goal.maxabscomputed)
         goal.maxabs = maxabs(goal.RPN, goal.ast);
 
+    Stepranges subst(thm.maxvarid() + 1);
+
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
     {
         GovernedSteprangesbystep::const_iterator const iter
@@ -101,16 +103,14 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
         FOR (GovernedStepranges::const_reference thmrange, rstep.second)
         {
-            Proofsteps thmrangeRPN(thmrange.first.first, thmrange.first.second);
-            AST const & thmrangeAST(ast(thmrangeRPN));
-            SteprangeAST const thmrangeRPNAST(thmrangeRPN, thmrangeAST);
+            SteprangeAST thmsubexp(thmrange.first, thmrange.second.begin());
+
             FOR (GovernedStepranges::const_reference goalrange, iter->second)
             {
-                Proofsteps goalrangeRPN(goalrange.first.first, goalrange.first.second);
-                AST const & goalrangeAST(ast(goalrangeRPN));
-                SteprangeAST const goalrangeRPNAST(goalrangeRPN, goalrangeAST);
-                Stepranges subst(thm.maxvarid() + 1);
-                if (findsubstitutions(goalrangeRPNAST, thmrangeRPNAST, subst) &&
+                SteprangeAST goalsubexp(goalrange.first, goalrange.second.begin());
+
+                subst.assign(thm.maxvarid() + 1, Steprange());
+                if (findsubstitutions(goalsubexp, thmsubexp, subst) &&
                     addabsmove(goal, goalrange.first, Move(pthm,subst), moves))
                     return true;
             }

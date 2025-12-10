@@ -1,5 +1,6 @@
 #include "../ass.h"
 #include "../io.h"
+#include "analyze.h"
 #include "compranges.h"
 #include "verify.h"
 
@@ -150,7 +151,8 @@ static void maxabs
             GovernedStepranges & ranges = result[root];
             if (ranges.empty())
                 ranges = GovernedStepranges(compranges);
-            ranges[subexp.first] = true;
+            Proofsteps range(subexp.first.first,subexp.first.second);
+            ranges[subexp.first] = ast(range);
         }
         *pinstep = true;
     }
