@@ -154,6 +154,14 @@ struct Move
     Proofsteps const * psubgoalproof(Hypsize index) const;
     // # of conjectures made (must be of type CONJ)
     Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
+    // Return true if the move uses abstract variables (must be of type CONJ).
+    bool hasabsvars() const
+    {
+        FOR (Proofsteps const & RPN, substitutions)
+            if (!RPN.empty())
+                return true;
+        return false;
+    }
     // Abstract variables in use (must be of type CONJ)
     Expression absvars(Bank const & bank) const
     {
