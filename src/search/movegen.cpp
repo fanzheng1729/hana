@@ -1,5 +1,4 @@
 #include <algorithm>    // for std::min
-#include "../bank.h"
 #include "../proof/analyze.h"
 #include "../proof/skeleton.h"
 #include "environ.h"
