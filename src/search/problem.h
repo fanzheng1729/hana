@@ -93,8 +93,9 @@ public:
     {
         FOR (Environs::const_reference renv, environs)
         {
+            Environ const * poldEnv = renv.second;
+            if (!poldEnv || poldEnv == &env) continue;
             Environ const & oldEnv = *renv.second;
-            if (&oldEnv == &env) continue;
             int const cmp = oldEnv.compare(env);
             oldEnv.addEnv(env, cmp);
             env.addEnv(oldEnv, -cmp);
