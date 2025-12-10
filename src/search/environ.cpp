@@ -4,7 +4,6 @@
 #include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
-#include "../proof/skeleton.h"
 #include "../util/progress.h"
 
 // Return true if the context is a sub-context of the problem context
@@ -13,82 +12,6 @@ bool subsumedbyProb(Environ const & env) { return env.subsumedbyProb(); }
 pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
-
-// Add abstraction moves. Return true if it has no open hypotheses.
-bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
-{
-    Assertion const & thm = pthm->second;
-    if (!goal.maxabscomputed)
-        goal.maxabs = maxabs(goal.RPN, goal.ast);
-
-    Stepranges subst(thm.maxvarid() + 1);
-
-    FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
-    {
-        GovernedSteprangesbystep::const_iterator const iter
-        = goal.maxabs.find(rstep.first);
-        if (iter == goal.maxabs.end())
-            continue;
-
-        FOR (GovernedStepranges::const_reference thmrange, rstep.second)
-        {
-            SteprangeAST thmsubexp(thmrange.first, thmrange.second);
-
-            FOR (GovernedStepranges::const_reference goalrange, iter->second)
-            {
-                SteprangeAST goalsubexp(goalrange.first, goalrange.second);
-
-                subst.assign(thm.maxvarid() + 1, Steprange());
-                if (findsubstitutions(goalsubexp, thmsubexp, subst) &&
-                    addabsmove(goal, goalrange.first, Move(pthm,subst), moves))
-                    return true;
-            }
-        }
-    }
-    
-    return false;
-}
-
-// Add an abstraction move. Return true if it has no open hypotheses.
-bool Environ::addabsmove
-    (Goal const & goal, Steprange abstraction,
-     Move const & move, Moves & moves) const
-{
-    Goal const & thmgoal(move.goal());
-    AST  const & thmgoalast(ast(thmgoal.RPN));
-
-    SteprangeAST thmexp(thmgoal.RPN, thmgoalast);
-    SteprangeAST goalexp(goal.RPN, goal.ast);
-
-    Move::Conjectures conjs(2);
-
-    Bank1var const var = pProb->bank.addabsvar(abstraction);
-
-    if (skeleton(thmexp, Keeprange(abstraction), var, conjs[0].RPN) != TRUE)
-        return false;
-    if (skeleton(goalexp, Keeprange(abstraction), var, conjs[1].RPN) != TRUE)
-        return false;
-
-    conjs[0].typecode = thmgoal.typecode;
-    conjs[1].typecode = goal.typecode;
-
-    Stepranges subst(var.id + 1);
-    subst.back() = abstraction;
-    Move const conjmove(conjs, subst);
-
-    switch (validconjmove(conjmove))
-    {
-    case MoveCLOSED:
-        moves.assign(1, conjmove);
-        return true;
-    case MoveVALID:
-        moves.push_back(conjmove);
-        return false;
-    default:
-        return false;
-    }
-    return false;
-}
 
 // Return true if all variables in use have been substituted.
 static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)

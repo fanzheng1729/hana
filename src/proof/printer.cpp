@@ -55,7 +55,6 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
     default:
         return false;
     }
-    return false;
 }
 
 std::string::size_type Printer::maxlabellen() const

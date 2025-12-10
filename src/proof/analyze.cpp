@@ -113,7 +113,6 @@ bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
     default:
         return false;
     }
-    return false;
 }
 
 // Return true if range1 has all the variables in range2

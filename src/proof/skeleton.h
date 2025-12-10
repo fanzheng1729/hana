@@ -4,7 +4,6 @@
 // #include "../io.h"
 #include "compranges.h"
 #include "../util/tribool.h"
-#include "../bank.h"
 
 enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 

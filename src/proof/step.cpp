@@ -45,7 +45,6 @@ Proofstep::operator const char*() const
     default:
         return NULL;
     }
-    return NULL;
 }
 
 // label -> proof step, using hypotheses and assertions.
