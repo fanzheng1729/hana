@@ -180,8 +180,8 @@ public:
             else if (step.ishyp() && !step.phyp->second.floats &&
                      bank.hashyp(step.phyp->first))
                 return false; // Essential Hypothesis not allowed
-        return checkconclusion
-        (iter->first, verify(proof(), &*iter), iter->second.expression);
+        Expression const & conclusion(verify(proof(), &*iter));
+        return checkconclusion(iter->first,conclusion,iter->second.expression);
     }
     // # goals of a given status
     Goals::size_type countgoal(int status) const

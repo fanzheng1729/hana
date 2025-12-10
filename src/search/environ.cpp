@@ -50,17 +50,17 @@ bool Environ::trythm
     if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
-    Stepranges stepranges(thm.maxvarid() + 1);
-    if (!findsubstitutions(goal, thm.expRPNAST(), stepranges))
+    Stepranges subst(thm.maxvarid() + 1);
+    if (!findsubstitutions(goal, thm.expRPNAST(), subst))
         return size == 0 && thm.esshypcount() == 0// && false
                 && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
-    Move move(&*iter, stepranges);
+    Move move(&*iter, subst);
     if (size > 0)
         return thm.nfreevar() > 0 && addhardmoves(move.pthm, size, move, moves);
     else if (thm.nfreevar() > 0)
-        return assertion.esshypcount() > 0 && addhypmoves(move.pthm, moves, stepranges);
+        return assertion.esshypcount() && addhypmoves(move.pthm, moves, subst);
     else
         return addboundmove(move, moves);
 }
