@@ -40,22 +40,16 @@ typedef std::vector<Proofsteps const *> pProofs;
 typedef Proofsteps::size_type Proofsize;
 // Iterator to a proof step
 typedef Proofsteps::const_iterator Stepiter;
-// Begin and end of a range of steps
-// typedef std::pair<Stepiter, Stepiter> Steprange;
+
+// Begin and end of a sequence of proof steps
 struct Steprange : std::pair<Stepiter, Stepiter>
 {
     using std::pair<Stepiter, Stepiter>::pair;
     Steprange(Proofsteps const & proofsteps) :
         std::pair<Stepiter, Stepiter>(proofsteps.begin(), proofsteps.end()) {}
 };
-// Ranges of steps to be substituted
+// Ranges of proof steps
 typedef std::vector<Steprange> Stepranges;
-// Ranges governed by a Proofstep, map: range -> has all vars
-typedef std::map<Steprange, bool, bool(*)(Steprange, Steprange)>
-    GovernedStepranges;
-// Map: Proofstep -> all ranges governed by the Proofstep
-typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
-    GovernedSteprangesbystep;
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<Proofsize> ASTnode;
@@ -63,6 +57,13 @@ typedef std::vector<Proofsize> ASTnode;
 typedef std::vector<ASTnode> AST;
 // Iterator to an AST node
 typedef AST::const_iterator ASTiter;
+
+// Ranges governed by a Proofstep, map: range -> has all vars
+typedef std::map<Steprange, bool, bool(*)(Steprange, Steprange)>
+    GovernedStepranges;
+// Map: Proofstep -> all ranges governed by the Proofstep
+typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
+    GovernedSteprangesbystep;
 
 // List of indentations
 typedef std::vector<Proofsize> Indentations;
