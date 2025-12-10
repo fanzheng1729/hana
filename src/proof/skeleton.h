@@ -47,7 +47,7 @@ Tribool skeleton
             return result.push_back(root), retval;
         case KEEPRANGE:
             // Don't split and abstract. Find the abstracting variable.
-            Symbol3 const var = bank.addvar(exp.first);
+            Symbol3 const var = bank.addabsvar(exp.first);
 // std::cout << "varid " << var.id << std::endl;
             return var ? (result.push_back(var.iter), TRUE) : UNKNOWN;
         }
