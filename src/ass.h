@@ -35,7 +35,7 @@ struct Assertion
     // Abstract syntax tree of expression
     AST expAST;
     // All maximal ranges of the expression governed by a syntax axiom.
-    GovernedSteprangesbystep expmaxranges;
+    GovernedSteprangesbystep expmaxabs;
     // Type (propositional, predicate, etc)
     unsigned type;
 // Functions:
