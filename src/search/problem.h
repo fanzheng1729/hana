@@ -177,8 +177,9 @@ public:
         FOR (Proofstep step, proof())
             if (step.isthm() && step.pass->second.number >= numberlimit)
                 return false; // Assertion # >= limit
-            else if (step.ishyp() && bank.hashyp(step.phyp->first))
-                return false; // Hypothesis not allowed
+            else if (step.ishyp() && !step.phyp->second.floats &&
+                     bank.hashyp(step.phyp->first))
+                return false; // Essential Hypothesis not allowed
         return checkconclusion
         (iter->first, verify(proof(), &*iter), iter->second.expression);
     }
