@@ -253,3 +253,46 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
 
     return false;
 }
+bool Environ::addhypmoves(pAss pthm, Moves & moves,
+                          Stepranges const & substitutions) const
+{
+    Assertion const & thm = pthm->second;
+    FOR (Hypsize thmhyp, thm.hypsorder)
+    {
+        if (thm.nfreevars[thmhyp] < thm.nfreevar())
+            return false;
+// std::cout << move.label() << ' ' << thm.hyplabel(thmhyp) << ' ';
+        strview thmhyptype = thm.hyptypecode(thmhyp);
+        for (Hypsize asshyp = 0; asshyp < assertion.hypcount(); ++asshyp)
+        {
+            if (assertion.hypfloats(asshyp) ||
+                assertion.hyptypecode(asshyp) != thmhyptype)
+                continue;
+            // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
+            Stepranges newsubstitutions(substitutions);
+            if (findsubstitutions
+                (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp),
+                 newsubstitutions))
+            {
+// std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
+                Move move(pthm, newsubstitutions);
+                switch (valid(move))
+                {
+                case MoveCLOSED:
+                    moves.clear();
+                    moves.push_back(move);
+                    return true;
+                case MoveVALID:
+                    // std::cout << move.label() << std::endl;
+                    // std::cout << move.substitutions;
+                    moves.push_back(move);
+                    // std::cin.get();
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    return false;
+}
