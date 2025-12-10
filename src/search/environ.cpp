@@ -134,7 +134,7 @@ bool Environ::addabsmove
 
     Move::Conjectures conjs(2);
 
-    ConstBank const var = pProb->bank.addabsvar(abstraction);
+    Bank1var const var = pProb->bank.addabsvar(abstraction);
 
     if (skeleton(thmexp, Keeprange(abstraction), var, conjs[0].RPN) != TRUE)
         return false;

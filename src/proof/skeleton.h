@@ -70,9 +70,10 @@ struct Keeprange
     }
 };
 
-struct ConstBank : Symbol3
+// Bank with only 1 variable
+struct Bank1var : Symbol3
 {
-    ConstBank(Symbol3 var) { *static_cast<Symbol3 *>(this) = var; }
+    Bank1var(Symbol3 var) { *static_cast<Symbol3 *>(this) = var; }
     Symbol3 addabsvar(Steprange) const { return *this; }
 };
 
