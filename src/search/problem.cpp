@@ -106,10 +106,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     // std::cout << "addsubEnv to " << env.name << ' ' << env.assertion.varusage;
     Assertion const & ass = env.assertion.makeAss(hypstotrim);
     // Pointer to the sub-context
-    Environ * const psubEnv = env.makeEnv(subAss = ass);
-    newEnviter->second = psubEnv;
-    initEnv(psubEnv);
-    return psubEnv;
+    return newEnviter->second = initEnv(env.makeEnv(subAss = ass));
 }
 
 // Add a super-context with hypotheses trimmed.
@@ -137,10 +134,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     supAss.sethyps(env.assertion, newvars, newhypiters);
     supAss.disjvars = move.findDV(supAss);
     // Pointer to the super-context
-    Environ * const psupEnv = env.makeEnv(supAss);
-    newEnviter->second = psupEnv;
-    initEnv(psupEnv);
-    return psupEnv;
+    return newEnviter->second = initEnv(env.makeEnv(supAss));
 }
 
 // Test proof search.

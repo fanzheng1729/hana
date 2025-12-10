@@ -76,10 +76,10 @@ public:
             goals[goal].proof.assign(1, probAss().hypptr(i));
         }
     }
-    // Add 1-step proof of all the hypotheses to a context.
-    void addhypproofs(Environ const & env)
+    // Add 1-step proof of all the hypotheses to a context. Return env.
+    Environ const & addhypproofs(Environ const & env)
     {
-        if (env.subsumedbyProb()) return;
+        if (env.subsumedbyProb()) return env;
         for (Hypsize i = 0; i < env.assertion.hypcount(); ++i)
         {
             if (env.assertion.hypfloats(i)) continue;
@@ -87,9 +87,10 @@ public:
             addgoal(goal, env, GOALTRUE)
             ->second.proofdst().assign(1, env.assertion.hypptr(i));
         }
+        return env;
     }
-    // Add implication relation for newly added context.
-    void addimps(Environ const & env)
+    // Add implication relation for newly added context. Return env.
+    Environ const & addimps(Environ const & env)
     {
         FOR (Environs::const_reference renv, environs)
         {
@@ -100,6 +101,7 @@ public:
             oldEnv.addEnv(env, cmp);
             env.addEnv(oldEnv, -cmp);
         }
+        return env;
     }
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
@@ -239,16 +241,15 @@ private:
     // Add a super-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
     Environ const * addsupEnv(Environ const & env, Move const & move);
-    // Initialize a context if existent.
-    void initEnv(Environ * p)
+    // Initialize a context if existent. Return its pointer.
+    Environ const * initEnv(Environ * p)
     {
-        if (!p) return;
+        if (!p) return NULL;
         p->pProb = this;
         p->m_subsumedbyProb = (probEnv().compare(*p) == 1);
         p->m_rankssimplerthanProb
         = database.syntaxDAG().simplerthan(p->maxranks, maxranks);
-        addhypproofs(*p);
-        addimps(*p);
+        return &addimps(addhypproofs(*p));
     }
     // close all the nodes except p
     void closenodesexcept(pNodes const & pnodes, pNode p = pNode())
