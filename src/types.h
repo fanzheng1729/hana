@@ -58,8 +58,8 @@ typedef std::vector<ASTnode> AST;
 // Iterator to an AST node
 typedef AST::const_iterator ASTiter;
 
-// Ranges governed by a Proofstep, map: range -> has all vars
-typedef std::map<Steprange, bool, bool(*)(Steprange, Steprange)>
+// Ranges governed by a Proofstep, map: range -> AST
+typedef std::map<Steprange, AST, bool(*)(Steprange, Steprange)>
     GovernedStepranges;
 // Map: Proofstep -> all ranges governed by the Proofstep
 typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
