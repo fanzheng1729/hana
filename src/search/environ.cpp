@@ -61,9 +61,6 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
-    if (move.absconjs.empty())
-        return MoveINVALID;
-
     MoveValidity const validity = validthmmove(move);
     if (validity == MoveINVALID)
         return MoveINVALID;

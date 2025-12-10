@@ -127,8 +127,6 @@ private:
     bool trythm
         (Game const & game, Assiter iter, Proofsize size, Moves & moves) const;
 // Validate
-    // a subgoal of the move.
-    Goalstatus validsubgoal(Move const & move, Hypsize i) const;
     // a move applying a theorem.
     MoveValidity validthmmove(Move const & move) const;
     // a conjectural move.
