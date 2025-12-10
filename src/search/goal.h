@@ -49,7 +49,9 @@ struct Goaldatas : std::map<Environ const *, Goaldata>
     Proofsteps proof;
     bool proven() const { return !proof.empty(); }
 };
-typedef Goaldatas::pointer pGoal;
+
+// Goal pointer
+typedef std::map<Environ const *, Goaldata>::pointer pGoal;
 
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> Goals;

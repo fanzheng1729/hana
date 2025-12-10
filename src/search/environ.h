@@ -12,12 +12,6 @@ class Problem;
 struct Environ;
 // Pointers to contexts
 typedef std::vector<Environ const *> pEnvs;
-// Move in proof search tree
-// struct Move;
-// List of moves
-// typedef std::vector<Move> Moves;
-// Game state in proof search tree
-// struct Game;
 
 // Weight-based score
 inline Value score(Weight w) { return 1. / (w + 1); }
