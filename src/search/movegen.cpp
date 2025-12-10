@@ -79,10 +79,13 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
-    Assertion const & thm = pthm->second;
     if (!goal.maxabscomputed)
+    {
         goal.maxabs = maxabs(goal.RPN, goal.ast);
+        goal.maxabscomputed = true;
+    }
 
+    Assertion const & thm = pthm->second;
     Stepranges subst(thm.maxvarid() + 1);
 
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
