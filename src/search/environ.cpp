@@ -103,11 +103,11 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
         FOR (GovernedStepranges::const_reference thmrange, rstep.second)
         {
-            SteprangeAST thmsubexp(thmrange.first, thmrange.second.begin());
+            SteprangeAST thmsubexp(thmrange.first, thmrange.second);
 
             FOR (GovernedStepranges::const_reference goalrange, iter->second)
             {
-                SteprangeAST goalsubexp(goalrange.first, goalrange.second.begin());
+                SteprangeAST goalsubexp(goalrange.first, goalrange.second);
 
                 subst.assign(thm.maxvarid() + 1, Steprange());
                 if (findsubstitutions(goalsubexp, thmsubexp, subst) &&

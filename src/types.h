@@ -216,6 +216,9 @@ inline bool operator<(Proofstep x, Proofstep y)
 struct SteprangeAST: std::pair<Steprange, ASTiter>
 {
     using std::pair<Steprange, ASTiter>::pair;
+    SteprangeAST(Steprange range, AST const & ast) :
+        std::pair<Steprange, ASTiter>(range, ast.begin())
+    { if (range.second-range.first != ast.size()) first.second = first.first; }
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin())
     { if (proofsteps.size() != ast.size()) first.second = first.first; }

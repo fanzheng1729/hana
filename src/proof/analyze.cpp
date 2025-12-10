@@ -167,10 +167,9 @@ static void maxabs
 GovernedSteprangesbystep maxabs(Steprange range, AST ast)
 {
     GovernedSteprangesbystep result;
-
     Instep instep;
-    SteprangeAST exp(range, ast.begin());
-    maxabs(exp, exp.first, instep, result);
+
+    maxabs(SteprangeAST(range, ast), range, instep, result);
 
     return result;
 }
