@@ -174,7 +174,7 @@ public:
     // Return true if proof() is okay.
     bool checkproof(Assiter iter) const
     {
-        FOR (Proofstep step, proof())
+        FOR (Proofstep const step, proof())
             if (step.isthm() && step.pass->second.number >= numberlimit)
                 return false; // Assertion # >= limit
             else if (step.ishyp() && !step.phyp->second.floats &&
