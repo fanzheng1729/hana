@@ -11,7 +11,8 @@ struct Goal
     Proofsteps RPN;
     strview typecode;
     AST mutable ast;
-    GovernedSteprangesbystep mutable maxranges;
+    // Maximal abstractions
+    GovernedSteprangesbystep mutable maxabs;
     bool mutable maxabscomputed;
     Goal() : maxabscomputed(false) {}
     Goal(Goalview view) :

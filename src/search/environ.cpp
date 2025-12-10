@@ -90,13 +90,13 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
     Assertion const & thm = pthm->second;
     if (!goal.maxabscomputed)
-        goal.maxranges = maxabs(goal.RPN, goal.ast);
+        goal.maxabs = maxabs(goal.RPN, goal.ast);
 
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
     {
         GovernedSteprangesbystep::const_iterator const iter
-        = goal.maxranges.find(rstep.first);
-        if (iter == goal.maxranges.end())
+        = goal.maxabs.find(rstep.first);
+        if (iter == goal.maxabs.end())
             continue;
 
         FOR (GovernedStepranges::const_reference thmrange, rstep.second)
