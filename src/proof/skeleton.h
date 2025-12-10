@@ -16,7 +16,7 @@ Tribool skeleton
 {
     Tribool retval = FALSE;
 // std::cout << "Analyzing " << Proofsteps(exp.first.first, exp.first.second);
-    Proofstep const root = *(exp.first.second - 1);
+    Proofstep const root = exp.RPNroot();
     switch (root.type)
     {
     case Proofstep::HYP:
@@ -63,7 +63,7 @@ struct Keeprange
     {
         if (range == exp)
             return KEEPRANGE;
-        if (range.second - range.first > exp.second - exp.first)
+        if (range.size() > exp.size())
             return SPLITALL;
         return SPLITREC;
     }

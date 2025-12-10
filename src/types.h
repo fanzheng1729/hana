@@ -47,6 +47,9 @@ struct Steprange : std::pair<Stepiter, Stepiter>
     using std::pair<Stepiter, Stepiter>::pair;
     Steprange(Proofsteps const & proofsteps) :
         std::pair<Stepiter, Stepiter>(proofsteps.begin(), proofsteps.end()) {}
+    bool empty() const { return size() == 0; }
+    Proofsize size() const { return second - first; }
+    Proofstep const & root() const { return *(second - 1); }
 };
 // Ranges of proof steps
 typedef std::vector<Steprange> Stepranges;
@@ -218,18 +221,18 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     using std::pair<Steprange, ASTiter>::pair;
     SteprangeAST(Steprange range, AST const & ast) :
         std::pair<Steprange, ASTiter>(range, ast.begin())
-    { if (range.second-range.first != ast.size()) first.second = first.first; }
+    { if (range.size() != ast.size()) first.second = first.first; }
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin())
     { if (proofsteps.size() != ast.size()) first.second = first.first; }
-    bool empty() const { return first.first == first.second; }
-    // AST root node
-    ASTnode const & ASTroot() const
-    { return *(first.second - first.first + second - 1); }
+    bool empty() const { return first.empty(); }
+    Proofsize size() const { return first.size(); }
+    Proofstep const & RPNroot() const { return first.root(); }
+    ASTnode const & ASTroot() const { return *(second + size() - 1); }
     // Child i's subrange
     SteprangeAST child(ASTnode::size_type index) const
     {
-        ASTiter const ASTend = first.second - first.first + second;
+        ASTiter const ASTend = second + size();
         ASTnode const & ASTback = *(ASTend - 1);
         ASTiter const newAST = index == 0 ? second :
             ASTend - 1 - (ASTback.back() - ASTback[index - 1]);

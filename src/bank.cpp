@@ -13,11 +13,7 @@ static const std::string floatinghypheader = "f" + typedelim;
 // Add an abstraction variable.
 Symbol3 Bank::addabsvar(Steprange range)
 {
-    if (range.first == range.second)
-        return "";
-
-    strview typecode = (range.second - 1)->typecode();
-    if (!typecode.c_str)
+    if (range.empty())
         return "";
 
     RPNSymbols::value_type value(Proofsteps(range.first, range.second), "");
@@ -29,6 +25,7 @@ Symbol3 Bank::addabsvar(Steprange range)
     // New RPN, to which variable #id is assigned
     Symbol2::ID const id = m_varlabels.size();
 
+    strview typecode = range.root().typecode();
     m_varlabels.push_back(typecode.c_str + typedelim + util::hex(id));
     m_fhyplabels.push_back(floatinghypheader + m_varlabels[id]);
     m_RPNSymbolsbyid.push_back(RPNiter);

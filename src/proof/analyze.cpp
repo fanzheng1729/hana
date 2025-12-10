@@ -41,10 +41,12 @@ AST ast(Proofsteps const & proof)
         Proofstep const step = proof[i];
         if (step.ishyp())
             stack.push_back(i);
-        else if (step.isthm() &&
-                 addASTnode(proof[i].pass->second, stack, tree[i]))
+        else
+        if (step.isthm() &&
+            addASTnode(proof[i].pass->second, stack, tree[i]))
             continue;
-        else return AST();
+        else
+            return AST();
     }
 
     return stack.size() == 1 ? tree : AST();
@@ -82,7 +84,7 @@ Indentations indentations(AST const & ast)
 // Return true if the RPN of an expression matches a template.
 bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 {
-    if (exp.empty() || tmp.empty())
+    if (exp.empty() || tmp.empty() || exp.size() < tmp.size())
         return false;
 // std::cout << "Matching " << Proofsteps(exp.first.first, exp.first.second);
 // std::cout << "Against " << Proofsteps(tmp.first.first, tmp.first.second);
@@ -135,12 +137,12 @@ static void maxabs
 (SteprangeAST subexp, Steprange exp, Instep & instep,
     GovernedSteprangesbystep & result)
 {
-    Proofstep const root = *(subexp.first.second - 1);
+    Proofstep const root = subexp.RPNroot();
     if (!root.isthm())
         return;
     // Root is THM.
     bool * pinstep = NULL;
-    if (root != *(exp.second - 1))
+    if (root != exp.root())
     {
         // Not the same root as full expression
         pinstep = &instep[root];

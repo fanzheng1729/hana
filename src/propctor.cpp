@@ -398,9 +398,8 @@ bool Propctors::checkpropsat(Assertions const & assertions,
 // i.e., if all hypotheses and conclusion are floating and begins with "wff".
 static Splitretval splitroot(Steprange exp)
 {
-    Proofstep const root = *(exp.second - 1);
-    if (!root.isthm()) return KEEPRANGE;
-    if (!root.pass) return KEEPRANGE;
+    Proofstep const root = exp.root();
+    if (!root.isthm() || !root.pass) return KEEPRANGE;
     return truthtablesize(root.pass->second) ? SPLITREC : KEEPRANGE;
 }
 
