@@ -7,8 +7,9 @@
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {
-    if (game.goal().ast.empty())
-        game.goal().ast = ast(game.goal().RPN);
+    Goal const & goal = game.goal();
+    if (goal.ast.empty())
+        goal.ast = ast(goal.RPN);
 // if (stage >= 5)
 // std::cout << "Finding moves at stage " << stage << " for " << game;
     Moves moves;
