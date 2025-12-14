@@ -146,7 +146,7 @@ void Assertion::sethyps(Assertion const & ass,
     {
         FOR (Symbol3 var, iter->second.expression)
             if (var.id > 0)
-                varusage.find(var)->second[hypiters.size()] = true;
+                varusage[var][hypiters.size()] = true;
         hypiters.push_back(iter);
     }
 }
