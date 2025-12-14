@@ -1,7 +1,7 @@
 #include <algorithm>    // for std::copy
 #include "ass.h"
 #include "disjvars.h"
-#include "io.h"
+// #include "io.h"
 #include "util/filter.h"
 #include "util/for.h"
 
@@ -99,25 +99,35 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
     }
 }
 
+// Add new variables in an expression.
+static void addvarfromexp
+    (Varusage & newvars, Expression const & exp, Varusage const & oldvars)
+{
+    FOR (Symbol3 const var, exp)
+        if (var.id > 0 && oldvars.count(var) == 0)
+            newvars[var];
+}
+
 // Set the hypotheses, adding new variables and new hypotheses.
 void Assertion::sethyps(Assertion const & ass,
                         Expression const & newvars, Hypiters const & newhypiters)
 {
+    varusage.clear();
+    // std::cout << "newvars " << newvars;
+    addvarfromexp(varusage, newvars, ass.varusage);
+    FOR (Hypiter iter, newhypiters)
+        addvarfromexp(varusage, iter->second.expression, ass.varusage);
     // # hypotheses in new assertion
-    Hypsize newhypcount = ass.hypcount() + newvars.size() + newhypiters.size();
-
+    Hypsize newhypcount = ass.hypcount() + varcount() + newhypiters.size();
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(newhypcount);
-    varusage.clear();
-    // Floating hypotheses for new variables
-    // std::cout << "newvars " << newvars;
-    FOR (Symbol3 const var, newvars)
-        if (var.id > 0 && ass.varusage.count(var) == 0)
-        {
-            varusage[var].resize(newhypcount);
-            hypiters.push_back(var.iter);
-        }
+    // Variable usage and floating hypotheses for new variables
+    FOR (Varusage::reference rvar, varusage)
+    {
+        rvar.second.resize(newhypcount);
+        hypiters.push_back(rvar.first.iter);
+    }
     // Old variable usage
     Hypsize const asshypcount = ass.hypcount();
     // std::cout << "oldvars " << ass.varusage;
@@ -132,19 +142,11 @@ void Assertion::sethyps(Assertion const & ass,
     // Old hypotheses
     hypiters += ass.hypiters;
     // Use of old variables in new hypotheses
-    FOR (Hypiter hypiter, newhypiters)
+    FOR (Hypiter iter, newhypiters)
     {
-        FOR (Symbol3 var, hypiter->second.expression)
+        FOR (Symbol3 var, iter->second.expression)
             if (var.id > 0)
-            {
-                Varusage::iterator const usageiter = varusage.find(var);
-                if (unexpected(usageiter == varusage.end(), "variable", var))
-                {
-                    *this = Assertion();
-                    return;
-                }
-                usageiter->second[hypiters.size()] = true;
-            }
-        hypiters.push_back(hypiter);
+                varusage.find(var)->second[hypiters.size()] = true;
+        hypiters.push_back(iter);
     }
 }
