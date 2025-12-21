@@ -43,7 +43,7 @@ bool Environ::trythm
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges subst(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), subst))
-        return size == 0 && thm.esshypcount() == 0 && false
+        return size == 0 && thm.esshypcount() == 0// && false
                 && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
@@ -61,6 +61,26 @@ bool Environ::trythm
 bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
     switch (valid(move))
+    {
+    case MoveCLOSED:
+        moves.clear();
+        moves.push_back(move);
+        return true;
+    case MoveVALID:
+        // std::cout << move.label() << std::endl;
+        // std::cout << move.substitutions;
+        moves.push_back(move);
+        // std::cin.get();
+        return false;
+    default:
+        return false;
+    }
+}
+
+// Add a conjectural move. Return true if it has no open hypotheses.
+bool Environ::addconjmove(Move const & move, Moves & moves) const
+{
+    switch (validconjmove(move))
     {
     case MoveCLOSED:
         moves.clear();
@@ -125,37 +145,26 @@ bool Environ::addabsmove
     (Goal const & goal, Steprange abstraction,
      Move const & move, Moves & moves) const
 {
+    if (abstraction.empty())
+        return false;
+
     Goal const & thmgoal(move.goal());
     AST  const & thmgoalast(ast(thmgoal.RPN));
-
     SteprangeAST thmexp(thmgoal.RPN, thmgoalast), goalexp(goal.RPN, goal.ast);
-    Move::Conjectures conjs(2);
+    // Abstract variable
     Bank1var const var = pProb->bank.addabsvar(abstraction);
-
+    // 1 conjecture + 1 goal
+    Move::Conjectures conjs(2);
     if (skeleton(thmexp, Keeprange(abstraction), var, conjs[0].RPN) != TRUE)
         return false;
     if (skeleton(goalexp, Keeprange(abstraction), var, conjs[1].RPN) != TRUE)
         return false;
-
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
-
-    Stepranges subst(var.id + 1);
-    subst.back() = abstraction;
-    Move const conjmove(conjs, subst);
-
-    switch (validconjmove(conjmove))
-    {
-    case MoveCLOSED:
-        moves.clear();
-        moves.push_back(conjmove);
-        return true;
-    case MoveVALID:
-        moves.push_back(conjmove);
-        return false;
-    default:
-        return false;
-    }
+    // Abstraction of the abstract variable
+    Stepranges substitutions(var.id + 1);
+    substitutions.back() = abstraction;
+    return addconjmove(Move(conjs, substitutions), moves);
 }
 
 // Return true if all variables in use have been substituted.
