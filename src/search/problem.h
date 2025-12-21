@@ -98,6 +98,7 @@ public:
             if (!poldEnv || poldEnv == &env) continue;
             Environ const & oldEnv = *renv.second;
             int const cmp = oldEnv.compare(env);
+            if (cmp == 0) continue;
             oldEnv.addEnv(env, cmp);
             env.addEnv(oldEnv, -cmp);
         }

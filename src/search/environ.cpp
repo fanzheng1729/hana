@@ -109,10 +109,7 @@ static void additeminorder(std::vector<T> & vec, T const & item)
 // Add env to context implication relations, given comparison result.
 void Environ::addEnv(Environ const & env, int cmp) const
 {
-    if (cmp == 1)
-        additeminorder(m_psubEnvs, &env);
-    else if (cmp == -1)
-        additeminorder(m_psupEnvs, &env);
+    additeminorder(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
 }
 
 // Compare two hypiters by address.
