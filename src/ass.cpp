@@ -1,7 +1,7 @@
-#include <algorithm>    // for std::copy
 #include "ass.h"
 #include "disjvars.h"
 // #include "io.h"
+#include "util/algo.h"  // for util::additeminorder
 #include "util/filter.h"
 #include "util/for.h"
 
@@ -30,10 +30,20 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
+// Add new variables in an expression.
+static void addvarfromexp
+    (Expression & newvars, Expression const & exp, Varusage const & oldvars)
+{
+    FOR (Symbol3 const var, exp)
+        if (var.id > 0 && oldvars.count(var) == 0)
+            util::additeminorder(newvars, var);
+}
+
 // Label with new variables and new hypotheses added
 std::string Assertion::hypslabel
     (Expression newvars, Hypiters const & newhypiters) const
 {
+    std::sort(newvars.begin(), newvars.end());
     // # hypotheses in new assertion
     Hypsize newhypcount = hypcount() + newvars.size() + newhypiters.size();
     // Preallocate for efficiency.
