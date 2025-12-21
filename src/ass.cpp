@@ -44,6 +44,8 @@ std::string Assertion::hypslabel
     (Expression newvars, Hypiters const & newhypiters) const
 {
     std::sort(newvars.begin(), newvars.end());
+    FOR (Hypiter iter, newhypiters)
+        addvarfromexp(newvars, iter->second.expression, varusage);
     // # hypotheses in new assertion
     Hypsize newhypcount = hypcount() + newvars.size() + newhypiters.size();
     // Preallocate for efficiency.
@@ -54,11 +56,11 @@ std::string Assertion::hypslabel
         if (var.id > 0 && varusage.count(var) == 0)
             labels.push_back(hypdelim + var.iter->first.c_str);
     // Old hypothesis
-    FOR (Hypiter hypiter, hypiters)
-        labels.push_back(hypdelim + hypiter->first.c_str);
+    FOR (Hypiter iter, hypiters)
+        labels.push_back(hypdelim + iter->first.c_str);
     // New hypothesis
-    FOR (Hypiter hypiter, newhypiters)
-        labels.push_back(hypdelim + hypiter->first.c_str);
+    FOR (Hypiter iter, newhypiters)
+        labels.push_back(hypdelim + iter->first.c_str);
 
     std::sort(labels.begin(), labels.end());
     return std::accumulate(labels.begin(), labels.end(), std::string());
