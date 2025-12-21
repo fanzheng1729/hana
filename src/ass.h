@@ -133,7 +133,7 @@ struct Assertion
     }
     // Label with new variables and new hypotheses added
     std::string hypslabel
-        (Expression const & newvars, Hypiters const & newhypiters) const;
+        (Expression newvars, Hypiters const & newhypiters) const;
     // Simplified assertion with hypotheses trimmed
     Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;
 // Modifying functions

@@ -32,7 +32,7 @@ Bvector & Assertion::trimvars
 
 // Label with new variables and new hypotheses added
 std::string Assertion::hypslabel
-    (Expression const & newvars, Hypiters const & newhypiters) const
+    (Expression newvars, Hypiters const & newhypiters) const
 {
     // # hypotheses in new assertion
     Hypsize newhypcount = hypcount() + newvars.size() + newhypiters.size();
