@@ -43,7 +43,7 @@ bool Environ::trythm
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges subst(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), subst))
-        return size == 0 && thm.esshypcount() == 0// && false
+        return size == 0 && thm.esshypcount() == 0 && false
                 && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
@@ -228,24 +228,11 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     do
     {
         // std::cout << hypstack;
-        if (allvarsfilled(thm.varusage, substack[hypstack.size()]))
+        Stepranges const & newsubstitutions = substack[hypstack.size()];
+        if (allvarsfilled(thm.varusage, newsubstitutions))
         {
-            Move move(pthm, substack[hypstack.size()]);
-            switch (valid(move))
-            {
-            case MoveCLOSED:
-                moves.clear();
-                moves.push_back(move);
+            if (addboundmove(Move(pthm, newsubstitutions), moves))
                 return true;
-            case MoveVALID:
-                // std::cout << move.label() << std::endl;
-                // std::cout << move.substitutions;
-                moves.push_back(move);
-                // std::cin.get();
-                break;
-            default:
-                break;
-            }
         }
         else
         if (hypstack.size() < nfreehyps && matchedhyps < maxfreehyps)
@@ -281,22 +268,8 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                  newsubstitutions))
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
-                Move move(pthm, newsubstitutions);
-                switch (valid(move))
-                {
-                case MoveCLOSED:
-                    moves.clear();
-                    moves.push_back(move);
+                if (addboundmove(Move(pthm, newsubstitutions), moves))
                     return true;
-                case MoveVALID:
-                    // std::cout << move.label() << std::endl;
-                    // std::cout << move.substitutions;
-                    moves.push_back(move);
-                    // std::cin.get();
-                    break;
-                default:
-                    break;
-                }
             }
         }
     }
