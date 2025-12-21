@@ -2,6 +2,7 @@
 #define ALGO_H_INCLUDED
 
 #include <algorithm>
+#include <functional>   // for std::less
 
 namespace util
 {
@@ -46,6 +47,17 @@ namespace util
             return 0;
         return -1;
     }
+
+    // Add an item to an ordered container if not already present.
+    template <class C, class T>
+    void additeminorder(C & c, T const & item)
+    {
+        typename C::iterator const iter =
+            std::lower_bound(c.begin(), c.end(), item, std::less<T>());
+        if (iter == c.end() || *iter != item)
+            c.insert(iter, item);
+    }
+
 } // namespace util
 
 #endif // ALGO_H_INCLUDED

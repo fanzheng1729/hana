@@ -1,8 +1,8 @@
-#include <algorithm>    // for ordered algorithms
 #include "environ.h"
 // #include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
+#include "../util/algo.h"   // for util::additeminorder
 #include "../util/progress.h"
 
 // Return true if the context is a sub-context of the problem context
@@ -96,20 +96,10 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     return MoveVALID;
 }
 
-// Add an item to an ordered vector if not already present.
-template <typename T>
-static void additeminorder(std::vector<T> & vec, T const & item)
-{
-    typename std::vector<T>::iterator const iter =
-        std::lower_bound(vec.begin(), vec.end(), item, std::less<T>());
-    if (iter == vec.end() || *iter != item)
-        vec.insert(iter, item);
-}
-
 // Add env to context implication relations, given comparison result.
 void Environ::addEnv(Environ const & env, int cmp) const
 {
-    additeminorder(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
+    util::additeminorder(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
 }
 
 // Compare two hypiters by address.
