@@ -40,10 +40,10 @@ static void sortedcopy(Expression const & src, Expression & dest)
 
 // Label with new variables and new hypotheses added
 std::string Assertion::hypslabel
-    (Expression const & newvars, Hypiters const & newhypiters) const
+    (Expression const & newvars, Hypiters const & newhyps) const
 {
     Expression copy;
-    FOR (Hypiter iter, newhypiters)
+    FOR (Hypiter iter, newhyps)
         FOR (Symbol3 const var, iter->second.expression)
             if (var.id > 0 && varusage.count(var) == 0)
             {
@@ -51,7 +51,7 @@ std::string Assertion::hypslabel
                 util::additeminorder(copy, var);
             }
     // # hypotheses in new assertion
-    Hypsize newhypcount = hypcount() + copy.size() + newhypiters.size();
+    Hypsize newhypcount = hypcount() + copy.size() + newhyps.size();
     // Preallocate for efficiency.
     std::vector<std::string> labels;
     labels.reserve(newhypcount);
@@ -62,7 +62,7 @@ std::string Assertion::hypslabel
     // Hypothesis, old and new
     FOR (Hypiter iter, hypiters)
         labels.push_back(hypdelim + iter->first.c_str);
-    FOR (Hypiter iter, newhypiters)
+    FOR (Hypiter iter, newhyps)
         labels.push_back(hypdelim + iter->first.c_str);
 
     std::sort(labels.begin(), labels.end());
@@ -125,15 +125,15 @@ static void addvarfromexp
 
 // Set the hypotheses, adding new variables and new hypotheses.
 void Assertion::sethyps(Assertion const & ass,
-                        Expression const & newvars, Hypiters const & newhypiters)
+                        Expression const & newvars, Hypiters const & newhyps)
 {
     varusage.clear();
     // std::cout << "newvars " << newvars;
     addvarfromexp(varusage, newvars, ass.varusage);
-    FOR (Hypiter iter, newhypiters)
+    FOR (Hypiter iter, newhyps)
         addvarfromexp(varusage, iter->second.expression, ass.varusage);
     // # hypotheses in new assertion
-    Hypsize newhypcount = ass.hypcount() + varcount() + newhypiters.size();
+    Hypsize newhypcount = ass.hypcount() + varcount() + newhyps.size();
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(newhypcount);
@@ -157,7 +157,7 @@ void Assertion::sethyps(Assertion const & ass,
     // Old hypotheses
     hypiters += ass.hypiters;
     // Use of old variables in new hypotheses
-    FOR (Hypiter iter, newhypiters)
+    FOR (Hypiter iter, newhyps)
     {
         FOR (Symbol3 var, iter->second.expression)
             if (var.id > 0)

@@ -133,7 +133,7 @@ struct Assertion
     }
     // Label with new variables and new hypotheses added
     std::string hypslabel
-        (Expression const & newvars, Hypiters const & newhypiters) const;
+        (Expression const & newvars, Hypiters const & newhyps) const;
     // Simplified assertion with hypotheses trimmed
     Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;
 // Modifying functions
@@ -141,7 +141,7 @@ struct Assertion
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());
     // Set the hypotheses, adding new variables and new hypotheses.
     void sethyps(Assertion const & ass,
-                 Expression const & newvars, Hypiters const & newhypiters);
+                 Expression const & newvars, Hypiters const & newhyps);
 };
 
 #endif // ASS_H_INCLUDED
