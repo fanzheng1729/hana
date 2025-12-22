@@ -30,16 +30,26 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
+static void sortedcopy(Expression const & src, Expression & dest)
+{
+    if (dest.size() >= src.size())
+        return;
+    dest.resize(src.size());
+    std::partial_sort_copy(src.begin(), src.end(), dest.begin(), dest.end());
+}
+
 // Label with new variables and new hypotheses added
 std::string Assertion::hypslabel
     (Expression const & newvars, Hypiters const & newhypiters) const
 {
-    Expression copy(newvars);
-    std::sort(copy.begin(), copy.end());
+    Expression copy;
     FOR (Hypiter iter, newhypiters)
         FOR (Symbol3 const var, iter->second.expression)
             if (var.id > 0 && varusage.count(var) == 0)
+            {
+                sortedcopy(newvars, copy);
                 util::additeminorder(copy, var);
+            }
     // # hypotheses in new assertion
     Hypsize newhypcount = hypcount() + copy.size() + newhypiters.size();
     // Preallocate for efficiency.
