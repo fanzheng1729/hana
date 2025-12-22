@@ -114,9 +114,9 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
 Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
     Expression const & newvars(move.absvars(bank));
-    Hypiters const & newhypiters(move.addconjsto(bank));
+    Hypiters const & newhyps(move.addconjsto(bank));
     // Name of new context
-    std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
+    std::string const & name(env.assertion.hypslabel(newvars, newhyps));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
     environs.insert(std::pair<strview, Environ const *>(name, NULL));
@@ -131,7 +131,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 // std::cout << "addsupEnv to " << env.name << ' ' << newvars;
 // std::cout << "env vars " << env.assertion.varusage;
     supAss.number = env.assertion.number;
-    supAss.sethyps(env.assertion, newvars, newhypiters);
+    supAss.sethyps(env.assertion, newvars, newhyps);
     supAss.disjvars = move.findDV(supAss);
     // Pointer to the super-context
     return newEnviter->second = initEnv(env.makeEnv(supAss));
