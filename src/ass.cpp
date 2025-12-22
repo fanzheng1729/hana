@@ -42,21 +42,25 @@ static void sortedcopy(Expression const & src, Expression & dest)
 std::string Assertion::hypslabel
     (Expression const & newvars, Hypiters const & newhyps) const
 {
+    // Copy if there are variables in newhyps but not in newvars.
     Expression copy;
     FOR (Hypiter iter, newhyps)
         FOR (Symbol3 const var, iter->second.expression)
-            if (var.id > 0 && varusage.count(var) == 0)
+            if (var.id > 0 && varusage.count(var) == 0 &&
+                !util::filter(newvars)(var))
             {
                 sortedcopy(newvars, copy);
                 util::additeminorder(copy, var);
             }
+    // New variables in newvars and newhyps combined
+    Expression const & allnewvars = copy.empty() ? newvars : copy;
     // # hypotheses in new assertion
-    Hypsize newhypcount = hypcount() + copy.size() + newhyps.size();
+    Hypsize newhypcount = hypcount() + allnewvars.size() + newhyps.size();
     // Preallocate for efficiency.
     std::vector<std::string> labels;
     labels.reserve(newhypcount);
     // Floating hypotheses for new variables
-    FOR (Symbol3 const var, copy)
+    FOR (Symbol3 const var, allnewvars)
         if (var.id > 0 && varusage.count(var) == 0)
             labels.push_back(hypdelim + var.iter->first.c_str);
     // Hypothesis, old and new
