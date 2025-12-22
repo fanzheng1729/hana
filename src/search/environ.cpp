@@ -2,7 +2,7 @@
 // #include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
-#include "../util/algo.h"   // for util::additeminorder
+#include "../util/algo.h"   // for util::addordered
 #include "../util/progress.h"
 
 // Return true if the context is a sub-context of the problem context
@@ -99,7 +99,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
 // Add env to context implication relations, given comparison result.
 void Environ::addEnv(Environ const & env, int cmp) const
 {
-    util::additeminorder(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
+    util::addordered(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
 }
 
 // Compare two hypiters by address.

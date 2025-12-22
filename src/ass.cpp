@@ -1,7 +1,7 @@
 #include "ass.h"
 #include "disjvars.h"
 // #include "io.h"
-#include "util/algo.h"  // for util::additeminorder
+#include "util/algo.h"  // for util::addordered
 #include "util/filter.h"
 #include "util/for.h"
 
@@ -50,7 +50,7 @@ std::string Assertion::hypslabel
                 !util::filter(newvars)(var))
             {
                 sortedcopy(newvars, copy);
-                util::additeminorder(copy, var);
+                util::addordered(copy, var);
             }
     // New variables in newvars and newhyps combined
     Expression const & allnewvars = copy.empty() ? newvars : copy;

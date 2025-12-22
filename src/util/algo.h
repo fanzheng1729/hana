@@ -50,12 +50,12 @@ namespace util
 
     // Add an item to an ordered container if not already present.
     template <class C, class T>
-    void additeminorder(C & c, T const & item)
+    void addordered(C & c, T const & x)
     {
         typename C::iterator const iter =
-            std::lower_bound(c.begin(), c.end(), item, std::less<T>());
-        if (iter == c.end() || *iter != item)
-            c.insert(iter, item);
+            std::lower_bound(c.begin(), c.end(), x, std::less<T>());
+        if (iter == c.end() || *iter != x)
+            c.insert(iter, x);
     }
 
 } // namespace util
