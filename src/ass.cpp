@@ -30,35 +30,28 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
-// Add new variables in an expression.
-static void addvarfromexp
-    (Expression & newvars, Expression const & exp, Varusage const & oldvars)
-{
-    FOR (Symbol3 const var, exp)
-        if (var.id > 0 && oldvars.count(var) == 0)
-            util::additeminorder(newvars, var);
-}
-
 // Label with new variables and new hypotheses added
 std::string Assertion::hypslabel
-    (Expression newvars, Hypiters const & newhypiters) const
+    (Expression const & newvars, Hypiters const & newhypiters) const
 {
-    std::sort(newvars.begin(), newvars.end());
+    Expression copy(newvars);
+    std::sort(copy.begin(), copy.end());
     FOR (Hypiter iter, newhypiters)
-        addvarfromexp(newvars, iter->second.expression, varusage);
+        FOR (Symbol3 const var, iter->second.expression)
+            if (var.id > 0 && varusage.count(var) == 0)
+                util::additeminorder(copy, var);
     // # hypotheses in new assertion
-    Hypsize newhypcount = hypcount() + newvars.size() + newhypiters.size();
+    Hypsize newhypcount = hypcount() + copy.size() + newhypiters.size();
     // Preallocate for efficiency.
     std::vector<std::string> labels;
     labels.reserve(newhypcount);
     // Floating hypotheses for new variables
-    FOR (Symbol3 const var, newvars)
+    FOR (Symbol3 const var, copy)
         if (var.id > 0 && varusage.count(var) == 0)
             labels.push_back(hypdelim + var.iter->first.c_str);
-    // Old hypothesis
+    // Hypothesis, old and new
     FOR (Hypiter iter, hypiters)
         labels.push_back(hypdelim + iter->first.c_str);
-    // New hypothesis
     FOR (Hypiter iter, newhypiters)
         labels.push_back(hypdelim + iter->first.c_str);
 

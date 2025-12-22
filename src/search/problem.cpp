@@ -113,7 +113,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
 // Return pointer to the new context. Return NULL if unsuccessful.
 Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
-    Expression newvars(move.absvars(bank));
+    Expression const & newvars(move.absvars(bank));
     Hypiters const & newhypiters(move.addconjsto(bank));
     // Name of new context
     std::string const & name(env.assertion.hypslabel(newvars, newhypiters));
