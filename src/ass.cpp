@@ -30,6 +30,13 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
+// Sort and concatenate labels.
+static std::string sortconcat(std::vector<std::string> & labels)
+{
+    std::sort(labels.begin(), labels.end());
+    return std::accumulate(labels.begin(), labels.end(), std::string());
+}
+
 // Label with hypotheses trimmed
 std::string Assertion::hypslabel(Bvector const & hypstotrim) const
 {
@@ -42,8 +49,7 @@ std::string Assertion::hypslabel(Bvector const & hypstotrim) const
     for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
         labels.push_back(hypdelim + hyplabel(i).c_str);
 
-    std::sort(labels.begin(), labels.end());
-    return std::accumulate(labels.begin(), labels.end(), std::string());
+    return sortconcat(labels);
 }
 
 static void sortedcopy(Expression const & src, Expression & dest)
@@ -85,8 +91,7 @@ std::string Assertion::hypslabel
     FOR (Hypiter iter, newhyps)
         labels.push_back(hypdelim + iter->first.c_str);
 
-    std::sort(labels.begin(), labels.end());
-    return std::accumulate(labels.begin(), labels.end(), std::string());
+    return sortconcat(labels);
 }
 
 // Return the simplified assertion with hypotheses trimmed.
