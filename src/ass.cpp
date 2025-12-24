@@ -34,7 +34,10 @@ Bvector & Assertion::trimvars
 static std::string sortconcat(std::vector<std::string> & labels)
 {
     std::sort(labels.begin(), labels.end());
-    return std::accumulate(labels.begin(), labels.end(), std::string());
+    std::string result;
+    FOR (std::string const & label, labels)
+        result += label;
+    return result;
 }
 
 // Label with hypotheses trimmed
