@@ -1,3 +1,4 @@
+#include <numeric>  // for std::accumulate
 #include "../proof/analyze.h"
 #include "../CNF.h"
 #include "../disjvars.h"
