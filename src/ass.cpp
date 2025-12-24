@@ -34,9 +34,17 @@ Bvector & Assertion::trimvars
 static std::string sortconcat(std::vector<std::string> & labels)
 {
     std::sort(labels.begin(), labels.end());
+
+    std::string::size_type size = 0;
+    FOR (std::string const & label, labels)
+        size += label.size();
+
     std::string result;
+    // Preallocate for efficiency
+    result.reserve(size);
     FOR (std::string const & label, labels)
         result += label;
+
     return result;
 }
 
