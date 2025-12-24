@@ -53,6 +53,7 @@ std::string Assertion::hypslabel(Bvector const & hypstotrim) const
     // Preallocate for efficiency.
     std::vector<std::string> labels;
     labels.reserve(hypcount());
+
     for (Hypsize i = 0; i < hypstotrim.size(); ++i)
         if (!hypstotrim[i])
             labels.push_back(hypdelim + hyplabel(i).c_str);
