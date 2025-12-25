@@ -11,11 +11,11 @@ static bool addASTnode
     (Assertion const & assertion, std::vector<Proofsize> & stack,
      AST::reference node)
 {
-    Hypsize const hypcount = assertion.hypcount();
-    if (!enoughitemonstack(hypcount, stack.size(), ""))
+    Hypsize const nhyps = assertion.hypcount(), stacksz = stack.size();
+    if (!enoughitemonstack(nhyps, stacksz, ""))
         return false;
 
-    ASTnode::size_type const base = stack.size() - hypcount;
+    ASTnode::size_type const base = stack.size() - nhyps;
     Proofsize const index = stack.empty() ? 0 : stack.back() + 1;
     node.assign(stack.begin() + base, stack.end());
     // Remove hypotheses from stack.
