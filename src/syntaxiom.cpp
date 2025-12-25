@@ -189,11 +189,11 @@ bool Syntaxioms::addRPN
     Progress progress;
 
     Assertions::size_type count = 0, all = assertions.size();
-    FOR (Assertions::reference ass, assertions)
+    FOR (Assertions::reference rass, assertions)
     {
-        if (!addRPN(ass.second, typecodes))
+        if (!addRPN(rass.second, typecodes))
         {
-            printass(ass, count);
+            printass(rass);
             std::cerr << "\nRPN error!" << std::endl;
             return false;
         }
@@ -251,7 +251,7 @@ bool Database::checkRPN() const
     {
         if (!syntaxioms().checkRPN(rass.second, typecodes()))
         {
-            printass(rass, count);
+            printass(rass);
             std::cerr << "\nRPN error!" << std::endl;
             return false;
         }
