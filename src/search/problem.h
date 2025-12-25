@@ -43,7 +43,7 @@ public:
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
         database(env.database),
-        bank(database.varcount()),
+        bank(database.nvar()),
         numberlimit(std::min(env.assertion.number,database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),

@@ -81,7 +81,7 @@ public:
     Propctors const & propctors() const { return m_propctors; }
     bool hasconst(strview str) const { return m_constants.count(str); }
     bool addconst(strview str) { return m_constants.insert(str).second; }
-    VarIDmap::size_type varcount() const { return varIDmap().size() - 1; }
+    VarIDmap::size_type nvar() const { return varIDmap().size() - 1; }
     bool hasvar(strview str) const { return varIDmap().count(str); }
     void addvar(strview str)
     { m_varIDmap.insert(std::make_pair(str, varIDmap().size())); }
