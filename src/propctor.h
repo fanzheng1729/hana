@@ -35,10 +35,10 @@ struct Propctors : std::map<strview, Propctor>
 // Return # propositional constructors added.
     size_type adddefs(Definitions const & definitions)
     {
-        size_type count = 0;
+        size_type npropctors = 0;
         FOR (Definitions::const_reference def, definitions)
-            count += (adddef(definitions, def) != end());
-        return count;
+            npropctors += (adddef(definitions, def) != end());
+        return npropctors;
     }
 // Add a definition. Return the iterator to the entry. Otherwise return end.
     Propctors::const_iterator adddef
