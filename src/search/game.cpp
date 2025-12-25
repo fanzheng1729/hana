@@ -54,7 +54,7 @@ Game Game::play(Move const & move, bool ourturn) const
 Moves Game::theirmoves() const
 {
     Moves result;
-    result.reserve(attempt.nEsubgoal());
+    result.reserve(attempt.nEsubgoals());
 
     for (Hypsize i = 0; i < attempt.subgoalcount(); ++i)
         if (!attempt.subgoalfloats(i))
