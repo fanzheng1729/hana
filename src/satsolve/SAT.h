@@ -12,10 +12,10 @@ struct SATsolver
     // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom nfree)
     {
-        static Atom const maxnatom = std::numeric_limits<Atom>::digits;
-        if (nfree > maxnatom) nfree = maxnatom;
-        Atom const atomcount = rcnf.atomcount();
-        if (nfree > atomcount) nfree = atomcount;
+        static Atom const maxnatoms = std::numeric_limits<Atom>::digits;
+        if (nfree > maxnatoms) nfree = maxnatoms;
+        Atom const natoms = rcnf.atomcount();
+        if (nfree > natoms) nfree = natoms;
 
         Bvector tt(static_cast<TTindex>(1) << nfree, false);
         if (rcnf.hasemptyclause()) return tt;
