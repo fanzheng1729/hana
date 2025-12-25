@@ -18,11 +18,8 @@ bool is1stle2nd(std::size_t const n, std::size_t const lim,
 }
 
 // Print the number and the label of an assertion.
-void printass(std::size_t number, strview label, std::size_t count)
+void printass(std::size_t number, strview label)
 {
-    if (count != 0)
-        std::cout << count;
-
     std::cout << "\t#" << number << '\t' << label << '\t';
 }
 

@@ -85,12 +85,10 @@ bool unexpected(bool const condition, const char * const type, const T & value)
 }
 
 // Print the number and the label of an assertion.
-void printass(std::size_t number, strview label, std::size_t count = 0);
+void printass(std::size_t number, strview label);
 template<class Assref>
-void printass(Assref const & assref, std::size_t count = 0)
-{
-    printass(assref.second.number, assref.first, count);
-}
+void printass(Assref const & assref)
+{ printass(assref.second.number, assref.first); }
 
 // Print a percentage
 template<class NUM, class DENOM>
