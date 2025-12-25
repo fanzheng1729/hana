@@ -131,7 +131,7 @@ Propctors::const_iterator Propctors::adddef
     // RHS = propositonal skeleton
     xdef.rhs = propskeleton(def.rhs, ast(def.rhs), bank);
     // Preallocate for efficiency.
-    xdef.lhs.reserve(xdef.lhs.size() + bank.varcount());
+    xdef.lhs.reserve(xdef.lhs.size() + bank.nvar());
     // Add pseudo variables to LHS.
     FOR (Hypotheses::const_reference rhyp, bank.hypotheses())
         xdef.lhs.insert(xdef.lhs.end() - 1, &rhyp);

@@ -34,7 +34,7 @@ public:
     Proofsteps const & substitution(Symbol2::ID id) const
     { return m_RPNSymbolsbyid[id]->first; }
     Symbol3 var(Symbol2::ID id) const { return m_RPNSymbolsbyid[id]->second; }
-    Tokens::size_type varcount() const { return m_varlabels.size() - 1; }
+    Tokens::size_type nvar() const { return m_varlabels.size() - 1; }
     // Add an abstraction variable.
     Symbol3 addabsvar(Steprange range);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
