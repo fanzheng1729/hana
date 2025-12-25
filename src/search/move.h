@@ -115,7 +115,7 @@ struct Move
         if (isthm())
             return theorem().hyplabel(index);
         if (isconj())
-            if (index == conjcount()) return strcomb;
+            if (index == nconjs()) return strcomb;
             else return strconj + util::hex(index);
         return isdefer() ? "DEFER" : "";
     }
@@ -153,7 +153,7 @@ struct Move
     // Return pointer to proof of subgoal. Return null if out of bound.
     Proofsteps const * psubgoalproof(Hypsize index) const;
     // # of conjectures made (must be of type CONJ)
-    Hypsize conjcount() const { return isconj() * (absconjs.size() - 1); }
+    Hypsize nconjs() const { return isconj() * (absconjs.size() - 1); }
     // Return true if the move uses abstract variables (must be of type CONJ).
     bool hasabsvars() const
     {
@@ -185,7 +185,7 @@ struct Move
     Hypiters addconjsto(Bank & bank) const
     {
         if (!isconj()) return Hypiters();
-        Hypiters result(conjcount());
+        Hypiters result(nconjs());
         for (Hypsize i = 0; i < result.size(); ++i)
             result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
         return result;
@@ -194,14 +194,14 @@ struct Move
     // Must be of type CONJ.
     Hypsize findabsconj(Hypothesis const & hyp) const
     {
-        for (Hypsize i = 0; i < conjcount(); ++i)
+        for (Hypsize i = 0; i < nconjs(); ++i)
         {
             Expression const & hypexp = hyp.expression;
             if (!hypexp.empty() && absconjs[i].RPN == hyp.RPN
                 && absconjs[i].typecode == hypexp[0])
                 return i;
         }
-        return conjcount();
+        return nconjs();
     }
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;

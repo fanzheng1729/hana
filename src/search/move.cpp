@@ -129,7 +129,7 @@ Proofsize Move::fullproofsize(pProofs const & phyps) const
             else
             {
                 Hypsize const index = findabsconj(step.phyp->second);
-                if (index >= conjcount())
+                if (index >= nconjs())
                     ++sum;
                 else if (!phyps[index] || phyps[index]->empty())
                     return 0;
@@ -171,7 +171,7 @@ bool Move::writeproof(Proofsteps & dest, pProofs const & phyps) const
             {
                 // Essential hypothesis. Check if it is abstract.
                 Hypsize const index = findabsconj(step.phyp->second);
-                if (index >= conjcount())
+                if (index >= nconjs())
                     dest.push_back(step); // Concrete hypothesis
                 else
 // printconj(), std::cin.get(),
@@ -188,7 +188,7 @@ void Move::printconj() const
         return;
 
     std::cout << "Conjectured";
-    for (Hypsize i = 0; i < conjcount(); ++i)
+    for (Hypsize i = 0; i < nconjs(); ++i)
     {
         std::cout << subgoal(i).expression() << "->";
         std::cout << absconjs[i].expression();
