@@ -40,16 +40,16 @@ struct Gom
     // Return the player with a run-of-K from begin to end with step apart.
     static int run(const int * begin, const int * end, std::size_t step)
     {
-        std::size_t count = 0;
+        std::size_t nruns = 0;
         int who = NONE;
 
-        for ( ; begin < end && count < K; begin += step)
-            *begin == NONE ? count = 0 : // Reset
-                count == 0 ? (who = *begin, ++count) : // Start
-                    *begin == who ? ++count : // Continue
-                        count = 0; // Reset
+        for ( ; begin < end && nruns < K; begin += step)
+            *begin == NONE ? nruns = 0 : // Reset
+                nruns == 0 ? (who = *begin, ++nruns) : // Start
+                    *begin == who ? ++nruns : // Continue
+                        nruns = 0; // Reset
 
-        return count == K ? who : NONE;
+        return nruns == K ? who : NONE;
     }
     // Return the player with a run-of-K.
     static int run(const int * begin, const int * end, std::size_t step,
