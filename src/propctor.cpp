@@ -21,7 +21,7 @@ std::ostream & operator<<(std::ostream & out, Propctor const & propctor)
     out << "RHS = " << propctor.rhs;
     out << "Truth table: " << propctor.truthtable;
     out << "CNF:" << std::endl << propctor.cnf;
-    out << "arg# = " << propctor.argcount << std::endl;
+    out << "arg# = " << propctor.nargs << std::endl;
 
     return out;
 }
@@ -51,14 +51,14 @@ static TTindex truthtablesize(Assertion const & ass)
 static bool checkpropctor(Propctor const & propctor)
 {
     if (propctor.truthtable.size()
-        != static_cast<TTindex>(1) << propctor.argcount)
+        != static_cast<TTindex>(1) << propctor.nargs)
         return false;
-    if (propctor.cnf.natoms() != propctor.argcount + 1)
+    if (propctor.cnf.natoms() != propctor.nargs + 1)
         return false;
 
     CNFClauses cnf(propctor.cnf);
     cnf.closeoff();
-    return cnf.truthtable(propctor.argcount) == propctor.truthtable;
+    return cnf.truthtable(propctor.nargs) == propctor.truthtable;
 }
 
 static void printmsg(strview label, strview prompt)
@@ -107,7 +107,7 @@ Propctors::size_type Propctors::addbatch
         // New propctor
         Propctor & propctor = (*this)[label];
         propctor.cnf = propctor.truthtable = tt;
-        propctor.argcount = util::log2(ttsize);
+        propctor.nargs = util::log2(ttsize);
         if (unexpected(!checkpropctor(propctor), "bad data for", label))
             continue;
         ++count;
@@ -150,7 +150,7 @@ Propctors::const_iterator Propctors::adddef
     static_cast<Definition &>(iter->second) = def;
     tt.resize(ttsize);
     iter->second.cnf = iter->second.truthtable = tt;
-    iter->second.argcount = nargs;
+    iter->second.nargs = nargs;
     // std::cout << label << '\t' << tt;
     return iter;
 }
@@ -159,13 +159,13 @@ Propctors::const_iterator Propctors::adddef
 Bvector Propctors::truthtable(Definitions const & defs, Definition const & def)
 {
     // # arguments of the definition
-    Atom const argcount = def.lhs.size() - 1;
+    Atom const nargs = def.lhs.size() - 1;
     Atom const maxargc  = std::numeric_limits<TTindex>::digits;
     static const char varallowed[] = " variables allowed";
-    if (!is1stle2nd(argcount, maxargc, varfound, varallowed))
+    if (!is1stle2nd(nargs, maxargc, varfound, varallowed))
         return Bvector();
     // Truth table of the definition
-    Bvector truthtable(static_cast<TTindex>(1) << argcount);
+    Bvector truthtable(static_cast<TTindex>(1) << nargs);
     for (TTindex arg = 0; arg < truthtable.size(); ++arg)
     {
         int const value = calcbool(defs, def, arg);

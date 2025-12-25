@@ -14,7 +14,7 @@ struct Propctor: Definition
     // CNF clauses reflecting the truth table
     CNFClauses cnf;
     // # arguments of the propositional connective
-    Atom argcount;
+    Atom nargs;
 };
 
 std::ostream & operator<<(std::ostream & out, Propctor const & propctor);
