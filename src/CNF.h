@@ -62,10 +62,10 @@ struct CNFClauses : public std::vector<CNFClause>
     }
     // Append cnf to the end.
     // If atom < argcount, change it to arglist[atom], with sense adjusted.
-    // If atom >= argcount, change it to new atoms starting from atomcount.
+    // If atom >= argcount, change it to new atoms starting from natoms.
     // argcount and arglist are separate to work with stack based arguments.
     void append
-        (CNFClauses const & cnf, Atom const atomcount,
+        (CNFClauses const & cnf, Atom const natoms,
          Literal const arglist[], Atom const argcount);
     // Add a clause containing a single literal.
     void closeoff(Literal lit) { push_back(CNFClause(1, lit)); }

@@ -11,12 +11,12 @@ std::ostream & operator<<(std::ostream & out, const CNFClauses & cnf)
 }
 
 // Append cnf to the end.
-// If atom < argcount, change it to arglist[atom], with sense adjusted.
-// If atom >= argcount, change it to new atoms starting from atomcount.
-// argcount and arglist are separate to work with stack based arguments.
+// If atom < nargs, change it to arglist[atom], with sense adjusted.
+// If atom >= nargs, change it to new atoms starting from natoms.
+// nargs and arglist are separate to work with stack based arguments.
 void CNFClauses::append
-    (CNFClauses const & cnf, Atom const atomcount,
-     Literal const * const arglist, Atom const argcount)
+    (CNFClauses const & cnf, Atom const natoms,
+     Literal const * const arglist, Atom const nargs)
 {
     size_type const oldsize = size();
     resize(oldsize + cnf.size());
@@ -27,8 +27,8 @@ void CNFClauses::append
         for (CNFClause::size_type j = 0; j < cnf[i].size(); ++j)
         {
             Literal const lit = cnf[i][j];
-            (*this)[oldsize + i][j] = lit / 2 < argcount ?
-            arglist[lit / 2] ^ (lit & 1) : lit + (atomcount - argcount) * 2;
+            (*this)[oldsize + i][j] = lit / 2 < nargs ?
+            arglist[lit / 2] ^ (lit & 1) : lit + (natoms - nargs) * 2;
         }
     }
 }
@@ -68,28 +68,27 @@ std::pair<CNFClausesat, CNFClause::size_type> CNFclausesat
 typedef std::size_t Mask;
 
 static bool checkmask
-    (Bvector const & truthtable,
-        Atom atomcount, TTindex newindex, Mask mask,
+    (Bvector const & tt, Atom natoms, TTindex newindex, Mask mask,
      Bvector & compare)
 {
-    for (Atom i = 0; i < atomcount; ++i)
+    for (Atom i = 0; i < natoms; ++i)
     {
         if (!(mask >> i & 1)) // mask[i] = 0
             continue;
         if (!compare[newindex ^ static_cast<TTindex>(1) << i])
             return false;
     }
-    compare[newindex] = (truthtable[newindex] == truthtable[newindex ^ mask]);
+    compare[newindex] = (tt[newindex] == tt[newindex ^ mask]);
     return compare[newindex];
 }
 
 static void addclausefromindexmask
-    (Atom atomcount, TTindex index, bool value, Mask mask, CNFClauses & cnf)
+    (Atom natoms, TTindex index, bool value, Mask mask, CNFClauses & cnf)
 {
     cnf.resize(cnf.size() + 1);
     CNFClause & clause = cnf.back();
 
-    for (Atom i = 0; i < atomcount; ++i)
+    for (Atom i = 0; i < natoms; ++i)
     {
         if (mask >> i & 1) // mask[i] = 1
             continue;
@@ -100,17 +99,16 @@ static void addclausefromindexmask
     }
 
     // Add positive lit if value is true, negative lit if false
-    clause.push_back(atomcount * 2 + (value ^ 1));
+    clause.push_back(natoms * 2 + (value ^ 1));
 }
 
-// Return a clause covering truthtable[index], and update processed.
-static void processtruthtableentry
-    (Bvector const & truthtable, TTindex index,
-     Bvector & processed, CNFClauses & cnf)
+// Return a clause covering tt[index], and update processed.
+static void processttentry
+    (Bvector const & tt, TTindex index, Bvector & processed, CNFClauses & cnf)
 {
-    Atom const atomcount = util::log2(truthtable.size());
+    Atom const natoms = util::log2(tt.size());
     Bvector maskadded, compare;
-    maskadded.assign(truthtable.size(), false);
+    maskadded.assign(tt.size(), false);
     // compare[i] = if there is a block containing index and i
     compare = maskadded;
     compare[index] = true;
@@ -124,7 +122,7 @@ static void processtruthtableentry
         masks.pop_front();
 //std::cout << "Checking mask " << mask << std::endl;
         bool newmaskfound = false;
-        for (Atom imask = 0; imask < atomcount; ++imask)
+        for (Atom imask = 0; imask < natoms; ++imask)
         {
             Mask const newmask = mask | static_cast<Mask>(1) << imask;
             if (newmask == mask)
@@ -133,7 +131,7 @@ static void processtruthtableentry
 //std::cout << mask << ".flip(" << imask << ") = " << newmask << std::endl;
             TTindex const newindex = index ^ newmask;
             // Check the new mask.
-            if (checkmask(truthtable, atomcount, newindex, newmask, compare))
+            if (checkmask(tt, natoms, newindex, newmask, compare))
             {
 //std::cout << "Add mask " << newmask << std::endl;
                 masks.push_back(newmask);
@@ -145,7 +143,7 @@ static void processtruthtableentry
         {
 //std::cout << "Add clause from mask " << mask << std::endl;
             maskadded[mask] = true;
-            addclausefromindexmask(atomcount,index,truthtable[index],mask,cnf);
+            addclausefromindexmask(natoms, index, tt[index], mask, cnf);
         }
     }
 }
@@ -157,7 +155,7 @@ CNFClauses::CNFClauses(Bvector const & truthtable)
     Bvector::iterator const begin(processed.begin());
     for (TTindex i = 0; i < truthtable.size();)
     {
-        processtruthtableentry(truthtable, i, processed, *this);
+        processttentry(truthtable, i, processed, *this);
         i = std::find(begin + i + 1, processed.end(), false) - begin;
     }
 }
