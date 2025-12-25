@@ -1,7 +1,7 @@
 #ifndef ASS_H_INCLUDED
 #define ASS_H_INCLUDED
 
-#include <algorithm>// for std::sort and std::upper_bound
+#include <algorithm>// for std::upper_bound
 #include "types.h"
 
 // Hypothesis label delimiter

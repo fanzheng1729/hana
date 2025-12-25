@@ -182,7 +182,6 @@ void Assertion::sethyps(Assertion const & ass,
         hypiters.push_back(rvar.first.iter);
     }
     // Old variable usage
-    Hypsize const asshypcount = ass.hypcount();
     // std::cout << "oldvars " << ass.varusage;
     FOR (Varusage::const_reference rvar, ass.varusage)
     {
@@ -190,7 +189,7 @@ void Assertion::sethyps(Assertion const & ass,
         usage.resize(newhypcount);
         Bvector::const_iterator const begin = rvar.second.begin();
         std::copy
-        (begin, begin + asshypcount, usage.begin() + hypiters.size());
+        (begin, begin + ass.hypcount(), usage.begin() + hypiters.size());
     }
     // Old hypotheses
     hypiters += ass.hypiters;
