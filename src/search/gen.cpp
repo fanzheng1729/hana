@@ -180,20 +180,19 @@ bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) c
     // Stack of terms to be tried
     Genstack stack;
     // Preallocate for efficiency.
-    Proofsize const argcount = argtypes.size();
-    stack.reserve(argcount);
+    Proofsize const nargs = argtypes.size();
+    stack.reserve(nargs);
     do
     {
-        if (stack.size() < argcount) // Not all args seen
+        if (stack.size() < nargs) // Not all args seen
         {
             strview type = argtypes[stack.size()];
-            Proofsize argsize = size - argcount + stack.size()
-                - argssize(argtypes, genresult, stack);
-            if (!generateupto(type, argsize)
-                || genresult[type].empty())
+            Proofsize argsize = size - nargs + stack.size();
+            argsize -= argssize(argtypes, genresult, stack);
+            if (!generateupto(type, argsize) || genresult[type].empty())
                 return false; // Argument generation failed
 
-            if (stack.size() < argcount - 1) // At least 2 args unseen
+            if (stack.size() < nargs - 1) // At least 2 args unseen
                 stack.push_back(0);
             else
             {
