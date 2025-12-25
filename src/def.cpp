@@ -105,9 +105,9 @@ Definition::Definition
 {
     int err = 0;
     Assertion const & ass = rass.second;
-    if (ass.hypcount() > ass.varcount())
+    if (ass.nEhyp() > 0)
         printerr(rass.first, err = 1);
-    if (!equalities.count(ass.expRPN.back().pass->first))
+    if (ass.expRPN.empty() || !equalities.count(ass.expRPN.back().pass->first))
         printerr(rass.first, err = 2);
     if (err)
         return;
