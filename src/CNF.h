@@ -48,7 +48,7 @@ struct CNFClauses : public std::vector<CNFClause>
     CNFClauses(Bvector const & truthtable);
     bool hasemptyclause() const { return util::filter(*this)(CNFClause()); }
     // Return # atoms in cnf. Return 1 for empty instance.
-    Atom atomcount() const
+    Atom natoms() const
     {
         // Maximal literal
         Literal max = 0;
@@ -70,7 +70,7 @@ struct CNFClauses : public std::vector<CNFClause>
     // Add a clause containing a single literal.
     void closeoff(Literal lit) { push_back(CNFClause(1, lit)); }
     // Add a clause containing the next atom alone or its neg.
-    void closeoff(bool negate = false) { closeoff((atomcount()-1)*2+negate); }
+    void closeoff(bool neg = false) { closeoff((natoms() - 1) * 2 + neg); }
     // Return if there is no contradiction in the model so far.
     bool okaysofar(CNFModel const & model) const
     {

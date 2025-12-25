@@ -14,7 +14,7 @@ struct SATsolver
     {
         static Atom const maxnatoms = std::numeric_limits<Atom>::digits;
         if (nfree > maxnatoms) nfree = maxnatoms;
-        Atom const natoms = rcnf.atomcount();
+        Atom const natoms = rcnf.natoms();
         if (nfree > natoms) nfree = natoms;
 
         Bvector tt(static_cast<TTindex>(1) << nfree, false);
@@ -35,7 +35,7 @@ struct SATsolver
     bool sat()
     {
         // Initial model
-        CNFModel model(rcnf.atomcount());
+        CNFModel model(rcnf.natoms());
         // Current atom being assigned
         Atom atom = 0;
 

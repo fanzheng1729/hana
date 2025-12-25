@@ -53,7 +53,7 @@ static bool checkpropctor(Propctor const & propctor)
     if (propctor.truthtable.size()
         != static_cast<TTindex>(1) << propctor.argcount)
         return false;
-    if (propctor.cnf.atomcount() != propctor.argcount + 1)
+    if (propctor.cnf.natoms() != propctor.argcount + 1)
         return false;
 
     CNFClauses cnf(propctor.cnf);

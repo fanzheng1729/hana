@@ -102,7 +102,7 @@ inline Atom var(sLiteral literal) { return std::abs(literal); }
  * any remaining necessary data structures and variables.
  */
 void parseInput(CNFClauses const & cnf) {
-    numVariables = cnf.atomcount();
+    numVariables = cnf.natoms();
     numClauses = cnf.size();
 
 	// Initialize positive and negative appearances

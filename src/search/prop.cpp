@@ -63,7 +63,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
                         hypscnf.first.data() + end);
         }
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf2;
-        Atom natom = cnf2.empty() ? assertion.nhyps() : cnf2.atomcount();
+        Atom natom = cnf2.empty() ? assertion.nhyps() : cnf2.natoms();
         // Add conclusion.
         database.propctors().addclause
         (goal.RPN, goal.ast, assertion.hypiters, cnf2, natom);

@@ -25,7 +25,7 @@ static const char * checksat(CNFClauses const & cnf, bool const sat)
         msg = "cnfsat()";
     else if (cnf.truthtable(0) != Bvector(1, sat))
         msg = "maptruthtable()";
-    else if (!checkcnffrom(cnf.truthtable(cnf.atomcount())))
+    else if (!checkcnffrom(cnf.truthtable(cnf.natoms())))
         msg = "checkcnffrom()";
 
     if (msg)
