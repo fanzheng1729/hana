@@ -61,9 +61,9 @@ struct CNFClauses : public std::vector<CNFClause>
         return max / 2 + 1;
     }
     // Append cnf to the end.
-    // If atom < argcount, change it to arglist[atom], with sense adjusted.
-    // If atom >= argcount, change it to new atoms starting from natoms.
-    // argcount and arglist are separate to work with stack based arguments.
+    // If atom < nargs, change it to arglist[atom], with sense adjusted.
+    // If atom >= nargs, change it to new atoms starting from natoms.
+    // nargs and arglist are separate to work with stack based arguments.
     void append
         (CNFClauses const & cnf, Atom const natoms,
          Literal const arglist[], Atom const nargs);
