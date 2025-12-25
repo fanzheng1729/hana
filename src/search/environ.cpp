@@ -150,7 +150,7 @@ static bool isduplicate(Assertion const & ass, Database const & db)
 // Mark duplicate assertions. Return its number.
 Assertions::size_type Database::markduplicate()
 {
-    Assertions::size_type n = 0, count = 0;
+    Assertions::size_type n = 0, ndups = 0;
     Progress progress;
     FOR (Assertions::reference rass, m_assertions)
     {
@@ -161,8 +161,8 @@ Assertions::size_type Database::markduplicate()
         // Check if it is duplicate and starts with a non-primitive type code.
         if (isdup && !ass.expression.empty()
             && typecodes().isprimitive(ass.exptypecode()) == FALSE)
-            ++count;
+            ++ndups;
         progress << ++n/static_cast<Ratio>(assertions().size());
     }
-    return count;
+    return ndups;
 }
