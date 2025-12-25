@@ -7,10 +7,10 @@ static bool checkcnffrom(Bvector const & tt)
 {
     if (tt.empty()) return false;
     // Check if cnf built from tt has the same truth table as tt.
-    Atom const atomcount = util::log2(tt.size());
+    Atom const natoms = util::log2(tt.size());
     CNFClauses cnf(tt);
-    cnf.push_back(CNFClause(1, atomcount * 2));
-    if (tt != cnf.truthtable(atomcount)) return false;
+    cnf.push_back(CNFClause(1, natoms * 2));
+    if (tt != cnf.truthtable(natoms)) return false;
     // Additional test if tt is constant
     bool const isconst = util::isperiodic(tt.begin(), tt.end(), 1);
     // If it is, it now contains 2 clauses, each with a single literal.
