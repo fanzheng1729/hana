@@ -16,7 +16,7 @@ std::ostream & operator<<(std::ostream & out, const CNFClauses & cnf)
 // nargs and arglist are separate to work with stack based arguments.
 void CNFClauses::append
     (CNFClauses const & cnf, Atom const natoms,
-     Literal const * const arglist, Atom const nargs)
+     Literal const arglist[], Atom const nargs)
 {
     size_type const oldsize = size();
     resize(oldsize + cnf.size());

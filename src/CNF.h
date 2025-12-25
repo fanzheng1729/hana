@@ -66,7 +66,7 @@ struct CNFClauses : public std::vector<CNFClause>
     // argcount and arglist are separate to work with stack based arguments.
     void append
         (CNFClauses const & cnf, Atom const natoms,
-         Literal const arglist[], Atom const argcount);
+         Literal const arglist[], Atom const nargs);
     // Add a clause containing a single literal.
     void closeoff(Literal lit) { push_back(CNFClause(1, lit)); }
     // Add a clause containing the next atom alone or its neg.

@@ -139,9 +139,9 @@ Propctors::const_iterator Propctors::adddef
     // Truth table of the definition
     Bvector tt(truthtable(defs, xdef));
     // # arguments of the definition
-    Atom const argcount = def.lhs.size() - 1;
+    Atom const nargs = def.lhs.size() - 1;
     // real size of the truth table
-    TTindex const ttsize = static_cast<TTindex>(1) << argcount;
+    TTindex const ttsize = static_cast<TTindex>(1) << nargs;
     // Check if truth table is independent of added variables.
     if (!util::isperiodic(tt.begin(), tt.end(), ttsize))
         return end();
@@ -150,7 +150,7 @@ Propctors::const_iterator Propctors::adddef
     static_cast<Definition &>(iter->second) = def;
     tt.resize(ttsize);
     iter->second.cnf = iter->second.truthtable = tt;
-    iter->second.argcount = argcount;
+    iter->second.argcount = nargs;
     // std::cout << label << '\t' << tt;
     return iter;
 }
@@ -178,24 +178,24 @@ Bvector Propctors::truthtable(Definitions const & defs, Definition const & def)
 }
 
 // Evaluate the truth table against stack. Return true if okay.
-static bool calc_stack(Bvector const & truthtable, Bvector & stack)
+static bool calc_stack(Bvector const & tt, Bvector & stack)
 {
-    if (truthtable.empty())
+    if (tt.empty())
         return false;
     // # arguments
-    Atom argcount = util::log2(truthtable.size());
-    if (!is1stle2nd(argcount, stack.size(), varfound, itemonstack))
+    Atom nargs = util::log2(tt.size());
+    if (!is1stle2nd(nargs, stack.size(), varfound, itemonstack))
         return false;
 
     TTindex arg = 0;
     // arguments packed in binary
-    for ( ; argcount > 0; --argcount)
+    for ( ; nargs > 0; --nargs)
     {
         (arg *= 2) += stack.back();
         stack.pop_back();
     }
 //std::cout << "arguments = " << arg << std::endl;
-    stack.push_back(truthtable[arg]);
+    stack.push_back(tt[arg]);
     return true;
 }
 
