@@ -65,7 +65,7 @@ Disjvars Move::findDV(Assertion const & ass) const
 // Return pointer to proof of subgoal. Return null if out of bound.
 Proofsteps const * Move::psubgoalproof(Hypsize index) const
 {
-    return index >= subgoalcount() ? NULL :
+    return index >= nsubgoals() ? NULL :
             subgoalfloats(index) ? &substitutions[hypvar(index)] :
             &subgoals[index]->second.proofsrc();
 }

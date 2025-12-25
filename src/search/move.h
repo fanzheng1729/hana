@@ -98,7 +98,7 @@ struct Move
         return hypexp.size() == 2 ? hypexp[1] : Symbol3();
     }
     // Subgoal the move needs
-    Hypsize subgoalcount() const
+    Hypsize nsubgoals() const
     {
         return isthm() ? theorem().nhyps() :
                 isconj() ? absconjs.size() : isdefer();
@@ -110,7 +110,7 @@ struct Move
     }
     std::string subgoallabel(Hypsize index) const
     {
-        if (index >= subgoalcount())
+        if (index >= nsubgoals())
             return "";
         if (isthm())
             return theorem().hyplabel(index);
@@ -123,14 +123,14 @@ struct Move
     { return isthm() ? theorem().hypfloats(index) : false; }
     strview subgoaltypecode(Hypsize index) const
     {
-        return index >= subgoalcount() ? "" :
+        return index >= nsubgoals() ? "" :
                 isthm() ? theorem().hyptypecode(index) :
                 isconj() ? absconjs[index].typecode : "";
     }
     // Subgoal the move needs (must be of type THM or CONJ)
     Goal subgoal(Hypsize index) const
     {
-        if (!isthm() && !isconj() || index >= subgoalcount())
+        if (!isthm() && !isconj() || index >= nsubgoals())
             return Goal();
         Goal result;
         Proofsteps const & hypRPN
@@ -143,9 +143,9 @@ struct Move
     Hypsize matchsubgoal(Goal const & goal) const
     {
         if (!isthm() && !isconj())
-            return subgoalcount();
+            return nsubgoals();
         Hypsize i = 0;
-        for ( ; i < subgoalcount(); ++i)
+        for ( ; i < nsubgoals(); ++i)
             if (goal == subgoal(i))
                 return i;
         return i;

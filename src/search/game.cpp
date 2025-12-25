@@ -30,7 +30,7 @@ bool Game::legal(Move const & move, bool ourturn) const
     if (ourturn && (move.isthm() || move.isconj()))
         return goal() == move.goal();
     if (!ourturn && (attempt.isthm())) // Check index bound.
-        return move.index < attempt.subgoalcount();
+        return move.index < attempt.nsubgoals();
     return true;
 }
 
@@ -56,7 +56,7 @@ Moves Game::theirmoves() const
     Moves result;
     result.reserve(attempt.nEsubgoals());
 
-    for (Hypsize i = 0; i < attempt.subgoalcount(); ++i)
+    for (Hypsize i = 0; i < attempt.nsubgoals(); ++i)
         if (!attempt.subgoalfloats(i))
             result.push_back(i);
 
@@ -81,7 +81,7 @@ Moves Game::ourmoves(stage_t stage) const
 static void printthmhypproofs(Move const & move, pProofs const & phyps)
 {
     std::cerr << "Proofs of hypotheses are" << std::endl;
-    for (Hypsize i = 0; i < move.subgoalcount(); ++i)
+    for (Hypsize i = 0; i < move.nsubgoals(); ++i)
         std::cerr << move.subgoallabel(i) << '\t' << *phyps[i];
 }
 
@@ -97,7 +97,7 @@ bool Game::writeproof() const
     // attempt.type == Move::THM || Move::CONJ, goal not proven
     Proofsteps & dest = goaldata().proofdst();
     // Return pointers to proofs of sub-goals
-    pProofs phyps(attempt.subgoalcount());
+    pProofs phyps(attempt.nsubgoals());
     for (Hypsize i = 0; i < phyps.size(); ++i)
         phyps[i] = attempt.psubgoalproof(i);
     if (attempt.isconj())

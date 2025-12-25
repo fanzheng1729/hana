@@ -18,8 +18,8 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
     // Check if all goals of the move are proven.
     bool allproven = true;
     // Record the hypotheses.
-    move.subgoals.resize(move.subgoalcount());
-    for (Hypsize i = 0; i < move.subgoalcount() - move.isconj(); ++i)
+    move.subgoals.resize(move.nsubgoals());
+    for (Hypsize i = 0; i < move.nsubgoals() - move.isconj(); ++i)
     {
         if (move.subgoalfloats(i))
             continue;

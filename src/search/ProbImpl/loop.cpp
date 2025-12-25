@@ -60,7 +60,7 @@ bool loops(pNode p)
     // All the goals necessary to prove p
     pGoals allgoals;
     // Check if any of the hypotheses appears in a parent node.
-    for (Hypsize i = 0; i < move.subgoalcount(); ++i)
+    for (Hypsize i = 0; i < move.nsubgoals(); ++i)
     {
         if (move.subgoalfloats(i))
             continue;
