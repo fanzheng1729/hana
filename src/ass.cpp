@@ -90,10 +90,10 @@ std::string Assertion::hypslabel
     // New variables in newvars and newhyps combined
     Expression const & allnewvars = copy.empty() ? newvars : copy;
     // # hypotheses in new assertion
-    Hypsize newhypcount = hypcount() + allnewvars.size() + newhyps.size();
+    Hypsize const newnhyps = hypcount() + allnewvars.size() + newhyps.size();
     // Preallocate for efficiency.
     Labels labels;
-    labels.reserve(newhypcount);
+    labels.reserve(newnhyps);
     // Floating hypotheses for new variables
     FOR (Symbol3 const var, allnewvars)
         if (var.id > 0 && varusage.count(var) == 0)
@@ -122,12 +122,12 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
     if (hypstotrim.empty())
         return;
     // # hypotheses in new assertion
-    Hypsize const newhypcount
+    Hypsize const newnhyps
     = ass.hypcount() - std::count(hypstotrim.begin(), hypstotrim.end(), true);
 
     hypiters.clear();
     // Preallocate for efficiency
-    hypiters.reserve(newhypcount);
+    hypiters.reserve(newnhyps);
     varusage.clear();
     for (Hypsize i = 0; i < ass.hypcount(); ++i)
     {
@@ -143,7 +143,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
             Bvector & usage = varusage[var];
             usage.clear();
             // Preallocate for efficiency
-            usage.reserve(newhypcount);
+            usage.reserve(newnhyps);
             Bvector const & assusage = ass.varusage.at(var);
             for (Hypsize j = 0; j < ass.hypcount(); ++j)
                 if (!hypstotrim[j])
@@ -171,14 +171,14 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Hypiter iter, newhyps)
         addvarfromexp(varusage, iter->second.expression, ass.varusage);
     // # hypotheses in new assertion
-    Hypsize newhypcount = ass.hypcount() + nvars() + newhyps.size();
+    Hypsize const newnhyps = ass.hypcount() + nvars() + newhyps.size();
     hypiters.clear();
     // Preallocate for efficiency
-    hypiters.reserve(newhypcount);
+    hypiters.reserve(newnhyps);
     // Variable usage and floating hypotheses for new variables
     FOR (Varusage::reference rvar, varusage)
     {
-        rvar.second.resize(newhypcount);
+        rvar.second.resize(newnhyps);
         hypiters.push_back(rvar.first.iter);
     }
     // Old variable usage
@@ -186,7 +186,7 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Varusage::const_reference rvar, ass.varusage)
     {
         Bvector & usage = varusage[rvar.first];
-        usage.resize(newhypcount);
+        usage.resize(newnhyps);
         Bvector::const_iterator const begin = rvar.second.begin();
         std::copy
         (begin, begin + ass.hypcount(), usage.begin() + hypiters.size());
