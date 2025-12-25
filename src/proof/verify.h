@@ -17,8 +17,7 @@ Proofsteps regular
      Hypotheses const & hypotheses, Assertions const & assertions);
 
 // Return true if there are enough items on the stack for hypothesis verification.
-bool enoughitemonstack
-    (std::size_t hypcount, std::size_t stacksize, strview label);
+bool enoughitemonstack(std::size_t nhyps, std::size_t stacksize, strview label);
 
 // Append a subexpression to an expression.
 template<class Iter>

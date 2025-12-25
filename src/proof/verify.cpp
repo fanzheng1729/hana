@@ -48,11 +48,10 @@ static bool printinproofof(strview label, bool okay = false)
 }
 
 // Return true if there is enough item on the stack for hypothesis verification.
-bool enoughitemonstack
-    (std::size_t hypcount, std::size_t stacksize, strview label)
+bool enoughitemonstack(std::size_t nhyps, std::size_t stacksize, strview label)
 {
     static const char hypfound[] = " hypotheses found, ";
-    bool const okay(is1stle2nd(hypcount, stacksize, hypfound, itemonstack));
+    bool const okay(is1stle2nd(nhyps, stacksize, hypfound, itemonstack));
     return printinproofof(label, okay);
 }
 
