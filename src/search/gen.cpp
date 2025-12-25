@@ -28,10 +28,10 @@ static Proofsize argssize
     (Argtypes const & argtypes, Genresult const & result,
      Genstack const & stack)
 {
-    Proofsize count = 0;
+    Proofsize size = 0;
     for (Genstack::size_type i = 0; i < stack.size(); ++i)
-        count += result.at(argtypes[i])[stack[i]].size();
-    return count;
+        size += result.at(argtypes[i])[stack[i]].size();
+    return size;
 }
 
 // Return a lower bound of the number of potential substitutions.
