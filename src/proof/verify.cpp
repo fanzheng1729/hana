@@ -15,14 +15,14 @@ Proofsteps compressed
     (Proofsteps const & labels, Proofnumbers const & proofnumbers)
 {
     Proofsteps result(proofnumbers.size()); // Preallocate for efficiency
-    Proofsize const labelcount = labels.size();
+    Proofsize const nlabels = labels.size();
 
     for (Proofnumbers::size_type step = 0; step < proofnumbers.size(); ++step)
     {
         Proofnumber const number = proofnumbers[step];
         result[step] = number == 0 ? Proofstep(Proofstep::SAVE) :
-                        number <= labelcount ? labels[number - 1] :
-                            Proofstep(number - labelcount - 1);
+                        number <= nlabels ? labels[number - 1] :
+                            Proofstep(number - nlabels - 1);
     }
 
     return result;
