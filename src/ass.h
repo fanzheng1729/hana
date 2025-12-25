@@ -43,7 +43,7 @@ struct Assertion
     strview exptypecode() const
         { return expression.empty() ? strview() : expression[0]; }
     // # of variables
-    Varusage::size_type varcount() const { return varusage.size(); }
+    Varusage::size_type nvars() const { return varusage.size(); }
     // Max id of variables
     Symbol2::ID maxvarid() const
     {
@@ -57,7 +57,7 @@ struct Assertion
     // # of hypotheses
     Hypsize hypcount() const {return hypiters.size();}
     // # of essential hypotheses
-    Hypsize nEhyp() const { return hypcount() - varcount(); }
+    Hypsize nEhyps() const { return hypcount() - nvars(); }
     // hypothesis pointer
     pHyp hypptr(Hypsize index) const { return &*hypiters[index]; }
     // label of a hypothesis

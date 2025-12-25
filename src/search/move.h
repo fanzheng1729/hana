@@ -105,7 +105,7 @@ struct Move
     }
     Hypsize esssubgoalcount() const
     {
-        return isthm() ? theorem().nEhyp() :
+        return isthm() ? theorem().nEhyps() :
                 isconj() ? absconjs.size() : isdefer();
     }
     std::string subgoallabel(Hypsize index) const

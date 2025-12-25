@@ -105,7 +105,7 @@ Definition::Definition
 {
     int err = 0;
     Assertion const & ass = rass.second;
-    if (ass.nEhyp() > 0)
+    if (ass.nEhyps() > 0)
         printerr(rass.first, err = 1);
     if (ass.expRPN.empty() || !equalities.count(ass.expRPN.back().pass->first))
         printerr(rass.first, err = 2);

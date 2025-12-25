@@ -38,10 +38,10 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
     case Proofstep::THM:
     {
         Assertion const & thm(step.pass->second);
-        if (!enoughitemonstack(thm.nEhyp(), stack.size(), ""))
+        if (!enoughitemonstack(thm.nEhyps(), stack.size(), ""))
             return false;
         // Pop all the essential hypotheses.
-        stack.resize(stack.size() - thm.nEhyp());
+        stack.resize(stack.size() - thm.nEhyps());
         return addstep(stacktop, index, step.pass->first);
     }
     case Proofstep::LOAD:

@@ -140,7 +140,7 @@ static void printgoal(pNode p)
     std::cout << p->game().goal().expression();
 
     Assertion const & ass = p->game().env().assertion;
-    if (ass.nEhyp() == 0) return;
+    if (ass.nEhyps() == 0) return;
 
     std::cout << "Hyps ";
     for (Hypsize i = 0; i < ass.hypcount(); ++i)

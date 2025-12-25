@@ -43,7 +43,7 @@ bool Environ::trythm
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges subst(thm.maxvarid() + 1);
     if (!findsubstitutions(goal, thm.expRPNAST(), subst))
-        return size == 0 && thm.nEhyp() == 0// && false
+        return size == 0 && thm.nEhyps() == 0// && false
                 && addabsmoves(goal, &*iter, moves);
 
     // Move with all bound substitutions
@@ -51,7 +51,7 @@ bool Environ::trythm
     if (size > 0)
         return thm.nfreevar() > 0 && addhardmoves(move.pthm, size, move, moves);
     else if (thm.nfreevar() > 0)
-        return assertion.nEhyp() > 0 && addhypmoves(move.pthm, moves, subst);
+        return assertion.nEhyps() > 0 && addhypmoves(move.pthm, moves, subst);
     else
         return addboundmove(move, moves);
 }

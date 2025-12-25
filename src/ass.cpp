@@ -171,7 +171,7 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Hypiter iter, newhyps)
         addvarfromexp(varusage, iter->second.expression, ass.varusage);
     // # hypotheses in new assertion
-    Hypsize newhypcount = ass.hypcount() + varcount() + newhyps.size();
+    Hypsize newhypcount = ass.hypcount() + nvars() + newhyps.size();
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(newhypcount);
