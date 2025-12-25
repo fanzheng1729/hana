@@ -105,7 +105,7 @@ static bool checkDV
 // Return a single NULL if not okay.
 static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
 {
-    if (unexpected(ass.esshypcount() > 0, "essential hypothesis", ""))
+    if (unexpected(ass.nEhyp() > 0, "essential hypothesis", ""))
         return pProofs(1);
     // Pointers to the proofs to be included
     pProofs pproofs;

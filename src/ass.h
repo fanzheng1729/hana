@@ -57,7 +57,7 @@ struct Assertion
     // # of hypotheses
     Hypsize hypcount() const {return hypiters.size();}
     // # of essential hypotheses
-    Hypsize esshypcount() const { return hypcount() - varcount(); }
+    Hypsize nEhyp() const { return hypcount() - varcount(); }
     // hypothesis pointer
     pHyp hypptr(Hypsize index) const { return &*hypiters[index]; }
     // label of a hypothesis
