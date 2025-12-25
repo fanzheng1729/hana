@@ -103,7 +103,7 @@ struct Move
         return isthm() ? theorem().nhyps() :
                 isconj() ? absconjs.size() : isdefer();
     }
-    Hypsize esssubgoalcount() const
+    Hypsize nEsubgoal() const
     {
         return isthm() ? theorem().nEhyps() :
                 isconj() ? absconjs.size() : isdefer();
