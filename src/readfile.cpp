@@ -115,7 +115,7 @@ static bool readtokens
     }
 
     bool instatement = false;
-    std::size_t scopecount = 0;
+    std::size_t nscopes = 0;
 
     Token token;
     while (!(token = nexttoken(in)).empty())
@@ -140,7 +140,7 @@ static bool readtokens
         if (token == "$[")
         {
             // File inclusion command only allowed in outermost scope ($4.1.2)
-            if (scopecount > 0)
+            if (nscopes > 0)
             {
                 std::cerr << "File inclusion command not in outermost scope\n";
                 return false;
@@ -173,15 +173,15 @@ static bool readtokens
 
         // Count scopes
         if (token == "${")
-            ++scopecount;
+            ++nscopes;
         else if (token == "$}")
         {
-            if (scopecount == 0)
+            if (nscopes == 0)
             {
                 std::cerr << extraendscope << std::endl;
                 return false;
             }
-            --scopecount;
+            --nscopes;
         }
 
         // Detect statements
