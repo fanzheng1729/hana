@@ -13,7 +13,7 @@ struct Prop : Environ
     Prop(Assertion const & ass, Database const & db,
          std::size_t maxsize, double freqbias, bool staged = false) :
         Environ(ass, db, maxsize, staged),
-        hypscnf(db.propctors().hypscnf(ass, hypatomcount)),
+        hypscnf(db.propctors().hypscnf(ass, hypnatoms)),
         propctorlabels(labels(database.propctors())),
         propctorfreqs(frequencies(database.propctors())),
         hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
@@ -54,7 +54,7 @@ private:
         (pAss pthm, Proofsize size, Move & move, Moves & moves) const;
     // The CNF of all hypotheses combined
     Hypscnf const hypscnf;
-    Atom hypatomcount;
+    Atom hypnatoms;
     // Propositional syntax axiom labels
     std::vector<strview> const propctorlabels;
     // Propositional syntax axiom frequencies

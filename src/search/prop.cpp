@@ -16,7 +16,7 @@ Goalstatus Prop::status(Goal const & goal) const
     if (goal.ast.empty())
         goal.ast = ast(RPN);
     CNFClauses cnf(hypscnf.first);
-    Atom natom = hypatomcount;
+    Atom natom = hypnatoms;
     // Add hypotheses.
     if (!database.propctors().addclause
         (RPN, goal.ast, assertion.hypiters, cnf, natom))
