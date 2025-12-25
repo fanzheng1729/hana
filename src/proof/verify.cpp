@@ -132,17 +132,17 @@ static std::vector<Expression>::size_type findsubstitutions
     (strview label, strview thmlabel, HYPS const & hyps,
      std::vector<Expression> & stack, Substitutions & substitutions)
 {
-    Hypsize const hypcount = hyps.size();
-    if (!enoughitemonstack(hypcount, stack.size(), label))
-        return stack.size();
+    Hypsize const nhyps = hyps.size(), oldstacksize = stack.size();
+    if (!enoughitemonstack(nhyps, oldstacksize, label))
+        return oldstacksize;
 
     // Space for new statement onto stack
-    stack.resize(stack.size() + 1);
+    stack.resize(oldstacksize + 1);
     
-    Hypsize const base = stack.size() - 1 - hypcount;
+    Hypsize const base = oldstacksize - nhyps;
 
     // Determine substitutions and check that we can unify
-    for (Hypsize i = 0; i < hypcount; ++i)
+    for (Hypsize i = 0; i < nhyps; ++i)
     {
         Hypothesis const & hypothesis = hyps[i]->second;
         if (hypothesis.floats)
@@ -152,7 +152,7 @@ static std::vector<Expression>::size_type findsubstitutions
             {
                 printunificationfailure(label, thmlabel, hypothesis,
                                         hypothesis.expression, stack[base + i]);
-                return stack.size();
+                return oldstacksize + 1;
             }
             Symbol2::ID const id = hypothesis.expression[1];
             substitutions.resize(std::max(id + 1, substitutions.size()));
@@ -168,7 +168,7 @@ static std::vector<Expression>::size_type findsubstitutions
             {
                 printunificationfailure(label, thmlabel, hypothesis,
                                         dest, stack[base + i]);
-                return stack.size();
+                return oldstacksize + 1;
             }
         }
     }
