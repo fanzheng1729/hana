@@ -58,7 +58,7 @@ Syntaxioms::Syntaxioms
             continue;
         // Check if it starts with a primitive type code and has no essential hyps.
         if (database.typecodes().isprimitive(exp[0]) == TRUE &&
-            iter->second.hypcount() == iter->second.varcount())
+            iter->second.nEhyp() == 0)
         {
             Syntaxiom & syntaxiom = (*this)[iter->first];
             syntaxiom.pass = &*iter;
