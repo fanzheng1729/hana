@@ -10,15 +10,15 @@ Bvector & Assertion::trimvars
     (Bvector & hypstotrim, Proofsteps const & conclusion) const
 {
 // std::cout << conclusion;
-    hypstotrim.resize(hypcount());
+    hypstotrim.resize(nhyps());
     hypstotrim.flip();
-    for (Hypsize i = 0; i < hypcount(); ++i)
+    for (Hypsize i = 0; i < nhyps(); ++i)
     {
         if (!hypfloats(i)) continue;
         // Use of the variable in hypotheses
         Bvector const & usage = varusage.at(hypexp(i)[1]);
 // std::cout << "use of " << hypexp(i)[1] << ' ';
-        Hypsize j = hypcount() - 1;
+        Hypsize j = nhyps() - 1;
         for ( ; j != static_cast<Hypsize>(-1); --j)
             if (hypstotrim[j] && usage[j]) break;
 // std::cout << j << ' ';
@@ -54,12 +54,12 @@ std::string Assertion::hypslabel(Bvector const & hypstotrim) const
 {
     // Preallocate for efficiency.
     Labels labels;
-    labels.reserve(hypcount());
+    labels.reserve(nhyps());
 
     for (Hypsize i = 0; i < hypstotrim.size(); ++i)
         if (!hypstotrim[i])
             labels.push_back(hypdelim + hyplabel(i).c_str);
-    for (Hypsize i = hypstotrim.size(); i < hypcount(); ++i)
+    for (Hypsize i = hypstotrim.size(); i < nhyps(); ++i)
         labels.push_back(hypdelim + hyplabel(i).c_str);
 
     return sortconcat(labels);
@@ -90,7 +90,7 @@ std::string Assertion::hypslabel
     // New variables in newvars and newhyps combined
     Expression const & allnewvars = copy.empty() ? newvars : copy;
     // # hypotheses in new assertion
-    Hypsize const newnhyps = hypcount() + allnewvars.size() + newhyps.size();
+    Hypsize const newnhyps = nhyps() + allnewvars.size() + newhyps.size();
     // Preallocate for efficiency.
     Labels labels;
     labels.reserve(newnhyps);
@@ -123,13 +123,13 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
         return;
     // # hypotheses in new assertion
     Hypsize const newnhyps
-    = ass.hypcount() - std::count(hypstotrim.begin(), hypstotrim.end(), true);
+    = ass.nhyps() - std::count(hypstotrim.begin(), hypstotrim.end(), true);
 
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(newnhyps);
     varusage.clear();
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         if (i < hypstotrim.size() && hypstotrim[i])
             continue;
@@ -145,7 +145,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
             // Preallocate for efficiency
             usage.reserve(newnhyps);
             Bvector const & assusage = ass.varusage.at(var);
-            for (Hypsize j = 0; j < ass.hypcount(); ++j)
+            for (Hypsize j = 0; j < ass.nhyps(); ++j)
                 if (!hypstotrim[j])
                     usage.push_back(assusage[j]);
         }
@@ -171,7 +171,7 @@ void Assertion::sethyps(Assertion const & ass,
     FOR (Hypiter iter, newhyps)
         addvarfromexp(varusage, iter->second.expression, ass.varusage);
     // # hypotheses in new assertion
-    Hypsize const newnhyps = ass.hypcount() + nvars() + newhyps.size();
+    Hypsize const newnhyps = ass.nhyps() + nvars() + newhyps.size();
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(newnhyps);
@@ -189,7 +189,7 @@ void Assertion::sethyps(Assertion const & ass,
         usage.resize(newnhyps);
         Bvector::const_iterator const begin = rvar.second.begin();
         std::copy
-        (begin, begin + ass.hypcount(), usage.begin() + hypiters.size());
+        (begin, begin + ass.nhyps(), usage.begin() + hypiters.size());
     }
     // Old hypotheses
     hypiters += ass.hypiters;

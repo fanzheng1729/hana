@@ -55,9 +55,9 @@ struct Assertion
         return max;
     }
     // # of hypotheses
-    Hypsize hypcount() const {return hypiters.size();}
+    Hypsize nhyps() const {return hypiters.size();}
     // # of essential hypotheses
-    Hypsize nEhyps() const { return hypcount() - nvars(); }
+    Hypsize nEhyps() const { return nhyps() - nvars(); }
     // hypothesis pointer
     pHyp hypptr(Hypsize index) const { return &*hypiters[index]; }
     // label of a hypothesis
@@ -82,7 +82,7 @@ struct Assertion
     Proofsize hypslen() const
     {
         Proofsize sum = 0;
-        for (Hypsize i = 0; i < hypcount(); ++i)
+        for (Hypsize i = 0; i < nhyps(); ++i)
             sum += hyplen(i);
         return sum;
     }
@@ -90,7 +90,7 @@ struct Assertion
     bool istrivial() const
     {
         Hypsize i = 0;
-        for ( ; i < hypcount(); ++i)
+        for ( ; i < nhyps(); ++i)
             if (hypexp(i) == expression) return true;
         return false;
     }

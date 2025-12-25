@@ -182,7 +182,7 @@ void Scopes::completeass(struct Assertion & ass) const
                     {
                         hasfreevar |= vars.insert(var).second;
                         Bvector & usage = ass.varusage[var];
-                        usage.resize(ass.hypcount() + 1);
+                        usage.resize(ass.nhyps() + 1);
                         usage.back() = true;
 //std::cout << " " << var;
                     }
@@ -194,7 +194,7 @@ void Scopes::completeass(struct Assertion & ass) const
     // Reverse variable appearance vectors.
     FOR (Varusage::reference vardata, ass.varusage)
     {
-        vardata.second.resize(ass.hypcount() + 1);
+        vardata.second.resize(ass.nhyps() + 1);
         std::reverse(vardata.second.begin(), vardata.second.end());
     }
     // Find disjoint variable hypotheses
@@ -204,7 +204,7 @@ void Scopes::completeass(struct Assertion & ass) const
         ass.nfreevars = nfreevars(ass.varusage);
         // Sort hypotheses in order of decreasing # free variables
         Hypsizes & hypsorder = ass.hypsorder;
-        hypsorder.assign(ass.hypcount(), 1);
+        hypsorder.assign(ass.nhyps(), 1);
         hypsorder[0] = 0;
         std::partial_sum(hypsorder.begin(), hypsorder.end(), hypsorder.begin());
         Hypcomp comp = {ass};

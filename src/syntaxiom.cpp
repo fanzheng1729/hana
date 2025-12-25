@@ -154,7 +154,7 @@ bool Syntaxioms::addRPN
         return false;
     ass.expmaxabs = maxabs(ass.expRPN, ass.expAST);
     // Parse the hypotheses.
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         if (ass.hypexp(i).empty())
             return false;
@@ -224,7 +224,7 @@ bool Syntaxioms::checkRPN
     if (!::checkRPN(ass, ass.expRPNAST()))
         return false;
 
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         if (ass.hypfloats(i))
             continue;

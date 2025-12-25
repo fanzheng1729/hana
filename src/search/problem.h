@@ -69,7 +69,7 @@ public:
     // Add 1-step proof of all the hypotheses of the problem context.
     void addhypproofs()
     {
-        for (Hypsize i = 0; i < probAss().hypcount(); ++i)
+        for (Hypsize i = 0; i < probAss().nhyps(); ++i)
         {
             if (probAss().hypfloats(i)) continue;
             Goalview const goal(probAss().hypRPN(i), probAss().hyptypecode(i));
@@ -80,7 +80,7 @@ public:
     Environ const & addhypproofs(Environ const & env)
     {
         if (env.subsumedbyProb()) return env;
-        for (Hypsize i = 0; i < env.assertion.hypcount(); ++i)
+        for (Hypsize i = 0; i < env.assertion.nhyps(); ++i)
         {
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));

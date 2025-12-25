@@ -37,7 +37,7 @@ static TTindex truthtablesize(Assertion const & ass)
 
     TTindex result = 1;
 
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         if (!ass.hypfloats(i) || ass.hyptypecode(i) != wff)
             return 0;
@@ -316,13 +316,13 @@ bool Propctors::addclause
 Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
                            Bvector const & hypstotrim) const
 {
-    natom = ass.hypcount(); // One atom for each floating hypotheses
+    natom = ass.nhyps(); // One atom for each floating hypotheses
 
     Hypscnf result;
     CNFClauses & cnf = result.first;
-    result.second.resize(ass.hypcount());
+    result.second.resize(ass.nhyps());
 // std::cout << "Adding clauses for ";
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         if (!ass.hypfloats(i) && !(i < hypstotrim.size() && hypstotrim[i]))
         {

@@ -190,17 +190,17 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
         strview thmhyptype = thm.hyptypecode(thmhyp);
         // Advance the last hypothesis in the stack.
         Hypsize & asshyp = hypstack.back();
-        if (asshyp < ass.hypcount())
+        if (asshyp < ass.nhyps())
             --delta; // 1 match removed
-        for (++asshyp; asshyp <= ass.hypcount(); ++asshyp)
+        for (++asshyp; asshyp <= ass.nhyps(); ++asshyp)
         {
-            if (asshyp < ass.hypcount() &&
+            if (asshyp < ass.nhyps() &&
                 (ass.hypfloats(asshyp) ||
                  ass.hyptypecode(asshyp) != thmhyptype))
                 continue; // Skip floating hypothesis.
             // Copy the last substitution.
             substack[hypstack.size()] = substack[hypstack.size() - 1];
-            if (asshyp == ass.hypcount())
+            if (asshyp == ass.nhyps())
                 return delta; // No new match
             if (findsubstitutions
                 (ass.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp),
@@ -223,7 +223,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     Hypsizes hypstack;
     // Substitution stack
     std::vector<Stepranges> substack(thm.nfreehyps() + 1);
-    if (substack.empty() || assertion.hypcount() + 1 == 0)
+    if (substack.empty() || assertion.nhyps() + 1 == 0)
         return false; // size overflow
     // Preallocate for efficiency.
     Hypsize const nfreehyps = thm.nfreehyps();
@@ -265,7 +265,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
             return false;
 // std::cout << move.label() << ' ' << thm.hyplabel(thmhyp) << ' ';
         strview thmhyptype = thm.hyptypecode(thmhyp);
-        for (Hypsize asshyp = 0; asshyp < assertion.hypcount(); ++asshyp)
+        for (Hypsize asshyp = 0; asshyp < assertion.nhyps(); ++asshyp)
         {
             if (assertion.hypfloats(asshyp) ||
                 assertion.hyptypecode(asshyp) != thmhyptype)

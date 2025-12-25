@@ -110,9 +110,9 @@ static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
     // Pointers to the proofs to be included
     pProofs pproofs;
     // Preallocate for efficiency
-    pproofs.reserve(ass.hypcount());
+    pproofs.reserve(ass.nhyps());
 
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         strview var = ass.hypexp(i)[1];
         // Frame for the substitution

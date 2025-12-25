@@ -59,7 +59,7 @@ Assertions::size_type maxsymboldefnumber
     if (max == 0)
         return 0;
     // Check the hypotheses.
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         Assertions::size_type const maxi =
             maxsymboldefnumber(ass.hypRPN(i), definitions, syntaxioms, n);
@@ -137,7 +137,7 @@ template<class T>
 void addfreqcount(Assertion const & ass, T & definitions)
 {
     addfreqcount(ass.expRPN, definitions);
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
         if (!ass.hypfloats(i))
             addfreqcount(ass.hypRPN(i), definitions);
 }
@@ -161,7 +161,7 @@ inline void addfreqcounts
 inline Freqcounts hypsfreqcounts(Assertion const & ass, Labels const & labels)
 {
     Freqcounts result(labels.size());
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
         if (!ass.hypfloats(i))
             addfreqcounts(ass.hypRPN(i), labels, result);
     return result;

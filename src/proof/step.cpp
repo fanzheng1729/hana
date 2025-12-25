@@ -76,10 +76,10 @@ static void hypothesiserr(const char * hyplabel)
 bool writeproof(Proofsteps & dest, pAss pthm, pProofs const & hyps)
 {
     dest.clear();
-    if (hyps.size() != pthm->second.hypcount())
+    if (hyps.size() != pthm->second.nhyps())
     {
         writeprooferr(pthm->first.c_str);
-        std::cerr << ", expected " << pthm->second.hypcount() << " hypotheses";
+        std::cerr << ", expected " << pthm->second.nhyps() << " hypotheses";
         std::cerr << ", but found " << hyps.size() << std::endl;
         return false;
     }

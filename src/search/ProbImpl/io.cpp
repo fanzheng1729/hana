@@ -143,7 +143,7 @@ static void printgoal(pNode p)
     if (ass.nEhyps() == 0) return;
 
     std::cout << "Hyps ";
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
         if (!ass.hypfloats(i))
             std::cout << ass.hyplabel(i) << ' ';
     std::cout << std::endl;

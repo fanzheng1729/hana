@@ -242,7 +242,7 @@ public:
     SyntaxDAG::Ranks hypsmaxranks(Assertion const & ass) const
     {
         SyntaxDAG::Ranks ranks;
-        for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        for (Hypsize i = 0; i < ass.nhyps(); ++i)
             if (!ass.hypfloats(i))
                 syntaxDAG().addexp(ranks, ass.hypRPN(i));
         return ranks;

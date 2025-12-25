@@ -100,7 +100,7 @@ struct Move
     // Subgoal the move needs
     Hypsize subgoalcount() const
     {
-        return isthm() ? theorem().hypcount() :
+        return isthm() ? theorem().nhyps() :
                 isconj() ? absconjs.size() : isdefer();
     }
     Hypsize esssubgoalcount() const

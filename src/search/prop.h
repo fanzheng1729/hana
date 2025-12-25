@@ -22,7 +22,7 @@ struct Prop : Environ
 // std::cout << "newEnv " << name << ' ' << ass.varusage;
         // Reinitialize weights of all hypotheses combined.
         hypsweight = 0;
-        for (Hypsize i = 0; i < ass.hypcount(); ++i)
+        for (Hypsize i = 0; i < ass.nhyps(); ++i)
             hypsweight += weight(ass.hypRPN(i));
     }
     // Return true if an assertion is on topic/useful.

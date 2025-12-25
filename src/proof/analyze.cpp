@@ -11,7 +11,7 @@ static bool addASTnode
     (Assertion const & assertion, std::vector<Proofsize> & stack,
      AST::reference node)
 {
-    Hypsize const nhyps = assertion.hypcount(), stacksz = stack.size();
+    Hypsize const nhyps = assertion.nhyps(), stacksz = stack.size();
     if (!enoughitemonstack(nhyps, stacksz, ""))
         return false;
 

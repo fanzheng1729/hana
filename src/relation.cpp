@@ -48,7 +48,7 @@ static Proofstep match(Assertion const & ass, const int pattern[])
 
     // Match hypotheses.
     const int * cur = pattern;
-    for (Hypsize i = 0; i < ass.hypcount(); ++i)
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
         if (ass.hypfloats(i)) continue;
 

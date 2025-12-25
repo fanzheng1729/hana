@@ -38,11 +38,11 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     if (goal.ast.empty())
         goal.ast = ast(goal.RPN);
 
-    Bvector result(assertion.hypcount(), false);
+    Bvector result(assertion.nhyps(), false);
 
     bool trimmed = false;
 
-    for (Hypsize i = assertion.hypcount() - 1;
+    for (Hypsize i = assertion.nhyps() - 1;
         i != static_cast<Hypsize>(-1); --i)
     {
         if (assertion.hypfloats(i)) continue;
@@ -52,7 +52,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         CNFClauses cnf2;
         Proofnumbers const & ends = hypscnf.second;
         // Add hypotheses.
-        for (Hypsize j = 0; j < assertion.hypcount(); ++j)
+        for (Hypsize j = 0; j < assertion.nhyps(); ++j)
         {
             if (assertion.hypfloats(j) || result[j])
                 continue; // Skip floating or trimmed hypotheses.
@@ -63,7 +63,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
                         hypscnf.first.data() + end);
         }
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf2;
-        Atom natom = cnf2.empty() ? assertion.hypcount() : cnf2.atomcount();
+        Atom natom = cnf2.empty() ? assertion.nhyps() : cnf2.atomcount();
         // Add conclusion.
         database.propctors().addclause
         (goal.RPN, goal.ast, assertion.hypiters, cnf2, natom);
