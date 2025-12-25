@@ -217,7 +217,7 @@ void Problem::checkmainline(pNode p) const
 // Format: n nodes, x V, y ?, z X in m contexts
 void Problem::printstats() const
 {
-    std::cout << playcount() << " plays, " << size() << " nodes, ";
+    std::cout << nplays() << " plays, " << size() << " nodes, ";
     std::cout << countproof() << '/';
     static const char * const s[] = {" V, ", " ?, ", " X in "};
     for (int i = GOALTRUE; i >= GOALFALSE; --i)

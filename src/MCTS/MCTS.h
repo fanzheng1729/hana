@@ -46,12 +46,12 @@ private:
 
     }
     // # playouts
-    size_type m_playcount;
+    size_type m_nplays;
 public:
     // Construct a tree with 1 node.
     template<class T>
     MCTS(T const & game, MCTSParams const exploration) :
-        MCTSTree(game), m_playcount(0)
+        MCTSTree(game), m_nplays(0)
     {
         std::copy(exploration, exploration + 2, m_exploration);
         initcache();
@@ -205,13 +205,13 @@ public:
             backpropcallback(p);
         }
     }
-    size_type playcount() const { return m_playcount; }
+    size_type nplays() const { return m_nplays; }
     // Called after each playonce()
     virtual void playoncecallback() {}
     // Play out once. Return the value at the root.
     Value playonce()
     {
-// std::cout << playcount() << '\t' << size() << std::endl;
+// std::cout << nplays() << '\t' << size() << std::endl;
 // std::cout << *root();
         pNode p = pickleaf(root());
 // std::cout << "Expanding " << *p;
@@ -221,7 +221,7 @@ public:
 // std::cout << "Back propagating from " << *p;
         backprop(p);
         playoncecallback();
-        ++m_playcount;
+        ++m_nplays;
         return value();
     }
     // Play out until the value is sure or size limit is reached.
