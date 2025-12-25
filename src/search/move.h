@@ -152,7 +152,7 @@ struct Move
     }
     // Return pointer to proof of subgoal. Return null if out of bound.
     Proofsteps const * psubgoalproof(Hypsize index) const;
-    // # of conjectures made (must be of type CONJ)
+    // # of conjectures made
     Hypsize nconjs() const { return isconj() * (absconjs.size() - 1); }
     // Return true if the move uses abstract variables (must be of type CONJ).
     bool hasabsvars() const
@@ -167,7 +167,7 @@ struct Move
     {
         Expression vars;
         vars.reserve(substitutions.size());
-        for (Substitutions::size_type id = 1; id < substitutions.size(); ++id)
+        for (Symbol2::ID id = 1; id < substitutions.size(); ++id)
             if (!substitutions[id].empty())
                 vars.push_back(bank.var(id));
         return vars;
@@ -180,18 +180,18 @@ struct Move
             return var.iter->second.RPN;
         return substitutions[id];
     }
-    // Add conjectures to a bank (must be of type CONJ).
-    // Return iterators to the hypotheses.
+    // Add conjectures to a bank. Return iterators to the hypotheses.
     Hypiters addconjsto(Bank & bank) const
     {
-        if (!isconj()) return Hypiters();
         Hypiters result(nconjs());
         for (Hypsize i = 0; i < result.size(); ++i)
-            result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode);
+            if (Hypiter() ==
+                (result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode)))
+                return Hypiters();
         return result;
     }
     // Find index of conjecture matching the abstract hypothesis.
-    // Must be of type CONJ.
+    // Return nconjs() is not found.
     Hypsize findabsconj(Hypothesis const & hyp) const
     {
         for (Hypsize i = 0; i < nconjs(); ++i)
