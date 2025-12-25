@@ -27,9 +27,6 @@ typedef std::size_t Proofnumber;
 // Vector of proof numbers
 typedef std::vector<Proofnumber> Proofnumbers;
 
-// Proof is a sequence of labels.
-typedef std::vector<std::string> Proof;
-
 // Step in a regular or compressed proof
 struct Proofstep;
 // A sequence of proof steps

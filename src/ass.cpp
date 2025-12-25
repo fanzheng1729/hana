@@ -30,8 +30,10 @@ Bvector & Assertion::trimvars
     return hypstotrim;
 }
 
+typedef std::vector<std::string> Labels;
+
 // Sort and concatenate labels.
-static std::string sortconcat(std::vector<std::string> & labels)
+static std::string sortconcat(Labels & labels)
 {
     std::sort(labels.begin(), labels.end());
 
@@ -51,7 +53,7 @@ static std::string sortconcat(std::vector<std::string> & labels)
 std::string Assertion::hypslabel(Bvector const & hypstotrim) const
 {
     // Preallocate for efficiency.
-    std::vector<std::string> labels;
+    Labels labels;
     labels.reserve(hypcount());
 
     for (Hypsize i = 0; i < hypstotrim.size(); ++i)
@@ -90,7 +92,7 @@ std::string Assertion::hypslabel
     // # hypotheses in new assertion
     Hypsize newhypcount = hypcount() + allnewvars.size() + newhyps.size();
     // Preallocate for efficiency.
-    std::vector<std::string> labels;
+    Labels labels;
     labels.reserve(newhypcount);
     // Floating hypotheses for new variables
     FOR (Symbol3 const var, allnewvars)

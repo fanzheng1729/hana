@@ -5,6 +5,9 @@
 #include "../types.h"
 #include "../util/for.h"
 
+// Proof is a sequence of labels.
+typedef std::vector<std::string> Proof;
+
 // Extract proof steps from a compressed proof.
 Proofsteps compressed
     (Proofsteps const & labels, Proofnumbers const & proofnumbers);
