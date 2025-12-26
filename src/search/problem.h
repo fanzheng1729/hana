@@ -283,9 +283,7 @@ public:
     }
 };
 
-// Test proof search.
-// Return the size of tree if okay. Otherwise return 0.
-
+// Test proof search. Return tree.size if okay. Return 0 if not.
 Problem::size_type testsearch
     (Assiter iter, Problem & tree, Problem::size_type maxsize);
 
