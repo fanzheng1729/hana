@@ -1,4 +1,3 @@
-#include "../proof/analyze.h"
 #include "problem.h"
 
 // Return true if all variables in use have been substituted.
@@ -9,6 +8,8 @@ static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
             return false;
     return true;
 }
+
+bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
 
 static int const STACKEMPTY = -2;
 // Advance the stack and return the difference in # matched hypotheses.
