@@ -171,9 +171,8 @@ bool Environ::addabsmove
 static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
 {
     FOR (Varusage::const_reference rvar, varusage)
-        if (Symbol2::ID const id = rvar.first)
-            if (subst[id].first == subst[id].second)
-                return false;
+        if (rvar.first > 0 && subst[rvar.first].empty())
+            return false;
     return true;
 }
 
