@@ -1,4 +1,4 @@
-#include "problem.h"
+#include "environ.h"
 
 // Return true if all variables in use have been substituted.
 static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
