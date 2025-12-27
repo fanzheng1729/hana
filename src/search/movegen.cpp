@@ -142,28 +142,28 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
 // Add an abstraction move. Return true if it has no open hypotheses.
 bool Environ::addabsmove
-    (Goal const & goal, Steprange abstraction,
+    (Goal const & goal, Steprange absRPN,
      Move const & move, Moves & moves) const
 {
-    if (abstraction.empty())
+    if (absRPN.empty())
         return false;
 
     Goal const & thmgoal(move.goal());
     AST  const & thmgoalast(ast(thmgoal.RPN));
     SteprangeAST thmexp(thmgoal.RPN, thmgoalast), goalexp(goal.RPN, goal.ast);
     // Abstract variable
-    Bank1var const var = pProb->bank.addabsvar(abstraction);
+    Bank1var const var = pProb->bank.addabsvar(absRPN);
     // 1 conjecture + 1 goal
     Move::Conjectures conjs(2);
-    if (skeleton(thmexp, Keeprange(abstraction), var, conjs[0].RPN) != TRUE)
+    if (skeleton(thmexp, Keeprange(absRPN), var, conjs[0].RPN) != TRUE)
         return false;
-    if (skeleton(goalexp, Keeprange(abstraction), var, conjs[1].RPN) != TRUE)
+    if (skeleton(goalexp, Keeprange(absRPN), var, conjs[1].RPN) != TRUE)
         return false;
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
     // Abstractions of abstract variables
     Stepranges absRPNs(var.id + 1);
-    absRPNs.back() = abstraction;
+    absRPNs.back() = absRPN;
     return addconjmove(Move(conjs, absRPNs), moves);
 }
 
