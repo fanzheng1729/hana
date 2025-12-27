@@ -71,10 +71,10 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     do
     {
         // std::cout << hypstack;
-        Stepranges const & newsubstitutions = substack[hypstack.size()];
-        if (allvarsfilled(thm.varusage, newsubstitutions))
+        Stepranges const & newsubsts = substack[hypstack.size()];
+        if (allvarsfilled(thm.varusage, newsubsts))
         {
-            if (addboundmove(Move(pthm, newsubstitutions), moves))
+            if (addboundmove(Move(pthm, newsubsts), moves))
                 return true;
         }
         else

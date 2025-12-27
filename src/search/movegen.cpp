@@ -185,13 +185,12 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 assertion.hyptypecode(asshyp) != thmhyptype)
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
-            Stepranges newsubstitutions(substitutions);
+            Stepranges newsubsts(substitutions);
             if (findsubstitutions
-                (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp),
-                 newsubstitutions))
+                (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp), newsubsts))
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
-                if (addboundmove(Move(pthm, newsubstitutions), moves))
+                if (addboundmove(Move(pthm, newsubsts), moves))
                     return true;
             }
         }
