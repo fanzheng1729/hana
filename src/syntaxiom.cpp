@@ -207,7 +207,7 @@ bool Syntaxioms::addRPN
 static bool checkRPN(Assertion const & ass, SteprangeAST exp)
 {
     Stepranges stepranges(ass.maxvarid() + 1);
-    bool const ok = findsubstitutions(exp, exp, stepranges);
+    bool const ok = findsubst(exp, exp, stepranges);
     return !unexpected(!ok, "failed unification test for",
                         Proofsteps(exp.first.first, exp.first.second));
 }

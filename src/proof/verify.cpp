@@ -127,7 +127,7 @@ static void makesubst
 // Return index of the base of the substitution in the stack.
 // Return the size of the stack if not okay.
 template<class HYPS>
-static std::vector<Expression>::size_type findsubstitutions
+static std::vector<Expression>::size_type findsubst
     (strview label, strview thmlabel, HYPS const & hyps,
      std::vector<Expression> & stack, Substitutions & substs)
 {
@@ -187,7 +187,7 @@ static bool verifystep
     // Find the necessary substitutions.
     substs.clear();
     substs.resize(thm.maxvarid() + 1);
-    std::vector<Expression>::size_type const base = findsubstitutions
+    std::vector<Expression>::size_type const base = findsubst
         (label, pthm->first, pthm->second.hypiters, stack, substs);
     if (base == stack.size())
         return false;

@@ -9,7 +9,7 @@ static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
     return true;
 }
 
-bool findsubstitutions(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
+bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
 
 static int const STACKEMPTY = -2;
 // Advance the stack and return the difference in # matched hypotheses.
@@ -36,7 +36,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
             substack[hypstack.size()] = substack[hypstack.size() - 1];
             if (asshyp == ass.nhyps())
                 return delta; // No new match
-            if (findsubstitutions
+            if (findsubst
                 (ass.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp),
                  substack[hypstack.size()]))
                 return ++delta; // New match

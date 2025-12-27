@@ -42,7 +42,7 @@ bool Environ::trythm
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Stepranges subst(thm.maxvarid() + 1);
-    if (!findsubstitutions(goal, thm.expRPNAST(), subst))
+    if (!findsubst(goal, thm.expRPNAST(), subst))
         return size == 0 && thm.nEhyps() == 0// && false
                 && addabsmoves(goal, &*iter, moves);
 
@@ -130,7 +130,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
                 SteprangeAST goalsubexp(goalrange.first, goalrange.second);
 
                 subst.assign(thm.maxvarid() + 1, Steprange());
-                if (findsubstitutions(goalsubexp, thmsubexp, subst) &&
+                if (findsubst(goalsubexp, thmsubexp, subst) &&
                     addabsmove(goal, goalrange.first, Move(pthm,subst), moves))
                     return true;
             }
@@ -186,7 +186,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
             Stepranges newsubsts(substs);
-            if (findsubstitutions
+            if (findsubst
                 (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp), newsubsts))
             {
 // std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
