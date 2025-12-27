@@ -186,9 +186,8 @@ static Typecodes * addsyntax(Typecodes * p, Command const & command)
     if (unexpected(type.empty(), "type code", command[0]))
         return p;
     // Add the type.
-    std::pair<Typecodes::iterator, bool> result
-        (p->insert(std::make_pair(type, Typecodes::mapped_type())));
-    if (unexpected(!result.second, "duplicate type code", type))
+    Typecodes::mapped_type & info = (*p)[type];
+    if (unexpected(!info.first.empty(), "duplicate type code", type))
         return p;
     // No as type.
     if (command.size() == 1)
@@ -199,7 +198,7 @@ static Typecodes * addsyntax(Typecodes * p, Command const & command)
         return p;
     if (unexpected(!p->count(astype), "as-type code", astype))
         return p;
-    result.first->second.first = astype;
+    info.first = astype;
     return p;
 }
 
