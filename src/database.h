@@ -118,10 +118,10 @@ public:
             return LABEL;
         return OKAY;
     }
-    bool addtypecode(strview typecode, strview astypecode="", bool isbound=0)
+    bool addtypecode(strview type, strview astype = "", bool bound = false)
     {
-        std::pair<strview, bool> const mapped(astypecode, isbound);
-        std::pair<strview, std::pair<strview, bool> > value(typecode, mapped);
+        std::pair<strview, bool> const info(astype, bound);
+        std::pair<strview, std::pair<strview, bool> > value(type, info);
         return m_commentinfo.typecodes.insert(value).second;
     }
 // Add the revPolish notation to the whole database. Return true if okay.
