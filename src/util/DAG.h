@@ -31,9 +31,9 @@ struct DAG : Carrier
         toporder.clear();
     }
     // Add an element.
-    std::pair<iterator, bool> insert(const value_type & value)
+    std::pair<iterator, bool> insert(const value_type & v)
     {
-        std::pair<iterator, bool> result = Carrier::insert(value);
+        std::pair<iterator, bool> const result = Carrier::insert(v);
         if (result.second)
             toporder.push_back(result.first);
         return result;
