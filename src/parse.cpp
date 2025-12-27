@@ -126,8 +126,8 @@ static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
     return pproofs;
 }
 
-// If substitution in not empty, create a frame for them and return true.
-static bool createsubstitutionframe
+// If substitution in not empty, add a frame for them and return true.
+static bool addsubstframe
     (Substack & stack, strview var, Expiter begin,
      Substframe::Subexpends const & ends)
 {
@@ -252,5 +252,5 @@ static bool nextsubframe
     // Push valid substitutions for *iter2 onto the stack.
     Substframe::Subexpends const & substitutions
         (RPNmap(nextvartype, iter1, expend, exp, ass, syntaxioms, recs));
-    return createsubstitutionframe(stack, *iter2, iter1, substitutions);
+    return addsubstframe(stack, *iter2, iter1, substitutions);
 }
