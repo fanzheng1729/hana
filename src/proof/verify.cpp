@@ -108,9 +108,8 @@ static Expression::size_type substitutionsize
     return size;
 }
 
-static void makesubstitution
-    (Expression const & src, Expression & dest,
-     Substitutions const & substs)
+static void makesubst
+    (Expression const & src, Expression & dest, Substitutions const & substs)
 {
     if (substs.empty())
         return dest.assign(src.begin(), src.end());
@@ -163,7 +162,7 @@ static std::vector<Expression>::size_type findsubstitutions
         {
             // Essential hypothesis
             Expression dest;
-            makesubstitution(hypothesis.expression, dest, substs);
+            makesubst(hypothesis.expression, dest, substs);
             if (dest != stack[base + i])
             {
                 printunificationfailure(label, thmlabel, hypothesis,
@@ -202,7 +201,7 @@ static bool verifystep
     }
 
     // Insert new statement onto stack.
-    makesubstitution(thm.expression, stack.back(), substs);
+    makesubst(thm.expression, stack.back(), substs);
     // Remove hypotheses from stack.
     stack.erase(stack.begin() + base, stack.end() - 1);
 
