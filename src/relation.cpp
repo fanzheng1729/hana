@@ -6,7 +6,7 @@
 
 // Return true if RPN matches pattern.
 static bool matchline(Proofsteps const & RPN, int const * & cur,
-                      int const * end, Proofsteps & substitutions)
+                      int const * end, Proofsteps & substs)
 {
     for (Proofsize i = 0; i < RPN.size(); ++i, ++cur)
     {
@@ -19,15 +19,15 @@ static bool matchline(Proofsteps const & RPN, int const * & cur,
         if (*cur != 0 && !RPN[i].ishyp())
             return false;
 
-        if (substitutions[*cur].empty())
+        if (substs[*cur].empty())
         {
             // A new step
-            if (util::filter(substitutions)(RPN[i]))
+            if (util::filter(substs)(RPN[i]))
                 return false; // seen before.
-            substitutions[*cur] = RPN[i]; // record it.
+            substs[*cur] = RPN[i]; // record it.
         }
         // Otherwise check if it matches the recod.
-        else if (substitutions[*cur] != RPN[i])
+        else if (substs[*cur] != RPN[i])
             return false; // mismatch
     }
     return true;
@@ -44,7 +44,7 @@ static Proofstep match(Assertion const & ass, const int pattern[])
     // Max # variables to substitute
     const int argc = *std::max_element(pattern, end);
     // Substitution vector
-    Proofsteps substitutions(argc + 1, Proofstep::NONE);
+    Proofsteps substs(argc + 1, Proofstep::NONE);
 
     // Match hypotheses.
     const int * cur = pattern;
@@ -52,19 +52,19 @@ static Proofstep match(Assertion const & ass, const int pattern[])
     {
         if (ass.hypfloats(i)) continue;
 
-        if (!matchline(ass.hypRPN(i), cur, end, substitutions))
+        if (!matchline(ass.hypRPN(i), cur, end, substs))
             return Proofstep();
         if (*cur++ != Relations::LINE_END) // Match end of line.
             return Proofstep();
     }
     // Match conclusion.
-    if (!matchline(ass.expRPN, cur, end, substitutions))
+    if (!matchline(ass.expRPN, cur, end, substs))
         return Proofstep();
     if (cur != end) // Match end of pattern.
         return Proofstep();
 
     // Return the proof string correponding to 0.
-    return substitutions[0];
+    return substs[0];
 }
 
 // Find relations and their justifications among syntax axioms.
