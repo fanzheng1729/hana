@@ -77,12 +77,12 @@ static void printdisjvarserr
 
 // Check disjoint variable hypothesis in verifying an assertion reference.
 static bool checkDV
-    (Substitutions const & subst, Disjvars const & thmDV, Assertion const & ass)
+    (Substitutions const & substs, Disjvars const & thmDV, Assertion const & ass)
 {
     FOR (Disjvars::const_reference vars, thmDV)
     {
-        Substitutions::value_type exp1(subst[vars.first]);
-        Substitutions::value_type exp2(subst[vars.second]);
+        Substitutions::value_type exp1(substs[vars.first]);
+        Substitutions::value_type exp2(substs[vars.second]);
 
         if (!checkDV(exp1, exp2, ass.disjvars, ass.varusage))
         {
@@ -97,12 +97,12 @@ static bool checkDV
 }
 
 static Expression::size_type substitutionsize
-    (Expression const & src, Substitutions const & substitutions)
+    (Expression const & src, Substitutions const & substs)
 {
     Expression::size_type size = 0;
     FOR (Symbol3 symbol, src)
         if (Symbol3::ID const id = symbol.id)
-            size += substitutions[id].second - substitutions[id].first;
+            size += substs[id].second - substs[id].first;
         else
             ++size;
     return size;
@@ -110,18 +110,18 @@ static Expression::size_type substitutionsize
 
 static void makesubstitution
     (Expression const & src, Expression & dest,
-     Substitutions const & substitutions)
+     Substitutions const & substs)
 {
-    if (substitutions.empty())
+    if (substs.empty())
         return dest.assign(src.begin(), src.end());
     // Preallocate for efficiency
-    dest.reserve(substitutionsize(src, substitutions));
+    dest.reserve(substitutionsize(src, substs));
     // Make the substitution
     FOR (Symbol3 symbol, src)
         if (Symbol3::ID const id = symbol.id)
-            dest += substitutions[id];  // variable with an id
+            dest += substs[id];
         else
-            dest.push_back(symbol);     // constant with no id
+            dest.push_back(symbol);
 }
 
 // Find the substitution. Increase the size of the stack by 1.
@@ -130,7 +130,7 @@ static void makesubstitution
 template<class HYPS>
 static std::vector<Expression>::size_type findsubstitutions
     (strview label, strview thmlabel, HYPS const & hyps,
-     std::vector<Expression> & stack, Substitutions & substitutions)
+     std::vector<Expression> & stack, Substitutions & substs)
 {
     Hypsize const nhyps = hyps.size(), oldstacksize = stack.size();
     if (!enoughitemonstack(nhyps, oldstacksize, label))
@@ -155,15 +155,15 @@ static std::vector<Expression>::size_type findsubstitutions
                 return oldstacksize + 1;
             }
             Symbol2::ID const id = hypothesis.expression[1];
-            substitutions.resize(std::max(id + 1, substitutions.size()));
-            substitutions[id]
+            substs.resize(std::max(id + 1, substs.size()));
+            substs[id]
             = std::make_pair(&stack[base + i][1], &stack[base + i].back() + 1);
         }
         else
         {
             // Essential hypothesis
             Expression dest;
-            makesubstitution(hypothesis.expression, dest, substitutions);
+            makesubstitution(hypothesis.expression, dest, substs);
             if (dest != stack[base + i])
             {
                 printunificationfailure(label, thmlabel, hypothesis,
@@ -180,29 +180,29 @@ static std::vector<Expression>::size_type findsubstitutions
 // assertion (i.e., not a hypothesis).
 static bool verifystep
     (pAss pass, pAss pthm, std::vector<Expression> & stack,
-     Substitutions & substitutions)
+     Substitutions & substs)
 {
     strview label = pass ? pass->first : strview();
     Assertion const & thm = pthm->second;
 
     // Find the necessary substitutions.
-    substitutions.clear();
-    substitutions.resize(thm.maxvarid() + 1);
+    substs.clear();
+    substs.resize(thm.maxvarid() + 1);
     std::vector<Expression>::size_type const base = findsubstitutions
-        (label, pthm->first, pthm->second.hypiters, stack, substitutions);
+        (label, pthm->first, pthm->second.hypiters, stack, substs);
     if (base == stack.size())
         return false;
-//std::cout << "Substitutions" << std::endl << substitutions;
+//std::cout << "Substitutions" << std::endl << substs;
 
     // Verify disjoint variable conditions.
-    if (pass && !checkDV(substitutions, thm.disjvars, pass->second))
+    if (pass && !checkDV(substs, thm.disjvars, pass->second))
     {
         std::cerr << "In step " << pthm->first;
         return printinproofof(label);
     }
 
     // Insert new statement onto stack.
-    makesubstitution(thm.expression, stack.back(), substitutions);
+    makesubstitution(thm.expression, stack.back(), substs);
     // Remove hypotheses from stack.
     stack.erase(stack.begin() + base, stack.end() - 1);
 
@@ -224,7 +224,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, pAss pass)
 //std::cout << "Verifying " << label << std::endl;
     std::vector<Expression> stack, savedsteps;
 
-    Substitutions substitutions;
+    Substitutions substs;
 
     FOR (Proofstep const & step, proof)
     {
@@ -236,7 +236,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, pAss pass)
             break;
         case Proofstep::THM:
 //std::cout << "Applying assertion: " << step.pass->first << '\n';
-            if (!verifystep(pass, step.pass, stack, substitutions))
+            if (!verifystep(pass, step.pass, stack, substs))
                 return Expression();
             break;
         case Proofstep::LOAD:
