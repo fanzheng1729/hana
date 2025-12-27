@@ -49,7 +49,7 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
 // Add Hypothesis-oriented moves.
 // Return true if it has no open hypotheses.
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
-                          Stepranges const & substitutions,
+                          Stepranges const & substs,
                           Hypsize maxfreehyps) const
 {
     Assertion const & thm = pthm->second;
@@ -63,7 +63,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     Hypsize const nfreehyps = thm.nfreehyps();
     hypstack.reserve(nfreehyps);
     // Bound substitutions
-    substack[0] = substitutions;
+    substack[0] = substs;
     // substack.size() == hypstack.size() + 1
     // # matched hypotheses
     Hypsize matchedhyps = 0;

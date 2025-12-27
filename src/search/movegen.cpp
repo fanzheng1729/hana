@@ -170,7 +170,7 @@ bool Environ::addabsmove
 // Add Hypothesis-oriented moves.
 // Return true if it has no open hypotheses.
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
-                          Stepranges const & substitutions) const
+                          Stepranges const & substs) const
 {
     Assertion const & thm = pthm->second;
     FOR (Hypsize thmhyp, thm.hypsorder)
@@ -185,7 +185,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 assertion.hyptypecode(asshyp) != thmhyptype)
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
-            Stepranges newsubsts(substitutions);
+            Stepranges newsubsts(substs);
             if (findsubstitutions
                 (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp), newsubsts))
             {
