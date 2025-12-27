@@ -162,9 +162,9 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
     // Abstraction of the abstract variable
-    Stepranges substitutions(var.id + 1);
-    substitutions.back() = abstraction;
-    return addconjmove(Move(conjs, substitutions), moves);
+    Stepranges abstractions(var.id + 1);
+    abstractions.back() = abstraction;
+    return addconjmove(Move(conjs, abstractions), moves);
 }
 
 // Add Hypothesis-oriented moves.
