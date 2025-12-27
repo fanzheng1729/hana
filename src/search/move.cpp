@@ -89,7 +89,7 @@ Proofsize Move::substitutionsize(Proofsteps const & src) const
 }
 
 // Make a substitution.
-void Move::makesubstitution(Proofsteps const & src, Proofsteps & dest) const
+void Move::makesubst(Proofsteps const & src, Proofsteps & dest) const
 {
     if (substitutions.empty())
         return dest.assign(src.begin(), src.end());

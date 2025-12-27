@@ -84,7 +84,7 @@ struct Move
         Goal result;
         Proofsteps const & expRPN
         = pthm ? pthm->second.expRPN : absconjs.back().RPN;
-        makesubstitution(expRPN, result.RPN);
+        makesubst(expRPN, result.RPN);
         result.typecode = goaltypecode();
         return result;
     }
@@ -135,7 +135,7 @@ struct Move
         Goal result;
         Proofsteps const & hypRPN
         = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
-        makesubstitution(hypRPN, result.RPN);
+        makesubst(hypRPN, result.RPN);
         result.typecode = subgoaltypecode(index);
         return result;
     }
@@ -206,7 +206,7 @@ struct Move
     // Size of a substitution
     Proofsize substitutionsize(Proofsteps const & src) const;
     // Make a substitution.
-    void makesubstitution(Proofsteps const & src, Proofsteps & dest) const;
+    void makesubst(Proofsteps const & src, Proofsteps & dest) const;
     // Size of full proof (must be of type CONJ)
     Proofsize fullproofsize(pProofs const & phyps) const;
     // Write proof (must be of type CONJ).
