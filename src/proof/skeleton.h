@@ -58,7 +58,7 @@ Tribool skeleton
 struct Keeprange
 {
     Steprange range;
-    Keeprange(Steprange steprange) : range(steprange) {}
+    Keeprange(Steprange tokeep) : range(tokeep) {}
     Splitretval operator()(Steprange exp) const
     {
         if (range == exp)
