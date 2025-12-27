@@ -43,15 +43,15 @@ struct Move
             substitutions[i].assign(subst[i].first, subst[i].second);
     }
     // A move making conjectures, on our turn
-    Move(Conjectures const & conjs, Substitutions const & subst) :
+    Move(Conjectures const & conjs, Substitutions const & absRPNs) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs),
-        substitutions(subst) {}
-    Move(Conjectures const & conjs, Stepranges const & subst) :
+        substitutions(absRPNs) {}
+    Move(Conjectures const & conjs, Stepranges const & absRPNs) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
     {
-        substitutions.resize(subst.size());
-        for (Hypsize i = 1; i < subst.size(); ++i)
-            substitutions[i].assign(subst[i].first, subst[i].second);
+        substitutions.resize(absRPNs.size());
+        for (Hypsize i = 1; i < absRPNs.size(); ++i)
+            substitutions[i].assign(absRPNs[i].first, absRPNs[i].second);
     }
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm(NULL) {}
