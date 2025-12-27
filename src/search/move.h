@@ -204,7 +204,7 @@ struct Move
         return nconjs();
     }
     // Size of a substitution
-    Proofsize substitutionsize(Proofsteps const & src) const;
+    Proofsize substsize(Proofsteps const & src) const;
     // Make a substitution.
     void makesubst(Proofsteps const & src, Proofsteps & dest) const;
     // Size of full proof (must be of type CONJ)

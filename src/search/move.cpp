@@ -71,7 +71,7 @@ Proofsteps const * Move::psubgoalproof(Hypsize index) const
 }
 
 // Size of a substitution
-Proofsize Move::substitutionsize(Proofsteps const & src) const
+Proofsize Move::substsize(Proofsteps const & src) const
 {
     Proofsize size = 0;
 
@@ -95,7 +95,7 @@ void Move::makesubst(Proofsteps const & src, Proofsteps & dest) const
         return dest.assign(src.begin(), src.end());
 
     // Preallocate for efficiency
-    dest.reserve(substitutionsize(src));
+    dest.reserve(substsize(src));
 
     // Make the substitution
     FOR (Proofstep const step, src)

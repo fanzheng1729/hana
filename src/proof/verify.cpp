@@ -96,7 +96,7 @@ static bool checkDV
     return true;
 }
 
-static Expression::size_type substitutionsize
+static Expression::size_type substsize
     (Expression const & src, Substitutions const & substs)
 {
     Expression::size_type size = 0;
@@ -114,7 +114,7 @@ static void makesubst
     if (substs.empty())
         return dest.assign(src.begin(), src.end());
     // Preallocate for efficiency
-    dest.reserve(substitutionsize(src, substs));
+    dest.reserve(substsize(src, substs));
     // Make the substitution
     FOR (Symbol3 symbol, src)
         if (Symbol3::ID const id = symbol.id)
