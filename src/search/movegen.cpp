@@ -1,8 +1,7 @@
 #include <algorithm>    // for std::min
-#include "../proof/analyze.h"
-#include "../proof/skeleton.h"
 #include "environ.h"
 #include "problem.h"
+#include "../proof/skeleton.h"
 
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const

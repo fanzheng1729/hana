@@ -18,7 +18,7 @@ struct Goal
     Goal() : maxabscomputed(false) {}
     Goal(Goalview view) :
         RPN(view.first), typecode(view.second), maxabscomputed(false) {}
-    bool fillast()
+    bool fillast() const
     {
         if (!ast.empty())
             return false;
