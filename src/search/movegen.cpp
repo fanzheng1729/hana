@@ -101,11 +101,9 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     if (thm.expmaxabs.empty())
         return false;
 
-    if (!goal.maxabscomputed)
-    {
-        goal.maxabs = maxabs(goal.RPN, goal.ast);
-        goal.maxabscomputed = true;
-    }
+    goal.fillmaxabs();
+    if (goal.maxabs.empty())
+        return false;
 
     Stepranges subst(thm.maxvarid() + 1);
 
