@@ -231,10 +231,10 @@ private:
     }
     pGoal addgoal(Goal const & goal, Environ const & env, Goalstatus s)
     {
-        std::pair<Goal const &, Goaldatas> goalpair(goal, Goaldatas());
-        pBIGGOAL const pbigGoal = &*goals.insert(goalpair).first;
-        Goaldatas::value_type const value(&env, Goaldata(s, &env, pbigGoal));
-        return &*pbigGoal->second.insert(value).first;
+        std::pair<Goal const &, Goaldatas> bigGoal(goal, Goaldatas());
+        pBIGGOAL const pbigGoal = &*goals.insert(bigGoal).first;
+        Goaldatas::value_type const envdata(&env, Goaldata(s, &env, pbigGoal));
+        return &*pbigGoal->second.insert(envdata).first;
     }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
