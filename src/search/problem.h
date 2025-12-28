@@ -58,10 +58,10 @@ public:
         // Add proofs of hypotheses.
         addhypproofs();
         // Root goal
-        pGoal const pgoal = addgoal(goal, *pProbEnv, s);
+        pGoal const pgoal = addgoal(goal, probEnv(), s);
         if (s == GOALTRUE)
             pgoal->second.psimpEnv = addsubEnv
-                (*pProbEnv, pProbEnv->hypstotrim(pgoal->second.goal()));
+                (probEnv(), probEnv().hypstotrim(pgoal->second.goal()));
         // Root node
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
