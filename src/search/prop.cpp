@@ -35,8 +35,6 @@ Goalstatus Prop::status(Goal const & goal) const
 // Return the hypotheses of a goal to trim.
 Bvector Prop::hypstotrim(Goal const & goal) const
 {
-    goal.fillast();
-
     Bvector result(assertion.nhyps(), false);
 
     bool trimmed = false;

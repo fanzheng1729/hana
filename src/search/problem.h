@@ -60,8 +60,12 @@ public:
         // Root goal
         pGoal const pgoal = addgoal(goal, probEnv(), s);
         if (s == GOALTRUE)
+        {
+            Goal const & rootgoal = pgoal->second.goal();
+            rootgoal.fillast();
             pgoal->second.psimpEnv = addsubEnv
-                (probEnv(), probEnv().hypstotrim(pgoal->second.goal()));
+                (probEnv(), probEnv().hypstotrim(rootgoal));
+        }
         // Root node
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
