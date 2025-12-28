@@ -2,6 +2,7 @@
 #define GOAL_H_INCLUDED
 
 #include "../util/algo.h"   // for util::compare
+#include "../proof/analyze.h"
 #include "../proof/verify.h"
 
 // Proof goal
@@ -17,6 +18,13 @@ struct Goal
     Goal() : maxabscomputed(false) {}
     Goal(Goalview view) :
         RPN(view.first), typecode(view.second), maxabscomputed(false) {}
+    bool fillast()
+    {
+        if (!ast.empty())
+            return false;
+        ast = ::ast(RPN);
+        return true;
+    }
     Proofsize size() const { return RPN.size(); }
     operator SteprangeAST() const { return SteprangeAST(RPN, ast); }
     Expression expression() const
@@ -36,7 +44,6 @@ inline bool operator<(Goal const & x, Goal const & y)
     = util::compare(x.RPN.begin(), x.RPN.end(), y.RPN.begin(), y.RPN.end());
     return cmp < 0 || cmp == 0 && x.typecode < y.typecode;
 }
-
 
 // Polymorphic context, with move generation and goal evaluation
 struct Environ;
