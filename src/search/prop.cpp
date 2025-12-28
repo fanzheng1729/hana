@@ -11,12 +11,13 @@
 // Determine status of a goal.
 Goalstatus Prop::status(Goal const & goal) const
 {
-    Proofsteps const & RPN = goal.RPN;
-    if (goal.ast.empty())
-        goal.ast = ast(RPN);
+    // Hypotheses
     CNFClauses cnf(hypscnf.first);
+    // Conclusion
+    Proofsteps const & RPN = goal.RPN;
+    goal.fillast();
     Atom natom = hypnatoms;
-    // Add hypotheses.
+    // Add Conclusion.
     if (!database.propctors().addclause
         (RPN, goal.ast, assertion.hypiters, cnf, natom))
     {
@@ -34,8 +35,7 @@ Goalstatus Prop::status(Goal const & goal) const
 // Return the hypotheses of a goal to trim.
 Bvector Prop::hypstotrim(Goal const & goal) const
 {
-    if (goal.ast.empty())
-        goal.ast = ast(goal.RPN);
+    goal.fillast();
 
     Bvector result(assertion.nhyps(), false);
 
