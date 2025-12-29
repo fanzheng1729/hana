@@ -14,23 +14,15 @@ struct Goal
     AST mutable ast;
     // Maximal abstractions
     GovernedSteprangesbystep mutable maxabs;
-    bool mutable maxabscomputed;
-    Goal() : maxabscomputed(false) {}
+    bool mutable maxabsfilled;
+    Goal() : maxabsfilled(false) {}
     Goal(Goalview view) :
-        RPN(view.first), typecode(view.second), maxabscomputed(false) {}
-    bool fillast() const
+        RPN(view.first), typecode(view.second), maxabsfilled(false) {}
+    void fillast() const { !ast.empty() || (ast = ::ast(RPN), 0); }
+    void fillmaxabs() const
     {
-        if (!ast.empty())
-            return false;
-        ast = ::ast(RPN);
-        return true;
-    }
-    bool fillmaxabs() const
-    {
-        if (maxabscomputed)
-            return false;
-        maxabs = ::maxabs(RPN, ast);
-        return maxabscomputed = true;
+        maxabsfilled ||
+        (fillast(), maxabs = ::maxabs(RPN, ast), maxabsfilled = true);
     }
     Proofsize size() const { return RPN.size(); }
     operator SteprangeAST() const { return SteprangeAST(RPN, ast); }
