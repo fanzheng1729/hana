@@ -48,8 +48,13 @@ struct Environ : protected Gen
     // Return true if *this <= problem context
     bool subsumedbyProb() const { return m_subsumedbyProb; }
     // Return true if maxranks is simpler than problem maxranks
-    // Updated when problem is simplified
     bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
+    // Update when problem is simplified
+    bool updateimps(SyntaxDAG::Ranks const & probmaxranks) const
+    {
+        return m_rankssimplerthanProb =
+        database.syntaxDAG().simplerthan(maxranks, probmaxranks);
+    }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const { return ass.number>0; }
     // Determine status of a goal.

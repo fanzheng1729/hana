@@ -218,11 +218,7 @@ private:
     {
         Environ * const p = new Env(env);
         environs[env.name] = p;
-        p->pProb = this;
-        p->m_subsumedbyProb = true;
-        p->m_rankssimplerthanProb
-        = database.syntaxDAG().simplerthan(p->maxranks, maxranks);
-        return p;
+        return initEnv(p);
     }
     friend Environ;
     // Add a goal. Return its pointer.
@@ -243,11 +239,10 @@ private:
     // Initialize a context if existent. Return its pointer.
     Environ const * initEnv(Environ * p)
     {
-        if (!p) return NULL;
+        if (!p) return p;
         p->pProb = this;
-        p->m_subsumedbyProb = (probEnv().compare(*p) == 1);
-        p->m_rankssimplerthanProb
-        = database.syntaxDAG().simplerthan(p->maxranks, maxranks);
+        p->m_subsumedbyProb = environs.size()<=1 || (probEnv().compare(*p)==1);
+        p->updateimps(maxranks);
         return &addimps(addhypproofs(*p));
     }
     // close all the nodes except p
