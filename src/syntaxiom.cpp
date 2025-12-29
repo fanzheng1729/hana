@@ -50,19 +50,18 @@ Syntaxioms::Syntaxioms
 //std::cout << "Syntax axioms:" << std::endl;
     for (Assiter iter = assertions.begin(); iter != assertions.end(); ++iter)
     {
-        if ((iter->second.type & Asstype::AXIOM) == 0)
+        Assertion const & ass = iter->second;
+        if ((ass.type & Asstype::AXIOM) == 0)
             continue; // Skip theorems.
 
-        Expression const & exp = iter->second.expression;
-        if (unexpected(exp.empty(), "Empty expression", iter->first))
-            continue;
         // Check if it starts with a primitive type code and has no essential hyps.
-        if (database.typecodes().isprimitive(exp[0]) == TRUE &&
-            iter->second.nEhyps() == 0)
+        if (database.typecodes().isprimitive(ass.exptypecode()) == TRUE &&
+            ass.nEhyps() == 0)
         {
             Syntaxiom & syntaxiom = (*this)[iter->first];
             syntaxiom.pass = &*iter;
             // Fill constants of the syntax axiom.
+            Expression const & exp = ass.expression;
             std::remove_copy_if(exp.begin() + 1, exp.end(),
                                 end_inserter(syntaxiom.constants), id);
 //std::cout << iter->first << ' ';
