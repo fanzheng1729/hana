@@ -375,15 +375,15 @@ bool Propctors::checkpropsat(Assertions const & assertions,
 {
     FOR (Assertions::const_reference rass, assertions)
     {
-        Assertion const & assertion(rass.second);
-        if (assertion.expression.empty())
+        Assertion const & ass = rass.second;
+        if (ass.expression.empty())
             return false;
-        if (typecodes.isprimitive(assertion.exptypecode()) != FALSE)
+        if (typecodes.isprimitive(ass.exptypecode()) != FALSE)
             continue; // Skip syntax axioms.
-        if (!(assertion.type & Asstype::PROPOSITIONAL))
+        if (!(ass.type & Asstype::PROPOSITIONAL))
             continue; // Skip non propositional assertions.
 
-        if (!checkpropsat(assertion, assertion.expRPN))
+        if (!checkpropsat(ass, ass.expRPN))
         {
             printass(rass);
             std::cerr << "Logic error!" << std::endl;

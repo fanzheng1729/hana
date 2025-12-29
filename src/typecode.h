@@ -13,13 +13,13 @@ struct Typecodes : std::map<std::string, std::pair<std::string, bool> >
     Typecodes(struct Commands const & syntax, Commands const & bound);
     Tribool isprimitive(strview typecode) const
     {
-        const_iterator const iter(find(typecode));
+        const_iterator const iter = find(typecode);
         if (iter == end()) return UNKNOWN;
         return iter->second.first.empty() ? TRUE : FALSE;
     }
     Tribool isbound(strview typecode) const
     {
-        const_iterator const iter(find(typecode));
+        const_iterator const iter = find(typecode);
         if (iter == end()) return UNKNOWN;
         return iter->second.second ? TRUE : FALSE;
     }
