@@ -159,8 +159,7 @@ Assertions::size_type Database::markduplicate()
         bool const isdup = isduplicate(ass, *this);
         ass.type |= isdup * Asstype::DUPLICATE;
         // Check if it is duplicate and starts with a non-primitive type code.
-        if (isdup && !ass.expression.empty()
-            && typecodes().isprimitive(ass.exptypecode()) == FALSE)
+        if (isdup && typecodes().isprimitive(ass.exptypecode()) == FALSE)
             ++ndups;
         progress << ++n/static_cast<Ratio>(assertions().size());
     }

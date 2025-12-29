@@ -199,8 +199,7 @@ public:
             bool isprop = maxsymboldefnumber(ass,propctors(), Syntaxioms(), 1);
             ass.type |= isprop * Asstype::PROPOSITIONAL;
             // Check if it is propositional and starts with a non-primitive type code.
-            if (isprop && !ass.expression.empty() &&
-                typecodes().isprimitive(ass.exptypecode()) == FALSE)
+            if (isprop && typecodes().isprimitive(ass.exptypecode()) == FALSE)
             {
                 addfreqcount(ass, m_propctors);
                 ++n;
