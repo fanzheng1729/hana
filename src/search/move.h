@@ -4,7 +4,6 @@
 #include "../ass.h"
 #include "../bank.h"
 #include "goal.h"
-#include "../util/for.h"
 #include "../util/hex.h"
 
 static const std::string strconj = "CONJ";
@@ -154,14 +153,6 @@ struct Move
     Proofsteps const * psubgoalproof(Hypsize index) const;
     // # of conjectures made
     Hypsize nconjs() const { return isconj() * (absconjs.size() - 1); }
-    // Return true if the move uses abstract variables (must be of type CONJ).
-    bool hasabsvars() const
-    {
-        FOR (Proofsteps const & RPN, substitutions)
-            if (!RPN.empty())
-                return true;
-        return false;
-    }
     // Abstract variables in use (must be of type CONJ)
     Expression absvars(Bank const & bank) const
     {
