@@ -13,9 +13,7 @@ strview Proofstep::typecode() const
         if (phyp->second.expression.empty()) return "";
         return phyp->second.expression[0];
     case THM:
-        if (!pass) return "";
-        if (pass->second.expression.empty()) return "";
-        return pass->second.expression[0];
+        return pass ? pass->second.exptypecode() : strview();
     default:
         return "";
     }
