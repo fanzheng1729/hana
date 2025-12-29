@@ -50,8 +50,7 @@ bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stac
         if (stacktop.empty())
             return false;
         if (ptypes->isprimitive(stacktop[0]) == FALSE)
-            steps.back()[2] = Symbol2(">=", ++savecount);
-        return true;
+            return steps.back()[2] = Symbol2(">=", ++savecount);
     default:
         return false;
     }
