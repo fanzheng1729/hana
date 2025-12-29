@@ -216,7 +216,7 @@ private:
     template<class Env>
     Environ const * addProbEnv(Env const & env)
     {
-        Environ * const p = new Env(env);
+        Environ * const p  = new Env(env);
         environs[env.name] = p;
         return initEnv(p);
     }
