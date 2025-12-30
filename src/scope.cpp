@@ -1,6 +1,5 @@
 #include <algorithm>    // for std::reverse and std::sort
 #include <iostream>
-#include <numeric>      // for std::partial_sum
 #include "ass.h"
 #include "getproof.h"
 #include "util/filter.h"
@@ -204,9 +203,9 @@ void Scopes::completeass(struct Assertion & ass) const
         ass.nfreevars = nfreevars(ass.varusage);
         // Sort hypotheses in order of decreasing # free variables
         Hypsizes & hypsorder = ass.hypsorder;
-        hypsorder.assign(ass.nhyps(), 1);
-        hypsorder[0] = 0;
-        std::partial_sum(hypsorder.begin(), hypsorder.end(), hypsorder.begin());
+        hypsorder.resize(ass.nhyps());
+        for (Hypsize i = 0; i < ass.nhyps(); ++i)
+            hypsorder[i] = i;
         Hypcomp comp = {ass};
         std::sort(hypsorder.begin(), hypsorder.end(), comp);
     }
