@@ -174,17 +174,17 @@ Frequencies frequencies(T const & definitions)
     if (definitions.empty())
         return Frequencies();
 
-    Freqcount total = 0;
+    Freqcount total = 0, size = definitions.size();
     FOR (typename T::const_reference rdef, definitions)
         total += rdef.second.freqcount;
     if (total == 0)
-        return Frequencies(definitions.size(), 1./definitions.size());
+        return Frequencies(size, 1./size);
     
-    Frequencies freqs;
-    // Preallocate for efficiency.
-    freqs.reserve(definitions.size());
+    Frequencies freqs(size);
+    
+    size = 0;
     FOR (typename T::const_reference rdef, definitions)
-        freqs.push_back(rdef.second.freqcount/static_cast<Frequency>(total));
+        freqs[size++] = rdef.second.freqcount/static_cast<Frequency>(total);
 
     return freqs;
 }
