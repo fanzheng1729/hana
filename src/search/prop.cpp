@@ -27,7 +27,7 @@ Goalstatus Prop::status(Goal const & goal) const
         return GOALFALSE;
     }
     // Negate conclusion.
-    cnf.closeoff((natom - 1) * 2 + 1);
+    cnf.closeoff(natom - 1, true);
     return cnf.sat() ? GOALFALSE : GOALTRUE;
 }
 
@@ -64,7 +64,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         database.propctors().addformula
         (goal.RPN, goal.ast, assertion.hypiters, cnf2, natom);
         // Negate conclusion.
-        cnf2.closeoff((natom - 1) * 2 + 1);
+        cnf2.closeoff(natom - 1, true);
         if ((result[i] = !cnf2.sat()))
             trimmed = true;
     }
