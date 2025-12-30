@@ -81,8 +81,7 @@ static double distance
         return 0;
     return 0;
     // Total occurrence count
-    double total =
-    double (std::accumulate(goal.begin(), goal.end(), Proofsize()));
+    double const total = static_cast<double>(goal.sum());
 
     double dist = 0;
     for (std::size_t i = 0; i < size; ++i)

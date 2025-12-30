@@ -73,6 +73,7 @@
         "thread": "cpp",
         "*.rh": "cpp",
         "print": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "valarray": "cpp"
     }
 }

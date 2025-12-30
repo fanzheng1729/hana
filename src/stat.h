@@ -142,7 +142,7 @@ void addfreqcount(Assertion const & ass, T & definitions)
 }
 
 // Frequency count list
-typedef std::vector<Freqcount> Freqcounts;
+typedef std::valarray<Freqcount> Freqcounts;
 // Count the syntax axioms in a rev-Polish notation.
 inline void addfreqcounts
     (Proofsteps const & RPN, Labels const & labels, Freqcounts & counts)
