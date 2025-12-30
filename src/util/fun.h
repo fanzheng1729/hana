@@ -13,39 +13,37 @@ namespace util
     template<class R, class T>
     class mem_fn_t
     {
-        typedef R T::* PM;
         typedef R (T::*PF)();
-        PM pm;
         PF pf;
     public:
-        mem_fn_t(PM mem) : pm(mem), pf(NULL) {}
-        mem_fn_t(PF mem) : pm(NULL), pf(mem) {}
-        R operator()(T * p) const { return pm ? p->*pm : (p->*pf)(); }
-        R operator()(T const * p) const { return pm ? p->*pm : (p->*pf)(); }
-        R operator()(T & t) const { return pm ? t.*pm : (t.*pf)(); }
-        R operator()(T const & t) const { return pm ? t.*pm : (t.*pf)(); }
+        mem_fn_t(PF fun) : pf(fun) {}
+        R operator()(T * p) const { return (p->*pf)(); }
+        R operator()(T & t) const { return (t.*pf)(); }
     }; // struct mem_fn_t
 
     template<class R, class T>
     class const_mem_fn_t
     {
+        typedef R T::* PM;
         typedef R (T::*PF)() const;
+        PM pm;
         PF pf;
     public:
-        const_mem_fn_t(PF mem) : pf(mem) {}
-        R operator()(T const * p) const { return (p->*pf)(); }
-        R operator()(T const & t) const { return (t.*pf)(); }
+        const_mem_fn_t(PM mem) : pm(mem), pf(NULL) {}
+        const_mem_fn_t(PF mem) : pm(NULL), pf(mem) {}
+        R operator()(T const * p) const { return pm ? p->*pm : (p->*pf)(); }
+        R operator()(T const & t) const { return pm ? t.*pm : (t.*pf)(); }
     }; // struct const_mem_fn_t
 
     // mem_fn for pointers to a member
     template<class R, class T>
-    mem_fn_t<R, T> mem_fn(R T::* mem) {return mem;}
+    const_mem_fn_t<R, T> mem_fn(R T::* mem) { return mem; }
     // mem_fn for pointers to a member function
     template<class R, class T>
-    mem_fn_t<R, T> mem_fn(R (T::*mem)()) {return mem;}
+    mem_fn_t<R, T> mem_fn(R (T::*fun)()) { return fun; }
     // mem_fn for pointers to a constant member function
     template<class R, class T>
-    const_mem_fn_t<R, T> mem_fn(R (T::*mem)() const) {return mem;}
+    const_mem_fn_t<R, T> mem_fn(R (T::*fun)() const) { return fun; }
 #endif // __cplusplus >= 201103L
 
 #ifdef __cpp_lib_not_fn

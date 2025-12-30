@@ -5,7 +5,7 @@
 #include "def.h"
 #include "util/find.h"
 #include "util/for.h"
-// #include "io.h"
+#include "io.h"
 #include "syntaxiom.h"
 
 // Check if all symbols in a revPolish notation are defined.
@@ -110,12 +110,10 @@ typedef std::vector<strview> Labels;
 template<class T>
 Labels labels(T const & definitions)
 {
-    Labels result;
-    // Preallocate for efficiency.
-    result.reserve(definitions.size());
-    FOR (typename T::const_reference rdef, definitions)
-        result.push_back(rdef.first);
-    return result;
+    Labels dflabel(definitions.size());
+    std::transform(definitions.begin(), definitions.end(), dflabel.begin(),
+                    util::mem_fn(&T::value_type::first));
+    return dflabel;
 }
 
 // Add the syntax axioms of a rev-Polish notation to the frequency count.
