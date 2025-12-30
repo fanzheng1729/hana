@@ -73,8 +73,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     return trimmed ? assertion.trimvars(result, goal.RPN) : Bvector();
 }
 
-static double distance
-    (Freqcounts const & goal, Frequencies const & ref)
+static double distance(Freqcounts const & goal, Frequencies const & ref)
 {
     std::size_t const size = goal.size();
     if (unexpected(size != ref.size(), "size mismatch", ""))
