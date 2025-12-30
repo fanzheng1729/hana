@@ -263,7 +263,7 @@ bool Propctors::addclause
     (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
 {
-    if (unexpected(ast.empty(), "empty proof tree when adding CNF of", RPN))
+    if (RPN.empty() || RPN.size() != ast.size())
         return false;
 
     std::vector<Literal> literals(RPN.size());
@@ -285,20 +285,20 @@ bool Propctors::addclause
 //std::cout << "New CNF:\n" << cnf;
                 return true;
             }
-            std::cerr << "In " << RPN;
-            return !unexpected(true, "variable", step);
+            std::cerr << "Bad var " << step << " in\n" << RPN;
+            return false;
         }
 //std::cout << "operator ";
-        // CNF
-        const_iterator const itercnf = find(step);
-        if (unexpected(itercnf == end(), "connective", step))
+        // connective
+        const_iterator const iter = find(step);
+        if (unexpected(iter == end(), "connective", step))
             return false;
         // Its arguments
         std::vector<Literal> args(ast[i].size());
         for (ASTnode::size_type j = 0; j < args.size(); ++j)
             args[j] = literals[ast[i][j]];
         // Add the CNF.
-        cnf.append(itercnf->second.cnf, natom, args.data(), args.size());
+        cnf.append(iter->second.cnf, natom, args.data(), args.size());
         literals[i] = natom++ * 2;
 //std::cout << literals[i] / 2 << std::endl;
     }
