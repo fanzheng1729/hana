@@ -5,7 +5,7 @@
 #include "def.h"
 #include "util/find.h"
 #include "util/for.h"
-#include "io.h"
+// #include "io.h"
 #include "syntaxiom.h"
 
 // Check if all symbols in a revPolish notation are defined.
