@@ -17,7 +17,7 @@ Goalstatus Prop::status(Goal const & goal) const
     goal.fillast();
     Atom natom = hypnatoms;
     // Add Conclusion.
-    if (!database.propctors().addclause
+    if (!database.propctors().addformula
         (RPN, goal.ast, assertion.hypiters, cnf, natom))
     {
         std::cerr << "Bad CNF from\n" << RPN << goal.expression();
@@ -61,7 +61,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf2;
         Atom natom = cnf2.empty() ? assertion.nhyps() : cnf2.natoms();
         // Add conclusion.
-        database.propctors().addclause
+        database.propctors().addformula
         (goal.RPN, goal.ast, assertion.hypiters, cnf2, natom);
         // Negate conclusion.
         cnf2.closeoff((natom - 1) * 2 + 1);

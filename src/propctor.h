@@ -48,10 +48,10 @@ struct Propctors : std::map<strview, Propctor>
 // Evaluate *iter at arg. Return UNKNOWN if not okay.
     int calcbool
         (Definitions const & defs, Definition const & def, TTindex arg);
-// Add CNF clauses from reverse Polish notation.
+// Add CNF clauses from reverse Polish notation of a formula.
 // # of auxiliary atoms start from natom.
 // Return true if okay. First auxiliary atom = hyps.size()
-    bool addclause
+    bool addformula
         (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
          CNFClauses & cnf, Atom & natom) const;
 // Translate the hypotheses of a propositional assertion to the CNF of an SAT.
