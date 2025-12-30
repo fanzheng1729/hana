@@ -74,8 +74,6 @@ typedef Proofsize Freqcount;
 typedef std::vector<Freqcount> Freqcounts;
 // Weight of a rev-Polish notation
 typedef Proofsize Weight;
-// Weight list
-typedef std::vector<Weight> Weights;
 
 struct Hypothesis
 {
