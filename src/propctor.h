@@ -64,9 +64,8 @@ struct Propctors : std::map<strview, Propctor>
     CNFClauses cnf
         (Assertion const & ass, Proofsteps const & conclusion,
          Bvector const & hypstotrim = Bvector()) const;
-// Return true if an expression is valid given a propositional assertion.
-    bool checkpropsat(Assertion const & ass,
-                      Proofsteps const & conclusion) const;
+// Return true if a propositional assertion is sound.
+    bool checkpropsat(Assertion const & ass) const;
 // Return true if all propositional assertions are sound.
     bool checkpropsat(Assertions const & assertions,
                       struct Typecodes const & typecodes) const;

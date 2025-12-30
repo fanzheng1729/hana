@@ -355,17 +355,15 @@ CNFClauses Propctors::cnf
     return cnf;
 }
 
-// Return true if an expression is valid given a propositional assertion.
-bool Propctors::checkpropsat(Assertion const & ass,
-                             Proofsteps const & conclusion) const
+// Return true if a propositional assertion is sound.
+bool Propctors::checkpropsat(Assertion const & ass) const
 {
-    CNFClauses const & clauses(cnf(ass, conclusion));
+    CNFClauses const & clauses(cnf(ass, ass.expRPN));
 
     if (!clauses.sat())
         return true;
 
-    if (&conclusion == &ass.expRPN)
-        std::cerr << "CNF:\n" << clauses << "counter-satisfiable" << std::endl;
+    std::cerr << "CNF:\n" << clauses << "counter-satisfiable" << std::endl;
     return false;
 }
 
@@ -383,7 +381,7 @@ bool Propctors::checkpropsat(Assertions const & assertions,
         if (!(ass.type & Asstype::PROPOSITIONAL))
             continue; // Skip non propositional assertions.
 
-        if (!checkpropsat(ass, ass.expRPN))
+        if (!checkpropsat(ass))
         {
             printass(rass);
             std::cerr << "Logic error!" << std::endl;
