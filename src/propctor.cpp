@@ -325,7 +325,7 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
                 (ass.hypRPN(i), ass.hypAST(i), ass.hypiters, cnf, natom))
                 return Hypscnf();
             // Assume the hypothesis.
-            cnf.closeoff((natom - 1) * 2);
+            cnf.closeoff(natom - 1, false);
         }
         result.second[i] = cnf.size();
     }
@@ -342,7 +342,7 @@ CNFClauses Propctors::cnf(Assertion const & ass) const
     if (!addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom))
         return CNFClauses();
     // Negate conclusion.
-    cnf.closeoff((natom - 1) * 2 + 1);
+    cnf.closeoff(natom - 1, true);
 
     return cnf;
 }
