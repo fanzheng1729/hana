@@ -359,12 +359,7 @@ CNFClauses Propctors::cnf
 bool Propctors::checkpropsat(Assertion const & ass) const
 {
     CNFClauses const & clauses(cnf(ass, ass.expRPN));
-
-    if (!clauses.sat())
-        return true;
-
-    std::cerr << "CNF:\n" << clauses << "counter-satisfiable" << std::endl;
-    return false;
+    return !unexpected(clauses.sat(), "unsound CNF", clauses);
 }
 
 // Return true if all propositional assertions are sound.
