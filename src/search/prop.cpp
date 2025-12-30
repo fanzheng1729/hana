@@ -74,10 +74,10 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 }
 
 static double distance
-    (Freqcounts const & goal, Frequencies const & all)
+    (Freqcounts const & goal, Frequencies const & ref)
 {
     Freqcounts::size_type const size = goal.size();
-    if (unexpected(size != all.size(), "size mismatch", ""))
+    if (unexpected(size != ref.size(), "size mismatch", ""))
         return 0;
     return 0;
     // Total occurrence count
@@ -86,7 +86,7 @@ static double distance
     double dist = 0;
     for (Freqcounts::size_type i = 0; i < size; ++i)
     {
-        double  diff = goal[i]/static_cast<double>(total) - all[i];
+        double  diff = goal[i]/static_cast<double>(total) - ref[i];
         dist += diff * diff;
     }
     return dist;
