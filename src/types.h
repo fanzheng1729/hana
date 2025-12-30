@@ -70,8 +70,6 @@ typedef std::vector<Proofsize> Indentations;
 
 // # occurrences
 typedef Proofsize Freqcount;
-// Frequency count list
-typedef std::vector<Freqcount> Freqcounts;
 // Weight of a rev-Polish notation
 typedef Proofsize Weight;
 

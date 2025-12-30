@@ -141,6 +141,8 @@ void addfreqcount(Assertion const & ass, T & definitions)
             addfreqcount(ass.hypRPN(i), definitions);
 }
 
+// Frequency count list
+typedef std::vector<Freqcount> Freqcounts;
 // Count the syntax axioms in a rev-Polish notation.
 inline void addfreqcounts
     (Proofsteps const & RPN, Labels const & labels, Freqcounts & counts)
