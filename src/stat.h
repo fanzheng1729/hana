@@ -142,7 +142,7 @@ void addfreqcount(Assertion const & ass, T & definitions)
 
 // Count the syntax axioms in a rev-Polish notation.
 inline void addfreqcounts
-    (Proofsteps const & RPN, Labels const & labels, Freqcounts & result)
+    (Proofsteps const & RPN, Labels const & labels, Freqcounts & counts)
 {
     FOR (Proofstep const step, RPN)
         if (step.isthm() && step.pass)
@@ -151,18 +151,18 @@ inline void addfreqcounts
                 Labels::size_type const i
                 = util::findsorted(labels, label) - labels.begin();
                 if (i < labels.size())
-                    ++result[i];
+                    ++counts[i];
             }
 }
 
 // Count the syntax axioms in all hypotheses of an assertion.
 inline Freqcounts hypsfreqcounts(Assertion const & ass, Labels const & labels)
 {
-    Freqcounts result(labels.size());
+    Freqcounts counts(labels.size());
     for (Hypsize i = 0; i < ass.nhyps(); ++i)
         if (!ass.hypfloats(i))
-            addfreqcounts(ass.hypRPN(i), labels, result);
-    return result;
+            addfreqcounts(ass.hypRPN(i), labels, counts);
+    return counts;
 }
 
 typedef double Frequency;
@@ -174,20 +174,19 @@ Frequencies frequencies(T const & definitions)
     if (definitions.empty())
         return Frequencies();
 
-    Frequencies result;
-    // Preallocate for efficiency.
-    result.reserve(definitions.size());
-
     Freqcount total = 0;
     FOR (typename T::const_reference rdef, definitions)
         total += rdef.second.freqcount;
-
     if (total == 0)
         return Frequencies(definitions.size(), 1./definitions.size());
     
+    Frequencies freqs;
+    // Preallocate for efficiency.
+    freqs.reserve(definitions.size());
     FOR (typename T::const_reference rdef, definitions)
-        result.push_back(rdef.second.freqcount/static_cast<Frequency>(total));
-    return result;
+        freqs.push_back(rdef.second.freqcount/static_cast<Frequency>(total));
+
+    return freqs;
 }
 
 // Find the weights of a definition
