@@ -260,17 +260,11 @@ static void addlitatomequiv(CNFClauses & cnf, Literal lit, Atom atom)
 // # of auxiliary atoms start from natom.
 // Return true if okay. First auxiliary atom = hyps.size()
 bool Propctors::addclause
-    (Proofsteps const & RPN, Hypiters const & hyps,
-     CNFClauses & cnf, Atom & natom) const
-{
-    return addclause(RPN, ast(RPN), hyps, cnf, natom);
-}
-bool Propctors::addclause
     (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
 {
     if (unexpected(ast.empty(), "empty proof tree when adding CNF of", RPN))
-        return throw, false;
+        return false;
 
     std::vector<Literal> literals(RPN.size());
     for (Proofsize i = 0; i < RPN.size(); ++i)
@@ -339,15 +333,13 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
 }
 
 // Translate a propositional assertion to the CNF of an SAT instance.
-CNFClauses Propctors::cnf
-    (Assertion const & ass, Proofsteps const & conclusion,
-     Bvector const & hypstotrim) const
+CNFClauses Propctors::cnf(Assertion const & ass) const
 {
     // Add hypotheses.
     Atom natom = 0;
-    CNFClauses cnf(hypscnf(ass, natom, hypstotrim).first);
+    CNFClauses cnf(hypscnf(ass, natom, Bvector()).first);
     // Add conclusion.
-    if (!addclause(conclusion, ass.hypiters, cnf, natom))
+    if (!addclause(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom))
         return CNFClauses();
     // Negate conclusion.
     cnf.closeoff((natom - 1) * 2 + 1);
@@ -358,7 +350,7 @@ CNFClauses Propctors::cnf
 // Return true if a propositional assertion is sound.
 bool Propctors::checkpropsat(Assertion const & ass) const
 {
-    CNFClauses const & clauses(cnf(ass, ass.expRPN));
+    CNFClauses const & clauses(cnf(ass));
     return !unexpected(clauses.sat(), "unsound CNF", clauses);
 }
 

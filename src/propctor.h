@@ -52,18 +52,13 @@ struct Propctors : std::map<strview, Propctor>
 // # of auxiliary atoms start from natom.
 // Return true if okay. First auxiliary atom = hyps.size()
     bool addclause
-        (Proofsteps const & RPN, Hypiters const & hyps,
-         CNFClauses & cnf, Atom & natom) const;
-    bool addclause
         (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
          CNFClauses & cnf, Atom & natom) const;
 // Translate the hypotheses of a propositional assertion to the CNF of an SAT.
     Hypscnf hypscnf(Assertion const & ass, Atom & natom,
                     Bvector const & hypstotrim = Bvector()) const;
 // Translate a propositional assertion to the CNF of an SAT instance.
-    CNFClauses cnf
-        (Assertion const & ass, Proofsteps const & conclusion,
-         Bvector const & hypstotrim = Bvector()) const;
+    CNFClauses cnf(Assertion const & ass) const;
 // Return true if a propositional assertion is sound.
     bool checkpropsat(Assertion const & ass) const;
 // Return true if all propositional assertions are sound.
