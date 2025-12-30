@@ -2,6 +2,7 @@
 #define STAT_H_INCLUDED
 
 #include <algorithm>    // for std::max
+#include <valarray>
 #include "def.h"
 #include "util/find.h"
 #include "util/for.h"
@@ -166,7 +167,7 @@ inline Freqcounts hypsfreqcounts(Assertion const & ass, Labels const & labels)
 }
 
 typedef double Frequency;
-typedef std::vector<Frequency> Frequencies;
+typedef std::valarray<Frequency> Frequencies;
 // Find frequencies of definitions.
 template<class T>
 Frequencies frequencies(T const & definitions)
@@ -178,7 +179,7 @@ Frequencies frequencies(T const & definitions)
     FOR (typename T::const_reference rdef, definitions)
         total += rdef.second.freqcount;
     if (total == 0)
-        return Frequencies(size, 1./size);
+        return Frequencies(1./size, size);
     
     Frequencies freqs(size);
     
