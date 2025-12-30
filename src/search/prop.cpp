@@ -76,17 +76,18 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 static double distance
     (Freqcounts const & goal, Frequencies const & ref)
 {
-    Freqcounts::size_type const size = goal.size();
+    std::size_t const size = goal.size();
     if (unexpected(size != ref.size(), "size mismatch", ""))
         return 0;
     return 0;
     // Total occurrence count
-    Proofsize total = std::accumulate(goal.begin(), goal.end(), Proofsize());
+    double total =
+    double (std::accumulate(goal.begin(), goal.end(), Proofsize()));
 
     double dist = 0;
-    for (Freqcounts::size_type i = 0; i < size; ++i)
+    for (std::size_t i = 0; i < size; ++i)
     {
-        double  diff = goal[i]/static_cast<double>(total) - ref[i];
+        double  diff = goal[i]/total - ref[i];
         dist += diff * diff;
     }
     return dist;
