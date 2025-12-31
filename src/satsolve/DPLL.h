@@ -39,8 +39,9 @@ bool DPLL();
 class DPLL_solver : public SATsolver
 {
 public:
-    DPLL_solver(CNFClauses const & hypotheses) :
-        SATsolver(hypotheses) { parseInput(hypotheses); }
+    DPLL_solver
+        (CNFClauses const & hyps, CNFClauses const & conclusion=CNFClauses()) :
+        SATsolver(hyps) { parseInput(cnf); }
     bool sat() const { return checkUnitClauses() && DPLL(); }
 };
 
