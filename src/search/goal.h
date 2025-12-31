@@ -18,11 +18,13 @@ struct Goal
     Goal() : maxabsfilled(false) {}
     Goal(Goalview view) :
         RPN(view.first), typecode(view.second), maxabsfilled(false) {}
-    void fillast() const { !ast.empty() || (ast = ::ast(RPN), 0); }
+    void fillast() const { if (ast.empty()) ast = ::ast(RPN); }
     void fillmaxabs() const
     {
-        maxabsfilled ||
-        (fillast(), maxabs = ::maxabs(RPN, ast), maxabsfilled = true);
+        if (maxabsfilled) return;
+        fillast();
+        maxabs = ::maxabs(RPN, ast);
+        maxabsfilled = true;
     }
     Proofsize size() const { return RPN.size(); }
     operator SteprangeAST() const { return SteprangeAST(RPN, ast); }
