@@ -101,7 +101,7 @@ inline Atom var(sLiteral literal) { return std::abs(literal); }
  * Reads the CNF and initializes
  * any remaining necessary data structures and variables.
  */
-void parseInput(CNFClauses const & cnf) {
+void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
     numVariables = cnf.natoms();
     numClauses = cnf.size();
 

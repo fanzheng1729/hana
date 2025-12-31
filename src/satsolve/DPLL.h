@@ -21,7 +21,7 @@ typedef std::vector<sCNFClause> sCNF;
  * Reads the CNF and initializes
  * any remaining necessary data structures and variables.
  */
-void parseInput(CNFClauses const & cnf);
+void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2=CNFClauses());
 
 /**
  * Checks for any unit clause and sets the appropriate values in the
@@ -39,9 +39,10 @@ bool DPLL();
 class DPLL_solver : public SATsolver
 {
 public:
+    CNFClauses const & cnf2;
     DPLL_solver
         (CNFClauses const & hyps, CNFClauses const & conclusion=CNFClauses()) :
-        SATsolver(hyps) { parseInput(cnf); }
+        SATsolver(hyps), cnf2(conclusion) { parseInput(cnf); }
     bool sat() const { return checkUnitClauses() && DPLL(); }
 };
 
