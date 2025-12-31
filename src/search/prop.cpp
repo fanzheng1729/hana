@@ -7,23 +7,26 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
+// Report error in status() and return GOALFALSE.
+static Goalstatus statuserr(Environ const & env, Proofsteps const & RPN)
+{
+    std::cerr << "Bad goal\n" << RPN << "in env " << env.name;
+    std::cerr << " in Problem #" << env.prob().number() << std::endl;
+    // std::cin.get();
+    return GOALFALSE;
+}
+
 // Determine status of a goal.
 Goalstatus Prop::status(Goal const & goal) const
 {
-    Proofsteps const & RPN = goal.RPN;
     goal.fillast();
+
     CNFClauses cnf;
     // Add Conclusion.
     Atom natom = hypnatoms;
     if (!database.propctors().addformula
-        (RPN, goal.ast, assertion.hypiters, cnf, natom))
-    {
-        std::cerr << "Bad CNF from\n" << RPN << goal.expression();
-        std::cerr << "in context " << name << " in Problem #";
-        std::cerr << prob().probAss().number << std::endl;
-// std::cin.get();
-        return GOALFALSE;
-    }
+        (goal.RPN, goal.ast, assertion.hypiters, cnf, natom))
+        return statuserr(*this, goal.RPN);
     // Negate conclusion.
     cnf.closeoff(natom - 1, true);
 

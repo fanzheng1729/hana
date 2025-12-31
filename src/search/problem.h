@@ -35,7 +35,8 @@ public:
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     // Assertion to be proven
-    Assertion const & probAss() const {return probEnv().assertion; }
+    Assertion const & probAss() const { return probEnv().assertion; }
+    Assertions::size_type number() const { return probAss().number; }
     // Is staged move generation used?
     enum { STAGED = 1 };
     bool const staged;
