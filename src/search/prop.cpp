@@ -10,13 +10,11 @@
 // Determine status of a goal.
 Goalstatus Prop::status(Goal const & goal) const
 {
-    // Hypotheses
-    CNFClauses cnf(hypscnf.first);
-    // Conclusion
     Proofsteps const & RPN = goal.RPN;
     goal.fillast();
-    Atom natom = hypnatoms;
+    CNFClauses cnf;
     // Add Conclusion.
+    Atom natom = hypnatoms;
     if (!database.propctors().addformula
         (RPN, goal.ast, assertion.hypiters, cnf, natom))
     {
@@ -28,7 +26,8 @@ Goalstatus Prop::status(Goal const & goal) const
     }
     // Negate conclusion.
     cnf.closeoff(natom - 1, true);
-    return cnf.sat() ? GOALFALSE : GOALTRUE;
+
+    return hypscnf.first.sat(cnf) ? GOALFALSE : GOALTRUE;
 }
 
 // Return the hypotheses of a goal to trim.

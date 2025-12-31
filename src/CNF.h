@@ -80,8 +80,15 @@ struct CNFClauses : public std::vector<CNFClause>
                 return false;
         return true;
     }
-    // Return if the clauses are satisfiable.
+    // Return true if the SAT instance is satisfiable.
     bool sat() const;
+    // Return true if the SAT instance and the conclusion are satisfiable.
+    bool sat(CNFClauses & conclusion) const
+    {
+        conclusion.insert(conclusion.end(), begin(), end());
+        return conclusion.sat();
+    }
+    // Return if the clauses are satisfiable.
     // Map: free atoms -> truth value.
     // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom const nfree) const;
