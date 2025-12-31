@@ -68,6 +68,7 @@ typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
 // List of indentations
 typedef std::vector<Proofsize> Indentations;
 
+// Statistics
 typedef Proofsize Freqcount, Weight;
 
 struct Hypothesis
