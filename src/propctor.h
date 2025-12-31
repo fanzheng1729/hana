@@ -49,7 +49,7 @@ struct Propctors : std::map<strview, Propctor>
     int calcbool
         (Definitions const & defs, Definition const & def, TTindex arg);
 // Add CNF clauses from reverse Polish notation of a formula.
-// # of auxiliary atoms start from natom.
+// # auxiliary atoms: natom, natom + 1, ...
 // Return true if okay. First auxiliary atom = hyps.size()
     bool addformula
         (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,

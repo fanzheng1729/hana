@@ -257,7 +257,7 @@ static void addlitatomequiv(CNFClauses & cnf, Literal lit, Atom atom)
 }
 
 // Add CNF clauses from reverse Polish notation of a formula.
-// # of auxiliary atoms start from natom.
+// # auxiliary atoms: natom, natom + 1, ...
 // Return true if okay. First auxiliary atom = hyps.size()
 bool Propctors::addformula
     (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
