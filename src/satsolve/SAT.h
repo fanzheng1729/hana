@@ -6,27 +6,27 @@
 
 struct SATsolver
 {
-    CNFClauses const & rcnf;
-    SATsolver(CNFClauses const & cnf) : rcnf(cnf) {}
+    CNFClauses const & cnf;
+    SATsolver(CNFClauses const & clauses) : cnf(clauses) {}
     // Map: free atoms -> truth value.
     // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom nfree)
     {
         static Atom const maxnatoms = std::numeric_limits<Atom>::digits;
         if (nfree > maxnatoms) nfree = maxnatoms;
-        Atom const natoms = rcnf.natoms();
+        Atom const natoms = cnf.natoms();
         if (nfree > natoms) nfree = natoms;
 
         Bvector tt(static_cast<TTindex>(1) << nfree, false);
-        if (rcnf.hasemptyclause()) return tt;
+        if (cnf.hasemptyclause()) return tt;
 
-        CNFClauses cnf2(rcnf);
+        CNFClauses cnf2(cnf);
         for (TTindex arg = 0; arg < tt.size(); ++arg)
         {
             for (Atom i = 0; i < nfree; ++i)
                 cnf2.push_back(CNFClause(1, i * 2 + 1 - (arg >> i & 1)));
             tt[arg] = cnf2.sat();
-            cnf2.resize(rcnf.size());
+            cnf2.resize(cnf.size());
         }
         return tt;
     }
@@ -35,7 +35,7 @@ struct SATsolver
     bool sat()
     {
         // Initial model
-        CNFModel model(rcnf.natoms());
+        CNFModel model(cnf.natoms());
         // Current atom being assigned
         Atom atom = 0;
 
@@ -47,7 +47,7 @@ struct SATsolver
             case UNKNOWN : case FALSE :
                 ++model[atom];
                 // Check if there is a contradiction so far.
-                if (rcnf.okaysofar(model))
+                if (cnf.okaysofar(model))
                 {
                     // No contradiction yet. Move to next atom.
                     if (++atom == model.size())
