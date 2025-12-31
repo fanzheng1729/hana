@@ -7,6 +7,15 @@
 #include "../util/for.h"
 #include "../io.h"
 
+// Report error in status() and return GOALFALSE.
+inline Goalstatus statuserr(Environ const & env, Proofsteps const & RPN)
+{
+    std::cerr << "Bad goal\n" << RPN << "in env " << env.name;
+    std::cerr << " in Problem #" << env.assertion.number << std::endl;
+    // std::cin.get();
+    return GOALFALSE;
+}
+
 // Problem statement + Proof search tree with loop detection
 // + context management + goal management + UI
 class Problem : public MCTS<Game>

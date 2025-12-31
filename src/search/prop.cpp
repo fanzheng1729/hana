@@ -7,15 +7,6 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
-// Report error in status() and return GOALFALSE.
-static Goalstatus statuserr(Environ const & env, Proofsteps const & RPN)
-{
-    std::cerr << "Bad goal\n" << RPN << "in env " << env.name;
-    std::cerr << " in Problem #" << env.prob().number() << std::endl;
-    // std::cin.get();
-    return GOALFALSE;
-}
-
 // Determine status of a goal.
 Goalstatus Prop::status(Goal const & goal) const
 {
