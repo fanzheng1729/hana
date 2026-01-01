@@ -72,7 +72,7 @@ struct CNFClauses : public std::vector<CNFClause>
     { push_back(CNFClause(1, atom * 2 + neg)); }
     // Add a clause containing the next atom alone or its neg.
     void closeoff(bool neg = false) { closeoff(natoms() - 1, neg); }
-    // Return if there is no contradiction in the model so far.
+    // Return true if there is no contradiction in the model so far.
     bool okaysofar(CNFModel const & model) const
     {
         FOR (const_reference clause, *this)
