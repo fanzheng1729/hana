@@ -20,13 +20,13 @@ struct SATsolver
         Bvector tt(static_cast<TTindex>(1) << nfree, false);
         if (cnf.hasemptyclause()) return tt;
 
-        CNFClauses cnf2(cnf);
+        CNFClauses excnf(cnf);
         for (TTindex arg = 0; arg < tt.size(); ++arg)
         {
             for (Atom i = 0; i < nfree; ++i)
-                cnf2.push_back(CNFClause(1, i * 2 + 1 - (arg >> i & 1)));
-            tt[arg] = cnf2.sat();
-            cnf2.resize(cnf.size());
+                excnf.push_back(CNFClause(1, i * 2 + 1 - (arg >> i & 1)));
+            tt[arg] = excnf.sat();
+            excnf.resize(cnf.size());
         }
         return tt;
     }
