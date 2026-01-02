@@ -6,8 +6,10 @@
 
 struct SATsolver
 {
-    CNFClauses const & cnf;
-    SATsolver(CNFClauses const & clauses) : cnf(clauses) {}
+    CNFClauses const & cnf, & cnf2;
+    SATsolver
+        (CNFClauses const & hyps, CNFClauses const & conclusion=CNFClauses()) :
+        cnf(hyps), cnf2(conclusion) {}
     // Map: free atoms -> truth value.
     // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom nfree)
