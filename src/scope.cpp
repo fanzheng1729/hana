@@ -2,7 +2,7 @@
 #include <iostream>
 #include "ass.h"
 #include "getproof.h"
-#include "util/filter.h"
+#include "util/filter.h"// for operator&
 #include "util/find.h"
 #include "util/for.h"
 #include "util/msg.h"
