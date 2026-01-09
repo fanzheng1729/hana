@@ -214,14 +214,13 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     SteprangeAST(Steprange range, ASTiter iter) :
         std::pair<Steprange, ASTiter>(range, iter) {}
     SteprangeAST(Steprange range, AST const & ast) :
-        std::pair<Steprange, ASTiter>(range, ast.begin())
-    { if (range.size() != ast.size()) first.clear(); }
+        std::pair<Steprange, ASTiter>(range, ast.begin()) { chksz(ast); }
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
-        std::pair<Steprange, ASTiter>(proofsteps, ast.begin())
-    { if (proofsteps.size() != ast.size()) first.clear(); }
+        std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) { chksz(ast); }
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
     Proofsize size() const { return first.size(); }
+    void chksz(AST const & ast) { if (size() != ast.size()) first.clear(); }
     Proofstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return *(second + size() - 1); }
     // Child i's subrange
