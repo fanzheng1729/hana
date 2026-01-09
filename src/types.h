@@ -41,10 +41,12 @@ typedef Proofsteps::const_iterator Stepiter;
 // Begin and end of a sequence of proof steps
 struct Steprange : std::pair<Stepiter, Stepiter>
 {
-    using std::pair<Stepiter, Stepiter>::pair;
+    Steprange(Stepiter begin = Stepiter(), Stepiter end = Stepiter())
+        { first = begin, second = end; }
     Steprange(Proofsteps const & proofsteps) :
         std::pair<Stepiter, Stepiter>(proofsteps.begin(), proofsteps.end()) {}
     bool empty() const { return size() == 0; }
+    void clear() { second = first; }
     Proofsize size() const { return second - first; }
     Proofstep const & root() const { return *(second - 1); }
 };
@@ -209,14 +211,16 @@ inline bool operator<(Proofstep x, Proofstep y)
 // (Range of steps, begin of subAST)
 struct SteprangeAST: std::pair<Steprange, ASTiter>
 {
-    using std::pair<Steprange, ASTiter>::pair;
+    SteprangeAST(Steprange range, ASTiter iter) :
+        std::pair<Steprange, ASTiter>(range, iter) {}
     SteprangeAST(Steprange range, AST const & ast) :
         std::pair<Steprange, ASTiter>(range, ast.begin())
-    { if (range.size() != ast.size()) first.second = first.first; }
+    { if (range.size() != ast.size()) first.clear(); }
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin())
-    { if (proofsteps.size() != ast.size()) first.second = first.first; }
+    { if (proofsteps.size() != ast.size()) first.clear(); }
     bool empty() const { return first.empty(); }
+    void clear() { first.clear(); }
     Proofsize size() const { return first.size(); }
     Proofstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return *(second + size() - 1); }
