@@ -187,13 +187,14 @@ void Move::printconj() const
     if (!isconj())
         return;
 
-    std::cout << "Conjectured";
+    static const char arrow[] = "-> ";
+    std::cout << "Conjectured ";
     for (Hypsize i = 0; i < nconjs(); ++i)
     {
-        std::cout << subgoal(i).expression() << "->";
+        std::cout << subgoal(i).expression() << arrow;
         std::cout << absconjs[i].expression();
     }
-    std::cout << "in order to prove";
-    std::cout << goal().expression() << "->";
+    std::cout << "in order to prove ";
+    std::cout << goal().expression() << arrow;
     std::cout << absconjs.back().expression();
 }
