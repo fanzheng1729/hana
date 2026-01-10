@@ -220,7 +220,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
     Proofsize size() const { return first.size(); }
-    void check(AST const & ast) { if (size() != ast.size()) first.clear(); }
+    void check(AST const & ast) { if (size() != ast.size()) clear(); }
     Proofstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return *(second + size() - 1); }
     // Child i's subrange
