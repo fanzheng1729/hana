@@ -12,16 +12,16 @@ Goalstatus Prop::status(Goal const & goal) const
 {
     goal.fillast();
 
-    CNFClauses cnf;
+    CNFClauses conclusion;
     // Add Conclusion.
     Atom natom = hypnatoms;
     if (!database.propctors().addformula
-        (goal.RPN, goal.ast, assertion.hypiters, cnf, natom))
+        (goal.RPN, goal.ast, assertion.hypiters, conclusion, natom))
         return statuserr(*this, goal.RPN);
     // Negate conclusion.
-    cnf.closeoff(natom - 1, true);
+    conclusion.closeoff(natom - 1, true);
 
-    return hypscnf.first.sat(cnf) ? GOALFALSE : GOALTRUE;
+    return hypscnf.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
 }
 
 // Return the hypotheses of a goal to trim.
@@ -38,7 +38,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 // std::cout << "Trimming hypothesis " << assertion.hyplabel(i) << std::endl;
         result[i] = true;
         // Check if it can be trimmed.
-        CNFClauses cnf2;
+        CNFClauses cnf;
         Proofnumbers const & ends = hypscnf.second;
         // Add hypotheses.
         for (Hypsize j = 0; j < assertion.nhyps(); ++j)
@@ -48,17 +48,17 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 // std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl;
             // Add CNF clauses.
             CNFClauses::size_type begin = j>0 ? ends[j - 1] : 0, end = ends[j];
-            cnf2.insert(cnf2.end(), hypscnf.first.data() + begin,
-                        hypscnf.first.data() + end);
+            CNFClause const * const hypsdata = hypscnf.first.data();
+            cnf.insert(cnf.end(), hypsdata + begin, hypsdata + end);
         }
-// std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf2;
-        Atom natom = cnf2.empty() ? assertion.nhyps() : cnf2.natoms();
+// std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
+        Atom natom = cnf.empty() ? assertion.nhyps() : cnf.natoms();
         // Add conclusion.
         database.propctors().addformula
-        (goal.RPN, goal.ast, assertion.hypiters, cnf2, natom);
+        (goal.RPN, goal.ast, assertion.hypiters, cnf, natom);
         // Negate conclusion.
-        cnf2.closeoff(natom - 1, true);
-        if ((result[i] = !cnf2.sat()))
+        cnf.closeoff(natom - 1, true);
+        if ((result[i] = !cnf.sat()))
             trimmed = true;
     }
 
