@@ -338,13 +338,9 @@ CNFClauses Propctors::cnf(Assertion const & ass) const
     // Add hypotheses.
     Atom natom = 0;
     CNFClauses cnf(hypscnf(ass, natom, Bvector()).first);
-    // Add conclusion.
-    if (!addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom))
-        return CNFClauses();
-    // Negate conclusion.
-    cnf.closeoff(natom - 1, true);
-
-    return cnf;
+    // Add and negate conclusion.
+    return addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom) ?
+            cnf.closeoff(natom - 1, true) : CNFClauses();
 }
 
 // Return true if a propositional assertion is sound.

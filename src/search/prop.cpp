@@ -27,12 +27,11 @@ Goalstatus Prop::status(Goal const & goal) const
 // Return the hypotheses of a goal to trim.
 Bvector Prop::hypstotrim(Goal const & goal) const
 {
-    Bvector result(assertion.nhyps(), false);
+    Hypsize const nhyps = assertion.nhyps();
+    Bvector result(nhyps, false);
 
     bool trimmed = false;
-
-    for (Hypsize i = assertion.nhyps() - 1;
-        i != static_cast<Hypsize>(-1); --i)
+    for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
     {
         if (assertion.hypfloats(i)) continue;
 // std::cout << "Trimming hypothesis " << assertion.hyplabel(i) << std::endl;
@@ -41,7 +40,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         CNFClauses cnf;
         Proofnumbers const & ends = hypscnf.second;
         // Add hypotheses.
-        for (Hypsize j = 0; j < assertion.nhyps(); ++j)
+        for (Hypsize j = 0; j < nhyps; ++j)
         {
             if (assertion.hypfloats(j) || result[j])
                 continue; // Skip floating or trimmed hypotheses.
@@ -52,14 +51,13 @@ Bvector Prop::hypstotrim(Goal const & goal) const
             cnf.insert(cnf.end(), hypsdata + begin, hypsdata + end);
         }
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
-        Atom natom = cnf.empty() ? assertion.nhyps() : cnf.natoms();
+        Atom natom = cnf.empty() ? nhyps : cnf.natoms();
         // Add conclusion.
         database.propctors().addformula
         (goal.RPN, goal.ast, assertion.hypiters, cnf, natom);
         // Negate conclusion.
         cnf.closeoff(natom - 1, true);
-        if ((result[i] = !cnf.sat()))
-            trimmed = true;
+        trimmed |= (result[i] = !cnf.sat());
     }
 
     return trimmed ? assertion.trimvars(result, goal.RPN) : Bvector();
