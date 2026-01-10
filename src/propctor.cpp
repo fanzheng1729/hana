@@ -57,8 +57,7 @@ static bool checkpropctor(Propctor const & propctor)
         return false;
 
     CNFClauses cnf(propctor.cnf);
-    cnf.closeoff();
-    return cnf.truthtable(propctor.nargs) == propctor.truthtable;
+    return cnf.closeoff().truthtable(propctor.nargs) == propctor.truthtable;
 }
 
 static void printmsg(strview label, strview prompt)
@@ -330,17 +329,6 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
         result.second[i] = cnf.size();
     }
     return result;
-}
-
-// Translate a propositional assertion to the CNF of an SAT instance.
-CNFClauses Propctors::cnf(Assertion const & ass) const
-{
-    // Add hypotheses.
-    Atom natom = 0;
-    CNFClauses cnf(hypscnf(ass, natom, Bvector()).first);
-    // Add and negate conclusion.
-    return addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom) ?
-            cnf.closeoff(natom - 1, true) : CNFClauses();
 }
 
 // Return true if a propositional assertion is sound.

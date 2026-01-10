@@ -19,9 +19,8 @@ Goalstatus Prop::status(Goal const & goal) const
         (goal.RPN, goal.ast, assertion.hypiters, conclusion, natom))
         return statuserr(*this, goal.RPN);
     // Negate conclusion.
-    conclusion.closeoff(natom - 1, true);
-
-    return hypscnf.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
+    return hypscnf.first.sat(conclusion.closeoff(natom - 1, true)) ?
+            GOALFALSE : GOALTRUE;
 }
 
 // Return the hypotheses of a goal to trim.
@@ -56,8 +55,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         database.propctors().addformula
         (goal.RPN, goal.ast, assertion.hypiters, cnf, natom);
         // Negate conclusion.
-        cnf.closeoff(natom - 1, true);
-        trimmed |= (result[i] = !cnf.sat());
+        trimmed |= (result[i] = !cnf.closeoff(natom - 1, true).sat());
     }
 
     return trimmed ? assertion.trimvars(result, goal.RPN) : Bvector();

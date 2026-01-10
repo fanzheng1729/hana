@@ -58,7 +58,15 @@ struct Propctors : std::map<strview, Propctor>
     Hypscnf hypscnf(Assertion const & ass, Atom & natom,
                     Bvector const & hypstotrim = Bvector()) const;
 // Translate a propositional assertion to the CNF of an SAT instance.
-    CNFClauses cnf(Assertion const & ass) const;
+    CNFClauses cnf(Assertion const & ass) const
+    {
+        // Add hypotheses.
+        Atom natom = 0;
+        CNFClauses cnf(hypscnf(ass, natom, Bvector()).first);
+        // Add and negate conclusion.
+        return addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom) ?
+                cnf.closeoff(natom - 1, true) : CNFClauses();
+    }
 // Return true if a propositional assertion is sound.
     bool checkpropsat(Assertion const & ass) const;
 // Return true if all propositional assertions are sound.
