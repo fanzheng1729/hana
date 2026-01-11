@@ -277,7 +277,7 @@ bool Propctors::addformula
             {
                 literals[i] = (hypindex) * 2;
 //std::cout << "argument " << hypindex << std::endl;
-                if (RPN.size() != 1)
+                if (RPN.size() > 1)
                     continue;
                 // Expression with a single variable
                 addlitatomequiv(cnf, literals[i], natom++);
