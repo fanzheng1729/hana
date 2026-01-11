@@ -42,11 +42,11 @@ Proofstep Proofstep::Builder::operator()(strview label) const
 {
     Hypiter const hypiter = m_hyps.find(label);
     if (hypiter != m_hyps.end())
-        return hypiter; // hypothesis
+        return hypiter;
 
     Assiter const assiter = m_assertions.find(label);
     if (assiter != m_assertions.end())
-        return &*assiter; // assertion
+        return &*assiter;
 
     std::cerr << proofsteperr << label.c_str << std::endl;
     return Proofstep::NONE;
