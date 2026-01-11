@@ -376,10 +376,9 @@ static Splitretval splitroot(Steprange exp)
 Proofsteps propskeleton
     (Proofsteps const & RPN, AST const & ast, class Bank & bank)
 {
-    if (RPN.empty() || RPN.size() != ast.size())
-        return Proofsteps();
-
     SteprangeAST const exp(RPN, ast);
+    if (exp.empty())
+        return Proofsteps();
 
     // Preallocate for efficiency
     Proofsteps result;
