@@ -49,6 +49,7 @@ struct Steprange : std::pair<Stepiter, Stepiter>
     void clear() { second = first; }
     Proofsize size() const { return second - first; }
     Proofstep const & root() const { return *(second - 1); }
+    Proofstep const & operator[](Proofsize index) const { return first[index]; }
 };
 // Ranges of proof steps
 typedef std::vector<Steprange> Stepranges;
@@ -217,21 +218,23 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
         std::pair<Steprange, ASTiter>(range, ast.begin()) { check(ast); }
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) { check(ast); }
-    bool empty() const { return first.empty(); }
+    Steprange RPN() const { return first; }
+    ASTiter   ast() const { return second;}
+    bool empty() const { return RPN().empty(); }
     void clear() { first.clear(); }
-    Proofsize size() const { return first.size(); }
+    Proofsize size() const { return RPN().size(); }
     void check(AST const & ast) { if (size() != ast.size()) clear(); }
-    Proofstep const & RPNroot() const { return first.root(); }
-    ASTnode const & ASTroot() const { return *(second + size() - 1); }
+    Proofstep const & RPNroot() const { return RPN().root(); }
+    ASTnode const & ASTroot() const { return ast()[size() - 1]; }
     // Child i's subrange
     SteprangeAST child(ASTnode::size_type index) const
     {
-        ASTiter const ASTend = second + size();
-        ASTnode const & ASTback = *(ASTend - 1);
-        ASTiter const newAST = index == 0 ? second :
+        ASTiter const ASTend = ast() + size();
+        ASTnode const & ASTback = ASTend[-1];
+        ASTiter const newAST = index == 0 ? ast() :
             ASTend - 1 - (ASTback.back() - ASTback[index - 1]);
-        Stepiter newRPN = newAST - second + first.first;
-        Stepiter newend = first.second - 1 - (ASTback.back() - ASTback[index]);
+        Stepiter newRPN = newAST - ast() + RPN().first;
+        Stepiter newend = RPN().second - 1 - (ASTback.back() - ASTback[index]);
         return SteprangeAST(Steprange(newRPN, newend), newAST);
     }
 };
