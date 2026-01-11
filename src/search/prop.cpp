@@ -15,7 +15,7 @@ Goalstatus Prop::status(Goal const & goal) const
     CNFClauses conclusion;
     // Add Conclusion.
     Atom natom = hypnatoms;
-    if (!database.propctors().addformula
+    if (!propctors().addformula
         (goal.RPN, goal.ast, assertion.hypiters, conclusion, natom))
         return statuserr(*this, goal.RPN);
     // Negate conclusion.
@@ -52,7 +52,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
         Atom natom = cnf.empty() ? nhyps : cnf.natoms();
         // Add conclusion.
-        database.propctors().addformula
+        propctors().addformula
         (goal.RPN, goal.ast, assertion.hypiters, cnf, natom);
         // Negate conclusion.
         trimmed |= (result[i] = !cnf.closeoff(natom - 1, true).sat());

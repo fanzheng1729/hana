@@ -14,8 +14,8 @@ struct Prop : Environ
          std::size_t maxsize, double freqbias, bool staged = false) :
         Environ(ass, db, maxsize, staged),
         hypscnf(db.propctors().hypscnf(ass, hypnatoms)),
-        propctorlabels(labels(database.propctors())),
-        propctorfreqs(frequencies(database.propctors())),
+        propctorlabels(labels(propctors())),
+        propctorfreqs(frequencies(propctors())),
         hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
         frequencybias(freqbias)
     {
@@ -25,6 +25,8 @@ struct Prop : Environ
         for (Hypsize i = 0; i < ass.nhyps(); ++i)
             hypsweight += weight(ass.hypRPN(i));
     }
+    // Return the propositional syntax constructors.
+    Propctors const & propctors() const { return database.propctors(); }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.type & Asstype::PROPOSITIONAL; }
@@ -36,7 +38,7 @@ struct Prop : Environ
     virtual Weight weight(Proofsteps const & RPN) const
     {
         return RPN.size();
-        // return ::weight(RPN, database.propctors());
+        // return ::weight(RPN, propctors());
     }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
