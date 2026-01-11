@@ -188,7 +188,13 @@ struct Proofstep
 // Return typecode. Return "" if not HYP nor THM.
     strview typecode() const;
 // Return symbol of the variable.
-    Symbol3 var() const;
+    Symbol3 var() const
+    {
+        if (!ishyp()) return "";
+        Hypothesis const & hyp = phyp->second;
+        return (hyp.floats && hyp.expression.size() == 2) ?
+                hyp.expression[1] : Symbol3();
+    }
 // Return id of the variable.
     Symbol2::ID id() const { return var().id; }
 // Return name of the proof step.
