@@ -220,21 +220,20 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) { check(ast); }
     Steprange RPN() const { return first; }
     Proofsteps steps() const { return Proofsteps(RPN().first, RPN().second); }
-    ASTiter   ast() const { return second;}
     bool empty() const { return RPN().empty(); }
     void clear() { first.clear(); }
     Proofsize size() const { return RPN().size(); }
-    void check(AST const & ast) { if (size() != ast.size()) clear(); }
+    void check(AST const & tree) { if (size() != tree.size()) clear(); }
     Proofstep const & RPNroot() const { return RPN().root(); }
-    ASTnode const & ASTroot() const { return ast()[size() - 1]; }
+    ASTnode const & ASTroot() const { return second[size() - 1]; }
     // Child i's subrange
     SteprangeAST child(ASTnode::size_type index) const
     {
-        ASTiter const ASTend = ast() + size();
+        ASTiter const ASTend = second + size();
         ASTnode const & ASTback = ASTend[-1];
-        ASTiter const newAST = index == 0 ? ast() :
+        ASTiter const newAST = index == 0 ? second :
             ASTend - 1 - (ASTback.back() - ASTback[index - 1]);
-        Stepiter newRPN = newAST - ast() + RPN().first;
+        Stepiter newRPN = newAST - second + RPN().first;
         Stepiter newend = RPN().second - 1 - (ASTback.back() - ASTback[index]);
         return SteprangeAST(Steprange(newRPN, newend), newAST);
     }
