@@ -22,9 +22,10 @@ strview Proofstep::typecode() const
 // Return symbol of the variable.
 Symbol3 Proofstep::var() const
 {
-    if (type != HYP) return "";
+    if (!ishyp()) return "";
     Hypothesis const & hyp = phyp->second;
-    return (hyp.floats && hyp.expression.size() == 2) ? hyp.expression[1] : Symbol3();
+    return (hyp.floats && hyp.expression.size() == 2) ?
+            hyp.expression[1] : Symbol3();
 }
 
 // Return the name of the proof step.
