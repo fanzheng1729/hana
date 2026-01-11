@@ -219,6 +219,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     SteprangeAST(Proofsteps const & proofsteps, AST const & ast) :
         std::pair<Steprange, ASTiter>(proofsteps, ast.begin()) { check(ast); }
     Steprange RPN() const { return first; }
+    Proofsteps steps() const { return Proofsteps(RPN().first, RPN().second); }
     ASTiter   ast() const { return second;}
     bool empty() const { return RPN().empty(); }
     void clear() { first.clear(); }
