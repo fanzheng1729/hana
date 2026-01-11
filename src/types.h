@@ -49,7 +49,6 @@ struct Steprange : std::pair<Stepiter, Stepiter>
     void clear() { second = first; }
     Proofsize size() const { return second - first; }
     Proofstep const & root() const { return *(second - 1); }
-    Proofstep const & operator[](Proofsize index) const { return first[index]; }
 };
 // Ranges of proof steps
 typedef std::vector<Steprange> Stepranges;
