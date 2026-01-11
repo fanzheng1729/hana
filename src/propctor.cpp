@@ -275,7 +275,7 @@ bool Propctors::addformula
             Hypsize const hypindex = util::find(hyps, step) - hyps.begin();
             if (hypindex < hyps.size())
             {
-                literals[i] = (hypindex) * 2;
+                literals[i] = hypindex * 2;
 //std::cout << "argument " << hypindex << std::endl;
                 if (RPN.size() > 1)
                     continue;
