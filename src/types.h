@@ -181,8 +181,7 @@ struct Proofstep
     const void * ptr() const
     {
         if (ishyp()) return phyp;
-        else if (isthm()) return pass;
-        return NULL;
+        return isthm() ? pass : NULL;
     }
 // Return typecode. Return "" if not HYP nor THM.
     strview typecode() const;
