@@ -217,10 +217,10 @@ inline bool operator<(Proofstep x, Proofstep y)
 // (Range of steps, begin of subAST)
 struct SteprangeAST: std::pair<Steprange, ASTiter>
 {
-    SteprangeAST(Steprange range, ASTiter iter) :
-        std::pair<Steprange, ASTiter>(range, iter) {}
-    SteprangeAST(Steprange range, AST const & tree) :
-        std::pair<Steprange, ASTiter>(range, tree.begin()) { check(tree); }
+    SteprangeAST(Steprange exp, ASTiter iter) :
+        std::pair<Steprange, ASTiter>(exp, iter) {}
+    SteprangeAST(Steprange exp, AST const & tree) :
+        std::pair<Steprange, ASTiter>(exp, tree.begin()) { check(tree); }
     Proofsteps steps() const { return Proofsteps(first.first, first.second); }
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
