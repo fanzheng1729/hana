@@ -36,7 +36,7 @@ public:
     Symbol3 var(Symbol2::ID id) const { return m_RPNSymbolsbyid[id]->second; }
     Tokens::size_type nvar() const { return m_varlabels.size() - 1; }
     // Add an abstraction variable.
-    Symbol3 addabsvar(Steprange range);
+    Symbol3 addabsvar(Steprange absRPN);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Hypiter addhyp(Proofsteps const & RPN, strview typecode);
     bool hashyp(strview label) const { return hypotheses().count(label); }
