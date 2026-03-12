@@ -30,7 +30,7 @@ struct Assertion
     // Indices of hypotheses containing most to fewest free variables
     Hypsizes hypsorder;
     // revPolish of expression, proof steps
-    Proofsteps expRPN, proof;
+    RPN expRPN, proof;
     // Abstract syntax tree of expression
     AST expAST;
     // All maximal ranges of the expression governed by a syntax axiom.
@@ -72,7 +72,7 @@ struct Assertion
     strview hyptypecode(Hypsize index) const
         { return hypexp(index).empty() ? strview() : hypexp(index)[0]; }
     // rev-Polish notation and abstract syntax tree of a hypothesis
-    Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).rpn; }
+    RPN const & hypRPN(Hypsize index) const { return hyp(index).rpn; }
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
     SteprangeAST hypRPNAST(Hypsize index) const
         { return SteprangeAST(hypRPN(index), hypAST(index)); }
@@ -107,14 +107,12 @@ struct Assertion
         std::upper_bound(hypsorder.rbegin() + 1, hypsorder.rend(), 0);
     }
     // Remove unnecessary variables.
-    Bvector trimvars
-        (Bvector const & hypstotrim, Proofsteps const & conclusion) const
+    Bvector trimvars(Bvector const & hypstotrim, RPN const & conclusion) const
     {
         Bvector result(hypstotrim);
         return trimvars(result, conclusion);
     }
-    Bvector & trimvars
-        (Bvector & hypstotrim, Proofsteps const & conclusion) const;
+    Bvector & trimvars(Bvector & hypstotrim, RPN const & conclusion) const;
     // Label with hypotheses trimmed
     std::string hypslabel(Bvector const & hypstotrim = Bvector()) const;
     // Label with new variables and new hypotheses added

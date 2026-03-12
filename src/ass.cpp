@@ -6,8 +6,7 @@
 #include "util/for.h"
 
 // Remove unnecessary variables.
-Bvector & Assertion::trimvars
-    (Bvector & hypstotrim, Proofsteps const & conclusion) const
+Bvector & Assertion::trimvars(Bvector & hypstotrim, RPN const & conclusion) const
 {
 // std::cout << conclusion;
     hypstotrim.resize(nhyps());
