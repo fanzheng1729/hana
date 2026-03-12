@@ -193,11 +193,11 @@ struct Move
         return nconjs();
     }
     // Size of a substitution
-    Proofsize substsize(RPN const & src) const;
+    RPNsize substsize(RPN const & src) const;
     // Make a substitution.
     void makesubst(RPN const & src, RPN & dest) const;
     // Size of full proof (must be of type CONJ)
-    Proofsize fullproofsize(pProofs const & phyps) const;
+    RPNsize fullproofsize(pProofs const & phyps) const;
     // Write proof (must be of type CONJ).
     bool writeproof(RPN & dest, pProofs const & phyps) const;
     // Print a CONJ move.

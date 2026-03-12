@@ -27,9 +27,9 @@ Definition::Definition(Assertions::const_reference rass)
     }
 
     // Index of the syntax to be defined
-    Proofsize const lhsend = tree.back()[0];
+    RPNsize const lhsend = tree.back()[0];
     // Index of beginning of RHS
-    Proofsize const defbegin = lhsend + 1;
+    RPNsize const defbegin = lhsend + 1;
 
     if (unexpected(tree.back().size() != 2, "non-binary root", expRPN.back()))
         return;

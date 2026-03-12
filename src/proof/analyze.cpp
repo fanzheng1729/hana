@@ -8,7 +8,7 @@
 // Process a proof step referencing an assertion (i.e., not a hypothesis).
 // Add the corresponding node to the AST. Return true if okay.
 static bool addASTnode
-    (Assertion const & assertion, std::vector<Proofsize> & stack,
+    (Assertion const & assertion, std::vector<RPNsize> & stack,
      AST::reference node)
 {
     Hypsize const nhyps = assertion.nhyps(), stacksz = stack.size();
@@ -16,7 +16,7 @@ static bool addASTnode
         return false;
 
     ASTnode::size_type const base = stack.size() - nhyps;
-    Proofsize const index = stack.empty() ? 0 : stack.back() + 1;
+    RPNsize const index = stack.empty() ? 0 : stack.back() + 1;
     node.assign(stack.begin() + base, stack.end());
     // Remove hypotheses from stack.
     stack.erase(stack.begin() + base, stack.end());
@@ -31,12 +31,12 @@ static bool addASTnode
 // Return an empty AST if not okay. Only for uncompressed proofs
 AST ast(RPN const & rpn)
 {
-    std::vector<Proofsize> stack;
+    std::vector<RPNsize> stack;
     // Preallocate for efficiency
     stack.reserve(rpn.size());
     AST tree(rpn.size());
 
-    for (Proofsize i = 0; i < rpn.size(); ++i)
+    for (RPNsize i = 0; i < rpn.size(); ++i)
     {
         Proofstep const step = rpn[i];
         if (step.ishyp())
@@ -60,11 +60,11 @@ static void indentations(ASTiter begin, ASTiter end, Indentations & result)
     if (back->empty())
         return;
     // Index and level of root
-    Proofsize const index = back->back() + 1, level = result[index];
+    RPNsize const index = back->back() + 1, level = result[index];
     for (ASTnode::size_type i = 0; i < back->size(); ++i)
     {
         // Index of root of subAST
-        Proofsize const subroot = (*back)[i];
+        RPNsize const subroot = (*back)[i];
         // Indent one more level.
         result[subroot] = level + 1;
         // Recurse to the subAST.
@@ -120,7 +120,7 @@ bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 // Return true if range1 has all the variables in range2
 static bool hasallvars(Steprange range1, Steprange range2)
 {
-    for (Stepiter iter2 = range2.first; iter2 < range2.second; ++iter2)
+    for (RPNiter iter2 = range2.first; iter2 < range2.second; ++iter2)
     {
         if (!iter2->ishyp())
             continue;

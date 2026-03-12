@@ -6,7 +6,7 @@
 #include "../util/hex.h"
 #include "verify.h"
 
-bool Printer::addstep(Expression const & stacktop, Proofsize index,
+bool Printer::addstep(Expression const & stacktop, RPNsize index,
                       strview label, Symbol2 save)
 {
     if (stacktop.empty())
@@ -28,7 +28,7 @@ bool Printer::addstep(Expression const & stacktop, Proofsize index,
     return true;
 }
 
-bool Printer::doaddstep(Proofstep step, Proofsize index, Expression const & stacktop)
+bool Printer::doaddstep(Proofstep step, RPNsize index, Expression const & stacktop)
 {
 //std::cout << "Step " << step << ", top of stack: " << stacktop;
     switch (step.type)

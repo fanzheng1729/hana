@@ -11,7 +11,7 @@ static Argtypes argtypes(RPN const & syntaxiom)
         return Argtypes();
 
     Argtypes result(syntaxiom.size() - 1);
-    for (Proofsize i = 0; i < syntaxiom.size() - 1; ++i)
+    for (RPNsize i = 0; i < syntaxiom.size() - 1; ++i)
     {
         Proofstep const step = syntaxiom[i];
         if (!step.ishyp() || !step.phyp ||
@@ -24,35 +24,35 @@ static Argtypes argtypes(RPN const & syntaxiom)
 }
 
 // Return the sum of the sizes of substituted arguments.
-static Proofsize argssize
+static RPNsize argssize
     (Argtypes const & argtypes, Genresult const & result,
      Genstack const & stack)
 {
-    Proofsize size = 0;
+    RPNsize size = 0;
     for (Genstack::size_type i = 0; i < stack.size(); ++i)
         size += result.at(argtypes[i])[stack[i]].size();
     return size;
 }
 
 // Return a lower bound of the number of potential substitutions.
-Proofsize Gen::substcount(Argtypes const & argtypes, Genstack const & stack) const
+RPNsize Gen::substcount(Argtypes const & argtypes, Genstack const & stack) const
 {
-    Proofsize count = 1;
+    RPNsize count = 1;
     for (Genstack::size_type i = 0; i < stack.size(); ++i)
     {
         // Type of the substitution
         strview type = argtypes[i];
         // Multiplier
-        Proofsize mul = termcounts[type][genresult[type][stack[i]].size()];
+        RPNsize mul = termcounts[type][genresult[type][stack[i]].size()];
         if (!util::FMA(count, mul, 0))
-            return static_cast<Proofsize>(-1);
+            return static_cast<RPNsize>(-1);
     }
     return count;
 }
 
 // Advance the stack and return true if it can be advanced.
 // Clear the stack and return false if it cannot be advanced.
-bool Gen::next(Argtypes const & argtypes, Proofsize size, Genstack & stack) const
+bool Gen::next(Argtypes const & argtypes, RPNsize size, Genstack & stack) const
 {
     while (!stack.empty())
     {
@@ -129,7 +129,7 @@ Terms Gen::generateupto1(strview type) const
 
 // Generate all terms with RPN up to a given size.
 // Stop and return false when max count is exceeded.
-bool Gen::generateupto(strview type, Proofsize size) const
+bool Gen::generateupto(strview type, RPNsize size) const
 {
     Terms & terms = genresult[type];
     Termcounts::mapped_type & countbysize = termcounts[type];
@@ -175,19 +175,19 @@ bool Gen::generateupto(strview type, Proofsize size) const
 
 // Generate all terms for all arguments with RPN up to a given size.
 // Stop and return false when max count is exceeded.
-bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) const
+bool Gen::dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) const
 {
     // Stack of terms to be tried
     Genstack stack;
     // Preallocate for efficiency.
-    Proofsize const nargs = argtypes.size();
+    RPNsize const nargs = argtypes.size();
     stack.reserve(nargs);
     do
     {
         if (stack.size() < nargs) // Not all args seen
         {
             strview type = argtypes[stack.size()];
-            Proofsize argsize = size - nargs + stack.size();
+            RPNsize argsize = size - nargs + stack.size();
             argsize -= argssize(argtypes, genresult, stack);
             if (!generateupto(type, argsize) || genresult[type].empty())
                 return false; // Argument generation failed
@@ -197,7 +197,7 @@ bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) c
             else
             {
                 // Size of the only unseen arg
-                Proofsize lastsize = size - 1 - argssize(argtypes, genresult, stack);
+                RPNsize lastsize = size - 1 - argssize(argtypes, genresult, stack);
                 // 1st substitution with that size
                 stack.push_back(termcounts[type][lastsize - 1]);
                 // # substitutions to be generated
@@ -221,7 +221,7 @@ bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) c
 // Generate all terms whose RPN is of a given size.
 // Terms generate
 //     (Varusage const & varusage, Syntaxioms const & syntaxioms,
-//      strview type, Proofsize size)
+//      strview type, RPNsize size)
 // {
 //     if (size == 0)
 //         return Terms();
@@ -236,7 +236,7 @@ bool Gen::dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) c
 
 // Terms generate(struct Assertion const & assertion,
 //                Syntaxioms const & syntaxioms,
-//                strview type, Proofsize size)
+//                strview type, RPNsize size)
 // {
 //     Syntaxioms filtered;
 //     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)

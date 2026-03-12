@@ -104,7 +104,7 @@ struct Substadder : Adder
     bool operator()(Argtypes const & types, Genresult const & result,
                     Genstack const & stack)
     {
-        for (Proofsize i = 0; i < types.size(); ++i)
+        for (RPNsize i = 0; i < types.size(); ++i)
             move.substitutions[freevars[i]] =
             result.at(freevars[i].typecode())[stack[i]];
         // Filter move by SAT.
@@ -127,7 +127,7 @@ struct Substadder : Adder
 
 // Add a move with free variables. Return false.
 bool Prop::addhardmoves
-    (pAss pthm, Proofsize size, Move & move, Moves & moves) const
+    (pAss pthm, RPNsize size, Move & move, Moves & moves) const
 {
 // if (size >= 5)
 // std::cout << "Trying " << pthm->first << ' ' << size << std::endl;

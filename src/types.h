@@ -30,32 +30,31 @@ typedef std::vector<Proofnumber> Proofnumbers;
 // Step in a regular or compressed proof
 struct Proofstep;
 // A sequence of proof steps
-typedef std::vector<Proofstep> Proofsteps;
 typedef std::vector<Proofstep> RPN;
 // Pointers to the proofs to be included
 typedef std::vector<RPN const *> pProofs;
 // # of step in the proof
-typedef Proofsteps::size_type Proofsize;
+typedef RPN::size_type RPNsize;
 // Iterator to a proof step
-typedef Proofsteps::const_iterator Stepiter;
+typedef RPN::const_iterator RPNiter;
 
 // Begin and end of a sequence of proof steps
-struct Steprange : std::pair<Stepiter, Stepiter>
+struct Steprange : std::pair<RPNiter, RPNiter>
 {
-    Steprange(Stepiter begin = Stepiter(), Stepiter end = Stepiter())
+    Steprange(RPNiter begin = RPNiter(), RPNiter end = RPNiter())
         { first = begin, second = end; }
     Steprange(RPN const & proofsteps) :
-        std::pair<Stepiter, Stepiter>(proofsteps.begin(), proofsteps.end()) {}
+        std::pair<RPNiter, RPNiter>(proofsteps.begin(), proofsteps.end()) {}
     bool empty() const { return second == first; }
     void clear() { second = first; }
-    Proofsize size() const { return second - first; }
+    RPNsize size() const { return second - first; }
     Proofstep const & root() const { return second[-1]; }
 };
 // Ranges of proof steps
 typedef std::vector<Steprange> Stepranges;
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
-typedef std::vector<Proofsize> ASTnode;
+typedef std::vector<RPNsize> ASTnode;
 // Abstract syntax tree
 typedef std::vector<ASTnode> AST;
 // Iterator to an AST node
@@ -69,10 +68,10 @@ typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
     GovernedSteprangesbystep;
 
 // List of indentations
-typedef std::vector<Proofsize> Indentations;
+typedef std::vector<RPNsize> Indentations;
 
 // Statistics
-typedef Proofsize Freqcount, Weight;
+typedef RPNsize Freqcount, Weight;
 
 struct Hypothesis
 {
@@ -224,7 +223,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     RPN  steps() const { return RPN(first.first, first.second); }
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
-    Proofsize size() const { return first.size(); }
+    RPNsize size() const { return first.size(); }
     void check(AST const & tree) { if (size() != tree.size()) clear(); }
     Proofstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return second[size() - 1]; }
@@ -235,8 +234,8 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
         ASTnode const & ASTback = ASTend[-1];
         ASTiter const newAST = index == 0 ? second :
             ASTend - 1 - (ASTback.back() - ASTback[index - 1]);
-        Stepiter newRPN = newAST - second + first.first;
-        Stepiter newend = first.second - 1 - (ASTback.back() - ASTback[index]);
+        RPNiter newRPN = newAST - second + first.first;
+        RPNiter newend = first.second - 1 - (ASTback.back() - ASTback[index]);
         return SteprangeAST(Steprange(newRPN, newend), newAST);
     }
 };

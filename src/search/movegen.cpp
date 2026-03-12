@@ -30,7 +30,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 // Try applying the theorem, and add moves if successful.
 // Return true if it has no open hypotheses.
 bool Environ::trythm
-    (Game const & game, Assiter iter, Proofsize size, Moves & moves) const
+    (Game const & game, Assiter iter, RPNsize size, Moves & moves) const
 {
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Assertion const & thm = iter->second;

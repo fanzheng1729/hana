@@ -71,9 +71,9 @@ RPN const * Move::psubgoalproof(Hypsize index) const
 }
 
 // Size of a substitution
-Proofsize Move::substsize(RPN const & src) const
+RPNsize Move::substsize(RPN const & src) const
 {
-    Proofsize size = 0;
+    RPNsize size = 0;
 
     // Make the substitution
     FOR (Proofstep const step, src)
@@ -109,12 +109,12 @@ void Move::makesubst(RPN const & src, RPN & dest) const
 }
 
 // Size of full proof (must be of type CONJ)
-Proofsize Move::fullproofsize(pProofs const & phyps) const
+RPNsize Move::fullproofsize(pProofs const & phyps) const
 {
     if (phyps.empty() || !phyps.back())
         return 0;
 
-    Proofsize sum = 0;
+    RPNsize sum = 0;
     FOR (Proofstep step, *phyps.back())
         switch (step.type)
         {
@@ -123,7 +123,7 @@ Proofsize Move::fullproofsize(pProofs const & phyps) const
             break;
         case Proofstep::HYP:
             if (step.phyp->second.floats)
-                if (Proofsize size = substitutions[step.id()].size())
+                if (RPNsize size = substitutions[step.id()].size())
                     sum += size;
                 else
                     ++sum;
@@ -146,7 +146,7 @@ bool Move::writeproof(RPN & dest, pProofs const & phyps) const
 {
     dest.clear();
 
-    Proofsize const size = fullproofsize(phyps);
+    RPNsize const size = fullproofsize(phyps);
     if (size == 0)
         return false;
     // Preallocate for efficiency.

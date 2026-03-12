@@ -74,7 +74,7 @@ bool writeproof(RPN & dest, pAss pthm, pProofs const & hyps)
         return false;
     }
     // Total length ( +1 for label)
-    Proofsize length = 1;
+    RPNsize length = 1;
     for (Hypsize i = 0; i < hyps.size(); ++i)
     {
         RPN const * const p = hyps[i];

@@ -208,7 +208,7 @@ int Propctors::calcbool
     FOR (Proofstep const step, rhs)
     {
         // Iterator to the variable in the LHS
-        Stepiter const itervar = std::find(lhs.begin(), lhs.end() - 1, step);
+        RPNiter const itervar = std::find(lhs.begin(), lhs.end() - 1, step);
         if (itervar != lhs.end() - 1)
         {
             // Variable exists in the LHS.
@@ -266,7 +266,7 @@ bool Propctors::addformula
         return false;
 
     std::vector<Literal> literals(rpn.size());
-    for (Proofsize i = 0; i < rpn.size(); ++i)
+    for (RPNsize i = 0; i < rpn.size(); ++i)
     {
         const char * step = rpn[i];
 //std::cout << "Step " << step << ":\t";

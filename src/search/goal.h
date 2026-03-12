@@ -26,7 +26,7 @@ struct Goal
         maxabs = ::maxabs(rpn, ast);
         maxabsfilled = true;
     }
-    Proofsize size() const { return rpn.size(); }
+    RPNsize size() const { return rpn.size(); }
     operator SteprangeAST() const { return SteprangeAST(rpn, ast); }
     Expression expression() const
     {

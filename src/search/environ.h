@@ -130,12 +130,12 @@ private:
     // Add moves with free variables.
     // Return true if it has no open hypotheses.
     virtual bool addhardmoves
-        (pAss pthm, Proofsize size, Move & move, Moves & moves) const
+        (pAss pthm, RPNsize size, Move & move, Moves & moves) const
         { return pthm && !pthm && size && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
     // Return true if it has no open hypotheses.
     bool trythm
-        (Game const & game, Assiter iter, Proofsize size, Moves & moves) const;
+        (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
 // Validate
     // a move applying a theorem.
     MoveValidity validthmmove(Move const & move) const;

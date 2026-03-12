@@ -53,7 +53,7 @@ private:
     // Add moves with free variables.
     // Return true if it has no open hypotheses.
     virtual bool addhardmoves
-        (pAss pthm, Proofsize size, Move & move, Moves & moves) const;
+        (pAss pthm, RPNsize size, Move & move, Moves & moves) const;
     // The CNF of all hypotheses combined
     Hypscnf const hypscnf;
     Atom hypnatoms;

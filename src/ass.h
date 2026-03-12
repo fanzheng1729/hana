@@ -77,11 +77,11 @@ struct Assertion
     SteprangeAST hypRPNAST(Hypsize index) const
         { return SteprangeAST(hypRPN(index), hypAST(index)); }
     // Length of a hypothesis
-    Proofsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
+    RPNsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
     // Total length of RPNs of hypotheses
-    Proofsize hypslen() const
+    RPNsize hypslen() const
     {
-        Proofsize sum = 0;
+        RPNsize sum = 0;
         for (Hypsize i = 0; i < nhyps(); ++i)
             sum += hyplen(i);
         return sum;

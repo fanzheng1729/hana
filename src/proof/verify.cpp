@@ -14,7 +14,7 @@ typedef std::vector<std::pair<const Symbol3 *, const Symbol3 *> > Substitutions;
 RPN compressed(RPN const & labels, Proofnumbers const & proofnumbers)
 {
     RPN result(proofnumbers.size()); // Preallocate for efficiency
-    Proofsize const nlabels = labels.size();
+    RPNsize const nlabels = labels.size();
 
     for (Proofnumbers::size_type step = 0; step < proofnumbers.size(); ++step)
     {

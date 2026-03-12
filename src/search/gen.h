@@ -33,18 +33,18 @@ struct Gen
     Genresult   mutable genresult;
     Termcounts  mutable termcounts;
 // Return a lower bound of the number of potential substitutions.
-    Proofsize substcount(Argtypes const & argtypes, Genstack const & stack) const;
+    RPNsize substcount(Argtypes const & argtypes, Genstack const & stack) const;
 // Advance the stack and return true if it can be advanced.
 // Clear the stack and return false if it cannot be advanced.
-    bool  next(Argtypes const & argtypes, Proofsize size, Genstack & stack) const;
+    bool  next(Argtypes const & argtypes, RPNsize size, Genstack & stack) const;
 // Generate all terms of size 1.
     Terms generateupto1(strview type) const;
 // Generate all terms with RPN up to a given size.
 // Stop and return false when max count is exceeded.
-    bool generateupto(strview type, Proofsize size) const;
+    bool generateupto(strview type, RPNsize size) const;
 // Generate all terms for all arguments with RPN up to a given size.
 // Stop and return false when max count is exceeded.
-    bool dogenerate(Argtypes const & argtypes, Proofsize size, Adder & adder) const;
+    bool dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) const;
 };
 
 #endif // GEN_H_INCLUDED
