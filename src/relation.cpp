@@ -4,36 +4,37 @@
 #include "util/filter.h"
 #include "util/for.h"
 
-// Return true if RPN matches pattern.
-static bool matchline(Proofsteps const & RPN, int const * & cur,
+// Return true if a line matches pattern.
+static bool matchline(Proofsteps const & line, int const * & cur,
                       int const * end, Proofsteps & substs)
 {
-    for (Proofsize i = 0; i < RPN.size(); ++i, ++cur)
+    FOR (Proofstep step, line)
     {
         if (cur >= end || *cur < 0)
             return false;
         // 0 corresponds to the syntax axiom.
-        if (*cur == 0 && !RPN[i].isthm())
+        if (*cur == 0 && !step.isthm())
             return false;
         // !0 corresponds to a variable.
-        if (*cur != 0 && !RPN[i].ishyp())
+        if (*cur != 0 && !step.ishyp())
             return false;
 
         if (substs[*cur].empty())
         {
             // A new step
-            if (util::filter(substs)(RPN[i]))
+            if (util::filter(substs)(step))
                 return false; // seen before.
-            substs[*cur] = RPN[i]; // record it.
+            substs[*cur] = step; // record it.
         }
         // Otherwise check if it matches the recod.
-        else if (substs[*cur] != RPN[i])
+        else if (substs[*cur] != step)
             return false; // mismatch
+        ++cur;
     }
     return true;
 }
 
-// If RPN of the expression matches a given pattern,
+// If the assertion matches a given pattern,
 // return the proof step correponding to 0. Otherwise return NONE.
 static Proofstep match(Assertion const & ass, const int pattern[])
 {
