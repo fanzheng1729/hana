@@ -159,13 +159,13 @@ bool Syntaxioms::addRPN
             return false;
 
         Hypothesis & hyp = const_cast<Hypothesis &>(ass.hyp(i));
-        if (!hyp.RPN.empty() && hyp.ast.size() == hyp.RPN.size())
+        if (!hyp.rpn.empty() && hyp.ast.size() == hyp.rpn.size())
             continue; // Hypothesis already parsed
         // Parse the hypothesis.
         if (ass.hypfloats(i))
         {
             // Floating hypothesis
-            hyp.RPN.assign(1, ass.hypptr(i));
+            hyp.rpn.assign(1, ass.hypptr(i));
             hyp.ast.assign(1, ASTnode());
         }
         else
@@ -173,7 +173,7 @@ bool Syntaxioms::addRPN
             // Essential hypothesis
             exp = ass.hypexp(i);
             exp[0] = typecodes.normalize(exp[0]);
-            if (!RPNAST(exp, ass, hyp.RPN, hyp.ast))
+            if (!RPNAST(exp, ass, hyp.rpn, hyp.ast))
                 return false;
         }
     }

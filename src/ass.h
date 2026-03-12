@@ -72,7 +72,7 @@ struct Assertion
     strview hyptypecode(Hypsize index) const
         { return hypexp(index).empty() ? strview() : hypexp(index)[0]; }
     // rev-Polish notation and abstract syntax tree of a hypothesis
-    Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).RPN; }
+    Proofsteps const & hypRPN(Hypsize index) const { return hyp(index).rpn; }
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
     SteprangeAST hypRPNAST(Hypsize index) const
         { return SteprangeAST(hypRPN(index), hypAST(index)); }

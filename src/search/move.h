@@ -168,7 +168,7 @@ struct Move
     {
         Symbol2::ID const id = var.id;
         if (id >= substitutions.size() || substitutions[id].empty())
-            return var.iter->second.RPN;
+            return var.iter->second.rpn;
         return substitutions[id];
     }
     // Add conjectures to a bank. Return iterators to the hypotheses.
@@ -188,7 +188,7 @@ struct Move
         for (Hypsize i = 0; i < nconjs(); ++i)
         {
             Expression const & hypexp = hyp.expression;
-            if (!hypexp.empty() && absconjs[i].rpn == hyp.RPN
+            if (!hypexp.empty() && absconjs[i].rpn == hyp.rpn
                 && absconjs[i].typecode == hypexp[0])
                 return i;
         }

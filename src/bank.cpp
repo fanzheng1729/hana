@@ -43,7 +43,7 @@ Symbol3 Bank::addabsvar(Steprange absRPN)
     // Symbol for the variable
     exp[1] = var = Symbol3(varlabel, id, hypiter);
     // rev-Polish notation of the hypothesis
-    hypiter->second.RPN.assign(1, hypiter);
+    hypiter->second.rpn.assign(1, hypiter);
     // Abstract syntax tree of the hypothesis
     hypiter->second.ast.resize(1);
 
@@ -68,7 +68,7 @@ Hypiter Bank::addhyp(Proofsteps const & hypRPN, strview typecode)
         return hypiter;
 
     hyp.floats = false;
-    hyp.RPN = hypRPN;
+    hyp.rpn = hypRPN;
     // # of the hypothesis
     Hypsize const n = m_ehyplabels.size();
     // label of the hypothesis

@@ -77,7 +77,7 @@ struct Hypothesis
 {
     Expression expression;
     bool floats;
-    Proofsteps RPN;
+    Proofsteps rpn;
     AST  ast;
     Hypothesis(Expression const & exp = Expression(), bool floating = false) :
         expression(exp), floats(floating) {}
