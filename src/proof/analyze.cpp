@@ -29,21 +29,21 @@ static bool addASTnode
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs
-AST ast(Proofsteps const & proof)
+AST ast(RPN const & rpn)
 {
     std::vector<Proofsize> stack;
     // Preallocate for efficiency
-    stack.reserve(proof.size());
-    AST tree(proof.size());
+    stack.reserve(rpn.size());
+    AST tree(rpn.size());
 
-    for (Proofsize i = 0; i < proof.size(); ++i)
+    for (Proofsize i = 0; i < rpn.size(); ++i)
     {
-        Proofstep const step = proof[i];
+        Proofstep const step = rpn[i];
         if (step.ishyp())
             stack.push_back(i);
         else
         if (step.isthm() &&
-            addASTnode(proof[i].pass->second, stack, tree[i]))
+            addASTnode(rpn[i].pass->second, stack, tree[i]))
             continue;
         else
             return AST();
@@ -86,8 +86,8 @@ bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
 {
     if (exp.empty() || tmp.empty() || exp.size() < tmp.size())
         return false;
-// std::cout << "Matching " << Proofsteps(exp.first.first, exp.first.second);
-// std::cout << "Against " << Proofsteps(tmp.first.first, tmp.first.second);
+// std::cout << "Matching " << RPN(exp.first.first, exp.first.second);
+// std::cout << "Against " << RPN(tmp.first.first, tmp.first.second);
     Proofstep exproot = *(exp.first.second-1), tmproot = *(tmp.first.second-1);
     switch(tmproot.type)
     {
@@ -152,7 +152,7 @@ static void maxabs
             GovernedStepranges & ranges = result[root];
             if (ranges.empty())
                 ranges = GovernedStepranges(compranges);
-            Proofsteps range(subexp.first.first,subexp.first.second);
+            RPN range(subexp.first.first, subexp.first.second);
             ranges[subexp.first] = ast(range);
         }
         *pinstep = true;
