@@ -16,13 +16,13 @@ Symbol3 Bank::addabsvar(Steprange absRPN)
     if (absRPN.empty())
         return "";
 
-    RPNSymbols::value_type value(Proofsteps(absRPN.first, absRPN.second), "");
-    RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(value).first;
-    // New variable
+    RPNSymbols::value_type RPNvar(Proofsteps(absRPN.first, absRPN.second), "");
+    RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(RPNvar).first;
+    // Abstract variable
     Symbol3 & var = RPNiter->second;
-    if (var.id > 0) // old RPN
+    if (var.id > 0) // old var
         return var;
-    // New RPN, to which variable #id is assigned
+    // New var, to which variable #id is assigned
     Symbol2::ID const id = m_varlabels.size();
 
     strview typecode = absRPN.root().typecode();
