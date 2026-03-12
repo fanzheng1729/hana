@@ -5,8 +5,8 @@
 #include "util/for.h"
 
 // Return true if a line matches pattern.
-static bool matchline(Proofsteps const & line, int const * & cur,
-                      int const * end, Proofsteps & substs)
+static bool matchline
+    (RPN const & line, int const * & cur, int const * end, RPN & substs)
 {
     FOR (Proofstep step, line)
     {
@@ -45,7 +45,7 @@ static Proofstep match(Assertion const & ass, const int pattern[])
     // Max # variables to substitute
     const int argc = *std::max_element(pattern, end);
     // Substitution vector
-    Proofsteps substs(argc + 1, Proofstep::NONE);
+    RPN substs(argc + 1, Proofstep::NONE);
 
     // Match hypotheses.
     const int * cur = pattern;
