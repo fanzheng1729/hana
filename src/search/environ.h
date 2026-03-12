@@ -81,7 +81,8 @@ struct Environ : protected Gen
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Weight of the goal
-    virtual Weight weight(Proofsteps const & RPN) const { return RPN.size(); }
+    virtual Weight weight(Proofsteps const & goal) const
+    { return goal.size(); }
     // Weight of the game
     Weight weight(Game const & game) const
     { return hypsweight + weight(game.goal().rpn); }
