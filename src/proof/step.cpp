@@ -77,7 +77,7 @@ bool writeproof(Proofsteps & dest, pAss pthm, pProofs const & hyps)
     Proofsize length = 1;
     for (Hypsize i = 0; i < hyps.size(); ++i)
     {
-        Proofsteps const * const p = hyps[i];
+        RPN const * const p = hyps[i];
         if (!p || p->empty())
         {
             writeprooferr(pthm->first.c_str);
@@ -96,7 +96,7 @@ bool writeproof(Proofsteps & dest, pAss pthm, pProofs const & hyps)
     }
     // Preallocate for efficiency
     dest.reserve(length);
-    FOR (Proofsteps const * p, hyps)
+    FOR (RPN const * p, hyps)
         dest += *p;
     // Label of the assertion used
     dest.push_back(pthm);
