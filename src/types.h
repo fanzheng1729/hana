@@ -31,6 +31,7 @@ typedef std::vector<Proofnumber> Proofnumbers;
 struct Proofstep;
 // A sequence of proof steps
 typedef std::vector<Proofstep> Proofsteps;
+typedef std::vector<Proofstep> RPN;
 // Pointers to the proofs to be included
 typedef std::vector<Proofsteps const *> pProofs;
 // # of step in the proof

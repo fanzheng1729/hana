@@ -10,7 +10,7 @@ struct Definition
     // Pointer to the defining assertion, null -> no definition
     pAss pdef;
     // Left and right hand side of definition
-    Proofsteps lhs, rhs;
+    RPN lhs, rhs;
     // Weight of syntax axiom
     Weight weight;
     // # occurrences
