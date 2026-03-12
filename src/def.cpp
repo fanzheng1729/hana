@@ -189,11 +189,11 @@ bool checkdefinitions
         if (unexpected(!pdef, "empty definition for", rdef.first))
             continue;
         // Construct the statement from the revPolish notation.
-        Proofsteps RPN(definition.lhs);
-        RPN += definition.rhs;
-        RPN.push_back(pdef->second.expRPN.back());
+        Proofsteps defRPN(definition.lhs);
+        defRPN += definition.rhs;
+        defRPN.push_back(pdef->second.expRPN.back());
         // Check if it agrees with the expression.
-        Expression const & result(verify(RPN, pdef));
+        Expression const & result(verify(defRPN, pdef));
         Expression const & exp = pdef->second.expression;
         bool okay = !result.empty() && result[0]==typecodes.normalize(exp[0]);
         okay &= util::equal(result.begin() + 1, result.end(),
