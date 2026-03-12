@@ -202,7 +202,7 @@ static bool calc_stack(Bvector const & tt, Bvector & stack)
 int Propctors::calcbool
     (Definitions const & defs, Definition const & def, TTindex arg)
 {
-    Proofsteps const & lhs = def.lhs, & rhs = def.rhs;
+    RPN const & lhs = def.lhs, & rhs = def.rhs;
     Bvector stack;
 // std::cout << rhs;
     FOR (Proofstep const step, rhs)
@@ -259,7 +259,7 @@ static void addlitatomequiv(CNFClauses & cnf, Literal lit, Atom atom)
 // # auxiliary atoms: natom, natom + 1, ...
 // Return true if okay. First auxiliary atom = hyps.size()
 bool Propctors::addformula
-    (Proofsteps const & rpn, AST const & ast, Hypiters const & hyps,
+    (RPN const & rpn, AST const & ast, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
 {
     if (rpn.empty() || rpn.size() != ast.size())
@@ -373,8 +373,7 @@ static Splitretval splitroot(Steprange rpn)
 }
 
 // Return the propositional skeleton of an RPN.
-Proofsteps propskeleton
-    (Proofsteps const & rpn, AST const & ast, class Bank & bank)
+RPN propskeleton(RPN const & rpn, AST const & ast, class Bank & bank)
 {
     SteprangeAST const exp(rpn, ast);
     if (exp.empty())
