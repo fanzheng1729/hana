@@ -111,8 +111,9 @@ void Move::makesubst(Proofsteps const & src, Proofsteps & dest) const
 // Size of full proof (must be of type CONJ)
 Proofsize Move::fullproofsize(pProofs const & phyps) const
 {
-    if (phyps.empty() || !phyps.back() || phyps.back()->empty())
+    if (phyps.empty() || !phyps.back())
         return 0;
+
     Proofsize sum = 0;
     FOR (Proofstep step, *phyps.back())
         switch (step.type)
