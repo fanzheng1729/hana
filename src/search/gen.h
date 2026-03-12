@@ -4,7 +4,7 @@
 #include "../syntaxiom.h"
 
 // vector of generated terms
-typedef std::vector<Proofsteps> Terms;
+typedef std::vector<RPN> Terms;
 // map: type -> terms
 typedef std::map<strview, Terms> Genresult;
 // Counts[type][i] = # of terms up to size i
