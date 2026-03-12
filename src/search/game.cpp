@@ -7,7 +7,7 @@
 Goaldata & Game::goaldata() const { return pgoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
 Goal const & Game::goal() const { return goaldata().goal(); }
-Proofsteps const & Game::proof() const { return goaldata().proofsrc(); }
+RPN const & Game::proof() const { return goaldata().proofsrc(); }
 Environ const & Game::env() const { return *pgoal->first; }
 
 std::ostream & operator<<(std::ostream & out, Game const & game)
@@ -94,7 +94,7 @@ bool Game::writeproof() const
         return false;
 // std::cout << "Writing proof: " << goal().expression();
     // attempt.type == Move::THM || Move::CONJ, goal not proven
-    Proofsteps & dest = goaldata().proofdst();
+    RPN & dest = goaldata().proofdst();
     // Return pointers to proofs of sub-goals
     pProofs phyps(attempt.nsubgoals());
     for (Hypsize i = 0; i < phyps.size(); ++i)

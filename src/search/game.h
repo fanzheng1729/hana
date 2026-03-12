@@ -21,7 +21,7 @@ struct Game
     Goaldata & goaldata() const;
     Goaldatas & goaldatas() const;
     Goal const & goal() const;
-    Proofsteps const & proof() const;
+    RPN const & proof() const;
     bool proven() const { return !proof().empty(); }
     Environ const & env() const;
     Weight wDefer() const { return static_cast<Weight>(nDefer); }
