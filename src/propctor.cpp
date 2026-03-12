@@ -259,32 +259,32 @@ static void addlitatomequiv(CNFClauses & cnf, Literal lit, Atom atom)
 // # auxiliary atoms: natom, natom + 1, ...
 // Return true if okay. First auxiliary atom = hyps.size()
 bool Propctors::addformula
-    (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
+    (Proofsteps const & rpn, AST const & ast, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
 {
-    if (RPN.empty() || RPN.size() != ast.size())
+    if (rpn.empty() || rpn.size() != ast.size())
         return false;
 
-    std::vector<Literal> literals(RPN.size());
-    for (Proofsize i = 0; i < RPN.size(); ++i)
+    std::vector<Literal> literals(rpn.size());
+    for (Proofsize i = 0; i < rpn.size(); ++i)
     {
-        const char * step = RPN[i];
+        const char * step = rpn[i];
 //std::cout << "Step " << step << ":\t";
-        if (RPN[i].ishyp())
+        if (rpn[i].ishyp())
         {
             Hypsize const hypindex = util::find(hyps, step) - hyps.begin();
             if (hypindex < hyps.size())
             {
                 literals[i] = hypindex * 2;
 //std::cout << "argument " << hypindex << std::endl;
-                if (RPN.size() > 1)
+                if (rpn.size() > 1)
                     continue;
                 // Expression with a single variable
                 addlitatomequiv(cnf, literals[i], natom++);
 //std::cout << "New CNF:\n" << cnf;
                 return true;
             }
-            std::cerr << "Bad var " << step << " in\n" << RPN;
+            std::cerr << "Bad var " << step << " in\n" << rpn;
             return false;
         }
 //std::cout << "operator ";

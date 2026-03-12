@@ -52,7 +52,7 @@ struct Propctors : std::map<strview, Propctor>
 // # auxiliary atoms: natom, natom + 1, ...
 // Return true if okay. First auxiliary atom = hyps.size()
     bool addformula
-        (Proofsteps const & RPN, AST const & ast, Hypiters const & hyps,
+        (Proofsteps const & rpn, AST const & ast, Hypiters const & hyps,
          CNFClauses & cnf, Atom & natom) const;
 // Translate the hypotheses of a propositional assertion to the CNF of an SAT.
     Hypscnf hypscnf(Assertion const & ass, Atom & natom,
