@@ -35,10 +35,10 @@ struct Prop : Environ
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const;
     // Weight of the goal
-    virtual Weight weight(Proofsteps const & RPN) const
+    virtual Weight weight(Proofsteps const & goal) const
     {
-        return RPN.size();
-        // return ::weight(RPN, propctors());
+        return goal.size();
+        // return ::weight(goal, propctors());
     }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
