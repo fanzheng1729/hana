@@ -39,8 +39,8 @@ struct SyntaxDAG
                 link(salabel, step.pass->first);
     }
     // Add an expression to the set of maximal ranks.
-    void addexp(Ranks & maxranks, Proofsteps const & RPN) const
-    { addranks(maxranks, RPNranks(RPN)); }
+    void addexp(Ranks & maxranks, Proofsteps const & rpn) const
+    { addranks(maxranks, RPNranks(rpn)); }
     // Add ranks to the set of maximal ranks.
     void addranks(Ranks & maxranks, Ranks const & newranks) const
     {
@@ -60,10 +60,10 @@ struct SyntaxDAG
         }
     }
     // Return the ranks of a rev-Polish notation.
-    Ranks RPNranks(Proofsteps const & RPN) const
+    Ranks RPNranks(Proofsteps const & rpn) const
     {
         Ranks result;
-        FOR (Proofstep const step, RPN)
+        FOR (Proofstep const step, rpn)
             if (step.isthm())
             {
                 Mapiter const iter = syntaxranks.find(step.pass->first);
