@@ -11,10 +11,9 @@
 typedef std::vector<std::pair<const Symbol3 *, const Symbol3 *> > Substitutions;
 
 // Extract proof steps from a compressed proof.
-Proofsteps compressed
-    (Proofsteps const & labels, Proofnumbers const & proofnumbers)
+RPN compressed(RPN const & labels, Proofnumbers const & proofnumbers)
 {
-    Proofsteps result(proofnumbers.size()); // Preallocate for efficiency
+    RPN result(proofnumbers.size()); // Preallocate for efficiency
     Proofsize const nlabels = labels.size();
 
     for (Proofnumbers::size_type step = 0; step < proofnumbers.size(); ++step)
@@ -29,12 +28,12 @@ Proofsteps compressed
 }
 
 // Extract proof steps from a regular proof.
-Proofsteps regular
+RPN regular
     (Proof const & proof,
      Hypotheses const & hypotheses, Assertions const & assertions)
 {
     // Preallocate for efficiency
-    Proofsteps result(proof.size());
+    RPN result(proof.size());
     std::transform(proof.begin(), proof.end(), result.begin(),
                    Proofstep::Builder(hypotheses, assertions));
     return util::filter(result)((const char *)0) ? RPN() : result;
@@ -217,7 +216,7 @@ static bool enoughsavedsteps
 }
 
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(Proofsteps const & proof, Printer & printer, pAss pass)
+Expression verify(RPN const & proof, Printer & printer, pAss pass)
 {
     strview label = pass ? pass->first : strview();
 //std::cout << "Verifying " << label << std::endl;
@@ -271,7 +270,7 @@ Expression verify(Proofsteps const & proof, Printer & printer, pAss pass)
 
     return Expression(stack[0].begin(), stack[0].end());
 }
-Expression verify(Proofsteps const & proof, pAss pass)
+Expression verify(RPN const & proof, pAss pass)
 {
     Printer printer;
     return verify(proof, printer, pass);
@@ -288,7 +287,7 @@ Expression verify(Proofsteps const & proof, pAss pass)
 //     Assiter const iter = assertions.find(label);
 //     pAss const pass = iter == assertions.end() ? NULL : &*iter;
 
-//     Proofsteps steps(regular(proof, hypotheses, assertions));
+//     RPN steps(regular(proof, hypotheses, assertions));
 //     if (steps.empty())
 //     {
 //         std::cout << " in regular proof of " << label << std::endl;
