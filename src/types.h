@@ -33,7 +33,7 @@ struct Proofstep;
 typedef std::vector<Proofstep> Proofsteps;
 typedef std::vector<Proofstep> RPN;
 // Pointers to the proofs to be included
-typedef std::vector<Proofsteps const *> pProofs;
+typedef std::vector<RPN const *> pProofs;
 // # of step in the proof
 typedef Proofsteps::size_type Proofsize;
 // Iterator to a proof step
@@ -44,7 +44,7 @@ struct Steprange : std::pair<Stepiter, Stepiter>
 {
     Steprange(Stepiter begin = Stepiter(), Stepiter end = Stepiter())
         { first = begin, second = end; }
-    Steprange(Proofsteps const & proofsteps) :
+    Steprange(RPN const & proofsteps) :
         std::pair<Stepiter, Stepiter>(proofsteps.begin(), proofsteps.end()) {}
     bool empty() const { return second == first; }
     void clear() { second = first; }
@@ -78,7 +78,7 @@ struct Hypothesis
 {
     Expression expression;
     bool floats;
-    Proofsteps rpn;
+    RPN  rpn;
     AST  ast;
     Hypothesis(Expression const & exp = Expression(), bool floating = false) :
         expression(exp), floats(floating) {}
@@ -221,7 +221,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
         std::pair<Steprange, ASTiter>(exp, iter) {}
     SteprangeAST(Steprange exp, AST const & tree) :
         std::pair<Steprange, ASTiter>(exp, tree.begin()) { check(tree); }
-    Proofsteps steps() const { return Proofsteps(first.first, first.second); }
+    RPN  steps() const { return RPN(first.first, first.second); }
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
     Proofsize size() const { return first.size(); }
