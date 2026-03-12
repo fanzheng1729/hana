@@ -33,15 +33,15 @@ private:
 // Read the labels of a compressed proof.
 // Discard tokens up to and including the closing parenthesis.
 // Returns proof steps if okay. Otherwise returns {NULL}.
-    Proofsteps getlabels(strview label, Hypiters const & hyps);
+    RPN getlabels(strview label, Hypiters const & hyps);
 // Read a compressed proof. Discard tokens up to and including $.
     ReadStatus readcompressed
-        (strview label, Hypiters const & hyps, Proofsteps & proof);
+        (strview label, Hypiters const & hyps, RPN & proof);
 // Read a regular proof. Discard tokens up to and including $.
-    ReadStatus readregular(strview label, Proofsteps & proof);
+    ReadStatus readregular(strview label, RPN & proof);
 // Read a proof. Discard tokens up to and including $.
     ReadStatus readproof
-        (strview label, Hypiters const & hyps, Proofsteps & proof)
+        (strview label, Hypiters const & hyps, RPN & proof)
     {
         if (m_tokens.front() != "(") // Regular (uncompressed proof)
             return readregular(label, proof);
@@ -185,7 +185,7 @@ static void inactivereferr(strview token, strview label)
 }
 
 // Add a step to a proof.
-static bool operator+=(Proofsteps & proof, Proofstep step)
+static bool operator+=(RPN & proof, Proofstep step)
 {
     if (step.type != Proofstep::NONE)
         proof.push_back(step);
@@ -224,9 +224,9 @@ Proofstep Imp::getproofstep(strview label)
 // Read the labels of a compressed proof.
 // Discard tokens up to and including the closing parenthesis.
 // Returns proof steps if okay. Otherwise returns {NULL}.
-Proofsteps Imp::getlabels(strview label, Hypiters const & hyps)
+RPN Imp::getlabels(strview label, Hypiters const & hyps)
 {
-    Proofsteps labels(hyps.begin(), hyps.end());
+    RPN labels(hyps.begin(), hyps.end());
 //std::cout << labels.size() << " hypotheses in the theorem" << std::endl;
     strview token;
     while (!m_tokens.empty() && (token = m_tokens.front()) != ")")
@@ -264,10 +264,10 @@ Proofsteps Imp::getlabels(strview label, Hypiters const & hyps)
 
 // Read a compressed proof. Discard tokens up to and including $.
 ReadStatus Imp::readcompressed
-    (strview label, Hypiters const & hyps, Proofsteps & proof)
+    (strview label, Hypiters const & hyps, RPN & proof)
 {
     // Get labels
-    Proofsteps const & labels(getlabels(label, hyps));
+    RPN const & labels(getlabels(label, hyps));
     if (!labels.empty() && !labels[0])
         return ReadStatus::PROOFBAD;
 //std::cout << labels.size() << " hypotheses and labels" << std::endl;
@@ -289,7 +289,7 @@ ReadStatus Imp::readcompressed
 }
 
 // Read a regular proof. Discard tokens up to and including $.
-ReadStatus Imp::readregular(strview label, Proofsteps & proof)
+ReadStatus Imp::readregular(strview label, RPN & proof)
 {
     bool incomplete = false;
     strview token;
@@ -389,7 +389,7 @@ bool Imp::readp(strview label)
         return false;
 
     // Get proof steps
-    Proofsteps proof;
+    RPN proof;
     int okay = readproof(label, ass.hypiters, proof);
     if (okay != ReadStatus::PROOFOKAY)
         return okay == ReadStatus::INCOMPLETE;
