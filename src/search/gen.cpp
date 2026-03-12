@@ -5,15 +5,15 @@
 #include "../util/for.h"
 
 // Return the typecodes of the arguments of a syntax axiom.
-static Argtypes argtypes(Proofsteps const & assRPN)
+static Argtypes argtypes(RPN const & syntaxiom)
 {
-    if (assRPN.empty())
+    if (syntaxiom.empty())
         return Argtypes();
 
-    Argtypes result(assRPN.size() - 1);
-    for (Proofsize i = 0; i < assRPN.size() - 1; ++i)
+    Argtypes result(syntaxiom.size() - 1);
+    for (Proofsize i = 0; i < syntaxiom.size() - 1; ++i)
     {
-        Proofstep const step = assRPN[i];
+        Proofstep const step = syntaxiom[i];
         if (!step.ishyp() || !step.phyp ||
             step.phyp->second.expression.empty())
             return Argtypes();
@@ -73,11 +73,11 @@ bool Gen::next(Argtypes const & argtypes, Proofsize size, Genstack & stack) cons
     return !stack.empty() && ++stack.back();
 }
 
-static Proofsteps writeRPN
+static RPN writeRPN
     (Argtypes const & argtypes, Genresult const & result,
      Genstack const & stack, Proofstep const root)
 {
-    Proofsteps rpn;
+    RPN rpn;
     // Preallocate for efficiency.
     rpn.reserve(argssize(argtypes, result, stack));
 
