@@ -13,7 +13,7 @@ struct Substframe
     // Iterator to beginning of substitutions
     Expiter begin;
     // Map: end of substitution -> its revPolish notation
-    typedef std::map<Expiter, Proofsteps> Subexpends;
+    typedef std::map<Expiter, RPN> Subexpends;
     Subexpends const & ends;
     // Iterator to current substitution
     Subexpends::const_iterator itersub;
