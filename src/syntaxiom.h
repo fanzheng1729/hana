@@ -33,7 +33,7 @@ public:
     }
     Syntaxioms filterbyexp(Expression const & exp) const;
 // Return the revPolish notation of exp. Return the empty proof iff not okay.
-    Proofsteps RPN
+    Proofsteps parse
         (Expression const & exp, Assertion const & ass) const;
 // Add the revPolish notation and its AST. Return true if okay.
     bool RPNAST
