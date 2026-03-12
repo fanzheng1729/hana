@@ -33,12 +33,11 @@ public:
     }
     Syntaxioms filterbyexp(Expression const & exp) const;
 // Return the revPolish notation of exp. Return the empty proof iff not okay.
-    Proofsteps parse
-        (Expression const & exp, Assertion const & ass) const;
+    RPN parse(Expression const & exp, Assertion const & ass) const;
 // Add the revPolish notation and its AST. Return true if okay.
     bool RPNAST
         (Expression const & exp, Assertion const & ass,
-         Proofsteps & rpn, AST & tree) const;
+         RPN & rpn, AST & tree) const;
 // Add the revPolish notation of the whole assertion. Return true if okay.
     bool addRPN(Assertion & ass, struct Typecodes const & typecodes) const;
 // Add the revPolish notation of a set of assertions. Return true if okay.

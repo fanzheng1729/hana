@@ -113,8 +113,7 @@ Syntaxioms Syntaxioms::filterbyexp(Expression const & exp) const
 }
 
 // Return the revPolish notation of exp. Return the empty proof iff not okay.
-Proofsteps Syntaxioms::parse
-    (Expression const & exp, Assertion const & ass) const
+RPN Syntaxioms::parse(Expression const & exp, Assertion const & ass) const
 {
     if (exp.empty()) return RPN();
 
@@ -130,7 +129,7 @@ Proofsteps Syntaxioms::parse
 // Add the revPolish notation and its AST. Return true if okay.
 bool Syntaxioms::RPNAST
     (Expression const & exp, Assertion const & ass,
-     Proofsteps & rpn, AST & tree) const
+     RPN & rpn, AST & tree) const
 {
     rpn = parse(exp, ass);
     if (unexpected(rpn.empty(), "RPN error", exp))
