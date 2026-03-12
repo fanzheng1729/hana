@@ -67,10 +67,11 @@ struct Environ : protected Gen
     {
         if (database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
             return MoveINVALID;
-        if (!move.checkDV(assertion))
+        if (move.isconj())
+            return validconjmove(move);
+        if (!move.isthm() || !move.checkDV(assertion))
             return MoveINVALID;
-        return move.isthm() ? validthmmove(move) :
-                move.isconj() ? validconjmove(move) : MoveINVALID;
+        return validthmmove(move);
     }
     // Return the hypotheses of a goal to be trimmed.
     virtual Bvector hypstotrim(Goal const & goal) const

@@ -4,11 +4,11 @@
 #include "../util/for.h"
 #include "../io.h"
 
-static Symbol3s symbols(Proofsteps const & RPN)
+static Symbol3s symbols(Proofsteps const & steps)
 {
     Symbol3s set;
 
-    FOR (Proofstep step, RPN)
+    FOR (Proofstep step, steps)
         if (Symbol3 var = step.var())
             set.insert(var);
 
