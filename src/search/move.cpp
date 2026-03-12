@@ -71,7 +71,7 @@ RPN const * Move::psubgoalproof(Hypsize index) const
 }
 
 // Size of a substitution
-Proofsize Move::substsize(Proofsteps const & src) const
+Proofsize Move::substsize(RPN const & src) const
 {
     Proofsize size = 0;
 
@@ -89,7 +89,7 @@ Proofsize Move::substsize(Proofsteps const & src) const
 }
 
 // Make a substitution.
-void Move::makesubst(Proofsteps const & src, Proofsteps & dest) const
+void Move::makesubst(RPN const & src, RPN & dest) const
 {
     if (substitutions.empty())
         return dest.assign(src.begin(), src.end());
@@ -142,7 +142,7 @@ Proofsize Move::fullproofsize(pProofs const & phyps) const
 }
 
 // Write proof (must be of type CONJ).
-bool Move::writeproof(Proofsteps & dest, pProofs const & phyps) const
+bool Move::writeproof(RPN & dest, pProofs const & phyps) const
 {
     dest.clear();
 
@@ -162,7 +162,7 @@ bool Move::writeproof(Proofsteps & dest, pProofs const & phyps) const
             if (step.phyp->second.floats)
             {
                 // Floating hypothesis. Check if it refers to an abstract var.
-                Proofsteps const & subst = substitutions[step.id()];
+                RPN const & subst = substitutions[step.id()];
                 if (!subst.empty())
                     dest += subst; // Abstract variable
                 else
