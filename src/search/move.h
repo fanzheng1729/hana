@@ -13,7 +13,7 @@ static const std::string strcomb = "COMB";
 struct Move
 {
     enum Type {NONE, THM, CONJ, DEFER};
-    typedef std::vector<Proofsteps> Substitutions;
+    typedef std::vector<RPN> Substitutions;
     union
     {
         // Type of the attempt, on our turn
@@ -81,9 +81,8 @@ struct Move
         if (!isthm() && !isconj())
             return Goal();
         Goal result;
-        Proofsteps const & expRPN
-        = pthm ? pthm->second.expRPN : absconjs.back().rpn;
-        makesubst(expRPN, result.rpn);
+        RPN const & exp = pthm ? pthm->second.expRPN : absconjs.back().rpn;
+        makesubst(exp, result.rpn);
         result.typecode = goaltypecode();
         return result;
     }
@@ -132,9 +131,8 @@ struct Move
         if (!isthm() && !isconj() || index >= nsubgoals())
             return Goal();
         Goal result;
-        Proofsteps const & hypRPN
-        = pthm ? theorem().hypRPN(index) : absconjs[index].rpn;
-        makesubst(hypRPN, result.rpn);
+        RPN const & hyp = pthm ? theorem().hypRPN(index) : absconjs[index].rpn;
+        makesubst(hyp, result.rpn);
         result.typecode = subgoaltypecode(index);
         return result;
     }
@@ -150,7 +148,7 @@ struct Move
         return i;
     }
     // Return pointer to proof of subgoal. Return null if out of bound.
-    Proofsteps const * psubgoalproof(Hypsize index) const;
+    RPN const * psubgoalproof(Hypsize index) const;
     // # of conjectures made
     Hypsize nconjs() const { return isconj() * (absconjs.size() - 1); }
     // Abstract variables in use (must be of type CONJ)
@@ -164,7 +162,7 @@ struct Move
         return vars;
     }
     // Abstraction of a variable (must be of type CONJ)
-    Proofsteps const & abstraction(Symbol3 var) const
+    RPN const & abstraction(Symbol3 var) const
     {
         Symbol2::ID const id = var.id;
         if (id >= substitutions.size() || substitutions[id].empty())

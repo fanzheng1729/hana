@@ -4,11 +4,11 @@
 #include "../util/for.h"
 #include "../io.h"
 
-static Symbol3s symbols(Proofsteps const & steps)
+static Symbol3s symbols(RPN const & rpn)
 {
     Symbol3s set;
 
-    FOR (Proofstep step, steps)
+    FOR (Proofstep step, rpn)
         if (Symbol3 var = step.var())
             set.insert(var);
 
@@ -23,8 +23,8 @@ bool Move::checkDV(Assertion const & ass, bool verbose) const
 
     FOR (Disjvars::const_reference vars, theorem().disjvars)
     {
-        Proofsteps const & RPN1 = substitutions[vars.first];
-        Proofsteps const & RPN2 = substitutions[vars.second];
+        RPN const & RPN1 = substitutions[vars.first];
+        RPN const & RPN2 = substitutions[vars.second];
 
         if (!::checkDV
             (symbols(RPN1),symbols(RPN2),ass.disjvars,ass.varusage,verbose))
@@ -45,13 +45,13 @@ Disjvars Move::findDV(Assertion const & ass) const
          iter1 != varusage.end(); ++iter1)
     {
         Symbol3 const var1 = iter1->first;
-        Proofsteps const & RPN1 = abstraction(var1);
+        RPN const & RPN1 = abstraction(var1);
 
         Varusage::const_iterator iter2 = iter1;
         for (++iter2; iter2 != varusage.end(); ++iter2)
         {
             Symbol3 const var2 = iter2->first;
-            Proofsteps const & RPN2 = abstraction(var2);
+            RPN const & RPN2 = abstraction(var2);
 
             if (::checkDV
                 (symbols(RPN1),symbols(RPN2),ass.disjvars,ass.varusage, false))
@@ -63,7 +63,7 @@ Disjvars Move::findDV(Assertion const & ass) const
 }
 
 // Return pointer to proof of subgoal. Return null if out of bound.
-Proofsteps const * Move::psubgoalproof(Hypsize index) const
+RPN const * Move::psubgoalproof(Hypsize index) const
 {
     return index >= nsubgoals() ? NULL :
             subgoalfloats(index) ? &substitutions[hypvar(index)] :
