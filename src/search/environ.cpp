@@ -1,5 +1,5 @@
 #include "environ.h"
-// #include "../io.h"
+#include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
 #include "../util/algo.h"   // for util::addordered
@@ -11,6 +11,15 @@ bool subsumedbyProb(Environ const & env) { return env.subsumedbyProb(); }
 pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
+
+// Report false goal and return GOALFALSE.
+Goalstatus Environ::printbadgoal(Proofsteps const & badgoal) const
+{
+    std::cerr << "Bad goal\n" << badgoal << "in env " << name;
+    std::cerr << " in Problem #" << assertion.number << std::endl;
+    // std::cin.get();
+    return GOALFALSE;
+}
 
 // Validate a move applying a theorem.
 Environ::MoveValidity Environ::validthmmove(Move const & move) const

@@ -17,7 +17,7 @@ Goalstatus Prop::status(Goal const & goal) const
     Atom natom = hypnatoms;
     if (!propctors().addformula
         (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom))
-        return statuserr(*this, goal.rpn);
+        return printbadgoal(goal.rpn);
     // Negate conclusion.
     return hypscnf.first.sat(conclusion.closeoff(natom - 1, true)) ?
             GOALFALSE : GOALTRUE;
