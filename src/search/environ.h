@@ -61,7 +61,7 @@ struct Environ : protected Gen
     virtual Goalstatus status(Goal const & goal) const
     { return goal.rpn.empty() ? GOALFALSE : GOALOPEN; }
     // Report false goal and return GOALFALSE.
-    Goalstatus printbadgoal(Proofsteps const & badgoal) const;
+    Goalstatus printbadgoal(RPN const & badgoal) const;
     // Validity of a move.
     enum MoveValidity { MoveINVALID = -1, MoveVALID = 0, MoveCLOSED = 1 };
     // Validate a move.
@@ -81,8 +81,7 @@ struct Environ : protected Gen
     // Moves generated at a given stage
     virtual Moves ourmoves(Game const & game, stage_t stage) const;
     // Weight of the goal
-    virtual Weight weight(Proofsteps const & goal) const
-    { return goal.size(); }
+    virtual Weight weight(RPN const & goal) const { return goal.size(); }
     // Weight of the game
     Weight weight(Game const & game) const
     { return hypsweight + weight(game.goal().rpn); }
