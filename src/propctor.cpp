@@ -378,12 +378,12 @@ Proofsteps propskeleton
 {
     SteprangeAST const exp(rpn, ast);
     if (exp.empty())
-        return Proofsteps();
+        return RPN();
 
     // Preallocate for efficiency
     Proofsteps result;
     result.reserve(rpn.size());
 
     return skeleton(exp, splitroot, bank, result) != UNKNOWN ?
-        result: Proofsteps();
+        result: RPN();
 }

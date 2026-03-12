@@ -116,7 +116,7 @@ Syntaxioms Syntaxioms::filterbyexp(Expression const & exp) const
 Proofsteps Syntaxioms::parse
     (Expression const & exp, Assertion const & ass) const
 {
-    if (exp.empty()) return Proofsteps();
+    if (exp.empty()) return RPN();
 
     Syntaxioms const & filtered(filterbyexp(exp));
     Subexprecords recs;
@@ -124,7 +124,7 @@ Proofsteps Syntaxioms::parse
         (RPNmap(exp[0], exp.begin() + 1, exp.end(), exp, ass, filtered, recs));
 
     Substframe::Subexpends::const_iterator const iter(ends.find(exp.end()));
-    return iter == ends.end() ? Proofsteps() : iter->second;
+    return iter == ends.end() ? RPN() : iter->second;
 }
 
 // Add the revPolish notation and its AST. Return true if okay.

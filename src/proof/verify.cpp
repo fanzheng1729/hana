@@ -37,7 +37,7 @@ Proofsteps regular
     Proofsteps result(proof.size());
     std::transform(proof.begin(), proof.end(), result.begin(),
                    Proofstep::Builder(hypotheses, assertions));
-    return util::filter(result)((const char *)0) ? Proofsteps() : result;
+    return util::filter(result)((const char *)0) ? RPN() : result;
 }
 
 static bool printinproofof(strview label, bool okay = false)
