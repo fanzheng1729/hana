@@ -104,7 +104,7 @@ bool writeproof(Proofsteps & dest, pAss pthm, pProofs const & hyps)
     return true;
 }
 
-std::ostream & operator<<(std::ostream & out, Proofsteps const & steps)
+std::ostream & operator<<(std::ostream & out, RPN const & steps)
 {
     FOR (Proofstep const step, steps)
         out << step << ' ';
