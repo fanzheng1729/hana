@@ -50,15 +50,15 @@ Symbol3 Bank::addabsvar(Steprange absRPN)
     return var;
 }
 
-Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
+Hypiter Bank::addhyp(Proofsteps const & hypRPN, strview typecode)
 {
     Hypothesis hyp;
     // Expression of the hypothesis
-    Expression & exp = hyp.expression = verify(RPN);
+    Expression & exp = hyp.expression = verify(hypRPN);
     if (exp.empty())
         return Hypiter();
     // Abstract syntax tree of the hypothesis
-    hyp.ast = ast(RPN);
+    hyp.ast = ast(hypRPN);
     if (hyp.ast.empty())
         return Hypiter();
 
@@ -68,7 +68,7 @@ Hypiter Bank::addhyp(Proofsteps const & RPN, strview typecode)
         return hypiter;
 
     hyp.floats = false;
-    hyp.RPN = RPN;
+    hyp.RPN = hypRPN;
     // # of the hypothesis
     Hypsize const n = m_ehyplabels.size();
     // label of the hypothesis

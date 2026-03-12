@@ -38,7 +38,7 @@ public:
     // Add an abstraction variable.
     Symbol3 addabsvar(Steprange absRPN);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
-    Hypiter addhyp(Proofsteps const & RPN, strview typecode);
+    Hypiter addhyp(Proofsteps const & hypRPN, strview typecode);
     bool hashyp(strview label) const { return hypotheses().count(label); }
 };
 
