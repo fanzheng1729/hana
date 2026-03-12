@@ -63,7 +63,7 @@ static void hypothesiserr(const char * hyplabel)
 }
 
 // Write the proof from pointers to proof of hypotheses. Return true if Okay.
-bool writeproof(Proofsteps & dest, pAss pthm, pProofs const & hyps)
+bool writeproof(RPN & dest, pAss pthm, pProofs const & hyps)
 {
     dest.clear();
     if (hyps.size() != pthm->second.nhyps())
