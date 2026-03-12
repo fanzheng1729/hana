@@ -32,15 +32,15 @@ struct SyntaxDAG
         syntaxranks[syntaxiom] = result.first->first;
     }
     // Add the definition of salabel to the DAG of syntax axioms.
-    void adddef(strview salabel, Proofsteps const & defRPN)
+    void adddef(strview salabel, RPN const & def)
     {
-        FOR (Proofstep const step, defRPN)
+        FOR (Proofstep const step, def)
             if (step.isthm())
                 link(salabel, step.pass->first);
     }
     // Add an expression to the set of maximal ranks.
-    void addexp(Ranks & maxranks, Proofsteps const & rpn) const
-    { addranks(maxranks, RPNranks(rpn)); }
+    void addexp(Ranks & maxranks, RPN const & exp) const
+    { addranks(maxranks, RPNranks(exp)); }
     // Add ranks to the set of maximal ranks.
     void addranks(Ranks & maxranks, Ranks const & newranks) const
     {
@@ -60,10 +60,10 @@ struct SyntaxDAG
         }
     }
     // Return the ranks of a rev-Polish notation.
-    Ranks RPNranks(Proofsteps const & rpn) const
+    Ranks RPNranks(RPN const & exp) const
     {
         Ranks result;
-        FOR (Proofstep const step, rpn)
+        FOR (Proofstep const step, exp)
             if (step.isthm())
             {
                 Mapiter const iter = syntaxranks.find(step.pass->first);
