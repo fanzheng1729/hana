@@ -32,7 +32,7 @@ class Goaldata
 {
     friend class Problem;
     Goalstatus status;
-    Proofsteps proof;
+    RPN proof;
     // Set of pointers to nodes trying to prove the open goal
     pNodes m_pnodes;
     // Pointer to the context
@@ -46,12 +46,11 @@ public:
         status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv(NULL) {}
     Goal const & goal() const { return pbigGoal->first; }
     Goaldatas & goaldatas() const { return pbigGoal->second; }
-    Proofsteps const & proofsrc() const
+    RPN const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
-    Proofsteps const & proofsrc()
+    RPN const & proofsrc()
     {
-        Proofsteps const & proof0
-        = const_cast<Goaldata const *>(this)->proofsrc();
+        RPN const & proof0 = const_cast<Goaldata const *>(this)->proofsrc();
         if (!proof0.empty()) return proof0;
         if (subsumedbyProb(*pEnv)) return proof;
 
@@ -77,7 +76,7 @@ public:
     }
     bool proven() const { return !proofsrc().empty(); }
     bool proven() { return !proofsrc().empty(); }
-    Proofsteps & proofdst()
+    RPN & proofdst()
     { return subsumedbyProb(*pEnv) ? goaldatas().proof : proof; }
     pNodes const & pnodes() const { return m_pnodes; }
     // Add node pointer to p's goal data.
