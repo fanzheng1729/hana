@@ -14,7 +14,7 @@
 // If a symbol has no definition, its # is n. Otherwise return 0.
 template<class T>
 Assertions::size_type maxsymboldefnumber
-    (Proofsteps const & rpn, T const & definitions,
+    (RPN const & rpn, T const & definitions,
      Syntaxioms const & syntaxioms, Assertions::size_type n)
 {
     Assertions::size_type max = 1;
@@ -77,7 +77,7 @@ Assertions::size_type maxsymboldefnumber
 
 // Return max # of syntax axiom in a revPolish notation.
 inline Assertions::size_type maxsymboldefnumber
-    (Proofsteps const & rpn, Syntaxioms const & syntaxioms)
+    (RPN const & rpn, Syntaxioms const & syntaxioms)
 {
     Assertions::size_type max = 0;
 
@@ -119,7 +119,7 @@ Labels labels(T const & definitions)
 
 // Add the syntax axioms of a rev-Polish notation to the frequency count.
 template<class T>
-void addfreqcount(Proofsteps const & rpn, T & definitions)
+void addfreqcount(RPN const & rpn, T & definitions)
 {
     FOR (Proofstep const step, rpn)
         if (step.isthm() && step.pass)
@@ -145,7 +145,7 @@ void addfreqcount(Assertion const & ass, T & definitions)
 typedef std::valarray<Freqcount> Freqcounts;
 // Count the syntax axioms in a rev-Polish notation.
 inline void addfreqcounts
-    (Proofsteps const & rpn, Labels const & labels, Freqcounts & counts)
+    (RPN const & rpn, Labels const & labels, Freqcounts & counts)
 {
     FOR (Proofstep const step, rpn)
         if (step.isthm() && step.pass)
@@ -219,7 +219,7 @@ void addweight(T & definitions, typename T::mapped_type & definition)
 
 // Weight of a rev-Polish notation.
 template<class T>
-Weight weight(Proofsteps const & rpn, T const & definitions)
+Weight weight(RPN const & rpn, T const & definitions)
 {
     Weight sum = 0;
 
