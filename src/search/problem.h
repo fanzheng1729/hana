@@ -178,7 +178,7 @@ public:
     // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p);
     // Proof of the assertion, if not empty
-    Proofsteps const & proof() const { return root()->game().proof(); }
+    RPN const & proof() const { return root()->game().proof(); }
     // Return true if proof() is okay.
     bool checkproof(Assiter iter) const
     {

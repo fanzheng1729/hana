@@ -35,7 +35,7 @@ struct Prop : Environ
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const;
     // Weight of the goal
-    virtual Weight weight(Proofsteps const & goal) const
+    virtual Weight weight(RPN const & goal) const
     {
         return goal.size();
         // return ::weight(goal, propctors());
