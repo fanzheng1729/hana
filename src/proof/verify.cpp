@@ -19,9 +19,9 @@ RPN compressed(RPN const & labels, Proofnumbers const & proofnumbers)
     for (Proofnumbers::size_type step = 0; step < proofnumbers.size(); ++step)
     {
         Proofnumber const number = proofnumbers[step];
-        result[step] = number == 0 ? Proofstep(Proofstep::SAVE) :
+        result[step] = number == 0 ? RPNstep(RPNstep::SAVE) :
                         number <= nlabels ? labels[number - 1] :
-                            Proofstep(number - nlabels - 1);
+                            RPNstep(number - nlabels - 1);
     }
 
     return result;
@@ -35,7 +35,7 @@ RPN regular
     // Preallocate for efficiency
     RPN result(proof.size());
     std::transform(proof.begin(), proof.end(), result.begin(),
-                   Proofstep::Builder(hypotheses, assertions));
+                   RPNstep::Builder(hypotheses, assertions));
     return util::filter(result)((const char *)0) ? RPN() : result;
 }
 
@@ -209,7 +209,7 @@ static bool verifystep
 
 // Return true if the index of a load step is within the bound.
 static bool enoughsavedsteps
-    (Proofstep::Index index, Proofstep::Index savedsteps, strview label)
+    (RPNstep::Index index, RPNstep::Index savedsteps, strview label)
 {
     bool okay = is1stle2nd(index + 1, savedsteps, "steps needed", "steps saved");
     return printinproofof(label, okay);
@@ -224,26 +224,26 @@ Expression verify(RPN const & proof, Printer & printer, pAss pass)
 
     Substitutions substs;
 
-    FOR (Proofstep const & step, proof)
+    FOR (RPNstep const & step, proof)
     {
         switch (step.type)
         {
-        case Proofstep::HYP:
+        case RPNstep::HYP:
 //std::cout << "Pushing hypothesis: " << step.phyp->first << '\n';
             stack.push_back(step.phyp->second.expression);
             break;
-        case Proofstep::THM:
+        case RPNstep::THM:
 //std::cout << "Applying assertion: " << step.pass->first << '\n';
             if (!verifystep(pass, step.pass, stack, substs))
                 return Expression();
             break;
-        case Proofstep::LOAD:
+        case RPNstep::LOAD:
 //std::cout << "Loading saved step " << step.index << std::endl;
             if (!enoughsavedsteps(step.index, savedsteps.size(), label))
                 return Expression();
             stack.push_back(savedsteps[step.index]);
             break;
-        case Proofstep::SAVE:
+        case RPNstep::SAVE:
 //std::cout << "Saving step " << savedsteps.size() << std::endl;
             if (stack.empty())
             {

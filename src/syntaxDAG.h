@@ -34,7 +34,7 @@ struct SyntaxDAG
     // Add the definition of salabel to the DAG of syntax axioms.
     void adddef(strview salabel, RPN const & def)
     {
-        FOR (Proofstep const step, def)
+        FOR (RPNstep const step, def)
             if (step.isthm())
                 link(salabel, step.pass->first);
     }
@@ -63,7 +63,7 @@ struct SyntaxDAG
     Ranks RPNranks(RPN const & exp) const
     {
         Ranks result;
-        FOR (Proofstep const step, exp)
+        FOR (RPNstep const step, exp)
             if (step.isthm())
             {
                 Mapiter const iter = syntaxranks.find(step.pass->first);

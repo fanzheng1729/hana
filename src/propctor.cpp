@@ -205,7 +205,7 @@ int Propctors::calcbool
     RPN const & lhs = def.lhs, & rhs = def.rhs;
     Bvector stack;
 // std::cout << rhs;
-    FOR (Proofstep const step, rhs)
+    FOR (RPNstep const step, rhs)
     {
         // Iterator to the variable in the LHS
         RPNiter const itervar = std::find(lhs.begin(), lhs.end() - 1, step);
@@ -367,7 +367,7 @@ bool Propctors::checkpropsat(Assertions const & assertions,
 // i.e., if all hypotheses and conclusion are floating and begins with "wff".
 static Splitretval splitroot(Steprange rpn)
 {
-    Proofstep const root = rpn.root();
+    RPNstep const root = rpn.root();
     if (!root.isthm() || !root.pass) return KEEPRANGE;
     return truthtablesize(root.pass->second) ? SPLITREC : KEEPRANGE;
 }

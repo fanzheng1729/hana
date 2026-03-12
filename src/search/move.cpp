@@ -8,7 +8,7 @@ static Symbol3s symbols(RPN const & rpn)
 {
     Symbol3s set;
 
-    FOR (Proofstep step, rpn)
+    FOR (RPNstep step, rpn)
         if (Symbol3 var = step.var())
             set.insert(var);
 
@@ -76,7 +76,7 @@ RPNsize Move::substsize(RPN const & src) const
     RPNsize size = 0;
 
     // Make the substitution
-    FOR (Proofstep const step, src)
+    FOR (RPNstep const step, src)
     {
         Symbol2::ID const id = step.id();
         if (id > 0 && !substitutions[id].empty())
@@ -98,7 +98,7 @@ void Move::makesubst(RPN const & src, RPN & dest) const
     dest.reserve(substsize(src));
 
     // Make the substitution
-    FOR (Proofstep const step, src)
+    FOR (RPNstep const step, src)
     {
         Symbol2::ID const id = step.id();
         if (id > 0 && !substitutions[id].empty())
@@ -115,13 +115,13 @@ RPNsize Move::fullproofsize(pProofs const & phyps) const
         return 0;
 
     RPNsize sum = 0;
-    FOR (Proofstep step, *phyps.back())
+    FOR (RPNstep step, *phyps.back())
         switch (step.type)
         {
-        case Proofstep::THM:
+        case RPNstep::THM:
             ++sum;
             break;
-        case Proofstep::HYP:
+        case RPNstep::HYP:
             if (step.phyp->second.floats)
                 if (RPNsize size = substitutions[step.id()].size())
                     sum += size;
@@ -152,13 +152,13 @@ bool Move::writeproof(RPN & dest, pProofs const & phyps) const
     // Preallocate for efficiency.
     dest.reserve(size);
 
-    FOR (Proofstep step, *phyps.back())
+    FOR (RPNstep step, *phyps.back())
         switch (step.type)
         {
-        case Proofstep::THM:
+        case RPNstep::THM:
             dest.push_back(step);
             break;
-        case Proofstep::HYP:
+        case RPNstep::HYP:
             if (step.phyp->second.floats)
             {
                 // Floating hypothesis. Check if it refers to an abstract var.

@@ -29,7 +29,7 @@ private:
 // Classify an assertion.
     void addasstype(Assertion & ass, bool isaxiom) const;
 // Get a proof step.
-    Proofstep getproofstep(strview label);
+    RPNstep getproofstep(strview label);
 // Read the labels of a compressed proof.
 // Discard tokens up to and including the closing parenthesis.
 // Returns proof steps if okay. Otherwise returns {NULL}.
@@ -185,9 +185,9 @@ static void inactivereferr(strview token, strview label)
 }
 
 // Add a step to a proof.
-static bool operator+=(RPN & proof, Proofstep step)
+static bool operator+=(RPN & proof, RPNstep step)
 {
-    if (step.type != Proofstep::NONE)
+    if (step.type != RPNstep::NONE)
         proof.push_back(step);
     return step.type;
 }
@@ -213,12 +213,12 @@ void Imp::addasstype(Assertion & ass, bool isaxiom) const
 }
 
 // Get a proof step
-Proofstep Imp::getproofstep(strview label)
+RPNstep Imp::getproofstep(strview label)
 {
     // Check if token names an assertion.
     Assiter const iterass = m_database.assertions().find(label);
-    return iterass != m_database.assertions().end() ? Proofstep(&*iterass) :
-        Proofstep(m_scopes.activehypptr(label));
+    return iterass != m_database.assertions().end() ? RPNstep(&*iterass) :
+        RPNstep(m_scopes.activehypptr(label));
 }
 
 // Read the labels of a compressed proof.
@@ -235,7 +235,7 @@ RPN Imp::getlabels(strview label, Hypiters const & hyps)
 
         if (unexpected(token == label, "self-reference in proof of", label))
         {
-            return RPN(1, Proofstep::NONE);
+            return RPN(1, RPNstep::NONE);
         }
 
         if (util::filter(hyps)(token))
@@ -243,18 +243,18 @@ RPN Imp::getlabels(strview label, Hypiters const & hyps)
             std::cerr << "Compressed proof of theorem " << label
                       << " has mandatory hypothesis " << token
                       << " in label list" << std::endl;
-            return RPN(1, Proofstep::NONE);
+            return RPN(1, RPNstep::NONE);
         }
 
         if (!(labels += getproofstep(token)))
         {
             inactivereferr(token, label);
-            return RPN(1, Proofstep::NONE);
+            return RPN(1, RPNstep::NONE);
         }
     }
 
     if (unfinishedstat(m_tokens, "$p", label))
-        return RPN(1, Proofstep::NONE);
+        return RPN(1, RPNstep::NONE);
 
     // Discard closing parenthesis
     m_tokens.pop();
@@ -301,7 +301,7 @@ ReadStatus Imp::readregular(strview label, RPN & proof)
         if (token == "?")
         {
             incomplete = true;
-            proof.push_back(Proofstep());
+            proof.push_back(RPNstep());
         }
 
         else if (unexpected(token == label, "self-reference in proof of", label))

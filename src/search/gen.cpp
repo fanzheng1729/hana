@@ -13,7 +13,7 @@ static Argtypes argtypes(RPN const & syntaxiom)
     Argtypes result(syntaxiom.size() - 1);
     for (RPNsize i = 0; i < syntaxiom.size() - 1; ++i)
     {
-        Proofstep const step = syntaxiom[i];
+        RPNstep const step = syntaxiom[i];
         if (!step.ishyp() || !step.phyp ||
             step.phyp->second.expression.empty())
             return Argtypes();
@@ -75,7 +75,7 @@ bool Gen::next(Argtypes const & argtypes, RPNsize size, Genstack & stack) const
 
 static RPN writeRPN
     (Argtypes const & argtypes, Genresult const & result,
-     Genstack const & stack, Proofstep const root)
+     Genstack const & stack, RPNstep const root)
 {
     RPN rpn;
     // Preallocate for efficiency.
@@ -92,8 +92,8 @@ static RPN writeRPN
 struct Termadder : Adder
 {
     Terms & terms;
-    Proofstep const root;
-    Termadder(Terms & terms, Proofstep const root) :
+    RPNstep const root;
+    Termadder(Terms & terms, RPNstep const root) :
         terms(terms), root(root) {}
     // Add a move. Return true if the move closed the goal.
     virtual bool operator()(Argtypes const & types, Genresult const & result,

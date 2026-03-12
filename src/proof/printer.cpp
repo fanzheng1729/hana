@@ -28,14 +28,14 @@ bool Printer::addstep(Expression const & stacktop, RPNsize index,
     return true;
 }
 
-bool Printer::doaddstep(Proofstep step, RPNsize index, Expression const & stacktop)
+bool Printer::doaddstep(RPNstep step, RPNsize index, Expression const & stacktop)
 {
 //std::cout << "Step " << step << ", top of stack: " << stacktop;
     switch (step.type)
     {
-    case Proofstep::HYP:
+    case RPNstep::HYP:
         return addstep(stacktop, index, step.phyp->first);
-    case Proofstep::THM:
+    case RPNstep::THM:
     {
         Assertion const & thm(step.pass->second);
         if (!enoughitemonstack(thm.nEhyps(), stack.size(), ""))
@@ -44,9 +44,9 @@ bool Printer::doaddstep(Proofstep step, RPNsize index, Expression const & stackt
         stack.resize(stack.size() - thm.nEhyps());
         return addstep(stacktop, index, step.pass->first);
     }
-    case Proofstep::LOAD:
+    case RPNstep::LOAD:
         return addstep(stacktop, index, "", Symbol2("<=", step.index + 1));
-    case Proofstep::SAVE:
+    case RPNstep::SAVE:
         if (stacktop.empty())
             return false;
         if (ptypes->isprimitive(stacktop[0]) == FALSE)

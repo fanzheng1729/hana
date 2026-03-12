@@ -27,10 +27,10 @@ typedef std::size_t Proofnumber;
 // Vector of proof numbers
 typedef std::vector<Proofnumber> Proofnumbers;
 
-// Step in a regular or compressed proof
-struct Proofstep;
-// A sequence of proof steps
-typedef std::vector<Proofstep> RPN;
+// Step in a regular or compressed proof, in rev-Polish notation
+struct RPNstep;
+// A sequence of proof steps, in rev-Polish notation
+typedef std::vector<RPNstep> RPN;
 // Pointers to the proofs to be included
 typedef std::vector<RPN const *> pProofs;
 // # of step in the proof
@@ -48,7 +48,7 @@ struct Steprange : std::pair<RPNiter, RPNiter>
     bool empty() const { return second == first; }
     void clear() { second = first; }
     RPNsize size() const { return second - first; }
-    Proofstep const & root() const { return second[-1]; }
+    RPNstep const & root() const { return second[-1]; }
 };
 // Ranges of proof steps
 typedef std::vector<Steprange> Stepranges;
@@ -60,11 +60,11 @@ typedef std::vector<ASTnode> AST;
 // Iterator to an AST node
 typedef AST::const_iterator ASTiter;
 
-// Ranges governed by a Proofstep, map: range -> AST
+// Ranges governed by a RPNstep, map: range -> AST
 typedef std::map<Steprange, AST, bool(*)(Steprange, Steprange)>
     GovernedStepranges;
-// Map: Proofstep -> all ranges governed by the Proofstep
-typedef std::map<Proofstep, GovernedStepranges, std::less<const char *> >
+// Map: RPNstep -> all ranges governed by the RPNstep
+typedef std::map<RPNstep, GovernedStepranges, std::less<const char *> >
     GovernedSteprangesbystep;
 
 // List of indentations
@@ -156,7 +156,7 @@ enum Asstype
 };
 
 // Step in a regular or compressed proof
-struct Proofstep
+struct RPNstep
 {
     typedef std::vector<Expression>::size_type Index;
     enum Type
@@ -169,11 +169,11 @@ struct Proofstep
         pAss pass;
         Index index;
     };
-    Proofstep(Type t = NONE) : type(t == SAVE ? t : NONE) {}
-    Proofstep(pHyp p) : type(p ? HYP : NONE), phyp(p) {}
-    Proofstep(pAss p) : type(p ? THM : NONE), pass(p) {}
-    Proofstep(Hypiter iter) : type(HYP), phyp(&*iter) {}
-    Proofstep(Index i) : type(LOAD), index(i) {}
+    RPNstep(Type t = NONE) : type(t == SAVE ? t : NONE) {}
+    RPNstep(pHyp p) : type(p ? HYP : NONE), phyp(p) {}
+    RPNstep(pAss p) : type(p ? THM : NONE), pass(p) {}
+    RPNstep(Hypiter iter) : type(HYP), phyp(&*iter) {}
+    RPNstep(Index i) : type(LOAD), index(i) {}
     bool empty() const { return type == NONE; }
     bool ishyp() const { return type == HYP; }
     bool isthm() const { return type == THM; }
@@ -202,15 +202,15 @@ struct Proofstep
         Builder(Hypotheses const & hyps, Assertions const & assertions)
                 : m_hyps(hyps), m_assertions(assertions) {}
 // label -> proof step, using hypotheses and assertions.
-        Proofstep operator()(strview label) const;
+        RPNstep operator()(strview label) const;
     private:
         Hypotheses const & m_hyps;
         Assertions const & m_assertions;
-    };  // struct Proofstep::Builder
-};  // struct Proofstep
-inline bool operator==(Proofstep x, Proofstep y)
+    };  // struct RPNstep::Builder
+};  // struct RPNstep
+inline bool operator==(RPNstep x, RPNstep y)
     { return x.ptr() == y.ptr(); }
-inline bool operator<(Proofstep x, Proofstep y)
+inline bool operator<(RPNstep x, RPNstep y)
     { return std::less<const void *>()(x.ptr(), y.ptr()); }
 
 // (Range of steps, begin of subAST)
@@ -225,7 +225,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     void clear() { first.clear(); }
     RPNsize size() const { return first.size(); }
     void check(AST const & tree) { if (size() != tree.size()) clear(); }
-    Proofstep const & RPNroot() const { return first.root(); }
+    RPNstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return second[size() - 1]; }
     // Child i's subrange
     SteprangeAST child(ASTnode::size_type index) const

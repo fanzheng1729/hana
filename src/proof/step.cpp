@@ -4,7 +4,7 @@
 
 static const char proofsteperr[] = "Invalid proof step ";
 
-strview Proofstep::typecode() const
+strview RPNstep::typecode() const
 {
     switch (type)
     {
@@ -20,7 +20,7 @@ strview Proofstep::typecode() const
 }
 
 // Return the name of the proof step.
-Proofstep::operator const char*() const
+RPNstep::operator const char*() const
 {
     switch (type)
     {
@@ -38,7 +38,7 @@ Proofstep::operator const char*() const
 }
 
 // label -> proof step, using hypotheses and assertions.
-Proofstep Proofstep::Builder::operator()(strview label) const
+RPNstep RPNstep::Builder::operator()(strview label) const
 {
     Hypiter const hypiter = m_hyps.find(label);
     if (hypiter != m_hyps.end())
@@ -49,7 +49,7 @@ Proofstep Proofstep::Builder::operator()(strview label) const
         return &*assiter;
 
     std::cerr << proofsteperr << label.c_str << std::endl;
-    return Proofstep::NONE;
+    return RPNstep::NONE;
 }
 
 static void writeprooferr(const char * thmlabel)
@@ -106,7 +106,7 @@ bool writeproof(RPN & dest, pAss pthm, pProofs const & hyps)
 
 std::ostream & operator<<(std::ostream & out, RPN const & steps)
 {
-    FOR (Proofstep const step, steps)
+    FOR (RPNstep const step, steps)
         out << step << ' ';
     return out << std::endl;
 }

@@ -8,7 +8,7 @@
 static bool matchline
     (RPN const & line, int const * & cur, int const * end, RPN & substs)
 {
-    FOR (Proofstep step, line)
+    FOR (RPNstep step, line)
     {
         if (cur >= end || *cur < 0)
             return false;
@@ -36,7 +36,7 @@ static bool matchline
 
 // If the assertion matches a given pattern,
 // return the proof step correponding to 0. Otherwise return NONE.
-static Proofstep match(Assertion const & ass, const int pattern[])
+static RPNstep match(Assertion const & ass, const int pattern[])
 {
     // End of pattern
     const int * end = pattern;
@@ -45,7 +45,7 @@ static Proofstep match(Assertion const & ass, const int pattern[])
     // Max # variables to substitute
     const int argc = *std::max_element(pattern, end);
     // Substitution vector
-    RPN substs(argc + 1, Proofstep::NONE);
+    RPN substs(argc + 1, RPNstep::NONE);
 
     // Match hypotheses.
     const int * cur = pattern;
@@ -54,15 +54,15 @@ static Proofstep match(Assertion const & ass, const int pattern[])
         if (ass.hypfloats(i)) continue;
 
         if (!matchline(ass.hypRPN(i), cur, end, substs))
-            return Proofstep();
+            return RPNstep();
         if (*cur++ != Relations::LINE_END) // Match end of line.
-            return Proofstep();
+            return RPNstep();
     }
     // Match conclusion.
     if (!matchline(ass.expRPN, cur, end, substs))
-        return Proofstep();
+        return RPNstep();
     if (cur != end) // Match end of pattern.
-        return Proofstep();
+        return RPNstep();
 
     // Return the proof string correponding to 0.
     return substs[0];
@@ -73,7 +73,7 @@ Relations::Relations(Assertions const & assertions)
 {
     FOR (Assertions::const_reference ass, assertions)
         for (unsigned i = 0; i < NJUSTIFICATION; ++i)
-            if (Proofstep const step
+            if (RPNstep const step
                 = match(ass.second, Relations::patterns()[i]))
             {
                 Justifications & just((*this)[strview(step)]);

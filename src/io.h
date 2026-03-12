@@ -31,8 +31,8 @@ inline std::ostream & operator<<
 struct CNFClauses;
 std::ostream & operator<<(std::ostream & out, const CNFClauses & cnf);
 
-struct Proofstep;
-typedef std::vector<Proofstep> RPN;
+struct RPNstep;
+typedef std::vector<RPNstep> RPN;
 std::ostream & operator<<(std::ostream & out, RPN const & steps);
 
 template<class Key, class T, class Comp>

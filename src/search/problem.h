@@ -182,7 +182,7 @@ public:
     // Return true if proof() is okay.
     bool checkproof(Assiter iter) const
     {
-        FOR (Proofstep const step, proof())
+        FOR (RPNstep const step, proof())
             if (step.isthm() && step.pass->second.number >= numberlimit)
                 return false; // Assertion # >= limit
             else if (step.ishyp() && !step.phyp->second.floats &&

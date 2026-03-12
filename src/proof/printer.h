@@ -10,7 +10,7 @@ struct Printer
     // Check if the printer is on.
     operator bool() const { return ptypes; }
     // Add a proof step.
-    bool addstep(Proofstep step, RPNsize index, Expression const & stacktop)
+    bool addstep(RPNstep step, RPNsize index, Expression const & stacktop)
     { return !*this || doaddstep(step, index, stacktop); }
     // Return proof string for display.
     std::string str(Indentations const & indentations) const;
@@ -23,7 +23,7 @@ private:
     // List of (justification, tag #, index, expression)
     std::vector<Expression> steps;
     // Add a proof step.
-    bool doaddstep(Proofstep step, RPNsize index, Expression const & stacktop);
+    bool doaddstep(RPNstep step, RPNsize index, Expression const & stacktop);
     bool addstep(Expression const & stacktop, RPNsize index,
                  strview label = "", Symbol2 save = Symbol2());
     std::string::size_type maxlabellen() const;

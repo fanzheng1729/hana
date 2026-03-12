@@ -15,12 +15,12 @@ Tribool skeleton(SteprangeAST exp, T cansplit, B & bank, RPN & result)
 {
     Tribool retval = FALSE;
 // std::cout << "Analyzing " << RPN(exp.first.first, exp.first.second);
-    Proofstep const root = exp.RPNroot();
+    RPNstep const root = exp.RPNroot();
     switch (root.type)
     {
-    case Proofstep::HYP:
+    case RPNstep::HYP:
         return result.push_back(root), FALSE;
-    case Proofstep::THM:
+    case RPNstep::THM:
         switch (cansplit(exp.first))
         {
         case SPLITALL:

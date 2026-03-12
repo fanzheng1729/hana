@@ -38,7 +38,7 @@ AST ast(RPN const & rpn)
 
     for (RPNsize i = 0; i < rpn.size(); ++i)
     {
-        Proofstep const step = rpn[i];
+        RPNstep const step = rpn[i];
         if (step.ishyp())
             stack.push_back(i);
         else
@@ -88,10 +88,10 @@ bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
         return false;
 // std::cout << "Matching " << RPN(exp.first.first, exp.first.second);
 // std::cout << "Against " << RPN(tmp.first.first, tmp.first.second);
-    Proofstep exproot = *(exp.first.second-1), tmproot = *(tmp.first.second-1);
+    RPNstep exproot = *(exp.first.second-1), tmproot = *(tmp.first.second-1);
     switch(tmproot.type)
     {
-    case Proofstep::HYP:
+    case RPNstep::HYP:
         if (Symbol2::ID const id = tmproot.id())
         {
 // std::cout << "Var " << tmproot << " ID = " << id << std::endl;
@@ -103,7 +103,7 @@ bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
         }
         else
             return false;
-    case Proofstep::THM:
+    case RPNstep::THM:
 //std::cout << "Ctor " << tmproot << std::endl;
         if (exproot != tmproot)
             return false;
@@ -131,13 +131,13 @@ static bool hasallvars(Steprange range1, Steprange range2)
 }
 
 // Map: proofstep -> is in a tree governed by the step
-typedef std::map<Proofstep, bool, std::less<const char *> > Instep;
+typedef std::map<RPNstep, bool, std::less<const char *> > Instep;
 
 static void maxabs
 (SteprangeAST subexp, Steprange exp, Instep & instep,
     GovernedSteprangesbystep & result)
 {
-    Proofstep const root = subexp.RPNroot();
+    RPNstep const root = subexp.RPNroot();
     if (!root.isthm())
         return;
     // Root is THM.
