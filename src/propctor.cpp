@@ -381,7 +381,7 @@ Proofsteps propskeleton
         return RPN();
 
     // Preallocate for efficiency
-    Proofsteps result;
+    RPN result;
     result.reserve(rpn.size());
 
     return skeleton(exp, splitroot, bank, result) != UNKNOWN ?

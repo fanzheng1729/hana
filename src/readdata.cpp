@@ -235,7 +235,7 @@ Proofsteps Imp::getlabels(strview label, Hypiters const & hyps)
 
         if (unexpected(token == label, "self-reference in proof of", label))
         {
-            return Proofsteps(1, Proofstep::NONE);
+            return RPN(1, Proofstep::NONE);
         }
 
         if (util::filter(hyps)(token))
@@ -243,18 +243,18 @@ Proofsteps Imp::getlabels(strview label, Hypiters const & hyps)
             std::cerr << "Compressed proof of theorem " << label
                       << " has mandatory hypothesis " << token
                       << " in label list" << std::endl;
-            return Proofsteps(1, Proofstep::NONE);
+            return RPN(1, Proofstep::NONE);
         }
 
         if (!(labels += getproofstep(token)))
         {
             inactivereferr(token, label);
-            return Proofsteps(1, Proofstep::NONE);
+            return RPN(1, Proofstep::NONE);
         }
     }
 
     if (unfinishedstat(m_tokens, "$p", label))
-        return Proofsteps(1, Proofstep::NONE);
+        return RPN(1, Proofstep::NONE);
 
     // Discard closing parenthesis
     m_tokens.pop();
