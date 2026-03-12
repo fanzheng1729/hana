@@ -208,7 +208,7 @@ static bool checkRPN(Assertion const & ass, SteprangeAST exp)
     Stepranges stepranges(ass.maxvarid() + 1);
     bool const ok = findsubst(exp, exp, stepranges);
     return !unexpected(!ok, "failed unification test for",
-                        Proofsteps(exp.first.first, exp.first.second));
+                        RPN(exp.first.first, exp.first.second));
 }
 
 // Check the syntax of an assertion (& all hypotheses). Return true if okay.
