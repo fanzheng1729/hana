@@ -6,10 +6,10 @@
 #include "../proof/verify.h"
 
 // Proof goal
-typedef std::pair<Proofsteps const &, strview> Goalview;
+typedef std::pair<RPN const &, strview> Goalview;
 struct Goal
 {
-    Proofsteps rpn;
+    RPN rpn;
     strview typecode;
     AST mutable ast;
     // Maximal abstractions
@@ -54,7 +54,7 @@ class Goaldata;
 struct Goaldatas : std::map<Environ const *, Goaldata>
 {
     // Proof that holds in the problem context
-    Proofsteps proof;
+    RPN proof;
     bool proven() const { return !proof.empty(); }
 };
 
