@@ -76,6 +76,6 @@ struct Propctors : std::map<strview, Propctor>
 
 // Return the propositional skeleton of an RPN.
 Proofsteps propskeleton
-    (Proofsteps const & RPN, AST const & ast, class Bank & bank);
+    (Proofsteps const & rpn, AST const & ast, class Bank & bank);
 
 #endif // PROPCTOR_H_INCLUDED
