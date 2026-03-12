@@ -21,7 +21,7 @@ void Problem::addranks(pNode p)
     if (value(p) < ALMOSTWIN)
         return;
     database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
-    database.syntaxDAG().addexp(maxranks, p->game().goal().RPN);
+    database.syntaxDAG().addexp(maxranks, p->game().goal().rpn);
 }
 
 // Prune the sub-tree at p and update maxranks, if almost won.

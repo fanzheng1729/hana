@@ -82,8 +82,8 @@ struct Move
             return Goal();
         Goal result;
         Proofsteps const & expRPN
-        = pthm ? pthm->second.expRPN : absconjs.back().RPN;
-        makesubst(expRPN, result.RPN);
+        = pthm ? pthm->second.expRPN : absconjs.back().rpn;
+        makesubst(expRPN, result.rpn);
         result.typecode = goaltypecode();
         return result;
     }
@@ -133,8 +133,8 @@ struct Move
             return Goal();
         Goal result;
         Proofsteps const & hypRPN
-        = pthm ? theorem().hypRPN(index) : absconjs[index].RPN;
-        makesubst(hypRPN, result.RPN);
+        = pthm ? theorem().hypRPN(index) : absconjs[index].rpn;
+        makesubst(hypRPN, result.rpn);
         result.typecode = subgoaltypecode(index);
         return result;
     }
@@ -177,7 +177,7 @@ struct Move
         Hypiters result(nconjs());
         for (Hypsize i = 0; i < result.size(); ++i)
             if (Hypiter() ==
-                (result[i] = bank.addhyp(absconjs[i].RPN, absconjs[i].typecode)))
+                (result[i] = bank.addhyp(absconjs[i].rpn, absconjs[i].typecode)))
                 return Hypiters();
         return result;
     }
@@ -188,7 +188,7 @@ struct Move
         for (Hypsize i = 0; i < nconjs(); ++i)
         {
             Expression const & hypexp = hyp.expression;
-            if (!hypexp.empty() && absconjs[i].RPN == hyp.RPN
+            if (!hypexp.empty() && absconjs[i].rpn == hyp.RPN
                 && absconjs[i].typecode == hypexp[0])
                 return i;
         }

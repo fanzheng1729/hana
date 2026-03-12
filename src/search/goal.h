@@ -9,7 +9,7 @@
 typedef std::pair<Proofsteps const &, strview> Goalview;
 struct Goal
 {
-    Proofsteps RPN;
+    Proofsteps rpn;
     strview typecode;
     AST mutable ast;
     // Maximal abstractions
@@ -17,32 +17,32 @@ struct Goal
     bool mutable maxabsfilled;
     Goal() : maxabsfilled(false) {}
     Goal(Goalview view) :
-        RPN(view.first), typecode(view.second), maxabsfilled(false) {}
-    void fillast() const { if (ast.empty()) ast = ::ast(RPN); }
+        rpn(view.first), typecode(view.second), maxabsfilled(false) {}
+    void fillast() const { if (ast.empty()) ast = ::ast(rpn); }
     void fillmaxabs() const
     {
         if (maxabsfilled) return;
         fillast();
-        maxabs = ::maxabs(RPN, ast);
+        maxabs = ::maxabs(rpn, ast);
         maxabsfilled = true;
     }
-    Proofsize size() const { return RPN.size(); }
-    operator SteprangeAST() const { return SteprangeAST(RPN, ast); }
+    Proofsize size() const { return rpn.size(); }
+    operator SteprangeAST() const { return SteprangeAST(rpn, ast); }
     Expression expression() const
     {
-        Expression result(verify(RPN));
+        Expression result(verify(rpn));
         if (!result.empty()) result[0] = typecode;
         return result;
     }
 };
 inline bool operator==(Goal const & x, Goal const & y)
 {
-    return x.RPN == y.RPN && x.typecode == y.typecode;
+    return x.rpn == y.rpn && x.typecode == y.typecode;
 }
 inline bool operator<(Goal const & x, Goal const & y)
 {
     int const cmp
-    = util::compare(x.RPN.begin(), x.RPN.end(), y.RPN.begin(), y.RPN.end());
+    = util::compare(x.rpn.begin(), x.rpn.end(), y.rpn.begin(), y.rpn.end());
     return cmp < 0 || cmp == 0 && x.typecode < y.typecode;
 }
 

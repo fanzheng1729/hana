@@ -59,7 +59,7 @@ struct Environ : protected Gen
     virtual bool ontopic(Assertion const & ass) const { return ass.number>0; }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
-    { return goal.RPN.empty() ? GOALFALSE : GOALOPEN; }
+    { return goal.rpn.empty() ? GOALFALSE : GOALOPEN; }
     // Validity of a move.
     enum MoveValidity { MoveINVALID = -1, MoveVALID = 0, MoveCLOSED = 1 };
     // Validate a move.
@@ -82,7 +82,7 @@ struct Environ : protected Gen
     virtual Weight weight(Proofsteps const & RPN) const { return RPN.size(); }
     // Weight of the game
     Weight weight(Game const & game) const
-    { return hypsweight + weight(game.goal().RPN); }
+    { return hypsweight + weight(game.goal().rpn); }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
     { return score(weight(game) + game.wDefer()); }

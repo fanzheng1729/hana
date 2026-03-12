@@ -142,15 +142,15 @@ bool Environ::addabsmove
         return false;
 
     Goal const & thmgoal(move.goal());
-    AST  const & thmgoalast(ast(thmgoal.RPN));
-    SteprangeAST thmexp(thmgoal.RPN, thmgoalast), goalexp(goal.RPN, goal.ast);
+    AST  const & thmgoalast(ast(thmgoal.rpn));
+    SteprangeAST thmexp(thmgoal.rpn, thmgoalast), goalexp(goal.rpn, goal.ast);
     // Abstract variable
     Bank1var const absvar = pProb->bank.addabsvar(absRPN);
     // 1 conjecture + 1 goal
     Move::Conjectures conjs(2);
-    if (skeleton(thmexp, Keeprange(absRPN), absvar, conjs[0].RPN) != TRUE)
+    if (skeleton(thmexp, Keeprange(absRPN), absvar, conjs[0].rpn) != TRUE)
         return false;
-    if (skeleton(goalexp, Keeprange(absRPN), absvar, conjs[1].RPN) != TRUE)
+    if (skeleton(goalexp, Keeprange(absRPN), absvar, conjs[1].rpn) != TRUE)
         return false;
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;

@@ -152,7 +152,7 @@ public:
     {
         return game.env().rankssimplerthanProb() &&
             database.syntaxDAG().simplerthan
-            (database.syntaxDAG().RPNranks(game.goal().RPN), maxranks);
+            (database.syntaxDAG().RPNranks(game.goal().rpn), maxranks);
     }
     // Close all the nodes with p's proven goal.
     void closenodes(pNode p)

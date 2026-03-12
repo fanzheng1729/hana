@@ -16,8 +16,8 @@ Goalstatus Prop::status(Goal const & goal) const
     // Add Conclusion.
     Atom natom = hypnatoms;
     if (!propctors().addformula
-        (goal.RPN, goal.ast, assertion.hypiters, conclusion, natom))
-        return statuserr(*this, goal.RPN);
+        (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom))
+        return statuserr(*this, goal.rpn);
     // Negate conclusion.
     return hypscnf.first.sat(conclusion.closeoff(natom - 1, true)) ?
             GOALFALSE : GOALTRUE;
@@ -53,12 +53,12 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         Atom natom = cnf.empty() ? nhyps : cnf.natoms();
         // Add conclusion.
         propctors().addformula
-        (goal.RPN, goal.ast, assertion.hypiters, cnf, natom);
+        (goal.rpn, goal.ast, assertion.hypiters, cnf, natom);
         // Negate conclusion.
         trimmed |= (result[i] = !cnf.closeoff(natom - 1, true).sat());
     }
 
-    return trimmed ? assertion.trimvars(result, goal.RPN) : Bvector();
+    return trimmed ? assertion.trimvars(result, goal.rpn) : Bvector();
 }
 
 static double distance(Freqcounts const & goal, Frequencies const & ref)
@@ -84,7 +84,7 @@ Eval Prop::evalourleaf(Game const & game) const
 {
     Weight const w = this->Environ::weight(game) + game.wDefer();
     Freqcounts propctorcounts = hypspropctorcounts;
-    addfreqcounts(game.goal().RPN, propctorlabels, propctorcounts);
+    addfreqcounts(game.goal().rpn, propctorlabels, propctorcounts);
     double const d = distance(propctorcounts, propctorfreqs);
     return score(w + d * frequencybias);
 }
