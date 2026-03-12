@@ -8,7 +8,7 @@
 class Bank
 {
     // Map: revPolish notation -> Symbol
-    typedef std::map<Proofsteps, Symbol3> RPNSymbols;
+    typedef std::map<RPN, Symbol3> RPNSymbols;
     RPNSymbols m_RPNSymbols;
     // Vector of substitutions
     typedef std::vector<RPNSymbols::const_iterator> RPNSymbolsbyid;
@@ -26,19 +26,19 @@ public:
         m_varlabels(1 + reserve, ""),
         m_fhyplabels(1 + reserve, ""), m_ehyplabels(1, "")
     {
-        m_RPNSymbols[Proofsteps()] = Symbol3();
+        m_RPNSymbols[RPN()] = Symbol3();
         m_RPNSymbolsbyid.assign(1 + reserve, m_RPNSymbols.begin());
     }
     void clear() { *this = Bank(); }
     RPNSymbols const & rPNSymbols() const { return m_RPNSymbols; }
-    Proofsteps const & substitution(Symbol2::ID id) const
+    RPN const & substitution(Symbol2::ID id) const
     { return m_RPNSymbolsbyid[id]->first; }
     Symbol3 var(Symbol2::ID id) const { return m_RPNSymbolsbyid[id]->second; }
     Tokens::size_type nvar() const { return m_varlabels.size() - 1; }
     // Add an abstraction variable.
     Symbol3 addabsvar(Steprange absRPN);
     Hypotheses const & hypotheses() const { return m_hypotheses; }
-    Hypiter addhyp(Proofsteps const & hypRPN, strview typecode);
+    Hypiter addhyp(RPN const & hypRPN, strview typecode);
     bool hashyp(strview label) const { return hypotheses().count(label); }
 };
 

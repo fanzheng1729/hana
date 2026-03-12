@@ -16,7 +16,7 @@ Symbol3 Bank::addabsvar(Steprange absRPN)
     if (absRPN.empty())
         return "";
 
-    RPNSymbols::value_type RPNvar(Proofsteps(absRPN.first, absRPN.second), "");
+    RPNSymbols::value_type RPNvar(RPN(absRPN.first, absRPN.second), "");
     RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(RPNvar).first;
     // Abstract variable
     Symbol3 & var = RPNiter->second;
@@ -50,7 +50,7 @@ Symbol3 Bank::addabsvar(Steprange absRPN)
     return var;
 }
 
-Hypiter Bank::addhyp(Proofsteps const & hypRPN, strview typecode)
+Hypiter Bank::addhyp(RPN const & hypRPN, strview typecode)
 {
     Hypothesis hyp;
     // Expression of the hypothesis
