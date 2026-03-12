@@ -15,7 +15,7 @@ Definition::Definition(Assertions::const_reference rass)
 {
     strview label = rass.first;
     Assertion const & ass = rass.second;
-    Proofsteps const & expRPN = ass.expRPN;
+    RPN const & expRPN = ass.expRPN;
     AST const & tree = ast(expRPN);
 
     if (tree.empty())
@@ -189,7 +189,7 @@ bool checkdefinitions
         if (unexpected(!pdef, "empty definition for", rdef.first))
             continue;
         // Construct the statement from the revPolish notation.
-        Proofsteps defRPN(definition.lhs);
+        RPN defRPN(definition.lhs);
         defRPN += definition.rhs;
         defRPN.push_back(pdef->second.expRPN.back());
         // Check if it agrees with the expression.
