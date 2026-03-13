@@ -54,15 +54,15 @@ Tribool skeleton(RPNspanAST exp, T cansplit, B & bank, RPN & result)
     }
 }
 
-struct Keeprange
+struct Keepspan
 {
-    Steprange range;
-    Keeprange(Steprange tokeep) : range(tokeep) {}
+    Steprange span;
+    Keepspan(Steprange tokeep) : span(tokeep) {}
     Splitretval operator()(Steprange exp) const
     {
-        if (range == exp)
+        if (span == exp)
             return KEEPRANGE;
-        if (range.size() > exp.size())
+        if (span.size() > exp.size())
             return SPLITALL;
         return SPLITREC;
     }

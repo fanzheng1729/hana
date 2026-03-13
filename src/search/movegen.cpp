@@ -148,9 +148,9 @@ bool Environ::addabsmove
     Bank1var const absvar = pProb->bank.addabsvar(absRPN);
     // 1 conjecture + 1 goal
     Move::Conjectures conjs(2);
-    if (skeleton(thmexp, Keeprange(absRPN), absvar, conjs[0].rpn) != TRUE)
+    if (skeleton(thmexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
         return false;
-    if (skeleton(goalexp, Keeprange(absRPN), absvar, conjs[1].rpn) != TRUE)
+    if (skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
         return false;
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
