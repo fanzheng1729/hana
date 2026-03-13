@@ -11,7 +11,7 @@ static const std::string essentialhypheader = "e" + typedelim;
 static const std::string floatinghypheader = "f" + typedelim;
 
 // Add an abstraction variable.
-Symbol3 Bank::addabsvar(Steprange absRPN)
+Symbol3 Bank::addabsvar(RPNspan absRPN)
 {
     if (absRPN.empty())
         return "";

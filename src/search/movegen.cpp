@@ -122,7 +122,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
             {
                 RPNspanAST goalsubexp(goalrange.first, goalrange.second);
 
-                subst.assign(thm.maxvarid() + 1, Steprange());
+                subst.assign(thm.maxvarid() + 1, RPNspan());
                 if (findsubst(goalsubexp, thmsubexp, subst) &&
                     addabsmove(goal, goalrange.first, Move(pthm,subst), moves))
                     return true;
@@ -135,7 +135,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
 // Add an abstraction move. Return true if it has no open hypotheses.
 bool Environ::addabsmove
-    (Goal const & goal, Steprange absRPN,
+    (Goal const & goal, RPNspan absRPN,
      Move const & move, Moves & moves) const
 {
     if (absRPN.empty())

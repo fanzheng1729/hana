@@ -365,9 +365,9 @@ bool Propctors::checkpropsat(Assertions const & assertions,
 
 // Return true if the root of an RPN is propositional,
 // i.e., if all hypotheses and conclusion are floating and begins with "wff".
-static Splitretval splitroot(Steprange rpn)
+static Splitretval splitroot(RPNspan exp)
 {
-    RPNstep const root = rpn.root();
+    RPNstep const root = exp.root();
     if (!root.isthm() || !root.pass) return KEEPRANGE;
     return truthtablesize(root.pass->second) ? SPLITREC : KEEPRANGE;
 }

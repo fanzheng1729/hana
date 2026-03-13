@@ -39,11 +39,11 @@ typedef RPN::size_type RPNsize;
 typedef RPN::const_iterator RPNiter;
 
 // Begin and end of a sequence of proof steps
-struct Steprange : std::pair<RPNiter, RPNiter>
+struct RPNspan : std::pair<RPNiter, RPNiter>
 {
-    Steprange(RPNiter begin = RPNiter(), RPNiter end = RPNiter())
+    RPNspan(RPNiter begin = RPNiter(), RPNiter end = RPNiter())
         { first = begin, second = end; }
-    Steprange(RPN const & proofsteps) :
+    RPNspan(RPN const & proofsteps) :
         std::pair<RPNiter, RPNiter>(proofsteps.begin(), proofsteps.end()) {}
     bool empty() const { return second == first; }
     void clear() { second = first; }
@@ -51,7 +51,7 @@ struct Steprange : std::pair<RPNiter, RPNiter>
     RPNstep const & root() const { return second[-1]; }
 };
 // Ranges of proof steps
-typedef std::vector<Steprange> RPNspans;
+typedef std::vector<RPNspan> RPNspans;
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<RPNsize> ASTnode;
@@ -61,7 +61,7 @@ typedef std::vector<ASTnode> AST;
 typedef AST::const_iterator ASTiter;
 
 // Ranges governed by a RPNstep, map: range -> AST
-typedef std::map<Steprange, AST, bool(*)(Steprange, Steprange)>
+typedef std::map<RPNspan, AST, bool(*)(RPNspan, RPNspan)>
     GovernedRPNspans;
 // Map: RPNstep -> all spans governed by the RPNstep
 typedef std::map<RPNstep, GovernedRPNspans, std::less<const char *> >
@@ -214,12 +214,12 @@ inline bool operator<(RPNstep x, RPNstep y)
     { return std::less<const void *>()(x.ptr(), y.ptr()); }
 
 // (Range of steps, begin of subAST)
-struct RPNspanAST: std::pair<Steprange, ASTiter>
+struct RPNspanAST: std::pair<RPNspan, ASTiter>
 {
-    RPNspanAST(Steprange exp, ASTiter iter) :
-        std::pair<Steprange, ASTiter>(exp, iter) {}
-    RPNspanAST(Steprange exp, AST const & tree) :
-        std::pair<Steprange, ASTiter>(exp, tree.begin()) { check(tree); }
+    RPNspanAST(RPNspan exp, ASTiter iter) :
+        std::pair<RPNspan, ASTiter>(exp, iter) {}
+    RPNspanAST(RPNspan exp, AST const & tree) :
+        std::pair<RPNspan, ASTiter>(exp, tree.begin()) { check(tree); }
     RPN  steps() const { return RPN(first.first, first.second); }
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
@@ -236,7 +236,7 @@ struct RPNspanAST: std::pair<Steprange, ASTiter>
             ASTend - 1 - (ASTback.back() - ASTback[index - 1]);
         RPNiter newRPN = newAST - second + first.first;
         RPNiter newend = first.second - 1 - (ASTback.back() - ASTback[index]);
-        return RPNspanAST(Steprange(newRPN, newend), newAST);
+        return RPNspanAST(RPNspan(newRPN, newend), newAST);
     }
 };
 

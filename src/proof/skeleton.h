@@ -56,9 +56,9 @@ Tribool skeleton(RPNspanAST exp, T cansplit, B & bank, RPN & result)
 
 struct Keepspan
 {
-    Steprange span;
-    Keepspan(Steprange tokeep) : span(tokeep) {}
-    Splitretval operator()(Steprange exp) const
+    RPNspan span;
+    Keepspan(RPNspan tokeep) : span(tokeep) {}
+    Splitretval operator()(RPNspan exp) const
     {
         if (span == exp)
             return KEEPRANGE;
@@ -72,7 +72,7 @@ struct Keepspan
 struct Bank1var : Symbol3
 {
     Bank1var(Symbol3 var) { *static_cast<Symbol3 *>(this) = var; }
-    Symbol3 addabsvar(Steprange) const { return *this; }
+    Symbol3 addabsvar(RPNspan) const { return *this; }
 };
 
 #endif

@@ -118,7 +118,7 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
 }
 
 // Return true if range1 has all the variables in range2
-static bool hasallvars(Steprange range1, Steprange range2)
+static bool hasallvars(RPNspan range1, RPNspan range2)
 {
     for (RPNiter iter2 = range2.first; iter2 < range2.second; ++iter2)
     {
@@ -134,7 +134,7 @@ static bool hasallvars(Steprange range1, Steprange range2)
 typedef std::map<RPNstep, bool, std::less<const char *> > Instep;
 
 static void maxabs
-(RPNspanAST subexp, Steprange exp, Instep & instep,
+(RPNspanAST subexp, RPNspan exp, Instep & instep,
     GovernedRPNspansbystep & result)
 {
     RPNstep const root = subexp.RPNroot();
@@ -165,7 +165,7 @@ static void maxabs
 }
 
 // Find all maximal abstractions governed by a syntax axiom.
-GovernedRPNspansbystep maxabs(Steprange range, AST ast)
+GovernedRPNspansbystep maxabs(RPNspan range, AST ast)
 {
     GovernedRPNspansbystep result;
     Instep instep;
