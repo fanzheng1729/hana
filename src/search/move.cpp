@@ -4,11 +4,11 @@
 #include "../util/for.h"
 #include "../io.h"
 
-static Symbol3s symbols(RPN const & rpn)
+static Symbol3s symbols(RPN const & exp)
 {
     Symbol3s set;
 
-    FOR (RPNstep step, rpn)
+    FOR (RPNstep step, exp)
         if (Symbol3 var = step.var())
             set.insert(var);
 
