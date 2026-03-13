@@ -107,18 +107,18 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
     RPNspans subst(thm.maxvarid() + 1);
 
-    FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
+    FOR (GovernedRPNspansbystep::const_reference rstep, thm.expmaxabs)
     {
-        GovernedSteprangesbystep::const_iterator const iter
+        GovernedRPNspansbystep::const_iterator const iter
         = goal.maxabs.find(rstep.first);
         if (iter == goal.maxabs.end())
             continue;
 
-        FOR (GovernedStepranges::const_reference thmrange, rstep.second)
+        FOR (GovernedRPNspans::const_reference thmrange, rstep.second)
         {
             RPNspanAST thmsubexp(thmrange.first, thmrange.second);
 
-            FOR (GovernedStepranges::const_reference goalrange, iter->second)
+            FOR (GovernedRPNspans::const_reference goalrange, iter->second)
             {
                 RPNspanAST goalsubexp(goalrange.first, goalrange.second);
 

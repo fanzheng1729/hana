@@ -135,7 +135,7 @@ typedef std::map<RPNstep, bool, std::less<const char *> > Instep;
 
 static void maxabs
 (RPNspanAST subexp, Steprange exp, Instep & instep,
-    GovernedSteprangesbystep & result)
+    GovernedRPNspansbystep & result)
 {
     RPNstep const root = subexp.RPNroot();
     if (!root.isthm())
@@ -148,12 +148,12 @@ static void maxabs
         pinstep = &instep[root];
         if (!*pinstep && hasallvars(subexp.first, exp))
         {
-            // Record the range.
-            GovernedStepranges & ranges = result[root];
-            if (ranges.empty())
-                ranges = GovernedStepranges(compranges);
-            RPN range(subexp.first.first, subexp.first.second);
-            ranges[subexp.first] = ast(range);
+            // Record the spans.
+            GovernedRPNspans & spans = result[root];
+            if (spans.empty())
+                spans = GovernedRPNspans(compranges);
+            spans[subexp.first] = ast(RPN(subexp.first.first,
+                                          subexp.first.second));
         }
         *pinstep = true;
     }
@@ -165,9 +165,9 @@ static void maxabs
 }
 
 // Find all maximal abstractions governed by a syntax axiom.
-GovernedSteprangesbystep maxabs(Steprange range, AST ast)
+GovernedRPNspansbystep maxabs(Steprange range, AST ast)
 {
-    GovernedSteprangesbystep result;
+    GovernedRPNspansbystep result;
     Instep instep;
 
     maxabs(RPNspanAST(range, ast), range, instep, result);

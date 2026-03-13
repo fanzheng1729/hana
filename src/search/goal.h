@@ -13,7 +13,7 @@ struct Goal
     strview typecode;
     AST mutable ast;
     // Maximal abstractions
-    GovernedSteprangesbystep mutable maxabs;
+    GovernedRPNspansbystep mutable maxabs;
     bool mutable maxabsfilled;
     Goal() : maxabsfilled(false) {}
     Goal(Goalview view) :

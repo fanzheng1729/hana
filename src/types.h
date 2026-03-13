@@ -62,10 +62,10 @@ typedef AST::const_iterator ASTiter;
 
 // Ranges governed by a RPNstep, map: range -> AST
 typedef std::map<Steprange, AST, bool(*)(Steprange, Steprange)>
-    GovernedStepranges;
+    GovernedRPNspans;
 // Map: RPNstep -> all ranges governed by the RPNstep
-typedef std::map<RPNstep, GovernedStepranges, std::less<const char *> >
-    GovernedSteprangesbystep;
+typedef std::map<RPNstep, GovernedRPNspans, std::less<const char *> >
+    GovernedRPNspansbystep;
 
 // List of indentations
 typedef std::vector<RPNsize> Indentations;
