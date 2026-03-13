@@ -63,7 +63,7 @@ typedef AST::const_iterator ASTiter;
 // Ranges governed by a RPNstep, map: range -> AST
 typedef std::map<Steprange, AST, bool(*)(Steprange, Steprange)>
     GovernedRPNspans;
-// Map: RPNstep -> all ranges governed by the RPNstep
+// Map: RPNstep -> all spans governed by the RPNstep
 typedef std::map<RPNstep, GovernedRPNspans, std::less<const char *> >
     GovernedRPNspansbystep;
 

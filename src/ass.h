@@ -33,7 +33,7 @@ struct Assertion
     RPN expRPN, proof;
     // Abstract syntax tree of expression
     AST expAST;
-    // All maximal ranges of the expression governed by a syntax axiom.
+    // All maximal spans of the expression governed by a syntax axiom.
     GovernedRPNspansbystep expmaxabs;
     // Type (propositional, predicate, etc)
     unsigned type;
