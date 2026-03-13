@@ -77,15 +77,15 @@ static RPN writeRPN
     (Argtypes const & argtypes, Genresult const & result,
      Genstack const & stack, RPNstep const root)
 {
-    RPN rpn;
+    RPN term;
     // Preallocate for efficiency.
-    rpn.reserve(argssize(argtypes, result, stack));
+    term.reserve(argssize(argtypes, result, stack));
 
-    for (Genstack::size_type i(0); i < stack.size(); ++i)
-        rpn += result.at(argtypes[i])[stack[i]];
-    rpn.push_back(root);
+    for (Genstack::size_type i = 0; i < stack.size(); ++i)
+        term += result.at(argtypes[i])[stack[i]];
+    term.push_back(root);
 
-    return rpn;
+    return term;
 }
 
 // Adds a generated term.
