@@ -27,7 +27,7 @@ struct Goal
         maxabsfilled = true;
     }
     RPNsize size() const { return rpn.size(); }
-    operator SteprangeAST() const { return SteprangeAST(rpn, ast); }
+    operator RPNspanAST() const { return RPNspanAST(rpn, ast); }
     Expression expression() const
     {
         Expression result(verify(rpn));

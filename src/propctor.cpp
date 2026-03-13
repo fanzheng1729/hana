@@ -375,7 +375,7 @@ static Splitretval splitroot(Steprange rpn)
 // Return the propositional skeleton of an RPN.
 RPN propskeleton(RPN const & rpn, AST const & ast, class Bank & bank)
 {
-    SteprangeAST const exp(rpn, ast);
+    RPNspanAST const exp(rpn, ast);
     if (exp.empty())
         return RPN();
 

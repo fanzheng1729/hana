@@ -116,11 +116,11 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
         FOR (GovernedStepranges::const_reference thmrange, rstep.second)
         {
-            SteprangeAST thmsubexp(thmrange.first, thmrange.second);
+            RPNspanAST thmsubexp(thmrange.first, thmrange.second);
 
             FOR (GovernedStepranges::const_reference goalrange, iter->second)
             {
-                SteprangeAST goalsubexp(goalrange.first, goalrange.second);
+                RPNspanAST goalsubexp(goalrange.first, goalrange.second);
 
                 subst.assign(thm.maxvarid() + 1, Steprange());
                 if (findsubst(goalsubexp, thmsubexp, subst) &&
@@ -143,7 +143,7 @@ bool Environ::addabsmove
 
     Goal const & thmgoal(move.goal());
     AST  const & thmgoalast(ast(thmgoal.rpn));
-    SteprangeAST thmexp(thmgoal.rpn, thmgoalast), goalexp(goal.rpn, goal.ast);
+    RPNspanAST   thmexp(thmgoal.rpn, thmgoalast), goalexp(goal.rpn, goal.ast);
     // Abstract variable
     Bank1var const absvar = pProb->bank.addabsvar(absRPN);
     // 1 conjecture + 1 goal

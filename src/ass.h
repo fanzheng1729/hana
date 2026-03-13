@@ -38,7 +38,7 @@ struct Assertion
     // Type (propositional, predicate, etc)
     unsigned type;
 // Functions:
-    SteprangeAST expRPNAST() const { return SteprangeAST(expRPN, expAST); }
+    RPNspanAST expRPNAST() const { return RPNspanAST(expRPN, expAST); }
     // Typecode of the conclusion
     strview exptypecode() const
         { return expression.empty() ? strview() : expression[0]; }
@@ -74,8 +74,8 @@ struct Assertion
     // rev-Polish notation and abstract syntax tree of a hypothesis
     RPN const & hypRPN(Hypsize index) const { return hyp(index).rpn; }
     AST const & hypAST(Hypsize index) const { return hyp(index).ast; }
-    SteprangeAST hypRPNAST(Hypsize index) const
-        { return SteprangeAST(hypRPN(index), hypAST(index)); }
+    RPNspanAST hypRPNAST(Hypsize index) const
+        { return RPNspanAST(hypRPN(index), hypAST(index)); }
     // Length of a hypothesis
     RPNsize hyplen(Hypsize index) const { return hypRPN(index).size(); }
     // Total length of RPNs of hypotheses

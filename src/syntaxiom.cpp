@@ -202,7 +202,7 @@ bool Syntaxioms::addRPN
 }
 
 // Determine if proof is the revPolish notation for the expression of ass.
-static bool checkRPN(Assertion const & ass, SteprangeAST exp)
+static bool checkRPN(Assertion const & ass, RPNspanAST exp)
 {
     Stepranges stepranges(ass.maxvarid() + 1);
     bool const ok = findsubst(exp, exp, stepranges);

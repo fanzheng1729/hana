@@ -12,7 +12,7 @@ AST ast(RPN const & exp);
 Indentations indentations(AST const & ast);
 
 // Return true if the RPN of an expression matches a template.
-bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
+bool findsubst(RPNspanAST exp, RPNspanAST tmp, Stepranges & subst);
 
 // Find all maximal abstractions governed by a syntax axiom.
 GovernedSteprangesbystep maxabs(Steprange range, AST ast);

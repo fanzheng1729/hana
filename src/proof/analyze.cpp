@@ -82,7 +82,7 @@ Indentations indentations(AST const & ast)
 }
 
 // Return true if the RPN of an expression matches a template.
-bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst)
+bool findsubst(RPNspanAST exp, RPNspanAST tmp, Stepranges & subst)
 {
     if (exp.empty() || tmp.empty() || exp.size() < tmp.size())
         return false;
@@ -134,7 +134,7 @@ static bool hasallvars(Steprange range1, Steprange range2)
 typedef std::map<RPNstep, bool, std::less<const char *> > Instep;
 
 static void maxabs
-(SteprangeAST subexp, Steprange exp, Instep & instep,
+(RPNspanAST subexp, Steprange exp, Instep & instep,
     GovernedSteprangesbystep & result)
 {
     RPNstep const root = subexp.RPNroot();
@@ -170,7 +170,7 @@ GovernedSteprangesbystep maxabs(Steprange range, AST ast)
     GovernedSteprangesbystep result;
     Instep instep;
 
-    maxabs(SteprangeAST(range, ast), range, instep, result);
+    maxabs(RPNspanAST(range, ast), range, instep, result);
 
     return result;
 }

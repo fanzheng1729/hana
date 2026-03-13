@@ -214,11 +214,11 @@ inline bool operator<(RPNstep x, RPNstep y)
     { return std::less<const void *>()(x.ptr(), y.ptr()); }
 
 // (Range of steps, begin of subAST)
-struct SteprangeAST: std::pair<Steprange, ASTiter>
+struct RPNspanAST: std::pair<Steprange, ASTiter>
 {
-    SteprangeAST(Steprange exp, ASTiter iter) :
+    RPNspanAST(Steprange exp, ASTiter iter) :
         std::pair<Steprange, ASTiter>(exp, iter) {}
-    SteprangeAST(Steprange exp, AST const & tree) :
+    RPNspanAST(Steprange exp, AST const & tree) :
         std::pair<Steprange, ASTiter>(exp, tree.begin()) { check(tree); }
     RPN  steps() const { return RPN(first.first, first.second); }
     bool empty() const { return first.empty(); }
@@ -228,7 +228,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
     RPNstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return second[size() - 1]; }
     // Child i's subrange
-    SteprangeAST child(ASTnode::size_type index) const
+    RPNspanAST child(ASTnode::size_type index) const
     {
         ASTiter const ASTend = second + size();
         ASTnode const & ASTback = ASTend[-1];
@@ -236,7 +236,7 @@ struct SteprangeAST: std::pair<Steprange, ASTiter>
             ASTend - 1 - (ASTback.back() - ASTback[index - 1]);
         RPNiter newRPN = newAST - second + first.first;
         RPNiter newend = first.second - 1 - (ASTback.back() - ASTback[index]);
-        return SteprangeAST(Steprange(newRPN, newend), newAST);
+        return RPNspanAST(Steprange(newRPN, newend), newAST);
     }
 };
 

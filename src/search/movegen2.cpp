@@ -9,7 +9,7 @@ static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
     return true;
 }
 
-bool findsubst(SteprangeAST exp, SteprangeAST tmp, Stepranges & subst);
+bool findsubst(RPNspanAST exp, RPNspanAST tmp, Stepranges & subst);
 
 static int const STACKEMPTY = -2;
 // Advance the stack and return the difference in # matched hypotheses.

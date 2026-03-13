@@ -11,7 +11,7 @@ enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 // Return UNKNOWN if unsuccessful.
 // Otherwise return if anything has been abstracted.
 template<class T, class B>
-Tribool skeleton(SteprangeAST exp, T cansplit, B & bank, RPN & result)
+Tribool skeleton(RPNspanAST exp, T cansplit, B & bank, RPN & result)
 {
     Tribool retval = FALSE;
 // std::cout << "Analyzing " << RPN(exp.first.first, exp.first.second);
