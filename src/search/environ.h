@@ -123,9 +123,9 @@ private:
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,
-                     Stepranges const & substs) const;
+                     RPNspans const & substs) const;
     bool addhypmoves(pAss pthm, Moves & moves,
-                     Stepranges const & substs,
+                     RPNspans const & substs,
                      Hypsize maxfreehyps) const;
     // Add moves with free variables.
     // Return true if it has no open hypotheses.

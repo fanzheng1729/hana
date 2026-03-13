@@ -1,7 +1,7 @@
 #include "environ.h"
 
 // Return true if all variables in use have been substituted.
-static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
+static bool allvarsfilled(Varusage const & varusage, RPNspans const & subst)
 {
     FOR (Varusage::const_reference rvar, varusage)
         if (rvar.first > 0 && subst[rvar.first].empty())
@@ -9,12 +9,12 @@ static bool allvarsfilled(Varusage const & varusage, Stepranges const & subst)
     return true;
 }
 
-bool findsubst(RPNspanAST exp, RPNspanAST tmp, Stepranges & subst);
+bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst);
 
 static int const STACKEMPTY = -2;
 // Advance the stack and return the difference in # matched hypotheses.
 // Return STACKEMPTY if stack cannot be advanced.
-static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
+static int next(Hypsizes & hypstack, std::vector<RPNspans> & substack,
                 Assertion const & ass, Assertion const & thm)
 {
     int delta = 0;
@@ -49,14 +49,14 @@ static int next(Hypsizes & hypstack, std::vector<Stepranges> & substack,
 // Add Hypothesis-oriented moves.
 // Return true if it has no open hypotheses.
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
-                          Stepranges const & substs,
+                          RPNspans const & substs,
                           Hypsize maxfreehyps) const
 {
     Assertion const & thm = pthm->second;
     // Hypothesis stack
     Hypsizes hypstack;
     // Substitution stack
-    std::vector<Stepranges> substack(thm.nfreehyps() + 1);
+    std::vector<RPNspans> substack(thm.nfreehyps() + 1);
     if (substack.empty() || assertion.nhyps() + 1 == 0)
         return false; // size overflow
     // Preallocate for efficiency.
@@ -71,7 +71,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     do
     {
         // std::cout << hypstack;
-        Stepranges const & newsubsts = substack[hypstack.size()];
+        RPNspans const & newsubsts = substack[hypstack.size()];
         if (allvarsfilled(thm.varusage, newsubsts))
         {
             if (addboundmove(Move(pthm, newsubsts), moves))

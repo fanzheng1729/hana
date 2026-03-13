@@ -38,7 +38,7 @@ bool Environ::trythm
     if (thm.expression.empty() || thm.exptypecode() != goal.typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
-    Stepranges subst(thm.maxvarid() + 1);
+    RPNspans subst(thm.maxvarid() + 1);
     if (!findsubst(goal, thm.expRPNAST(), subst))
         return size == 0 && thm.nEhyps() == 0// && false
                 && addabsmoves(goal, &*iter, moves);
@@ -105,7 +105,7 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
     if (goal.maxabs.empty())
         return false;
 
-    Stepranges subst(thm.maxvarid() + 1);
+    RPNspans subst(thm.maxvarid() + 1);
 
     FOR (GovernedSteprangesbystep::const_reference rstep, thm.expmaxabs)
     {
@@ -155,7 +155,7 @@ bool Environ::addabsmove
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
     // Abstractions of abstract variables
-    Stepranges absRPNs(absvar.id + 1);
+    RPNspans absRPNs(absvar.id + 1);
     absRPNs.back() = absRPN;
     return addconjmove(Move(conjs, absRPNs), moves);
 }
@@ -163,7 +163,7 @@ bool Environ::addabsmove
 // Add Hypothesis-oriented moves.
 // Return true if it has no open hypotheses.
 bool Environ::addhypmoves(pAss pthm, Moves & moves,
-                          Stepranges const & substs) const
+                          RPNspans const & substs) const
 {
     Assertion const & thm = pthm->second;
     FOR (Hypsize thmhyp, thm.hypsorder)
@@ -178,7 +178,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
                 assertion.hyptypecode(asshyp) != thmhyptype)
                 continue;
             // Match hypothesis asshyp against key hypothesis thmhyp of the theorem.
-            Stepranges newsubsts(substs);
+            RPNspans newsubsts(substs);
             if (findsubst
                 (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp), newsubsts))
             {

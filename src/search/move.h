@@ -35,7 +35,7 @@ struct Move
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :
         type(THM), pthm(ptr), substitutions(subst) {}
-    Move(pAss ptr, Stepranges const & subst) : type(THM), pthm(ptr)
+    Move(pAss ptr, RPNspans const & subst) : type(THM), pthm(ptr)
     {
         substitutions.resize(subst.size());
         for (Hypsize i = 1; i < subst.size(); ++i)
@@ -45,7 +45,7 @@ struct Move
     Move(Conjectures const & conjs, Substitutions const & absRPNs) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs),
         substitutions(absRPNs) {}
-    Move(Conjectures const & conjs, Stepranges const & absRPNs) :
+    Move(Conjectures const & conjs, RPNspans const & absRPNs) :
         type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
     {
         substitutions.resize(absRPNs.size());

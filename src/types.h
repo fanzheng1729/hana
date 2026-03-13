@@ -51,7 +51,7 @@ struct Steprange : std::pair<RPNiter, RPNiter>
     RPNstep const & root() const { return second[-1]; }
 };
 // Ranges of proof steps
-typedef std::vector<Steprange> Stepranges;
+typedef std::vector<Steprange> RPNspans;
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<RPNsize> ASTnode;
