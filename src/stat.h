@@ -14,12 +14,12 @@
 // If a symbol has no definition, its # is n. Otherwise return 0.
 template<class T>
 Assertions::size_type maxsymboldefnumber
-    (RPN const & rpn, T const & definitions,
+    (RPN const & exp, T const & definitions,
      Syntaxioms const & syntaxioms, Assertions::size_type n)
 {
     Assertions::size_type max = 1;
 //std::cout << definitions << syntaxioms;
-    FOR (RPNstep const step, rpn)
+    FOR (RPNstep const step, exp)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
     {
@@ -77,11 +77,11 @@ Assertions::size_type maxsymboldefnumber
 
 // Return max # of syntax axiom in a revPolish notation.
 inline Assertions::size_type maxsymboldefnumber
-    (RPN const & rpn, Syntaxioms const & syntaxioms)
+    (RPN const & exp, Syntaxioms const & syntaxioms)
 {
     Assertions::size_type max = 0;
 
-    FOR (RPNstep const step, rpn)
+    FOR (RPNstep const step, exp)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
                 if (syntaxioms.count(label))
@@ -119,9 +119,9 @@ Labels labels(T const & definitions)
 
 // Add the syntax axioms of a rev-Polish notation to the frequency count.
 template<class T>
-void addfreqcount(RPN const & rpn, T & definitions)
+void addfreqcount(RPN const & exp, T & definitions)
 {
-    FOR (RPNstep const step, rpn)
+    FOR (RPNstep const step, exp)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
@@ -145,9 +145,9 @@ void addfreqcount(Assertion const & ass, T & definitions)
 typedef std::valarray<Freqcount> Freqcounts;
 // Count the syntax axioms in a rev-Polish notation.
 inline void addfreqcounts
-    (RPN const & rpn, Labels const & labels, Freqcounts & counts)
+    (RPN const & exp, Labels const & labels, Freqcounts & counts)
 {
-    FOR (RPNstep const step, rpn)
+    FOR (RPNstep const step, exp)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
             {
@@ -219,11 +219,11 @@ void addweight(T & definitions, typename T::mapped_type & definition)
 
 // Weight of a rev-Polish notation.
 template<class T>
-Weight weight(RPN const & rpn, T const & definitions)
+Weight weight(RPN const & exp, T const & definitions)
 {
     Weight sum = 0;
 
-    FOR (RPNstep const step, rpn)
+    FOR (RPNstep const step, exp)
         if (step.ishyp())
             ++sum;
         else if (step.isthm() && step.pass)
