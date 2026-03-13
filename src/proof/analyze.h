@@ -6,7 +6,7 @@
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs
-AST ast(RPN const & rpn);
+AST ast(RPN const & exp);
 
 // Return the indentations of all the subASTs.
 Indentations indentations(AST const & ast);

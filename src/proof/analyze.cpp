@@ -29,21 +29,21 @@ static bool addASTnode
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs
-AST ast(RPN const & rpn)
+AST ast(RPN const & exp)
 {
     std::vector<RPNsize> stack;
     // Preallocate for efficiency
-    stack.reserve(rpn.size());
-    AST tree(rpn.size());
+    stack.reserve(exp.size());
+    AST tree(exp.size());
 
-    for (RPNsize i = 0; i < rpn.size(); ++i)
+    for (RPNsize i = 0; i < exp.size(); ++i)
     {
-        RPNstep const step = rpn[i];
+        RPNstep const step = exp[i];
         if (step.ishyp())
             stack.push_back(i);
         else
         if (step.isthm() &&
-            addASTnode(rpn[i].pass->second, stack, tree[i]))
+            addASTnode(exp[i].pass->second, stack, tree[i]))
             continue;
         else
             return AST();
