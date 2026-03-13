@@ -117,14 +117,14 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
     }
 }
 
-// Return true if range1 has all the variables in range2
-static bool hasallvars(RPNspan range1, RPNspan range2)
+// Return true if span1 has all the variables in span2
+static bool hasallvars(RPNspan span1, RPNspan span2)
 {
-    for (RPNiter iter2 = range2.first; iter2 < range2.second; ++iter2)
+    for (RPNiter iter2 = span2.first; iter2 < span2.second; ++iter2)
     {
         if (!iter2->ishyp())
             continue;
-        if (std::find(range1.first, range1.second, *iter2) == range1.second)
+        if (std::find(span1.first, span1.second, *iter2) == span1.second)
             return false;
     }
     return true;
@@ -165,12 +165,12 @@ static void maxabs
 }
 
 // Find all maximal abstractions governed by a syntax axiom.
-GovernedRPNspansbystep maxabs(RPNspan range, AST ast)
+GovernedRPNspansbystep maxabs(RPNspan exp, AST ast)
 {
     GovernedRPNspansbystep result;
     Instep instep;
 
-    maxabs(RPNspanAST(range, ast), range, instep, result);
+    maxabs(RPNspanAST(exp, ast), exp, instep, result);
 
     return result;
 }

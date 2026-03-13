@@ -15,6 +15,6 @@ Indentations indentations(AST const & ast);
 bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst);
 
 // Find all maximal abstractions governed by a syntax axiom.
-GovernedRPNspansbystep maxabs(RPNspan range, AST ast);
+GovernedRPNspansbystep maxabs(RPNspan exp, AST ast);
 
 #endif // ANALYZE_H_INCLUDED

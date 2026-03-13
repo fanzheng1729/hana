@@ -24,7 +24,7 @@ Tribool skeleton(RPNspanAST exp, T cansplit, B & bank, RPN & result)
         switch (cansplit(exp.first))
         {
         case SPLITALL:
-            // Copy the whole range.
+            // Copy the whole span.
             result.insert(result.end(), exp.first.first, exp.first.second);
             return FALSE;
         case SPLITREC:

@@ -114,17 +114,17 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
         if (iter == goal.maxabs.end())
             continue;
 
-        FOR (GovernedRPNspans::const_reference thmrange, rstep.second)
+        FOR (GovernedRPNspans::const_reference thmspan, rstep.second)
         {
-            RPNspanAST thmsubexp(thmrange.first, thmrange.second);
+            RPNspanAST thmsubexp(thmspan.first, thmspan.second);
 
-            FOR (GovernedRPNspans::const_reference goalrange, iter->second)
+            FOR (GovernedRPNspans::const_reference goalspan, iter->second)
             {
-                RPNspanAST goalsubexp(goalrange.first, goalrange.second);
+                RPNspanAST goalsubexp(goalspan.first, goalspan.second);
 
                 subst.assign(thm.maxvarid() + 1, RPNspan());
                 if (findsubst(goalsubexp, thmsubexp, subst) &&
-                    addabsmove(goal, goalrange.first, Move(pthm,subst), moves))
+                    addabsmove(goal, goalspan.first, Move(pthm,subst), moves))
                     return true;
             }
         }

@@ -60,7 +60,7 @@ typedef std::vector<ASTnode> AST;
 // Iterator to an AST node
 typedef AST::const_iterator ASTiter;
 
-// Ranges governed by a RPNstep, map: range -> AST
+// Ranges governed by a RPNstep, map: span -> AST
 typedef std::map<RPNspan, AST, bool(*)(RPNspan, RPNspan)>
     GovernedRPNspans;
 // Map: RPNstep -> all spans governed by the RPNstep
@@ -227,7 +227,7 @@ struct RPNspanAST: std::pair<RPNspan, ASTiter>
     void check(AST const & tree) { if (size() != tree.size()) clear(); }
     RPNstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return second[size() - 1]; }
-    // Child i's subrange
+    // Child i's subspan
     RPNspanAST child(ASTnode::size_type index) const
     {
         ASTiter const ASTend = second + size();
