@@ -2,7 +2,7 @@
 #include "../ass.h"
 #include "../util/for.h"
 
-static const char proofsteperr[] = "Invalid proof step ";
+static const char steperr[] = "Invalid proof step ";
 
 strview RPNstep::typecode() const
 {
@@ -31,7 +31,7 @@ RPNstep::operator const char*() const
         if (!pass) return NULL;
         return pass->first.c_str;
     case LOAD: case SAVE:
-        std::cerr << proofsteperr << "of type " << type << std::endl;
+        std::cerr << steperr << "of type " << type << std::endl;
     default:
         return NULL;
     }
@@ -48,7 +48,7 @@ RPNstep RPNstep::Builder::operator()(strview label) const
     if (assiter != m_assertions.end())
         return &*assiter;
 
-    std::cerr << proofsteperr << label.c_str << std::endl;
+    std::cerr << steperr << label.c_str << std::endl;
     return RPNstep::NONE;
 }
 
