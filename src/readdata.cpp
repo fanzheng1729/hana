@@ -29,7 +29,7 @@ private:
 // Classify an assertion.
     void addasstype(Assertion & ass, bool isaxiom) const;
 // Get a proof step.
-    RPNstep getproofstep(strview label);
+    RPNstep getRPNstep(strview label);
 // Read the labels of a compressed proof.
 // Discard tokens up to and including the closing parenthesis.
 // Returns proof steps if okay. Otherwise returns {NULL}.
@@ -213,7 +213,7 @@ void Imp::addasstype(Assertion & ass, bool isaxiom) const
 }
 
 // Get a proof step
-RPNstep Imp::getproofstep(strview label)
+RPNstep Imp::getRPNstep(strview label)
 {
     // Check if token names an assertion.
     Assiter const iterass = m_database.assertions().find(label);
@@ -246,7 +246,7 @@ RPN Imp::getlabels(strview label, Hypiters const & hyps)
             return RPN(1, RPNstep::NONE);
         }
 
-        if (!(labels += getproofstep(token)))
+        if (!(labels += getRPNstep(token)))
         {
             inactivereferr(token, label);
             return RPN(1, RPNstep::NONE);
@@ -307,7 +307,7 @@ ReadStatus Imp::readregular(strview label, RPN & proof)
         else if (unexpected(token == label, "self-reference in proof of", label))
             return ReadStatus::PROOFBAD;
 
-        else if (!(proof += getproofstep(token)))
+        else if (!(proof += getRPNstep(token)))
         {
             inactivereferr(token, label);
             return ReadStatus::PROOFBAD;
