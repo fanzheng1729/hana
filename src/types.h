@@ -43,8 +43,8 @@ struct RPNspan : std::pair<RPNiter, RPNiter>
 {
     RPNspan(RPNiter begin = RPNiter(), RPNiter end = RPNiter())
         { first = begin, second = end; }
-    RPNspan(RPN const & proofsteps) :
-        std::pair<RPNiter, RPNiter>(proofsteps.begin(), proofsteps.end()) {}
+    RPNspan(RPN const & exp) :
+        std::pair<RPNiter, RPNiter>(exp.begin(), exp.end()) {}
     bool empty() const { return second == first; }
     void clear() { second = first; }
     RPNsize size() const { return second - first; }
