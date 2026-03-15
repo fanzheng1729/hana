@@ -130,7 +130,7 @@ static bool hasallvars(RPNspan span1, RPNspan span2)
     return true;
 }
 
-// Map: proofstep -> is in a tree governed by the step
+// Map: RPNstep -> is in a tree governed by the step
 typedef std::map<RPNstep, bool, std::less<const char *> > Instep;
 
 static void maxabs
