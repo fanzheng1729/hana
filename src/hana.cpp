@@ -3,7 +3,6 @@
 #include "comment.h"
 #include "database.h"
 #include "io.h"
-#include "proof/skeleton.h"
 #include "search/problem.h"
 #include "sect.h"
 #include "token.h"
@@ -111,9 +110,9 @@ int main(int argc, char * argv[])
 
     Value parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
-    Problem::size_type maxsize = 1u << 14;
+    std::size_t maxsize = 1ul << 14;
 
-    bool testpropsearch(Database const &, Problem::size_type, Value const[4]);
+    bool testpropsearch(Database const &, std::size_t, Value const[4]);
     if (!testpropsearch(database, maxsize, parameters))
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
