@@ -94,9 +94,7 @@ static bool openfile(std::ifstream & in, std::string const & name)
     // '\v' (vertical tab) is not a white space per spec ($4.1.1)
     preparestream(in, "\v");
     in.open(name.c_str());
-    if (!in) readfileerr("Could not open", name.c_str());
-
-    return bool(in);
+    return static_cast<bool>(in);
 }
 
 // Read tokens. Returns true if okay.

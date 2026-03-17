@@ -5,7 +5,6 @@
 #include "io.h"
 #include "proof/skeleton.h"
 #include "search/problem.h"
-#include "search/test.h"
 #include "sect.h"
 #include "token.h"
 #include "util/timer.h"
@@ -21,11 +20,11 @@ int test()
 
 bool read(const char * filename, Tokens & tokens, Comments & comments)
 {
-    std::cout << "Reading file " << filename;
+    std::cout << "Reading file " << filename << ' ';
     Timer timer;
     bool doread(const char * filename, Tokens & tokens, Comments & comments);
     if (!doread(filename, tokens, comments)) return false;
-    std::cout << " done in " << timer << 's' << std::endl;
+    std::cout << "done in " << timer << 's' << std::endl;
     return true;
 }
 
@@ -75,7 +74,7 @@ int main(int argc, char * argv[])
     Database database;
     Timer timer;
     if (!database.read(tokens, comments, size)) return EXIT_FAILURE;
-    std::cout << " done in " << timer << "s\n";
+    std::cout << " done in " << timer << 's' << std::endl;
     if (!checkassiters(database)) return EXIT_FAILURE;
     if (!addRPN(database)) return EXIT_FAILURE;
 
@@ -113,6 +112,8 @@ int main(int argc, char * argv[])
     Value parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
     Problem::size_type maxsize = 1u << 14;
+
+    bool testpropsearch(Database const &, Problem::size_type, Value const[4]);
     if (!testpropsearch(database, maxsize, parameters))
         return EXIT_FAILURE;
     return EXIT_SUCCESS;

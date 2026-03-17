@@ -81,10 +81,7 @@ public:
     pNodes const & pnodes() const { return m_pnodes; }
     // Add node pointer to p's goal data.
     friend void addpNode(pNode p)
-    {
-        if (p->game().proven()) return;
-        p->game().goaldata().m_pnodes.insert(p);
-    }
+    { if (!p->game().proven()) p->game().goaldata().m_pnodes.insert(p); }
     // Add simplified goal. Return its pointer. Return pgoal if unsuccessful.
     friend pGoal addsimpgoal(pGoal pgoal)
     {
