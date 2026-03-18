@@ -39,27 +39,29 @@ static Token nexttoken(std::istream & in)
     return token;
 }
 
+typedef std::string Filename;
+typedef std::set<Filename> Filenames;
+
 // Read file name in file inclusion commands ($4.1.2).
 // Return the file name if okay; otherwise return the empty string.
-static std::string readfilename(std::ifstream & in)
+static Filename readfilename(std::ifstream & in)
 {
-    std::string const filename(nexttoken(in));
-    if (filename.find('$') < std::string::npos)
+    Filename const name(nexttoken(in));
+    if (name.find('$') < Filename::npos)
     {
-        std::cerr << "Filename " << filename << " contains a $"
-                  << std::endl;
-        return std::string();
+        std::cerr << "Filename " << name << " contains a $" << std::endl;
+        return Filename();
     }
 
-    std::string const token(nexttoken(in));
+    Token const token(nexttoken(in));
     if (token != "$]")
     {
         std::cerr << "Didn't find closing file inclusion delimiter"
                   << std::endl;
-        return std::string();
+        return Filename();
     }
 
-    return filename;
+    return name;
 }
 
 // Prepare stream for I/O, switching the whitespace states of some chars.
@@ -82,33 +84,33 @@ static void preparestream(std::ios_base & ios, const char * chars)
     ios.imbue(std::locale(std::locale::classic(), new ctype(data)));
 }
 
-// Show error message for reading the file.
-static void readfileerr(const char * msg, const char * name)
+// Show error message when reading named file.
+static void file_err(const char * msg, const char * name)
 {
     std::cerr << msg << ' ' << name << std::endl;
 }
 
-// Associate the file stream with the file. Returns true if okay.
-static bool openfile(std::ifstream & in, std::string const & name)
+// Associate the file stream with named file. Returns true if okay.
+static bool openfile(std::ifstream & in, const char * name)
 {
     // '\v' (vertical tab) is not a white space per spec ($4.1.1)
     preparestream(in, "\v");
-    in.open(name.c_str());
+    in.open(name);
     return static_cast<bool>(in);
 }
 
 // Read tokens. Returns true if okay.
 static bool readtokens
-    (const char * const filename, std::set<std::string> & names,
+    (const char * const name, Filenames & names,
      Tokens & tokens, Comments & comments)
 {
-    if (!names.insert(filename).second)
+    if (!names.insert(name).second)
         return true; // file already read
 
     std::ifstream in;
-    if (!openfile(in, filename))
+    if (!openfile(in, name))
     {
-        readfileerr("Could not open", filename);
+        file_err("Could not open", name);
         return false;
     }
 
@@ -150,16 +152,16 @@ static bool readtokens
                 return false;
             }
 
-            std::string const & newfilename(readfilename(in));
-            if (newfilename.empty())
+            Filename const & newname(readfilename(in));
+            if (newname.empty())
             {
                 std::cerr << "Unfinished file inclusion command" << std::endl;
                 return false;
             }
 
-            if (!readtokens(newfilename.c_str(), names, tokens, comments))
+            if (!readtokens(newname.c_str(), names, tokens, comments))
             {
-                readfileerr("Error reading from included", newfilename.c_str());
+                file_err("Error reading from included", newname.c_str());
                 return false;
             }
 
@@ -194,7 +196,7 @@ static bool readtokens
     if (!in.eof())
     {
         if (in.fail())
-            readfileerr("Error reading from", filename);
+            file_err("Error reading from", name);
         return false;
     }
 
@@ -202,9 +204,9 @@ static bool readtokens
 }
 
 // Read tokens. Returns true if okay.
-bool doread(const char * filename,
+bool doread(const char * name,
             struct Tokens & tokens, struct Comments & comments)
 {
-    std::set<std::string> names;
-    return readtokens(filename, names, tokens, comments);
+    Filenames names;
+    return readtokens(name, names, tokens, comments);
 }
