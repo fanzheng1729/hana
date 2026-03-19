@@ -207,9 +207,9 @@ unsigned Imp::discouragement() const
 // Classify an assertion. Return its type.
 void Imp::addasstype(Assertion & ass, bool isaxiom) const
 {
-    ass.type |= isaxiom * Asstype::AXIOM;
-    ass.type |= ass.istrivial() * Asstype::TRIVIAL;
-    ass.type |= discouragement();
+    ass.settype(isaxiom * Asstype::AXIOM);
+    ass.settype(ass.istrivial() * Asstype::TRIVIAL);
+    ass.settype(discouragement());
 }
 
 // Get a proof step

@@ -16,7 +16,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     for (Assiters::size_type i = 1; i < limit; ++i)
     {
         Assertion const & ass = assvec[i]->second;
-        if ((ass.type & Asstype::USELESS) || !ontopic(ass))
+        if (ass.checktype(Asstype::USELESS) || !ontopic(ass))
             continue; // Skip non propositional theorems.
         if (stage == 0 || (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
             if (trythm(game, assvec[i], stage, moves))

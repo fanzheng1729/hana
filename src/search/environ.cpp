@@ -149,11 +149,9 @@ int Environ::compare(Environ const & env) const
 // Return true if an assertion duplicates a previous one.
 static bool isduplicate(Assertion const & ass, Database const & db)
 {
-    if (ass.type & (Asstype::AXIOM + Asstype::TRIVIAL))
-        return false;
-
-    static Value const zeros[2] = {0, 0};
-    return Problem(Environ(ass, db, -1), zeros).playonce() == WDL::WIN;
+    static Value const zeros[2] = {};
+    return !ass.checktype(Asstype::AXIOM + Asstype::TRIVIAL) &&
+            Problem(Environ(ass, db, -1), zeros).playonce() == WDL::WIN;
 }
 
 // Mark duplicate assertions. Return its number.
@@ -166,7 +164,7 @@ Assertions::size_type Database::markduplicate()
         // printass(rass);
         Assertion & ass = rass.second;
         bool const isdup = isduplicate(ass, *this);
-        ass.type |= isdup * Asstype::DUPLICATE;
+        ass.settype(isdup * Asstype::DUPLICATE);
         // Check if it is duplicate and starts with a non-primitive type code.
         if (isdup && typecodes().isprimitive(ass.exptypecode()) == FALSE)
             ++ndups;

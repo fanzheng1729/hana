@@ -176,7 +176,7 @@ bool testpropsearch
 
         // Skip axioms, trivial and duplicate theorems.
         unsigned const skip = Asstype::AXIOM + Asstype::DUPLICATE;
-        if (iter->second.type & skip)
+        if (iter->second.checktype(skip))
             continue;
 
         // Skip non propositional theorems.

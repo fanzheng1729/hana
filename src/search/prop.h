@@ -29,7 +29,7 @@ struct Prop : Environ
     Propctors const & propctors() const { return database.propctors(); }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
-    { return ass.type & Asstype::PROPOSITIONAL; }
+    { return ass.checktype(Asstype::PROPOSITIONAL); }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const;
     // Return the hypotheses of a goal to trim.
