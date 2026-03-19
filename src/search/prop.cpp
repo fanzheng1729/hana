@@ -152,7 +152,7 @@ bool Prop::addhardmoves
     return false;
 }
 
-static void printtime(Problem::size_type nodes, Time time)
+static void printtime(Treesize nodes, Time time)
 {
     std::cout << nodes << " nodes / " << time << "s = ";
     std::cout << nodes/time << " nps" << std::endl;
@@ -160,13 +160,13 @@ static void printtime(Problem::size_type nodes, Time time)
 
 // Test propositional proof search. Return true if okay.
 bool testpropsearch
-    (Database const & database, std::size_t maxsize, Value const parameters[4])
+    (Database const & database, Treesize maxsize, Value const parameters[4])
 {
     std::cout << "Testing propositional proof search";
     Progress progress(std::cerr);
     Timer timer;
     bool okay = true;
-    Problem::size_type nodes = 0;
+    Treesize nodes = 0;
     Assiters::size_type all = 0, proven = 0;
     // Test assertions
     Assiters const & assiters = database.assiters();
@@ -188,7 +188,7 @@ bool testpropsearch
         ++all;
         Prop prop(iter->second, database, maxsize, parameters[2], parameters[3]);
         Problem tree(prop, parameters);
-        Problem::size_type const n = testsearch(iter, tree, maxsize);
+        Treesize const n = testsearch(iter, tree, maxsize);
         if (n == 0)
         {
             okay = false;

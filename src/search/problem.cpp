@@ -139,8 +139,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 }
 
 // Test proof search. Return tree.size if okay. Return 0 if not.
-Problem::size_type testsearch
-    (Assiter iter, Problem & tree, Problem::size_type maxsize)
+Treesize testsearch(Assiter iter, Problem & tree, Treesize maxsize)
 {
     // printass(*iter);
     tree.play(maxsize);

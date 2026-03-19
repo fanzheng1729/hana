@@ -276,8 +276,9 @@ public:
     }
 };
 
+typedef Problem::size_type Treesize;
+
 // Test proof search. Return tree.size if okay. Return 0 if not.
-Problem::size_type testsearch
-    (Assiter iter, Problem & tree, Problem::size_type maxsize);
+Treesize testsearch(Assiter iter, Problem & tree, Treesize maxsize);
 
 #endif // PROBLEM_H_INCLUDED
