@@ -5,13 +5,13 @@
 // Change this to turn on staged move generation.
 Value Problem::UCBnewstage(pNode p) const
 {
-    if (!(staged & STAGED))
+    if (!staged)
         return MCTS<Game>::UCBnewstage(p);
     // Staged
     if (!isourturn(p))
         return std::numeric_limits<Value>::max();
     // Our turn
-    size_type const self = static_cast<size_type>(1) << (p->stage()*2);
+    Treesize const self = static_cast<Treesize>(1) << (p->stage()*2);
     return score(p->game().env().weight(p->game()) + p->stage())
             + UCBbonus(true, p.size(), self);
 }

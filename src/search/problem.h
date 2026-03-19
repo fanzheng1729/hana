@@ -37,7 +37,7 @@ public:
     Assertion const & probAss() const { return probEnv().assertion; }
     Assertions::size_type number() const { return probAss().number; }
     // Is staged move generation used?
-    enum { STAGED = 1 };
+    enum { STAGED = true };
     bool const staged;
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
@@ -48,7 +48,7 @@ public:
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? NULL : addProbEnv(env)),
-        staged(env.staged & STAGED)
+        staged(env.staged && STAGED)
     {
         if (!pProbEnv) return;
         // Check goal.
@@ -133,9 +133,9 @@ public:
     // p should != NULL.
     virtual Eval evalparent(pNode p) const
     {
-        Value const v = minimax(p);
-        bool const stuck = (staged & STAGED) && isourturn(p) && v == WDL::LOSS;
-        return stuck ? p->eval() : v;
+        Value   const v = minimax(p);
+        bool    const stuck = staged && isourturn(p) && v == WDL::LOSS;
+        return  stuck ? p->eval() : v;
     }
     // Return true if game's rank < Problem's rank.
     bool ranksimplerthanProb(Game const & game) const

@@ -192,7 +192,7 @@ void Problem::printmainline(pNode p, size_type detail) const
         else if (p->game().nDefer == 0)
         {
             std::cout << '\t';
-            printournode(p, p->stage() * (staged & STAGED));
+            printournode(p, p->stage() * staged);
             if (detail > level)
                 printourchildren(p, *this);
         }
