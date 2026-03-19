@@ -188,14 +188,14 @@ bool testpropsearch
         ++all;
         Prop prop(iter->second, database, maxsize, parameters[2], parameters[3]);
         Problem tree(prop, parameters);
-        Treesize const n = testsearch(iter, tree, maxsize);
-        if (n == 0)
+        Treesize const treesize = testsearch(iter, tree, maxsize);
+        if (treesize == 0)
         {
             okay = false;
             break;
         }
-        nodes += n;
-        proven += n <= maxsize;
+        nodes += treesize;
+        proven += treesize <= maxsize;
         progress << i/static_cast<Ratio>(assiters.size() - 1);
     }
 
