@@ -120,7 +120,7 @@ int main(int argc, char * argv[])
     // std::streambuf * coutbuf = std::cout.rdbuf(out.rdbuf());
     // bool const okay = testpropsearch(database, maxsize, parameters);
     // std::cout.rdbuf(coutbuf);
-    // if (okay)
+    // if (!okay)
     //     return EXIT_FAILURE;
 
     return EXIT_SUCCESS;
