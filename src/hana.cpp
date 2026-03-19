@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
     Comments comments;
     if (!read(argv[1], tokens, comments)) return EXIT_FAILURE;
 
-    Sections sections(comments);
+    Sections const sections(comments);
     if (!sections.empty())
         std::cout << "Last section: " << sections.rbegin()->first,
         std::cout << sections.rbegin()->second;
@@ -108,9 +108,9 @@ int main(int argc, char * argv[])
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
 
-    Value parameters[] = {0, 1e-3, 0, 0};
+    Value const parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
-    Treesize maxsize = 1ul << 14;
+    Treesize const maxsize = 1ul << 14;
 
     bool testpropsearch(Database const &, Treesize, Value const[4]);
     if (!testpropsearch(database, maxsize, parameters))
