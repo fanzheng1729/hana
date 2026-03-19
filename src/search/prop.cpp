@@ -175,8 +175,8 @@ bool testpropsearch
         Assiter const iter = assiters[i];
 
         // Skip axioms, trivial and duplicate theorems.
-        if (iter->second.type
-            & (Asstype::AXIOM + Asstype::DUPLICATE))
+        unsigned const skip = Asstype::AXIOM + Asstype::DUPLICATE;
+        if (iter->second.type & skip)
             continue;
 
         // Skip non propositional theorems.
