@@ -25,8 +25,8 @@ struct Adder
 // Term generator
 struct Gen
 {
-    Gen(Varusage const & varusage, Proofnumber maxcount) :
-        m_varusage(varusage), m_maxmoves(maxcount) {}
+    Gen(Varusage const & varusage, Proofnumber maxmoves) :
+        m_varusage(varusage), m_maxmoves(maxmoves) {}
     Varusage    const m_varusage;
     Proofnumber const m_maxmoves;
     Syntaxioms  syntaxioms;
