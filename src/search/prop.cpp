@@ -195,8 +195,8 @@ bool testpropsearch
             okay = false;
             break;
         }
-        nodes += treesize;
-        proven += treesize <= maxsize;
+        nodes   += treesize;
+        proven  += treesize <= maxsize;
         progress << i/static_cast<Ratio>(all - 1);
     }
 
