@@ -160,7 +160,7 @@ static void printtime(Treesize nodes, Time time)
 
 // Test propositional proof search. Return true if okay.
 bool testpropsearch
-    (Database const & database, Treesize maxsize, Value const parameters[4])
+    (Database const & database, Treesize maxsize, Value const params[4])
 {
     std::cout << "Testing propositional proof search";
     Progress progress(std::cerr);
@@ -187,9 +187,9 @@ bool testpropsearch
 
         // Try search proof.
         ++allprop;
-        Prop prop(ass, database, maxsize, parameters[2], parameters[3]);
-        Problem tree(prop, parameters);
-        Treesize const treesize = testsearch(iter, tree, maxsize);
+        const   Prop prop(ass, database, maxsize, params[2], params[3]);
+        Problem tree(prop, params);
+        const   Treesize treesize = testsearch(iter, tree, maxsize);
         if (treesize == 0)
         {
             okay = false;
