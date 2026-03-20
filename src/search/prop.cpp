@@ -173,20 +173,20 @@ bool testpropsearch
     for (Assiters::size_type i = 1; i < assiters.size(); ++i)
     {
         Assiter const iter = assiters[i];
+        Assertion const & ass = iter->second;
 
         // Skip axioms, trivial and duplicate theorems.
-        unsigned const skip = Asstype::AXIOM + Asstype::DUPLICATE;
-        if (iter->second.checktype(skip))
+        if (ass.checktype(Asstype::AXIOM + Asstype::DUPLICATE))
             continue;
 
         // Skip non propositional theorems.
-        static const Prop prop1(assiters[1]->second, database, 0, 0, false);
-        if (!(prop1.ontopic(iter->second)))
+        static const Prop prop1(ass, database, 0, 0, false);
+        if (!(prop1.ontopic(ass)))
             continue;
 
         // Try search proof.
         ++all;
-        Prop prop(iter->second, database, maxsize, parameters[2], parameters[3]);
+        Prop prop(ass, database, maxsize, parameters[2], parameters[3]);
         Problem tree(prop, parameters);
         Treesize const treesize = testsearch(iter, tree, maxsize);
         if (treesize == 0)
