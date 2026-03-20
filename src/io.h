@@ -91,9 +91,9 @@ void printass(Assref const & assref)
 { printass(assref.second.number, assref.first); }
 
 // Print a percentage
-template<class NUM, class DENOM>
+template<class I>
 void printpercent
-    (NUM num, const char * slash, DENOM denom, const char * equals,
+    (I num, const char * slash, I denom, const char * equals,
      const char * ending = NULL)
 {
     std::cout << num << slash << denom << equals;
