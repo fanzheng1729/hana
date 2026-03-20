@@ -167,10 +167,11 @@ bool testpropsearch
     Timer timer;
     bool okay = true;
     Treesize nodes = 0;
-    Assiters::size_type all = 0, proven = 0;
+    Assiters::size_type allprop = 0, proven = 0;
     // Test assertions
     Assiters const & assiters = database.assiters();
-    for (Assiters::size_type i = 1; i < assiters.size(); ++i)
+    Assiters::size_type const all = assiters.size();
+    for (Assiters::size_type i = 1; i < all; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
@@ -185,7 +186,7 @@ bool testpropsearch
             continue;
 
         // Try search proof.
-        ++all;
+        ++allprop;
         Prop prop(ass, database, maxsize, parameters[2], parameters[3]);
         Problem tree(prop, parameters);
         Treesize const treesize = testsearch(iter, tree, maxsize);
@@ -196,12 +197,12 @@ bool testpropsearch
         }
         nodes += treesize;
         proven += treesize <= maxsize;
-        progress << i/static_cast<Ratio>(assiters.size() - 1);
+        progress << i/static_cast<Ratio>(all - 1);
     }
 
     // Print stats.
     std::cout << '\n';
     printtime(nodes, timer);
-    printpercent(proven, "/", all, " = ", "% proven\n");
+    printpercent(proven, "/", allprop, " = ", "% proven\n");
     return okay;
 }
