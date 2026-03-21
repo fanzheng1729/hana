@@ -16,26 +16,24 @@ Definition::Definition(Assertions::const_reference rass)
     strview label = rass.first;
     Assertion const & ass = rass.second;
     RPN const & expRPN = ass.expRPN;
-    AST const & tree = ast(expRPN);
+    AST const & expAST = ast(expRPN);
 
-    if (tree.empty())
+    if (expRPN.empty() || expAST.empty())
     {
         std::cerr << ass.expression << "has bad RPN:\n" << expRPN;
-        if (expRPN.empty())
-            std::cerr << "Run Database::addRPN first" << std::endl;
         return;
     }
 
     // Index of the syntax to be defined
-    RPNsize const lhsend = tree.back()[0];
+    RPNsize const lhsend = expAST.back()[0];
     // Index of beginning of RHS
     RPNsize const defbegin = lhsend + 1;
 
-    if (unexpected(tree.back().size() != 2, "non-binary root", expRPN.back()))
+    if (unexpected(expAST.back().size() != 2, "non-binary root", expRPN.back()))
         return;
 
     // Check if LHS = (var, ..., var, syntax to be defined).
-    if (tree[lhsend].size() != lhsend)
+    if (expAST[lhsend].size() != lhsend)
     {
         std::cerr << label << "\tbad LHS: " << expRPN;
         return;
