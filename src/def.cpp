@@ -47,17 +47,18 @@ Definition::Definition(Assertions::const_reference rass)
 // Check the required disjoint variable hypotheses (errs 3 & 4).
 bool Definition::checkdv() const
 {
-    if (!pdef) return false;
+    if (!pdef)
+        return false;
 
     Varusage const & vars = pdef->second.varusage;
     Disjvars const & disjvars = pdef->second.disjvars;
     for (Varusage::const_iterator iter(vars.begin()); iter!=vars.end(); ++iter)
     {
-        Symbol2 var(iter->first, iter->first);
+        Symbol2 const var(iter->first, iter->first);
         Varusage::const_iterator iter2 = iter;
         for (++iter2; iter2 != vars.end(); ++iter2)
         {
-            Symbol2 var2(iter2->first, iter2->first);
+            Symbol2 const var2(iter2->first, iter2->first);
             if (disjvars.count(std::make_pair(var, var2))
                 != (isdummy(iter->first) || isdummy(iter2->first)))
             {
