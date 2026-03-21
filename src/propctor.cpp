@@ -41,6 +41,7 @@ static TTindex truthtablesize(Assertion const & ass)
     {
         if (!ass.hypfloats(i) || ass.hyptypecode(i) != wff)
             return 0;
+
         result *= 2;
     }
 
@@ -71,10 +72,9 @@ bool Propctors::check(Definitions const & definitions) const
     FOR (const_reference propctor, *this)
     {
         strview label = propctor.first;
-        if (!definitions.count(label))
+        if (!propctor.second.pdef)
             printmsg(label, "no");
-        else if (!propctor.second.pdef)
-            printmsg(label, "unused");
+
         if (unexpected(!checkpropctor(propctor.second), "bad data for", label))
             return false;
     }
@@ -98,12 +98,15 @@ Propctors::size_type Propctors::addbatch
     FOR (Relations::const_reference rdef, batch)
     {
         pAss pass = rdef.second.pass;
-        if (!pass) continue;
-        strview label = pass->first;
+        if (!pass)
+            continue;
+        // Truth table
         TTindex ttsize = truthtablesize(pass->second);
-        if (ttsize == 0) continue;
+        if (ttsize == 0)
+            continue;
         Bvector tt(truthtable, truthtable + ttsize);
         // New propctor
+        strview label = pass->first;
         Propctor & propctor = (*this)[label];
         propctor.cnf = propctor.truthtable = tt;
         propctor.nargs = util::log2(ttsize);
