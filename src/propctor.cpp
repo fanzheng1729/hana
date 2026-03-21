@@ -122,8 +122,6 @@ Propctors::const_iterator Propctors::adddef
 {
     strview label = rdef.first;
     Definition const & def(rdef.second);
-    if (unexpected(!def.pdef, "empty definition", label))
-        return end();
     // Extended definition using the propositional skeleton
     Definition xdef(def);
     Bank bank;
