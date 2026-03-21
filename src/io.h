@@ -2,7 +2,6 @@
 #define IO_H_INCLUDED
 
 #include <algorithm>// for std::copy
-#include <cctype>   // for std::tolower
 #include <cstddef>  // for std::size_t
 #include <iostream>
 #include <iterator> // for std::ostream_iterator
@@ -107,7 +106,7 @@ inline std::string ask(const char * question)
     std::string answer;
     std::cout   << question;
     std::cin    >> answer;
-    return answer;
+    return      answer;
 }
 
 // Ask a y/n question and get its answer.
@@ -115,8 +114,8 @@ inline bool askyn(const char * question)
 {
     std::string const & answer(ask(question));
     if (answer.empty()) return false;
-    unsigned char const c = answer[0];
-    return std::tolower(c) == 'y';
+    char const c = answer[0];
+    return c == 'Y' || c == 'y';
 }
 
 #endif // IO_H_INCLUDED
