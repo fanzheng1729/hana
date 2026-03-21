@@ -89,34 +89,30 @@ void Propctors::printtruthtables() const
         std::cout << propctor.first << '\t' << propctor.second.truthtable;    
 }
 
-// Add a batch of definitions with a given truth table. Return # items added.
-Propctors::size_type Propctors::addbatch
+// Add a batch of definitions with a given truth table.
+void Propctors::addbatch
     (struct Relations const & batch, bool const truthtable[])
 {
-    size_type count = 0;
-
     FOR (Relations::const_reference rdef, batch)
     {
         pAss pass = rdef.second.pass;
         if (!pass)
             continue;
-        // Truth table
+        // Truth table size
         TTindex ttsize = truthtablesize(pass->second);
         if (ttsize == 0)
             continue;
-        Bvector tt(truthtable, truthtable + ttsize);
         // New propctor
         strview label = pass->first;
         Propctor & propctor = (*this)[label];
+        // Truth table
+        Bvector tt(truthtable, truthtable + ttsize);
         propctor.cnf = propctor.truthtable = tt;
         propctor.nargs = util::log2(ttsize);
         if (unexpected(!checkpropctor(propctor), "bad data for", label))
             continue;
-        ++count;
         // std::cout << label << '\t' << tt;
     }
-
-    return count;
 }
 
 // Add a definition. Return the iterator to the entry. Otherwise return end.

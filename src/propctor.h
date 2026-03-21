@@ -26,19 +26,16 @@ struct Propctors : std::map<strview, Propctor>
     bool check(Definitions const & definitions) const;
 // Print all propositional syntax constructors with truth tables.
     void printtruthtables() const;
-// Add a batch of definitions with a given truth table. Return # items added.
-    size_type addbatch
-    (struct Relations const & batch, bool const truthtable[]);
+// Add a batch of definitions with a given truth table.
+    void addbatch
+        (struct Relations const & batch, bool const truthtable[]);
 // Add data for the definitions.
 // Records already present are overwritten if there is definition for it.
 // Records already present are preserved if there is no definition for it.
-// Return # propositional constructors added.
-    size_type adddefs(Definitions const & definitions)
+    void adddefs(Definitions const & definitions)
     {
-        size_type npropctors = 0;
         FOR (Definitions::const_reference def, definitions)
-            npropctors += (adddef(definitions, def) != end());
-        return npropctors;
+            adddef(definitions, def);
     }
 // Add a definition. Return the iterator to the entry. Otherwise return end.
     Propctors::const_iterator adddef
