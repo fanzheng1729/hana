@@ -346,7 +346,7 @@ bool Propctors::checkpropsat(Assertions const & assertions,
             return false;
         if (typecodes.isprimitive(ass.exptypecode()) != FALSE)
             continue; // Skip syntax axioms.
-        if (!ass.checktype(Asstype::PROPOSITIONAL))
+        if (!ass.testtype(Asstype::PROPOSITIONAL))
             continue; // Skip non propositional assertions.
 
         if (!checkpropsat(ass))

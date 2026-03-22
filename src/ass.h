@@ -120,8 +120,8 @@ struct Assertion
         (Expression const & newvars, Hypiters const & newhyps) const;
     // Simplified assertion with hypotheses trimmed
     Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;
-    // Check if mask is set in type.
-    bool checktype(unsigned mask) const { return type & mask; }
+    // Test if mask is set in type.
+    bool testtype(unsigned mask) const { return type & mask; }
 // Modifying functions
     // Set the hypotheses, trimming away specified ones.
     void sethyps(Assertion const & ass, Bvector const & hypstotrim = Bvector());

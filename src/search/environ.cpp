@@ -150,7 +150,7 @@ int Environ::compare(Environ const & env) const
 static bool isduplicate(Assertion const & ass, Database const & db)
 {
     static Value const zeros[2] = {};
-    return !ass.checktype(Asstype::AXIOM + Asstype::TRIVIAL) &&
+    return !ass.testtype(Asstype::AXIOM + Asstype::TRIVIAL) &&
             Problem(Environ(ass, db, -1), zeros).playonce() == WDL::WIN;
 }
 

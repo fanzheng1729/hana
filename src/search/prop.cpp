@@ -177,7 +177,7 @@ bool testpropsearch
         Assertion const & ass = iter->second;
 
         // Skip axioms, trivial and duplicate theorems.
-        if (ass.checktype(Asstype::AXIOM + Asstype::DUPLICATE))
+        if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))
             continue;
 
         // Skip non propositional theorems.

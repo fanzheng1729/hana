@@ -51,7 +51,7 @@ Syntaxioms::Syntaxioms
     for (Assiter iter = assertions.begin(); iter != assertions.end(); ++iter)
     {
         Assertion const & ass = iter->second;
-        if (!ass.checktype(Asstype::AXIOM))
+        if (!ass.testtype(Asstype::AXIOM))
             continue; // Skip theorems.
 
         // Check if it starts with a primitive type code and has no essential hyps.

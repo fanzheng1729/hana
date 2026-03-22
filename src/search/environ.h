@@ -56,7 +56,7 @@ struct Environ : protected Gen
         database.syntaxDAG().simplerthan(maxranks, probmaxranks);
     }
     // Return true if an assertion is on topic.
-    virtual bool ontopic(Assertion const & ass) const { return ass.number>0; }
+    virtual bool ontopic(Assertion const & ass) const { return ass.number; }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
     { return goal.rpn.empty() ? GOALFALSE : GOALOPEN; }
