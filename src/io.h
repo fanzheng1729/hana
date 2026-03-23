@@ -32,7 +32,7 @@ std::ostream & operator<<(std::ostream & out, const CNFClauses & cnf);
 
 struct RPNstep;
 typedef std::vector<RPNstep> RPN;
-std::ostream & operator<<(std::ostream & out, RPN const & steps);
+std::ostream & operator<<(std::ostream & out, RPN const & rpn);
 
 template<class Key, class T, class Comp>
 std::ostream & operator<<(std::ostream & out, const std::map<Key, T, Comp> & map)

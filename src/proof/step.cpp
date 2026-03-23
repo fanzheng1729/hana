@@ -104,9 +104,9 @@ bool writeproof(RPN & dest, pAss pthm, pProofs const & hyps)
     return true;
 }
 
-std::ostream & operator<<(std::ostream & out, RPN const & steps)
+std::ostream & operator<<(std::ostream & out, RPN const & rpn)
 {
-    FOR (RPNstep const step, steps)
+    FOR (RPNstep const step, rpn)
         out << step << ' ';
     return out << std::endl;
 }
