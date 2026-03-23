@@ -57,7 +57,7 @@ struct Move
     bool isthm() const  { return type == THM; }
     bool isconj() const { return type == CONJ; }
     bool isdefer() const{ return type == DEFER; }
-    strview thmlabel() const { return pthm ? pthm->first : strview(); }
+    strview thmlabel() const { return pthm ? pthm->first : ""; }
     strview label() const
     {
         static const char * const msg[]
@@ -72,7 +72,7 @@ struct Move
         if (isthm())
             return theorem().exptypecode();
         if (isconj())
-            return absconjs.empty() ? strview() : absconjs.back().typecode;
+            return absconjs.empty() ? "" : absconjs.back().typecode;
         return "";
     }
     // Goal the move proves (must be of type THM or CONJ)
@@ -118,7 +118,7 @@ struct Move
         return isdefer() ? "DEFER" : "";
     }
     bool subgoalfloats(Hypsize index) const
-    { return isthm() ? theorem().hypfloats(index) : false; }
+    { return isthm() && theorem().hypfloats(index); }
     strview subgoaltypecode(Hypsize index) const
     {
         return index >= nsubgoals() ? "" :

@@ -180,7 +180,7 @@ static bool verifystep
     (pAss pass, pAss pthm, std::vector<Expression> & stack,
      Substitutions & substs)
 {
-    strview label = pass ? pass->first : strview();
+    strview label = pass ? pass->first : "";
     Assertion const & thm = pthm->second;
 
     // Find the necessary substitutions.
@@ -218,7 +218,7 @@ static bool enoughsavedsteps
 // Subroutine for proof verification. Verify proof steps.
 Expression verify(RPN const & proof, Printer & printer, pAss pass)
 {
-    strview label = pass ? pass->first : strview();
+    strview label = pass ? pass->first : "";
 //std::cout << "Verifying " << label << std::endl;
     std::vector<Expression> stack, savedsteps;
 

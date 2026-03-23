@@ -13,7 +13,7 @@ strview RPNstep::typecode() const
         if (phyp->second.expression.empty()) return "";
         return phyp->second.expression[0];
     case THM:
-        return pass ? pass->second.exptypecode() : strview();
+        return pass ? pass->second.exptypecode() : "";
     default:
         return "";
     }
