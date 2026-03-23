@@ -47,7 +47,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         // Goal not proven
         allproven = false;
 
-        if (s >= GOALOPEN) // Valid
+        if (s >= GOALOPEN)  // Valid
         {
             move.subgoals[i] = addsimpgoal(pgoal);
             continue;
@@ -58,7 +58,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
 
-        if (s == GOALTRUE)
+        if (s == GOALTRUE)  // True
         {
             Environ const * & psimpEnv = pgoal->second.psimpEnv;
             psimpEnv = pProb->addsubEnv(*pgoal->first, hypstotrim(goal));
