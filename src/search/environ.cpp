@@ -57,13 +57,18 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         s = status(goal);
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
-// if (!hypstotrim(goal).empty())
-// std::cout << "Simplifying " << goal.expression();
-        Environ const * & psimpEnv = pgoal->second.psimpEnv;
-        psimpEnv = pProb->addsubEnv(*pgoal->first, hypstotrim(goal));
+
+        if (s == GOALTRUE)
+        {
+            Environ const * & psimpEnv = pgoal->second.psimpEnv;
+            psimpEnv = pProb->addsubEnv(*pgoal->first, hypstotrim(goal));
+// if (psimpEnv)
+//     std::cout << "Simplified " << goal.expression();
+// if (psimpEnv)
+//     std::cout << name << "\n->\n" << (psimpEnv ? psimpEnv->name : "") << std::endl;
+        }
         // Record the goal in the hypotheses of the move.
         move.subgoals[i] = addsimpgoal(pgoal);
-// std::cout << name << "\n->\n" << (psimpEnv ? psimpEnv->name : "") << std::endl;
     }
     return allproven ? MoveCLOSED : MoveVALID;
 }
