@@ -38,8 +38,8 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
         Goalstatus & s = pgoal->second.getstatus();
         if (s == GOALFALSE) // Refuted
             return MoveINVALID;
-        // Check if goal is proven.
-        if (pgoal->second.proven())
+
+        if (pgoal->second.proven()) // Proven
         {
             move.subgoals[i] = pgoal;
             continue;
