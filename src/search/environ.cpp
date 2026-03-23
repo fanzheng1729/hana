@@ -24,7 +24,7 @@ Goalstatus Environ::printbadgoal(RPN const & badgoal) const
 // Validate a move applying a theorem.
 Environ::MoveValidity Environ::validthmmove(Move const & move) const
 {
-    // Check if all goals of the move are proven.
+    // True if all goals of the move are proven
     bool allproven = true;
     // Record the hypotheses.
     move.subgoals.resize(move.nsubgoals());
