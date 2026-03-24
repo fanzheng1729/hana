@@ -15,7 +15,7 @@ struct Goal
     // Maximal abstractions
     GovernedRPNspansbystep mutable maxabs;
     bool mutable maxabsfilled;
-    Goal() : maxabsfilled(false) {}
+    Goal() : rpn(), typecode(""), maxabsfilled(false) {}
     Goal(Goalview view) :
         rpn(view.first), typecode(view.second), maxabsfilled(false) {}
     void fillast() const { if (ast.empty()) ast = ::ast(rpn); }
