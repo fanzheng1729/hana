@@ -72,26 +72,27 @@ public:
         addpNode(root());
     }
     // Add 1-step proof of all the hypotheses of the problem context.
-    // void addhypproofs()
-    // {
-    //     for (Hypsize i = 0; i < probAss().nhyps(); ++i)
-    //     {
-    //         if (probAss().hypfloats(i)) continue;
-    //         Goalview const goal(probAss().hypRPN(i), probAss().hyptypecode(i));
-    //         goals[goal].proof.assign(1, probAss().hypptr(i));
-    //     }
-    // }
+    void addhypproofs()
+    {
+        Assertion const & ass = probAss();
+        for (Hypsize i = 0; i < ass.nhyps(); ++i)
+        {
+            if (ass.hypfloats(i)) continue;
+            goals[Goalview(ass.hypRPN(i), ass.hyptypecode(i))]
+            .proof.assign(1, ass.hypptr(i));
+        }
+    }
     Environ const & addhypproofs(Environ const & env)
     {
         if (&env != &probEnv() && env.subsumedbyProb())
             return env; // Skip contexts properly subsumed by the problem context.
         // env is either problem context or not subsumed by it.
-        for (Hypsize i = 0; i < env.assertion.nhyps(); ++i)
+        Assertion const & ass = env.assertion;
+        for (Hypsize i = 0; i < ass.nhyps(); ++i)
         {
-            if (env.assertion.hypfloats(i)) continue;
-            Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
-            addgoal(goal, env, GOALTRUE)
-            ->second.proofdst().assign(1, env.assertion.hypptr(i));
+            if (ass.hypfloats(i)) continue;
+            addgoal(Goalview(ass.hypRPN(i), ass.hyptypecode(i)), env, GOALTRUE)
+            ->second.proofdst().assign(1, ass.hypptr(i));
         }
         return env;
     }
