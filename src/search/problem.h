@@ -57,7 +57,7 @@ public:
         Goalstatus const s = env.status(goal);
         if (s == GOALFALSE) return;
         // Add proofs of hypotheses.
-        addhypproofs();
+        addhypproofs(probEnv());
         // Root goal
         pGoal const pgoal = addgoal(goal, probEnv(), s);
         if (s == GOALTRUE)
@@ -72,19 +72,19 @@ public:
         addpNode(root());
     }
     // Add 1-step proof of all the hypotheses of the problem context.
-    void addhypproofs()
-    {
-        for (Hypsize i = 0; i < probAss().nhyps(); ++i)
-        {
-            if (probAss().hypfloats(i)) continue;
-            Goalview const goal(probAss().hypRPN(i), probAss().hyptypecode(i));
-            goals[goal].proof.assign(1, probAss().hypptr(i));
-        }
-    }
-    // Add 1-step proof of all the hypotheses to a context. Return env.
+    // void addhypproofs()
+    // {
+    //     for (Hypsize i = 0; i < probAss().nhyps(); ++i)
+    //     {
+    //         if (probAss().hypfloats(i)) continue;
+    //         Goalview const goal(probAss().hypRPN(i), probAss().hyptypecode(i));
+    //         goals[goal].proof.assign(1, probAss().hypptr(i));
+    //     }
+    // }
     Environ const & addhypproofs(Environ const & env)
     {
-        if (env.subsumedbyProb()) return env;
+        if (&env != &probEnv() && env.subsumedbyProb())
+            return env;
         for (Hypsize i = 0; i < env.assertion.nhyps(); ++i)
         {
             if (env.assertion.hypfloats(i)) continue;
@@ -235,9 +235,9 @@ private:
     pGoal addgoal(GOAL const & goal, Environ const & env, Goalstatus s)
     {
         std::pair<GOAL const &, Goaldatas> bigGoal(goal, Goaldatas());
-        pBIGGOAL pbig=&*goals.insert(bigGoal).first;
-        Goaldatas::value_type envdata(&env, Goaldata(s, &env, pbig));
-        return &*pbig->second.insert(envdata).first;
+        pBIGGOAL pbiggoal = &*goals.insert(bigGoal).first;
+        Goaldatas::value_type envdata(&env, Goaldata(s, &env, pbiggoal));
+        return &*pbiggoal->second.insert(envdata).first;
     }
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return NULL if unsuccessful.
