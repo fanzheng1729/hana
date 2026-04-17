@@ -113,7 +113,7 @@ bool Game::writeproof() const
     if (okay)
     {
 // std::cout << "Built proof for " << goal().expression();
-        goaldata().setstatustrue();
+        goaldata().settrue();
     }
     else
     {

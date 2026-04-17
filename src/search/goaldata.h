@@ -97,7 +97,7 @@ public:
             (psimpEnv, Goaldata(GOALTRUE, psimpEnv, pbigGoal));
         return &*pbigGoal->second.insert(value).first;
     }
-    void setstatustrue() { status = GOALTRUE; }
+    void settrue() { status = GOALTRUE; }
     Goalstatus getstatus() const { return status; }
     Goalstatus & getstatus()
     {

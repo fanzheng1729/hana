@@ -78,7 +78,7 @@ void Problem::copyproof(Game const & game)
                 continue;
             // Super-context found. Copy proof.
             goaldata.second.proofdst() = game.proof();
-            goaldata.second.setstatustrue();
+            goaldata.second.settrue();
             closenodesexcept(goaldata.second.pnodes());
         }
 }
