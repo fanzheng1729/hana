@@ -30,7 +30,6 @@ pEnvs const & supEnvs(Environ const & env);
 // Data associated with the goal
 class Goaldata
 {
-    friend class Problem;
     Goalstatus status;
     RPN proof;
     // Set of pointers to nodes trying to prove the open goal

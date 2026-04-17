@@ -90,7 +90,7 @@ public:
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
             addgoal(goal, env, GOALTRUE)
-            ->second.proof.assign(1, env.assertion.hypptr(i));
+            ->second.proofdst().assign(1, env.assertion.hypptr(i));
         }
         return env;
     }
@@ -180,16 +180,23 @@ public:
     void focus(pNode p);
     // Proof of the assertion, if not empty
     RPN const & proof() const { return root()->game().proof(); }
-    // Return true if proof() is okay.
-    bool checkproof(Assiter iter) const
+    // Return true if a proof is legal.
+    bool legal(RPN const & proof) const
     {
         Assertions::size_type const nProb = number();
-        FOR (RPNstep const step, proof())
+        FOR (RPNstep const step, proof)
             if (step.isthm() && step.pass->second.number >= nProb)
                 return false; // Assertion # >= limit
             else if (step.ishyp() && !step.phyp->second.floats &&
                      bank.hashyp(step.phyp->first))
                 return false; // Auxillary essential Hypothesis not allowed
+        return true;
+    }
+    // Return true if proof() solves the problem *iter.
+    bool checkproof(Assiter iter) const
+    {
+        if (!legal(proof()))
+            return false;
         Expression const & conclusion(verify(proof(), &*iter));
         return checkconclusion(iter->first,conclusion,iter->second.expression);
     }
