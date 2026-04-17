@@ -188,7 +188,7 @@ public:
                 return false; // Assertion # >= limit
             else if (step.ishyp() && !step.phyp->second.floats &&
                      bank.hashyp(step.phyp->first))
-                return false; // Essential Hypothesis not allowed
+                return false; // Auxillary essential Hypothesis not allowed
         Expression const & conclusion(verify(proof(), &*iter));
         return checkconclusion(iter->first,conclusion,iter->second.expression);
     }
