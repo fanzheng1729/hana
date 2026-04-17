@@ -45,6 +45,7 @@ public:
         status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv(NULL) {}
     Goal const & goal() const { return pbigGoal->first; }
     Goaldatas & goaldatas() const { return pbigGoal->second; }
+    // Source of proof to be read from
     RPN const & proofsrc() const
     { return goaldatas().proven() ? goaldatas().proof : proof; }
     RPN const & proofsrc()
@@ -76,8 +77,10 @@ public:
     }
     bool proven() const { return !proofsrc().empty(); }
     bool proven() { return !proofsrc().empty(); }
+    // Destination to write proof to
     RPN & proofdst()
     { return subsumedbyProb(*pEnv) ? goaldatas().proof : proof; }
+    // Pointers to nodes trying to prove this goal
     pNodes const & pnodes() const { return m_pnodes; }
     // Add node pointer to p's goal data.
     friend void addpNode(pNode p)
