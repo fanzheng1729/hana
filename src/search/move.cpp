@@ -3,6 +3,7 @@
 #include "move.h"
 #include "../util/for.h"
 #include "../io.h"
+#include "../proof/write.h"
 
 static Symbol3s symbols(RPN const & exp)
 {
@@ -141,9 +142,14 @@ RPNsize Move::fullproofsize(pProofs const & phyps) const
     return sum;
 }
 
-// Write proof (must be of type CONJ).
+// Write proof.
 bool Move::writeproof(RPN & dest, pProofs const & phyps) const
 {
+    if (isthm())
+        return ::writeproof(dest, pthm, phyps);
+    if (!isconj())
+        return false;
+    // type CONJ
     dest.clear();
 
     RPNsize const size = fullproofsize(phyps);

@@ -2,7 +2,6 @@
 #include "goaldata.h"
 #include "problem.h"
 #include "../io.h"
-#include "../proof/write.h"
 
 Goaldata & Game::goaldata() const { return pgoal->second; }
 Goaldatas & Game::goaldatas() const { return goaldata().goaldatas(); }
@@ -100,12 +99,7 @@ bool Game::writeproof() const
     for (Hypsize i = 0; i < phyps.size(); ++i)
         phyps[i] = attempt.psubgoalproof(i);
     // Write proof.
-    if (attempt.isconj())
-    {
-        if (!attempt.writeproof(*pProof, phyps))
-            return false;
-    }
-    else if (!::writeproof(*pProof, attempt.pthm, phyps))
+    if (!attempt.writeproof(*pProof, phyps))
         return false;
     if (pProof != &goaldatas().proof && env().prob().legal(*pProof))
     {
