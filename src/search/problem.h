@@ -183,8 +183,9 @@ public:
     // Return true if proof() is okay.
     bool checkproof(Assiter iter) const
     {
+        Assertions::size_type const nProb = number();
         FOR (RPNstep const step, proof())
-            if (step.isthm() && step.pass->second.number >= number())
+            if (step.isthm() && step.pass->second.number >= nProb)
                 return false; // Assertion # >= limit
             else if (step.ishyp() && !step.phyp->second.floats &&
                      bank.hashyp(step.phyp->first))
