@@ -235,9 +235,9 @@ private:
     template<class GOAL>
     pGoal addgoal(GOAL const & goal, Environ const & env, Goalstatus s)
     {
-        std::pair<GOAL const &, Goaldatas> bigGoal(goal, Goaldatas());
-        pBIGGOAL pbiggoal = &*goals.insert(bigGoal).first;
-        Goaldatas::value_type envdata(&env, Goaldata(s, &env, pbiggoal));
+        std::pair<GOAL const &, Goaldatas> const bigGoal(goal, Goaldatas());
+        pBIGGOAL const pbiggoal = &*goals.insert(bigGoal).first;
+        Goaldatas::value_type const envdata(&env, Goaldata(s, &env, pbiggoal));
         return &*pbiggoal->second.insert(envdata).first;
     }
     // Add a sub-context with hypotheses trimmed.
