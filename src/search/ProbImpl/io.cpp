@@ -240,7 +240,7 @@ void Problem::printenvs() const
     }
 }
 
-// Format: max rank # > number limit    maxrank1 maxrank2 ...
+// Format: max rank # < number limit    maxrank1 maxrank2 ...
 void Problem::printranksinfo() const
 {
     std::cout << maxranknumber << " < " << numberlimit << '\t';

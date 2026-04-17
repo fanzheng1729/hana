@@ -35,7 +35,8 @@ public:
     Environ const & probEnv() const { return *pProbEnv; }
     // Assertion to be proven
     Assertion const & probAss() const { return probEnv().assertion; }
-    Assertions::size_type number() const { return probAss().number; }
+    Assertions::size_type number() const
+    { return pProbEnv ? probAss().number : 0; }
     // Is staged move generation used?
     enum { STAGED = true };
     bool const staged;
@@ -183,7 +184,7 @@ public:
     bool checkproof(Assiter iter) const
     {
         FOR (RPNstep const step, proof())
-            if (step.isthm() && step.pass->second.number >= numberlimit)
+            if (step.isthm() && step.pass->second.number >= number())
                 return false; // Assertion # >= limit
             else if (step.ishyp() && !step.phyp->second.floats &&
                      bank.hashyp(step.phyp->first))
