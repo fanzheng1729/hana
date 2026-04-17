@@ -74,14 +74,14 @@ void Problem::copyproof(Game const & game)
             supiter = std::lower_bound(supiter, supend, &otherEnv, less);
             // while (supiter != supend && less(*supiter, &otherEnv))
             //     ++supiter;
-            if (supiter != supend && *supiter == &otherEnv)
-            {
-                // Super-context found. Copy proof.
-                goaldata.second.proofdst() = game.proof();
-                goaldata.second.setstatustrue();
-                closenodesexcept(goaldata.second.pnodes());
-            }
-            if (supiter == supend) break;
+            if (supiter == supend)
+                break;  // end reached
+            if (*supiter != &otherEnv)
+                continue;
+            // Super-context found. Copy proof.
+            goaldata.second.proofdst() = game.proof();
+            goaldata.second.setstatustrue();
+            closenodesexcept(goaldata.second.pnodes());
         }
 }
 

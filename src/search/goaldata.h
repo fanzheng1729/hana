@@ -67,9 +67,10 @@ public:
                 subiter = std::lower_bound(subiter, subend, &otherEnv, less);
                 // while (subiter != subend && less(*subiter, &otherEnv))
                 //     ++subiter;
-                if (subiter != subend && *subiter == &otherEnv)
+                if (subiter == subend)
+                    break;  // end reached
+                if (*subiter == &otherEnv)
                     return proof = goaldata.second.proof;
-                if (subiter == subend) break;
             }
         
         return proof;

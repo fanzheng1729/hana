@@ -89,7 +89,7 @@ public:
             if (env.assertion.hypfloats(i)) continue;
             Goalview goal(env.assertion.hypRPN(i), env.assertion.hyptypecode(i));
             addgoal(goal, env, GOALTRUE)
-            ->second.proofdst().assign(1, env.assertion.hypptr(i));
+            ->second.proof.assign(1, env.assertion.hypptr(i));
         }
         return env;
     }
