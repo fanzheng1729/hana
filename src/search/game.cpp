@@ -1,6 +1,6 @@
-#include "environ.h"
 #include "game.h"
 #include "goaldata.h"
+#include "problem.h"
 #include "../io.h"
 #include "../proof/write.h"
 
@@ -94,22 +94,27 @@ bool Game::writeproof() const
         return false;
 // std::cout << "Writing proof: " << goal().expression();
     // attempt.type == Move::THM || Move::CONJ, goal not proven
-    RPN & dest = goaldata().proofdst();
+    RPN * pProof = &goaldata().proofdst();
     // Return pointers to proofs of sub-goals
     pProofs phyps(attempt.nsubgoals());
     for (Hypsize i = 0; i < phyps.size(); ++i)
         phyps[i] = attempt.psubgoalproof(i);
+    // Write proof.
     if (attempt.isconj())
     {
-        if (!attempt.writeproof(dest, phyps))
+        if (!attempt.writeproof(*pProof, phyps))
             return false;
     }
-    else if (!::writeproof(dest, attempt.pthm, phyps))
+    else if (!::writeproof(*pProof, attempt.pthm, phyps))
         return false;
-    if (&dest != &goaldatas().proof)
-        ;
+    if (pProof != &goaldatas().proof && env().prob().legal(*pProof))
+    {
+        // Redirect proof to problem context.
+        goaldatas().proof.swap(*pProof);
+        pProof = &goaldatas().proof;
+    }
     // Verification
-    const Expression & exp(verify(dest));
+    const Expression & exp(verify(*pProof));
     const bool okay = (exp == goal().expression());
     if (!okay)
         printthmhypproofs(attempt, phyps);
@@ -121,7 +126,7 @@ bool Game::writeproof() const
     else
     {
         writeprooferr(exp);
-        dest.clear();
+        pProof->clear();
     }
     return okay;
 }
