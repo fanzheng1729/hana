@@ -50,9 +50,9 @@ struct Environ : protected Gen
     // Return true if maxranks is simpler than problem maxranks
     bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
     // Update when problem is simplified
-    bool updateimps(SyntaxDAG::Ranks const & probmaxranks) const
+    void updateimps(SyntaxDAG::Ranks const & probmaxranks) const
     {
-        return m_rankssimplerthanProb =
+        m_rankssimplerthanProb =
         database.syntaxDAG().simplerthan(maxranks, probmaxranks);
     }
     // Return true if an assertion is on topic.
