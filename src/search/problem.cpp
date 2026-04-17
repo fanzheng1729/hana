@@ -60,12 +60,10 @@ void Problem::copyproof(Game const & game)
 {
     if (!game.proven() || game.env().subsumedbyProb())
         return;
-
     // Super-contexts
     pEnvs const & psupEnvs = supEnvs(game.env());
     pEnvs::const_iterator supiter = psupEnvs.begin();
     pEnvs::const_iterator const supend = psupEnvs.end();
-
     // Loop through super-contexts.
     FOR (Goaldatas::reference goaldata, game.goaldatas())
         if (!goaldata.second.proven())
