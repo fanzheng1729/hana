@@ -235,13 +235,9 @@ static bool nextsubframe
     {
 //std::cout << "No more variable found" << std::endl;
         if (iter2 == pattern.end() && checkDV(stack, syntaxiom.disjvars, ass))
-        {
-            // exp contains the pattern.
-            pProofs const & hyps = pproofsfromstack(syntaxiom, stack);
-            if (!hyps.empty() && !hyps[0])
-                return false;
-            writeproof(result[iter1], psyntaxiom, hyps);
-        }
+        // exp contains the pattern.
+            writeproof(result[iter1], psyntaxiom,
+                        pproofsfromstack(syntaxiom, stack));
         return false;
     }
 
