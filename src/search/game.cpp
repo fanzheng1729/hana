@@ -106,6 +106,8 @@ bool Game::writeproof() const
     }
     else if (!::writeproof(dest, attempt.pthm, phyps))
         return false;
+    if (&dest != &goaldatas().proof)
+        ;
     // Verification
     const Expression & exp(verify(dest));
     const bool okay = (exp == goal().expression());
