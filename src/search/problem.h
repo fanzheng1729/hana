@@ -85,6 +85,7 @@ public:
     {
         if (&env != &probEnv() && env.subsumedbyProb())
             return env;
+        // env is either problem context or not subsumed by it.
         for (Hypsize i = 0; i < env.assertion.nhyps(); ++i)
         {
             if (env.assertion.hypfloats(i)) continue;
