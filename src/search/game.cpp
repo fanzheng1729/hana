@@ -94,16 +94,14 @@ bool Game::writeproof() const
 // std::cout << "Writing proof: " << goal().expression();
     // attempt.type == Move::THM || Move::CONJ, goal not proven
     RPN * pProof = &goaldata().proofdst();
-    // Return pointers to proofs of sub-goals
-    pProofs phyps(attempt.nsubgoals());
-    for (Hypsize i = 0; i < phyps.size(); ++i)
-        phyps[i] = attempt.psubgoalproof(i);
+    // Pointers to proofs of sub-goals
+    pProofs const phyps(attempt.phyps());
     // Write proof.
     if (!attempt.writeproof(*pProof, phyps))
         return false;
     if (pProof != &goaldatas().proof && env().prob().legal(*pProof))
     {
-        // Redirect proof to problem context.
+        // Proof works in problem context. Move it there.
         goaldatas().proof.swap(*pProof);
         pProof = &goaldatas().proof;
     }

@@ -196,6 +196,14 @@ struct Move
     RPNsize substsize(RPN const & src) const;
     // Make a substitution.
     void makesubst(RPN const & src, RPN & dest) const;
+    // Pointers to proofs of sub-goals
+    pProofs phyps() const
+    {
+        pProofs result(nsubgoals());
+        for (Hypsize i = 0; i < result.size(); ++i)
+            result[i] = psubgoalproof(i);
+        return result;
+    }
     // Write proof.
     bool writeproof(RPN & dest, pProofs const & phyps) const;
     // Print a CONJ move.
