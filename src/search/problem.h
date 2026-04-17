@@ -84,7 +84,7 @@ public:
     Environ const & addhypproofs(Environ const & env)
     {
         if (&env != &probEnv() && env.subsumedbyProb())
-            return env;
+            return env; // Skip contexts properly subsumed by the problem context.
         // env is either problem context or not subsumed by it.
         for (Hypsize i = 0; i < env.assertion.nhyps(); ++i)
         {
