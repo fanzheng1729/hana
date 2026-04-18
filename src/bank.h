@@ -40,6 +40,7 @@ public:
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Hypiter addhyp(RPN const & hypRPN, strview typecode);
     bool hashyp(strview label) const { return hypotheses().count(label); }
+    Hypiter findhyp(strview label) const { return hypotheses().find(label); }
 };
 
 #endif // BANK_h_INCLUDED
