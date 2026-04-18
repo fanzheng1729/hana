@@ -1,4 +1,5 @@
 #include "DPLL.h"
+// typedef SATsolver Solver_used;
 typedef DPLL_solver Solver_used;
 
 // Return true if the SAT instance is satisfiable.
@@ -13,8 +14,7 @@ bool CNFClauses::sat(CNFClauses & conclusion) const
         return true;
     if (hasemptyclause() || conclusion.hasemptyclause())
         return false;
-    conclusion.insert(conclusion.end(), begin(), end());
-    return Solver_used(conclusion).sat();
+    return Solver_used(*this, conclusion).sat();
 }
 
 // Map: free atoms -> truth value.

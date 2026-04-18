@@ -37,7 +37,7 @@ struct SATsolver
     bool sat()
     {
         // Initial model
-        CNFModel model(cnf.natoms());
+        CNFModel model(std::max(cnf.natoms(), cnf2.natoms()));
         // Current atom being assigned
         Atom atom = 0;
 

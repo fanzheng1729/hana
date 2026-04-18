@@ -35,7 +35,7 @@ typedef double activity;
 /**
  * The number of variables of the satisfiability problem.
  */
-uint numVariables;
+Atom numVariables;
 
 /**
  * The number of clauses of the formula of the satisfiability problem.
@@ -100,7 +100,7 @@ inline Atom var(sLiteral literal) { return std::abs(literal); }
 /**
  * Initializes the positive and negative clause appearance lists.
  */
-void initClauseAppearances(uint varcount, sCNF::size_type clausecount) {
+void initClauseAppearances(Atom varcount, sCNF::size_type clausecount) {
     if (varcount >= positiveClauses.size())
         positiveClauses.resize(varcount + 1);
     if (varcount >= negativeClauses.size())
@@ -138,8 +138,10 @@ void readClauses(CNFClauses const & src, sCNFClause * dest) {
  * any remaining necessary data structures and variables.
  */
 void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
-    numVariables = cnf.natoms();
-    numClauses = cnf.size();
+	Atom cnfatoms = cnf.natoms(), cnf2atoms = cnf2.natoms();
+    numVariables = cnf2atoms > cnfatoms ? cnf2atoms : cnfatoms;
+	sCNF::size_type cnfsize = cnf.size();
+    numClauses = cnfsize + cnf2.size();
 
     // Initialize clause appearances
     initClauseAppearances(numVariables, numClauses);
@@ -151,6 +153,7 @@ void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
 
     // Read clauses
     readClauses(cnf, &scnf[0]);
+	readClauses(cnf2,&scnf[cnfsize]);
 
 	// std::cout << "Clauses read" << std::endl;
 	// Initialize the remaining necessary variables
