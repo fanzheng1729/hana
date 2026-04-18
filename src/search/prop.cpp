@@ -6,41 +6,6 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
-// Return the hypotheses of a goal to trim.
-Bvector Prop::hypstotrim(Goal const & goal) const
-{
-    Bvector result(nhyps, false);
-
-    CNFClauses const & hyps = hypscnf.first;
-    CNFClauses conclusion;
-
-    bool trimmed = false;
-    for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
-    {
-        if (assertion.hypfloats(i)) continue;
-// std::cout << "Trimming hypothesis " << assertion.hyplabel(i) << std::endl;
-        result[i] = true;
-        // Check if it can be trimmed.
-        CNFClauses cnf;
-        Proofnumbers const & ends = hypscnf.second;
-        // Add hypotheses.
-        for (Hypsize j = 0; j < nhyps; ++j)
-            if (!assertion.hypfloats(j) && !result[j]) // Not floating nor trimmed
-// std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl,
-                cnf.insert(cnf.end(),
-                    &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
-// std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
-        // Add conclusion.
-        if (conclusion.empty())
-            conclusion = goalCNF(goal);
-// std::cout << "conclusion\n" << conclusion;
-        // If the conclusion still follows, the hypothesis can be trimmed.
-        trimmed |= (result[i] = !cnf.sat(conclusion));
-    }
-
-    return trimmed ? assertion.trimvars(result, goal.rpn) : Bvector();
-}
-
 static double distance(Freqcounts const & goal, Frequencies const & ref)
 {
     std::size_t const size = goal.size();

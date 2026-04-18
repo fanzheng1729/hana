@@ -13,7 +13,7 @@ struct Prop : Environ
     Prop(Assertion const & ass, Database const & db,
          std::size_t maxsize, double freqbias, bool staged = false) :
         Environ(ass, db, maxsize, staged),
-        hypscnf(db.propctors().hypscnf(ass, hypnatoms)),
+        allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
         propctorlabels(labels(propctors())),
         propctorfreqs(frequencies(propctors())),
         hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
@@ -31,7 +31,7 @@ struct Prop : Environ
     virtual bool ontopic(Assertion const & ass) const
     { return ass.testtype(Asstype::PROPOSITIONAL); }
     // CNF of a goal. # of atoms starts from hypnatoms
-    CNFClauses goalCNF(Goal const & goal) const
+    CNFClauses goalCNF(Goal const & goal, bool const neg = false) const
     {
         goal.fillast();
         CNFClauses result;
@@ -41,18 +41,51 @@ struct Prop : Environ
             (goal.rpn, goal.ast, assertion.hypiters, result, n))
             return CNFClauses();
         // Negate conclusion.
-        result.closeoff(n - 1, true);
+        result.closeoff(n - 1, neg);
+// std::cout << "goalCNF\n" << result;
         return result;
     }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
     {
-        CNFClauses const & conclusion(goalCNF(goal));
+        CNFClauses const & conclusion(goalCNF(goal, true));
         return conclusion.empty() ? printbadgoal(goal.rpn) :
-                hypscnf.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
+                allhypsCNF.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
+    }
+    // Return the CNF with some hypotheses trimmed
+    CNFClauses hypsCNF(Bvector const & hypstotrim) const
+    {
+        CNFClauses const & hyps = allhypsCNF.first;
+        if (hypstotrim.empty())
+            return hyps;
+        CNFClauses cnf;
+        Proofnumbers const & ends = allhypsCNF.second;
+        for (Hypsize j = 0; j < nhyps; ++j)
+            if (!assertion.hypfloats(j) && !hypstotrim[j]) // Not floating nor trimmed
+// std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl,
+                cnf.insert(cnf.end(),
+                    &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
+// std::cout << "hypcnf\n" << allhypsCNF.first << "cnf\n" << cnf;
+        return cnf;
     }
     // Return the hypotheses of a goal to trim.
-    virtual Bvector hypstotrim(Goal const & goal) const;
+    virtual Bvector hypstotrim(Goal const & goal) const
+    {
+        Bvector result(nhyps, false);
+        CNFClauses conclusion;
+        bool trimmed = false;
+        for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
+        {
+            if (assertion.hypfloats(i)) continue;
+            // Add conclusion if not already there.
+            if (conclusion.empty()) conclusion = goalCNF(goal, true);
+// std::cout << "Trimming hypothesis " << assertion.hyplabel(i) << std::endl;
+            result[i] = true;
+            // If the conclusion still holds, the hypothesis can be trimmed.
+            trimmed |= (result[i] = !hypsCNF(result).sat(conclusion));
+        }
+        return trimmed ? assertion.trimvars(result, goal.rpn) : Bvector();
+    }
     // Weight of the goal
     virtual Weight weight(RPN const & goal) const
     {
@@ -74,7 +107,7 @@ private:
     virtual bool addhardmoves
         (pAss pthm, RPNsize size, Move & move, Moves & moves) const;
     // The CNF of all hypotheses combined
-    Hypscnf const hypscnf;
+    HypsCNF const allhypsCNF;
     Atom hypnatoms;
     // Propositional syntax axiom labels
     std::vector<strview> const propctorlabels;

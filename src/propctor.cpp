@@ -302,12 +302,12 @@ bool Propctors::addformula
 }
 
 // Translate the hypotheses of a propositional assertion to the CNF of an SAT.
-Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
+HypsCNF Propctors::hypscnf(Assertion const & ass, Atom & natom,
                            Bvector const & hypstotrim) const
 {
     natom = ass.nhyps(); // One atom for each hypotheses, floating or not
 
-    Hypscnf result;
+    HypsCNF result;
     CNFClauses & cnf = result.first;
     result.second.resize(ass.nhyps());
 // std::cout << "Adding clauses for ";
@@ -318,7 +318,7 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
 // std::cout << ass.hypexp(i);
             if (!addformula
                 (ass.hypRPN(i), ass.hypAST(i), ass.hypiters, cnf, natom))
-                return Hypscnf();
+                return HypsCNF();
             // Assume the hypothesis.
             cnf.closeoff(natom - 1);
         }

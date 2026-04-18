@@ -90,6 +90,6 @@ struct CNFClauses : public std::vector<CNFClause>
 };
 
 // Pair (CNF, # clauses corresponding to hypotheses)
-typedef std::pair<CNFClauses, std::vector<CNFClauses::size_type> > Hypscnf;
+typedef std::pair<CNFClauses, std::vector<CNFClauses::size_type> > HypsCNF;
 
 #endif // SAT_H_INCLUDED
