@@ -7,6 +7,7 @@ bool CNFClauses::sat() const
 {
     return empty() || (!hasemptyclause() && Solver_used(*this).sat());
 }
+
 // Return true if the SAT instance and the conclusion are satisfiable.
 bool CNFClauses::sat(CNFClauses & conclusion) const
 {
