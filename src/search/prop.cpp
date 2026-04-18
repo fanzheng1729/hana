@@ -29,6 +29,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     Hypsize const nhyps = assertion.nhyps();
     Bvector result(nhyps, false);
 
+    CNFClauses const & hyps = hypscnf.first;
     CNFClauses conclusion;
 
     bool trimmed = false;
@@ -42,17 +43,13 @@ Bvector Prop::hypstotrim(Goal const & goal) const
         Proofnumbers const & ends = hypscnf.second;
         // Add hypotheses.
         for (Hypsize j = 0; j < nhyps; ++j)
-        {
-            if (assertion.hypfloats(j) || result[j])
-                continue; // Skip floating or trimmed hypotheses.
-// std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl;
-            CNFClauses const & hyps = hypscnf.first;
-            cnf.insert(cnf.end(),
-                        &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
-        }
+            if (!assertion.hypfloats(j) && !result[j]) // Not floating nor trimmed
+// std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl,
+                cnf.insert(cnf.end(),
+                    &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
-        Atom natom = cnf.empty() ? nhyps : cnf.natoms();
         // Add conclusion.
+        Atom natom = std::max(nhyps, cnf.natoms());
         conclusion.clear();
         propctors().addformula
         (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom);
