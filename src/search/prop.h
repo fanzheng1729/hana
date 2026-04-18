@@ -94,7 +94,7 @@ struct Prop : Environ
     }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;
-    // Allocate a new context constructed from an assertion on the heap.
+    // Create a new context constructed from an assertion on the heap.
     // Return its address.
     virtual Prop * makeEnv(Assertion const & ass) const
     {
