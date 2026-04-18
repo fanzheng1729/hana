@@ -94,6 +94,8 @@ struct Environ : protected Gen
     // Create a new context constructed from an assertion on the heap.
     // Return its address. Return NULL if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
+    // Return true if a proof is legal.
+    bool legal(RPN const & proof) const;
 // Data members 
     // Database used
     Database const & database;
