@@ -132,7 +132,7 @@ static bool includes(C const & x, C const & y, Comp comp)
 // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
 int Environ::compare(Environ const & env) const
 {
-    if (assertion.nhyps() == env.assertion.nhyps())
+    if (nhyps == env.nhyps)
         return 0;
 
     Hypiters xhypiters(assertion.hypiters);
@@ -140,13 +140,11 @@ int Environ::compare(Environ const & env) const
     std::sort(xhypiters.begin(), xhypiters.end(), comphypiters);
     std::sort(yhypiters.begin(), yhypiters.end(), comphypiters);
 
-    if (assertion.nhyps() > env.assertion.nhyps() &&
-        includes(xhypiters, yhypiters, comphypiters))
-        return 1; // x
+    if (nhyps > env.nhyps && includes(xhypiters, yhypiters, comphypiters))
+        return 1; // *this > env
 
-    if (assertion.nhyps() < env.assertion.nhyps() &&
-        includes(yhypiters, xhypiters, comphypiters))
-        return -1; // x < y
+    if (nhyps < env.nhyps && includes(yhypiters, xhypiters, comphypiters))
+        return -1; // *this < env
 
     return 0; // Not comparable
 }

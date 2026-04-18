@@ -31,6 +31,7 @@ struct Environ : protected Gen
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         name(ass.hypslabel()),
+        nhyps(ass.nhyps()),
         hypsweight(ass.hypslen()),
         staged(isstaged),
         pProb(NULL),
@@ -100,7 +101,10 @@ struct Environ : protected Gen
     Assertion const & assertion;
     // Maximal ranks of all the hypotheses combined
     SyntaxDAG::Ranks const maxranks;
+    // Name of context = labels of all hypotheses combined
     std::string const name;
+    // # hypotheses
+    Hypsize const nhyps;
     // Weight of all the hypotheses combined
     Weight hypsweight;
     // Is staged move generation used?

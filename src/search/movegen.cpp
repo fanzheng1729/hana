@@ -173,7 +173,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
             return false;
 // std::cout << move.label() << ' ' << thm.hyplabel(thmhyp) << ' ';
         strview thmhyptype = thm.hyptypecode(thmhyp);
-        for (Hypsize asshyp = 0; asshyp < assertion.nhyps(); ++asshyp)
+        for (Hypsize asshyp = 0; asshyp < nhyps; ++asshyp)
         {
             if (assertion.hypfloats(asshyp) ||
                 assertion.hyptypecode(asshyp) != thmhyptype)

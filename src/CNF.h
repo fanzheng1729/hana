@@ -60,15 +60,13 @@ struct CNFClauses : public std::vector<CNFClause>
         // Maximal atom + 1
         return max / 2 + 1;
     }
-    // Translate all the atoms by an offset = to - from.
-    void translate(Atom const offset)
+    // Translate all the atoms by an offset, starting from nvars.
+    void translate(Atom const offset, Atom const nvars)
     {
         FOR (CNFClause & clause, *this)
             FOR (Literal & literal, clause)
-                literal += 2 * offset;
+                literal += (literal / 2 >= nvars) * 2 * offset;
     }
-    void translate(Atom const from, Atom const to)
-    { translate(to - from); }
     // Append cnf to the end.
     // If atom < nargs, change it to arglist[atom], with sense adjusted.
     // If atom >= nargs, change it to new atoms starting from natoms.

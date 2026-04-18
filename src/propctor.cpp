@@ -253,8 +253,7 @@ static void addlitatomequiv(CNFClauses & cnf, Literal lit, Atom atom)
 }
 
 // Add CNF clauses from reverse Polish notation of a formula.
-// # auxiliary atoms: natom, natom + 1, ...
-// Return true if okay. First auxiliary atom = hyps.size()
+// Return true if okay. First auxiliary atom = natom
 bool Propctors::addformula
     (RPN const & rpn, AST const & ast, Hypiters const & hyps,
      CNFClauses & cnf, Atom & natom) const
@@ -306,7 +305,7 @@ bool Propctors::addformula
 Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
                            Bvector const & hypstotrim) const
 {
-    natom = ass.nhyps(); // One atom for each floating hypotheses
+    natom = ass.nhyps(); // One atom for each hypotheses, floating or not
 
     Hypscnf result;
     CNFClauses & cnf = result.first;
@@ -321,7 +320,7 @@ Hypscnf Propctors::hypscnf(Assertion const & ass, Atom & natom,
                 (ass.hypRPN(i), ass.hypAST(i), ass.hypiters, cnf, natom))
                 return Hypscnf();
             // Assume the hypothesis.
-            cnf.closeoff(natom - 1, false);
+            cnf.closeoff(natom - 1);
         }
         result.second[i] = cnf.size();
     }
