@@ -157,7 +157,7 @@ public:
     // Copy proof of the game to other contexts.
     void copyproof(Game const & game);
     // Record the proof of proven goals on back propagation.
-    virtual void backpropcallback(pNode const p)
+    virtual void backpropcallback(pNode p)
     {
         if (p->game().proven())
             setwin(p); // Fix seteval in backprop.
@@ -268,7 +268,7 @@ private:
         return &addimps(addhypproofs(*p));
     }
     // close all the nodes except p
-    void closenodesexcept(pNodes const & pnodes, pNode p = pNode())
+    void closenodesexcept(pNodes const & pnodes, pNode const p = pNode())
     {
         FOR (pNode const other, pnodes)
             if (other != p && !other->won())
