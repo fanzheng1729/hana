@@ -49,7 +49,7 @@ struct SATsolver
             case UNKNOWN : case FALSE :
                 ++model[atom];
                 // Check if there is a contradiction so far.
-                if (cnf.okaysofar(model))
+                if (cnf.okaysofar(model) && cnf2.okaysofar(model))
                 {
                     // No contradiction yet. Move to next atom.
                     if (++atom == model.size())
