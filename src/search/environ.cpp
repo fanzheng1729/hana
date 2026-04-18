@@ -3,6 +3,7 @@
 #include "goaldata.h"
 #include "problem.h"
 #include "../util/algo.h"   // for util::addordered
+#include "../util/filter.h"
 #include "../util/progress.h"
 
 // Return true if the context is a sub-context of the problem context
