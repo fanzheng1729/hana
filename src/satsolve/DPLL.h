@@ -40,8 +40,8 @@ class DPLL_solver : public SATsolver
 {
 public:
     DPLL_solver
-        (CNFClauses const & hyps, CNFClauses const & conclusion=CNFClauses()) :
-        SATsolver(hyps, conclusion) { parseInput(cnf, cnf2); }
+        (CNFClauses const & hyps, CNFClauses const & morehyps = CNFClauses()) :
+        SATsolver(hyps, morehyps) { parseInput(cnf, cnf2); }
     bool sat() const { return checkUnitClauses() && DPLL(); }
 };
 

@@ -33,7 +33,9 @@ struct Environ : protected Gen
         name(ass.hypslabel()),
         hypsweight(ass.hypslen()),
         staged(isstaged),
-        m_subsumedbyProb(false), m_rankssimplerthanProb(false)
+        pProb(NULL),
+        m_subsumedbyProb(false),
+        m_rankssimplerthanProb(false)
     {
         // Relevant syntax axioms
         FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
