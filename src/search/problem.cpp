@@ -28,14 +28,11 @@ Eval Problem::evalleaf(pNode p) const
             return EvalLOSS;
     }
 
-    if (!isourturn(p))
-        return evaltheirleaf(p);
+    return !isourturn(p) ? evaltheirleaf(p) :
     // Our leaf
-    if (game.proven())
-        return EvalWIN;
-    if (ranksimplerthanProb(game))
-        return ALMOSTWIN;
-    return game.env().evalourleaf(game);
+        game.proven() ? EvalWIN :
+        ranksimplerthanProb(game) ? ALMOSTWIN :
+        game.env().evalourleaf(game);
 }
 
 Eval Problem::evaltheirleaf(pNode p) const
