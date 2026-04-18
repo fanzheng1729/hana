@@ -1,5 +1,5 @@
 #include "DPLL.h"
-typedef SATsolver Solver_used;
+typedef DPLL_solver Solver_used;
 
 // Return true if the SAT instance is satisfiable.
 bool CNFClauses::sat() const
