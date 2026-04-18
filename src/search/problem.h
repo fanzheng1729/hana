@@ -173,7 +173,13 @@ public:
     // Refocus the tree on simpler sub-tree, if almost won.
     void re_eval();
     // Add the ranks of a node to maxranks, if almost won.
-    void addranks(pNode p);
+    void addranks(pNode const p)
+    {
+        if (value(p) < ALMOSTWIN)
+            return;
+        database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
+        database.syntaxDAG().addexp(maxranks, p->game().goal().rpn);
+    }
     // Prune the sub-tree at p and update maxranks, if almost won.
     void prune(pNode p);
     // Update implications after problem context is simplified.
