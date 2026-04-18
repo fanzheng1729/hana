@@ -48,7 +48,7 @@ public:
     bool drawn()const { return eval() == EvalDRAW; }
     bool lost() const { return eval() == EvalLOSS; }
     bool almostwon() const { return value == ALMOSTWIN; }
-    bool almostosss()const { return value == ALMOSTLOSS; }
+    bool almostloss()const { return value == ALMOSTLOSS; }
     friend std::ostream & operator<<(std::ostream & out, NodeBase const & node)
     {
         out << "val = " << node.value << &"*\t"[!node.sure];

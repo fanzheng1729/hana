@@ -28,6 +28,8 @@ Eval Problem::evalleaf(pNode p) const
             return EvalLOSS;
     }
 
+    // if (isourturn(p) && p.parent() && p.parent()->game().attempt.isconj())
+    //     navigate(p);
     return !isourturn(p) ? evaltheirleaf(p) :
     // Our leaf
         game.proven() ? EvalWIN :
