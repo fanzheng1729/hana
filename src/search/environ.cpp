@@ -13,9 +13,9 @@ pEnvs const & subEnvs(Environ const & env) { return env.psubEnvs(); }
 pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 
 // Report false goal and return GOALFALSE.
-Goalstatus Environ::printbadgoal(RPN const & badgoal) const
+Goalstatus Environ::printbadgoal(RPN const & badRPN) const
 {
-    std::cerr << "Bad goal\n" << badgoal << "in env " << name;
+    std::cerr << "Bad goal\n" << badRPN << "in env " << name;
     std::cerr << " in Problem #" << assertion.number << std::endl;
     // std::cin.get();
     return GOALFALSE;

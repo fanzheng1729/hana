@@ -1,4 +1,3 @@
-#include "../CNF.h"
 #include "../disjvars.h"
 #include "goaldata.h"
 #include "../io.h"
@@ -7,22 +6,6 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
-// Determine status of a goal.
-Goalstatus Prop::status(Goal const & goal) const
-{
-    goal.fillast();
-
-    CNFClauses conclusion;
-    // Add Conclusion.
-    Atom natom = hypnatoms;
-    if (!propctors().addformula
-        (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom))
-        return printbadgoal(goal.rpn);
-    // Negate conclusion.
-    conclusion.closeoff(natom - 1, true);
-    return hypscnf.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
-}
-
 // Return the hypotheses of a goal to trim.
 Bvector Prop::hypstotrim(Goal const & goal) const
 {
@@ -30,7 +13,6 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 
     CNFClauses const & hyps = hypscnf.first;
     CNFClauses conclusion;
-    Atom from = 0;
 
     bool trimmed = false;
     for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
@@ -49,18 +31,9 @@ Bvector Prop::hypstotrim(Goal const & goal) const
                     &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
         // Add conclusion.
-// std::cout << "conclusion\n" << conclusion;
-        Atom to = hypnatoms;
-        conclusion.translate(to - from, nhyps);
-// std::cout << "conclusion\n" << conclusion;
-        from = to;
         if (conclusion.empty())
-        {
-            propctors().addformula
-            (goal.rpn, goal.ast, assertion.hypiters, conclusion, to);
-            // Negate conclusion.
-            conclusion.closeoff(to - 1, true);
-        }
+            conclusion = goalCNF(goal);
+// std::cout << "conclusion\n" << conclusion;
         // If the conclusion still follows, the hypothesis can be trimmed.
         trimmed |= (result[i] = !cnf.sat(conclusion));
     }

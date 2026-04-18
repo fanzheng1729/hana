@@ -30,8 +30,27 @@ struct Prop : Environ
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.testtype(Asstype::PROPOSITIONAL); }
+    // CNF of a goal. # of atoms starts from hypnatoms
+    CNFClauses goalCNF(Goal const & goal) const
+    {
+        goal.fillast();
+        CNFClauses result;
+        // Add Conclusion.
+        Atom n = hypnatoms;
+        if (!propctors().addformula
+            (goal.rpn, goal.ast, assertion.hypiters, result, n))
+            return CNFClauses();
+        // Negate conclusion.
+        result.closeoff(n - 1, true);
+        return result;
+    }
     // Determine status of a goal.
-    virtual Goalstatus status(Goal const & goal) const;
+    virtual Goalstatus status(Goal const & goal) const
+    {
+        CNFClauses const & conclusion(goalCNF(goal));
+        return conclusion.empty() ? printbadgoal(goal.rpn) :
+                hypscnf.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
+    }
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const;
     // Weight of the goal
