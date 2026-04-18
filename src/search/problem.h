@@ -148,7 +148,7 @@ public:
             (database.syntaxDAG().RPNranks(game.goal().rpn), maxranks);
     }
     // Close all the nodes with p's proven goal.
-    void closenodes(pNode p)
+    void closenodes(pNode const p)
     {
         if (!p->game().proven()) return;
         closenodesexcept(p->game().goaldata().pnodes(), p);
@@ -157,7 +157,7 @@ public:
     // Copy proof of the game to other contexts.
     void copyproof(Game const & game);
     // Record the proof of proven goals on back propagation.
-    virtual void backpropcallback(pNode p)
+    virtual void backpropcallback(pNode const p)
     {
         if (p->game().proven())
             setwin(p); // Fix seteval in backprop.
