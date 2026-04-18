@@ -123,8 +123,12 @@ bool Environ::legal(RPN const & proof) const
         if (step.ishyp() && !step.phyp->second.floats)
         {
             Hypiter const iter = bank.findhyp(step.phyp->first);
-            if (iter == end) continue; // Problem hypothesis
-            if (!util::filter(assertion.hypiters)(iter)) return false;
+            if (iter == end)
+                continue; // Problem hypothesis
+            if (subsumedbyProb())
+                return false; // Non-problem hypothesis in sub-context
+            if (!util::filter(assertion.hypiters)(iter))
+                return false; // Not hypothesis in this context
         }
     return true;
 }

@@ -96,6 +96,14 @@ struct Environ : protected Gen
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
     // Return true if a proof is legal.
     bool legal(RPN const & proof) const;
+    // A minimal context in which a proof is legal
+    Environ const & minLegalEnv(RPN const & proof) const
+    {
+        FOR (Environ const * psubEnv, psubEnvs())
+            if (psubEnv->legal(proof))
+                return psubEnv->minLegalEnv(proof);
+        return *this;
+    }
 // Data members 
     // Database used
     Database const & database;

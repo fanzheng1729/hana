@@ -99,12 +99,15 @@ bool Game::writeproof() const
     // Write proof.
     if (!attempt.writeproof(*pProof, phyps))
         return false;
-    if (pProof != &goaldatas().proof && env().prob().legal(*pProof))
-    {
-        // Proof works in problem context. Move it there.
-        goaldatas().proof.swap(*pProof);
-        pProof = &goaldatas().proof;
-    }
+    if (pProof != &goaldatas().proof)
+        if (env().prob().probEnv().legal(*pProof))
+        {
+            // Proof works in problem context. Move it there.
+            goaldatas().proof.swap(*pProof);
+            pProof = &goaldatas().proof;
+        }
+        // else if (&env() != &env().minLegalEnv(*pProof))
+        //     throw "Not implemented";
     // Verification
     const Expression & exp(verify(*pProof));
     const bool okay = (exp == goal().expression());
