@@ -189,8 +189,9 @@ public:
         FOR (RPNstep const step, proof)
             if (step.isthm() && step.pass->second.number >= nProb)
                 return false; // Assertion # >= limit
-            else if (step.ishyp() && !step.phyp->second.floats &&
-                     bank.hashyp(step.phyp->first))
+            else
+            if (step.ishyp() && !step.phyp->second.floats &&
+                bank.hashyp(step.phyp->first))
                 return false; // Auxillary essential Hypothesis not allowed
         return true;
     }
