@@ -197,7 +197,7 @@ public:
         Assertions::size_type const nProb = number();
         FOR (RPNstep const step, proof)
             if (step.isthm() && step.pass->second.number >= nProb)
-                return false; // Assertion # >= limit
+                return false; // Theorem # too large
             else
             if (step.ishyp() && !step.phyp->second.floats &&
                 bank.hashyp(step.phyp->first))

@@ -110,6 +110,25 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     return MoveVALID;
 }
 
+// Return true if a proof is legal.
+bool Environ::legal(RPN const & proof) const
+{
+    Bank const & bank = prob().bank;
+    Hypiter const end = bank.hypotheses().end();
+
+    FOR (RPNstep const step, proof)
+        if (step.isthm() && step.pass->second.number >= assertion.number)
+            return false; // Theorem # too large
+        else
+        if (step.ishyp() && !step.phyp->second.floats)
+        {
+            Hypiter const iter = bank.findhyp(step.phyp->first);
+            if (iter == end) continue; // Problem hypothesis
+            if (!util::filter(assertion.hypiters)(iter)) return false;
+        }
+    return true;
+}
+
 // Add env to context implication relations, given comparison result.
 void Environ::addEnv(Environ const & env, int cmp) const
 {
