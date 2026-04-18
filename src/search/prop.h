@@ -37,11 +37,12 @@ struct Prop : Environ
         CNFClauses result;
         // Add Conclusion.
         Atom n = hypnatoms;
-        if (!propctors().addformula
+        if (propctors().addformula
             (goal.rpn, goal.ast, assertion.hypiters, result, n))
-            return CNFClauses();
-        // Negate conclusion.
-        result.closeoff(n - 1, neg);
+            // Negate conclusion.
+            result.closeoff(n - 1, neg);
+        else
+            result.clear();
 // std::cout << "goalCNF\n" << result;
         return result;
     }
