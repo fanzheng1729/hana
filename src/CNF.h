@@ -60,6 +60,15 @@ struct CNFClauses : public std::vector<CNFClause>
         // Maximal atom + 1
         return max / 2 + 1;
     }
+    // Translate all the atoms by an offset = to - from.
+    void translate(Atom const offset)
+    {
+        FOR (CNFClause & clause, *this)
+            FOR (Literal & literal, clause)
+                literal += 2 * offset;
+    }
+    void translate(Atom const from, Atom const to)
+    { translate(to - from); }
     // Append cnf to the end.
     // If atom < nargs, change it to arglist[atom], with sense adjusted.
     // If atom >= nargs, change it to new atoms starting from natoms.
@@ -68,10 +77,10 @@ struct CNFClauses : public std::vector<CNFClause>
         (CNFClauses const & cnf, Atom const natoms,
          Literal const arglist[], Atom const nargs);
     // Add a clause containing a single literal. Return *this.
-    CNFClauses & closeoff(Atom atom, bool neg = false)
+    CNFClauses & closeoff(Atom const atom, bool const neg = false)
     { push_back(CNFClause(1, atom * 2 + neg)); return *this; }
     // Add a clause containing the next atom alone or its neg. Return *this.
-    CNFClauses & closeoff(bool neg = false)
+    CNFClauses & closeoff(bool const neg = false)
     { return closeoff(natoms() - 1, neg); }
     // Return true if there is no contradiction in the model so far.
     bool okaysofar(CNFModel const & model) const
