@@ -44,18 +44,19 @@ Bvector Prop::hypstotrim(Goal const & goal) const
             if (assertion.hypfloats(j) || result[j])
                 continue; // Skip floating or trimmed hypotheses.
 // std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl;
-            // Add CNF clauses.
-            CNFClauses::size_type begin = j>0 ? ends[j - 1] : 0, end = ends[j];
-            CNFClause const * const hypsdata = hypscnf.first.data();
-            cnf.insert(cnf.end(), hypsdata + begin, hypsdata + end);
+            CNFClauses const & hyps = hypscnf.first;
+            cnf.insert(cnf.end(),
+                        &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
         }
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
         Atom natom = cnf.empty() ? nhyps : cnf.natoms();
         // Add conclusion.
+        CNFClauses conclusion;
         propctors().addformula
-        (goal.rpn, goal.ast, assertion.hypiters, cnf, natom);
+        (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom);
         // Negate conclusion.
-        trimmed |= (result[i] = !cnf.closeoff(natom - 1, true).sat());
+        conclusion.closeoff(natom - 1, true);
+        trimmed |= (result[i] = !cnf.sat(conclusion));
     }
 
     return trimmed ? assertion.trimvars(result, goal.rpn) : Bvector();
