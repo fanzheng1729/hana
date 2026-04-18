@@ -144,6 +144,7 @@ void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
     // Initialize clause appearances
     initClauseAppearances(numVariables, numClauses);
 
+    // Prepare spaces for clauses
     if (numClauses > scnf.size()) {
         scnf.resize(numClauses);
     }
