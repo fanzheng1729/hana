@@ -1,6 +1,13 @@
 #include "../io.h"
 #include "problem.h"
 
+// Add node pointer to p's goal data.
+void addpNode(pNode p)
+{
+    if (!p->game().proven())
+        p->game().goaldata().m_pnodes.insert(p);
+}
+
 // UCB threshold for generating a new batch of moves
 // Change this to turn on staged move generation.
 Value Problem::UCBnewstage(pNode p) const
