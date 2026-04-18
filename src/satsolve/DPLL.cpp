@@ -128,7 +128,7 @@ void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
             sLiteral literal = scnf[clause][i] = sliteral(cnf[clause][i]);
 			// add to the list of positive-negative literals
 			vector<sCNFClause* >& clauses = var(literal)
-                [literal>0 ? positiveClauses.data() : negativeClauses.data()];
+                [literal>0 ? &positiveClauses[0] : &negativeClauses[0]];
             clauses.push_back(&scnf[clause]);
 		}
 	}
