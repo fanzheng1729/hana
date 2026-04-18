@@ -183,7 +183,11 @@ public:
     // Prune the sub-tree at p and update maxranks, if almost won.
     void prune(pNode p);
     // Update implications after problem context is simplified.
-    void updateimps();
+    void updateimps()
+    {
+        FOR (Environs::const_reference renv, environs)
+            renv.second->updateimps(maxranks);
+    }
     // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p);
     // Proof of the assertion, if not empty

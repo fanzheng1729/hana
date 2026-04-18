@@ -32,13 +32,6 @@ void Problem::prune(pNode p)
         addranks(p);
 }
 
-// Update implications after problem context is simplified.
-void Problem::updateimps()
-{
-    FOR (Environs::const_reference renv, environs)
-        renv.second->updateimps(maxranks);
-}
-
 // Focus the sub-tree at p, with updated maxranks, if almost won.
 void Problem::focus(pNode p)
 {
