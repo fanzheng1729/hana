@@ -31,6 +31,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 
     CNFClauses const & hyps = hypscnf.first;
     CNFClauses conclusion;
+    Atom from = 0;
 
     bool trimmed = false;
     for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
@@ -49,12 +50,22 @@ Bvector Prop::hypstotrim(Goal const & goal) const
                     &hyps[j ? ends[j - 1] : 0], &hyps[ends[j]]);
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
         // Add conclusion.
-        Atom natom = std::max(nhyps, cnf.natoms());
+        Atom to = std::max(nhyps, cnf.natoms());
+        // conclusion.translate(from, to);
+        // if (conclusion.empty())
+        // {
+        //     from = to;
+        //     propctors().addformula
+        //     (goal.rpn, goal.ast, assertion.hypiters, conclusion, to);
+        //     // Negate conclusion.
+        //     conclusion.closeoff(to - 1, true);
+        // }
         conclusion.clear();
         propctors().addformula
-        (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom);
+        (goal.rpn, goal.ast, assertion.hypiters, conclusion, to);
         // Negate conclusion.
-        conclusion.closeoff(natom - 1, true);
+        conclusion.closeoff(to - 1, true);
+        // 
         trimmed |= (result[i] = !cnf.sat(conclusion));
     }
 

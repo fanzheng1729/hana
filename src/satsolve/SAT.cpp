@@ -2,14 +2,8 @@
 // typedef SATsolver Solver_used;
 typedef DPLL_solver Solver_used;
 
-// Return true if the SAT instance is satisfiable.
-bool CNFClauses::sat() const
-{
-    return empty() || (!hasemptyclause() && Solver_used(*this).sat());
-}
-
 // Return true if the SAT instance and the conclusion are satisfiable.
-bool CNFClauses::sat(CNFClauses & conclusion) const
+bool CNFClauses::sat(CNFClauses const & conclusion) const
 {
     if (empty() && conclusion.empty())
         return true;
