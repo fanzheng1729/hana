@@ -17,11 +17,6 @@ typedef std::vector<sLiteral> sCNFClause;
 typedef std::vector<sCNFClause> sCNF;
 
 // The following is from https://github.com/necavit/li-sat-solver
-/**
- * Reads the CNF and initializes
- * any remaining necessary data structures and variables.
- */
-void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2=CNFClauses());
 
 /**
  * Checks for any unit clause and sets the appropriate values in the
@@ -41,8 +36,14 @@ class DPLL_solver : public SATsolver
 public:
     DPLL_solver
         (CNFClauses const & hyps, CNFClauses const & morehyps = CNFClauses()) :
-        SATsolver(hyps, morehyps) { parseInput(cnf, cnf2); }
+        SATsolver(hyps, morehyps) { parseInput(); }
     bool sat() const { return checkUnitClauses() && DPLL(); }
+private:
+    /**
+     * Reads the CNF and initializes
+     * any remaining necessary data structures and variables.
+     */
+    void parseInput();
 };
 
 #endif // DPLL_H_INCLUDED

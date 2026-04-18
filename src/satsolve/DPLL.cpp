@@ -137,7 +137,7 @@ void readClauses(CNFClauses const & src, sCNFClause * dest) {
  * Reads the CNF and initializes
  * any remaining necessary data structures and variables.
  */
-void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
+void DPLL_solver::parseInput() {
 	Atom cnfatoms = cnf.natoms(), cnf2atoms = cnf2.natoms();
     numVariables = cnf2atoms > cnfatoms ? cnf2atoms : cnfatoms;
 	sCNF::size_type cnfsize = cnf.size();
