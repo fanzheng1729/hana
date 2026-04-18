@@ -68,11 +68,11 @@ struct CNFClauses : public std::vector<CNFClause>
         (CNFClauses const & cnf, Atom const natoms,
          Literal const arglist[], Atom const nargs);
     // Add a clause containing a single literal. Return *this.
-    CNFClauses & closeoff(Atom const atom, bool const neg = false)
-    { push_back(CNFClause(1, atom * 2 + neg)); return *this; }
+    void closeoff(Atom const atom, bool const neg = false)
+    { push_back(CNFClause(1, atom * 2 + neg)); }
     // Add a clause containing the next atom alone or its neg. Return *this.
-    CNFClauses & closeoff(bool const neg = false)
-    { return closeoff(natoms() - 1, neg); }
+    void closeoff(bool const neg = false)
+    { closeoff(natoms() - 1, neg); }
     // Return true if there is no contradiction in the model so far.
     bool okaysofar(CNFModel const & model) const
     {

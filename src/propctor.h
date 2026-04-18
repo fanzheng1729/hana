@@ -60,8 +60,11 @@ struct Propctors : std::map<strview, Propctor>
         Atom natom = 0;
         CNFClauses cnf(hypscnf(ass, natom, Bvector()).first);
         // Add and negate conclusion.
-        return addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom) ?
-                cnf.closeoff(natom - 1, true) : CNFClauses();
+        if (addformula(ass.expRPN, ass.expAST, ass.hypiters, cnf, natom))
+            cnf.closeoff(natom - 1, true);
+        else
+            cnf.clear();
+        return cnf;
     }
 // Return true if a propositional assertion is sound.
     bool checkpropsat(Assertion const & ass) const;

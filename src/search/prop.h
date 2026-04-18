@@ -34,17 +34,16 @@ struct Prop : Environ
     CNFClauses goalCNF(Goal const & goal, bool const neg = false) const
     {
         goal.fillast();
-        CNFClauses result;
-        // Add Conclusion.
+        CNFClauses cnf;
+        // Add and negate Conclusion.
         Atom n = hypnatoms;
         if (propctors().addformula
-            (goal.rpn, goal.ast, assertion.hypiters, result, n))
-            // Negate conclusion.
-            result.closeoff(n - 1, neg);
+            (goal.rpn, goal.ast, assertion.hypiters, cnf, n))
+            cnf.closeoff(n - 1, neg);
         else
-            result.clear();
-// std::cout << "goalCNF\n" << result;
-        return result;
+            cnf.clear();
+// std::cout << "goalCNF\n" << cnf;
+        return cnf;
     }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const

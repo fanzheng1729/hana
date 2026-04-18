@@ -58,7 +58,8 @@ static bool checkpropctor(Propctor const & propctor)
         return false;
 
     CNFClauses cnf(propctor.cnf);
-    return cnf.closeoff().truthtable(propctor.nargs) == propctor.truthtable;
+    cnf.closeoff();
+    return cnf.truthtable(propctor.nargs) == propctor.truthtable;
 }
 
 static void printmsg(strview label, strview prompt)
