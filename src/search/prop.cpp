@@ -29,6 +29,8 @@ Bvector Prop::hypstotrim(Goal const & goal) const
     Hypsize const nhyps = assertion.nhyps();
     Bvector result(nhyps, false);
 
+    CNFClauses conclusion;
+
     bool trimmed = false;
     for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
     {
@@ -51,7 +53,7 @@ Bvector Prop::hypstotrim(Goal const & goal) const
 // std::cout << "hypcnf\n" << hypscnf.first << "cnf\n" << cnf;
         Atom natom = cnf.empty() ? nhyps : cnf.natoms();
         // Add conclusion.
-        CNFClauses conclusion;
+        conclusion.clear();
         propctors().addformula
         (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom);
         // Negate conclusion.
