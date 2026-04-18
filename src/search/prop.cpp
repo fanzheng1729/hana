@@ -19,8 +19,8 @@ Goalstatus Prop::status(Goal const & goal) const
         (goal.rpn, goal.ast, assertion.hypiters, conclusion, natom))
         return printbadgoal(goal.rpn);
     // Negate conclusion.
-    return hypscnf.first.sat(conclusion.closeoff(natom - 1, true)) ?
-            GOALFALSE : GOALTRUE;
+    conclusion.closeoff(natom - 1, true);
+    return hypscnf.first.sat(conclusion) ? GOALFALSE : GOALTRUE;
 }
 
 // Return the hypotheses of a goal to trim.
