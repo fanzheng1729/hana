@@ -98,6 +98,22 @@ uint conflicts;
 inline Atom var(sLiteral literal) { return std::abs(literal); }
 
 /**
+ * Initializes the positive and negative clause appearance lists.
+ */
+void initializeClauseAppearances(uint varcount, uint clausecount) {
+    if (varcount >= positiveClauses.size())
+        positiveClauses.resize(varcount + 1);
+    if (varcount >= negativeClauses.size())
+        negativeClauses.resize(varcount + 1);
+    for (Atom i = 1; i <= varcount; ++i) {
+        positiveClauses[i].clear();
+        negativeClauses[i].clear();
+        positiveClauses[i].reserve(clausecount);
+        negativeClauses[i].reserve(clausecount);
+    }
+}
+
+/**
  * Reads the CNF and initializes
  * any remaining necessary data structures and variables.
  */
@@ -105,17 +121,8 @@ void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
     numVariables = cnf.natoms();
     numClauses = cnf.size();
 
-	// Initialize positive and negative appearances
-	if (numVariables >= positiveClauses.size())
-        positiveClauses.resize(numVariables + 1);
-	if (numVariables >= negativeClauses.size())
-        negativeClauses.resize(numVariables + 1);
-	for (Atom i = 1; i <= numVariables; ++i) {
-	    positiveClauses[i].clear();
-        negativeClauses[i].clear();
-        positiveClauses[i].reserve(numClauses);
-        negativeClauses[i].reserve(numClauses);
-	}
+    // Initialize clause appearances
+    initializeClauseAppearances(numVariables, numClauses);
 
 	// Read clauses
     if (numClauses > scnf.size()) {
@@ -127,9 +134,11 @@ void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
 		for (sCNFClause::size_type i = 0; i < size; ++i) {
             sLiteral literal = scnf[clause][i] = sliteral(cnf[clause][i]);
 			// add to the list of positive-negative literals
-			vector<sCNFClause* >& clauses = var(literal)
-                [literal>0 ? &positiveClauses[0] : &negativeClauses[0]];
-            clauses.push_back(&scnf[clause]);
+            if (literal > 0) {
+                positiveClauses[var(literal)].push_back(&scnf[clause]);
+            } else {
+                negativeClauses[var(literal)].push_back(&scnf[clause]);
+            }
 		}
 	}
 	// std::cout << "Clauses read" << std::endl;
