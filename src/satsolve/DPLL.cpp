@@ -40,7 +40,7 @@ uint numVariables;
 /**
  * The number of clauses of the formula of the satisfiability problem.
  */
-uint numClauses;
+sCNF::size_type numClauses;
 
 /**
  * The list of clauses of the problem.
@@ -100,7 +100,7 @@ inline Atom var(sLiteral literal) { return std::abs(literal); }
 /**
  * Initializes the positive and negative clause appearance lists.
  */
-void initializeClauseAppearances(uint varcount, uint clausecount) {
+void initClauseAppearances(uint varcount, sCNF::size_type clausecount) {
     if (varcount >= positiveClauses.size())
         positiveClauses.resize(varcount + 1);
     if (varcount >= negativeClauses.size())
@@ -114,6 +114,26 @@ void initializeClauseAppearances(uint varcount, uint clausecount) {
 }
 
 /**
+ * Reads the clauses from CNF and builds the positive/negative appearance lists.
+ */
+void readClauses(CNFClauses const & cnf, sCNFClause * dest) {
+	sCNF::size_type clausecount = cnf.size();
+    for (sCNF::size_type clause = 0; clause < clausecount; ++clause) {
+        sCNFClause::size_type size = cnf[clause].size();
+        dest[clause].resize(size);
+        for (sCNFClause::size_type i = 0; i < size; ++i) {
+            sLiteral literal = dest[clause][i] = sliteral(cnf[clause][i]);
+            // add to the list of positive-negative literals
+            if (literal > 0) {
+                positiveClauses[var(literal)].push_back(&dest[clause]);
+            } else {
+                negativeClauses[var(literal)].push_back(&dest[clause]);
+            }
+        }
+    }
+}
+
+/**
  * Reads the CNF and initializes
  * any remaining necessary data structures and variables.
  */
@@ -122,25 +142,15 @@ void parseInput(CNFClauses const & cnf, CNFClauses const & cnf2) {
     numClauses = cnf.size();
 
     // Initialize clause appearances
-    initializeClauseAppearances(numVariables, numClauses);
+    initClauseAppearances(numVariables, numClauses);
 
-	// Read clauses
     if (numClauses > scnf.size()) {
         scnf.resize(numClauses);
     }
-	for (sCNF::size_type clause = 0; clause < numClauses; ++clause) {
-        sCNFClause::size_type size = cnf[clause].size();
-        scnf[clause].resize(size);
-		for (sCNFClause::size_type i = 0; i < size; ++i) {
-            sLiteral literal = scnf[clause][i] = sliteral(cnf[clause][i]);
-			// add to the list of positive-negative literals
-            if (literal > 0) {
-                positiveClauses[var(literal)].push_back(&scnf[clause]);
-            } else {
-                negativeClauses[var(literal)].push_back(&scnf[clause]);
-            }
-		}
-	}
+
+    // Read clauses
+    readClauses(cnf, &scnf[0]);
+
 	// std::cout << "Clauses read" << std::endl;
 	// Initialize the remaining necessary variables
 		// model and backtrack stack
