@@ -116,13 +116,13 @@ void initClauseAppearances(uint varcount, sCNF::size_type clausecount) {
 /**
  * Reads the clauses from CNF and builds the positive/negative appearance lists.
  */
-void readClauses(CNFClauses const & cnf, sCNFClause * dest) {
-	sCNF::size_type clausecount = cnf.size();
+void readClauses(CNFClauses const & src, sCNFClause * dest) {
+	sCNF::size_type clausecount = src.size();
     for (sCNF::size_type clause = 0; clause < clausecount; ++clause) {
-        sCNFClause::size_type size = cnf[clause].size();
+        sCNFClause::size_type size = src[clause].size();
         dest[clause].resize(size);
         for (sCNFClause::size_type i = 0; i < size; ++i) {
-            sLiteral literal = dest[clause][i] = sliteral(cnf[clause][i]);
+            sLiteral literal = dest[clause][i] = sliteral(src[clause][i]);
             // add to the list of positive-negative literals
             if (literal > 0) {
                 positiveClauses[var(literal)].push_back(&dest[clause]);
