@@ -192,7 +192,7 @@ public:
             else
             if (step.ishyp() && !step.phyp->second.floats &&
                 bank.hashyp(step.phyp->first))
-                return false; // Auxillary essential Hypothesis not allowed
+                return false; // Auxillary essential hypothesis
         return true;
     }
     // Return true if proof() solves the problem *iter.
