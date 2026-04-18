@@ -7,17 +7,18 @@
 struct SATsolver
 {
     CNFClauses const & cnf, & cnf2;
+    Atom const cnfatoms, cnf2atoms;
     SATsolver
         (CNFClauses const & hyps, CNFClauses const & morehyps = CNFClauses()) :
-        cnf(hyps), cnf2(morehyps) {}
+        cnf(hyps), cnf2(morehyps),
+        cnfatoms(cnf.natoms()), cnf2atoms(cnf2.natoms()) {}
     // Map: free atoms -> truth value.
     // Return the empty vector if unsuccessful.
     Bvector truthtable(Atom nfree)
     {
         static Atom const maxnatoms = std::numeric_limits<Atom>::digits;
         if (nfree > maxnatoms) nfree = maxnatoms;
-        Atom const natoms = cnf.natoms();
-        if (nfree > natoms) nfree = natoms;
+        if (nfree > cnfatoms) nfree = cnfatoms;
 
         Bvector tt(static_cast<TTindex>(1) << nfree, false);
         if (cnf.hasemptyclause()) return tt;
@@ -37,7 +38,7 @@ struct SATsolver
     bool sat()
     {
         // Initial model
-        CNFModel model(std::max(cnf.natoms(), cnf2.natoms()));
+        CNFModel model(std::max(cnfatoms, cnf2atoms));
         // Current atom being assigned
         Atom atom = 0;
 

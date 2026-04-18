@@ -94,11 +94,16 @@ uint conflicts;
 
 /**
  * Returns the variable that this literal represents.
+ *
+ * @param literal the literal whose variable identifier is requested
  */
 inline Atom var(sLiteral literal) { return std::abs(literal); }
 
 /**
  * Initializes the positive and negative clause appearance lists.
+ *
+ * @param varcount the number of variables in the CNF formula
+ * @param clausecount the number of clauses in the CNF formula
  */
 void initClauseAppearances(Atom varcount, sCNF::size_type clausecount) {
     if (varcount >= positiveClauses.size())
@@ -115,8 +120,11 @@ void initClauseAppearances(Atom varcount, sCNF::size_type clausecount) {
 
 /**
  * Reads the clauses from CNF and builds the positive/negative appearance lists.
+ *
+ * @param src the source CNF clause set to read
+ * @param dest the destination clause array to populate
  */
-void readClauses(CNFClauses const & src, sCNFClause * dest) {
+void readClauses(CNFClauses const & src, sCNFClause dest[]) {
 	sCNF::size_type clausecount = src.size();
     for (sCNF::size_type clause = 0; clause < clausecount; ++clause) {
         sCNFClause::size_type size = src[clause].size();
@@ -138,7 +146,6 @@ void readClauses(CNFClauses const & src, sCNFClause * dest) {
  * any remaining necessary data structures and variables.
  */
 void DPLL_solver::parseInput() {
-	Atom cnfatoms = cnf.natoms(), cnf2atoms = cnf2.natoms();
     numVariables = cnf2atoms > cnfatoms ? cnf2atoms : cnfatoms;
 	sCNF::size_type cnfsize = cnf.size();
     numClauses = cnfsize + cnf2.size();
