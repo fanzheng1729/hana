@@ -117,8 +117,7 @@ public:
     // Do singular extension. Return the value.
     Value singularext(pNode p)
     {
-        if (isourturn(p))
-            return value(p);
+        if (isourturn(p)) return value(p);
         // Their turn
         Value value = WDL::WIN;
         if (expand<&Game::moves>(p))
