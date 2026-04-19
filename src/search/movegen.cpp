@@ -3,6 +3,35 @@
 #include "problem.h"
 #include "../proof/skeleton.h"
 
+// Add a move with validation. Return true if it has no open hypotheses.
+template<Environ::MoveValidity (Environ::*Validator)(Move const &) const>
+bool Environ::addmove(Move const & move, Moves & moves) const
+{
+    switch ((this->*Validator)(move))
+    {
+    case MoveCLOSED:
+        moves.clear();
+        moves.push_back(move);
+        return true;
+    case MoveVALID:
+        // std::cout << move.label() << std::endl;
+        // std::cout << move.substitutions;
+        moves.push_back(move);
+        // std::cin.get();
+        return false;
+    default:
+        return false;
+    }
+}
+bool Environ::addboundmove(Move const & move, Moves & moves) const
+{
+    return addmove<&Environ::valid>(move, moves);
+}
+bool Environ::addconjmove(Move const & move, Moves & moves) const
+{
+    return addmove<&Environ::validconjmove>(move, moves);
+}
+
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {
@@ -52,47 +81,6 @@ bool Environ::trythm
         return assertion.nEhyps() > 0 && addhypmoves(move.pthm, moves, subst);
     else
         return addboundmove(move, moves);
-}
-
-// Add a move with only bound substitutions.
-// Return true if it has no open hypotheses.
-bool Environ::addboundmove(Move const & move, Moves & moves) const
-{
-    switch (valid(move))
-    {
-    case MoveCLOSED:
-        moves.clear();
-        moves.push_back(move);
-        return true;
-    case MoveVALID:
-        // std::cout << move.label() << std::endl;
-        // std::cout << move.substitutions;
-        moves.push_back(move);
-        // std::cin.get();
-        return false;
-    default:
-        return false;
-    }
-}
-
-// Add a conjectural move. Return true if it has no open hypotheses.
-bool Environ::addconjmove(Move const & move, Moves & moves) const
-{
-    switch (validconjmove(move))
-    {
-    case MoveCLOSED:
-        moves.clear();
-        moves.push_back(move);
-        return true;
-    case MoveVALID:
-        // std::cout << move.label() << std::endl;
-        // std::cout << move.substitutions;
-        moves.push_back(move);
-        // std::cin.get();
-        return false;
-    default:
-        return false;
-    }
 }
 
 // Add abstraction moves. Return true if it has no open hypotheses.

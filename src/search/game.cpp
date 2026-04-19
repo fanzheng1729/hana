@@ -84,6 +84,7 @@ static void printthmhypproofs(Move const & move, pProofs const & phyps)
         std::cerr << move.subgoallabel(i) << '\t' << *phyps[i];
 }
 
+// Move the proof from scr to dst, and redirect the pointer.
 static void moveproof(RPN * & src, RPN & dst)
 {
     dst.swap(*src);

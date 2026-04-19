@@ -118,8 +118,9 @@ protected:
     friend Problem;
 private:
 // Move generation
-    // Add a move with only bound substitutions.
-    // Return true if it has no open hypotheses.
+    // Add a move with validation. Return true if it has no open hypotheses.
+    template<Environ::MoveValidity (Environ::*Validator)(Move const &) const>
+    bool addmove(Move const & move, Moves & moves) const;
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add a conjectural move. Return true if it has no open hypotheses.
     bool addconjmove(Move const & move, Moves & moves) const;
