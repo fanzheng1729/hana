@@ -14,7 +14,7 @@ struct GomSearchTree : MCTS<Gom<M,N,K> >
         (Gom<M,N,K> const & gom, Value const exploration[2]) :
             MCTSearch(gom, exploration) {}
     // Evaluate the leaf. Return {value, sure?}
-    // p should != NULL.
+    // p should != nullptr.
     virtual Eval evalleaf(pNode p) const
     {
         Gom<M,N,K> const & game = p->game();
@@ -22,7 +22,7 @@ struct GomSearchTree : MCTS<Gom<M,N,K> >
         return Eval(winner, winner || game.full());
     }
     // Evaluate the parent. Return {value, sure?}
-    // p should != NULL.
+    // p should != nullptr.
     virtual Eval evalparent(pNode p) const
     {
         Value const value = this->minimax(p);

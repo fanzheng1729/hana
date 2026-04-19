@@ -42,7 +42,7 @@ public:
     // Simplified context after trimming unnecessary hypotheses
     Environ const * psimpEnv;
     Goaldata(Goalstatus s, Environ const * envptr, pBIGGOAL bigpGoal) :
-        status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv(NULL) {}
+        status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv() {}
     Goal const & goal() const { return pbigGoal->first; }
     Goaldatas & goaldatas() const { return pbigGoal->second; }
     // Source of proof to be read from

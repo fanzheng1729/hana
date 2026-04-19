@@ -1,7 +1,6 @@
 #ifndef TYPES_H_INCLUDED
 #define TYPES_H_INCLUDED
 
-#include <cstddef>      // for std::size_t and NULL
 #include <map>
 #include <set>
 #include <utility>
@@ -31,8 +30,10 @@ typedef std::vector<Proofnumber> Proofnumbers;
 struct RPNstep;
 // A sequence of proof steps, in rev-Polish notation
 typedef std::vector<RPNstep> RPN;
+// Pointer to an RPN
+typedef RPN const * pProof;
 // Pointers to the proofs to be included
-typedef std::vector<RPN const *> pProofs;
+typedef std::vector<pProof> pProofs;
 // # of step in the proof
 typedef RPN::size_type RPNsize;
 // Iterator to a proof step
@@ -109,7 +110,7 @@ struct Symbol2 : strview
 // A constant or a variable with ID and pointer to defining hypothesis
 struct Symbol3 : Symbol2
 {
-    // Iterator to the floating hypothesis for variable, NULL for constant
+    // Iterator to the floating hypothesis for variable, Hypiter() for constant
     Hypiter iter;
     strview typecode() const { return iter->second.expression[0]; }
     Symbol3(strview str = "", ID n = 0) : Symbol2(str, n) {}
@@ -181,7 +182,7 @@ struct RPNstep
     const void * ptr() const
     {
         if (ishyp()) return phyp;
-        return isthm() ? pass : NULL;
+        return isthm() ? pass : pAss();
     }
 // Return typecode. Return "" if not HYP nor THM.
     strview typecode() const;

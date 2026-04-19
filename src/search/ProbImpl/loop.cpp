@@ -35,7 +35,7 @@ struct pGoals : std::set<pGoal>
         return true;
     }
     // Return pointer to a new goal implied by the existing goals.
-    // Return NULL if there is no such goal.
+    // Return nullptr if there is no such goal.
     pGoal saturate()
     {
         FOR (pGoal const pgoal, *this)

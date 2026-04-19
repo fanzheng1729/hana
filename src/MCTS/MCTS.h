@@ -103,7 +103,7 @@ public:
         return isourturn(p) ? -inf : inf;
     }
     // Return the unsure child with largest UCB.
-    // Return NULL if there is no such a child.
+    // Return nullptr if there is no such a child.
     pNode pickchild(pNode p) const
     {
         Children const * const children = p.children();
@@ -113,7 +113,7 @@ public:
         Iter child = children->begin();
         for ( ; child != children->end(); ++child)
             if (!issure(*child)) break;
-        // If all children are sure, return NULL.
+        // If all children are sure, return nullptr.
         if (child == children->end())
             return pNode();
         // Find the unsure child with largest UCB.
@@ -130,7 +130,7 @@ public:
         return *child;
     }
     // Return the leaf with largest UCB.
-    // Return NULL if p is NULL.
+    // Return nullptr if p is nullptr.
     pNode pickleaf(pNode p) const
     {
         pNode result;
@@ -138,7 +138,7 @@ public:
         return result;
     }
     // Expand the node pointed. Return # new children.
-    // p should != NULL.
+    // p should != nullptr.
     template<Moves (G::*)(bool) const>
     size_type expand(pNode p)
     {
@@ -153,10 +153,10 @@ public:
     // Call back when children of p moved.
     virtual void expandcallback(pNode p) {}
     // Evaluate the leaf. Return {value, sure?}.
-    // p should != NULL.
+    // p should != nullptr.
     virtual Eval evalleaf(pNode p) const = 0;
     // Returns the minimax value of all children.
-    // Return WDL::DRAW if p has no child or p == NULL.
+    // Return WDL::DRAW if p has no child or p is nullptr.
     static Value minimax(pNode p)
     {
         if (!p.haschild()) return WDL::DRAW;
@@ -166,10 +166,10 @@ public:
                      *std::min_element(ch.begin(), ch.end(), compvalue));
     }
     // Evaluate the parent. Return {value, sure?}.
-    // p should != NULL.
+    // p should != nullptr.
     virtual Eval evalparent(pNode p) const { return minimax(p); }
     // Evaluate all the new leaves.
-    // p should != NULL.
+    // p should != nullptr.
     void evalnewleaves(pNode p) const
     {
         for (size_type i = p->index(); i < p.nchild(); ++i)
@@ -188,13 +188,13 @@ public:
         p->setindex(p.nchild());
     }
     // Evaluate the node. Return {value, sure?}.
-    // p should != NULL.
+    // p should != nullptr.
     Eval evaluate(pNode p) const
         { return p.haschild() ? evalparent(p) : evalleaf(p); }
     // Called after each backprop()
     virtual void backpropcallback(pNode p) {}
     // Back propagate from the node pointed.
-    // DO NOTHING if p is NULL.
+    // DO NOTHING if p is nullptr.
     void backprop(pNode p)
     {
 // std::cout << "Back prop called on " << p;
@@ -244,8 +244,7 @@ public:
     }
     virtual ~MCTS() {}
 private:
-    // For all functions below, p should != NULL.
-    // Add children. Return # new children.
+    // Add children. Return # new children. p should != nullptr.
     size_type addchildren(pNode p, Moves const & moves)
     {
 // std::cout << "Adding " << moves.size() << " moves to " << *p;

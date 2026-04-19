@@ -1,4 +1,3 @@
-#include <cstddef>  // for std::size_t
 #include <iostream>
 #include "../CNF.h"
 #include "../util/arith.h"

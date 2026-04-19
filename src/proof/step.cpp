@@ -77,27 +77,27 @@ bool writeproof(RPN & dest, pAss pthm, pProofs const & hyps)
     RPNsize length = 1;
     for (Hypsize i = 0; i < hyps.size(); ++i)
     {
-        RPN const * const p = hyps[i];
-        if (!p || p->empty())
+        pProof const phyp = hyps[i];
+        if (!phyp || phyp->empty())
         {
             writeprooferr(pthm->first.c_str);
             hypothesiserr(pthm->second.hyplabel(i).c_str);
             std::cerr << " has no proof" << std::endl;
             return false;
         }
-        if (p == &dest)
+        if (phyp == &dest)
         {
             writeprooferr(pthm->first.c_str);
             hypothesiserr(pthm->second.hyplabel(i).c_str);
             std::cerr << " is the same as the conclusion" << std::endl;
             return false;
         }
-        length += p->size();
+        length += phyp->size();
     }
     // Preallocate for efficiency
     dest.reserve(length);
-    FOR (RPN const * p, hyps)
-        dest += *p;
+    FOR (pProof const phyp, hyps)
+        dest += *phyp;
     // Label of the assertion used
     dest.push_back(pthm);
     //std::cout << "Built proof: " << proof;

@@ -32,7 +32,7 @@ private:
     RPNstep getRPNstep(strview label);
 // Read the labels of a compressed proof.
 // Discard tokens up to and including the closing parenthesis.
-// Returns proof steps if okay. Otherwise returns {NULL}.
+// Returns proof steps if okay. Otherwise returns {None}.
     RPN getlabels(strview label, Hypiters const & hyps);
 // Read a compressed proof. Discard tokens up to and including $.
     ReadStatus readcompressed
@@ -223,7 +223,7 @@ RPNstep Imp::getRPNstep(strview label)
 
 // Read the labels of a compressed proof.
 // Discard tokens up to and including the closing parenthesis.
-// Returns proof steps if okay. Otherwise returns {NULL}.
+// Returns proof steps if okay. Otherwise returns {None}.
 RPN Imp::getlabels(strview label, Hypiters const & hyps)
 {
     RPN labels(hyps.begin(), hyps.end());
@@ -602,7 +602,7 @@ bool Imp::readc()
 
         if (!m_database.addconst(token))
         {
-            printtokenreuse("redeclare constant", token, NULL);
+            printtokenreuse("redeclare constant", token, "");
             return false;
         }
     }

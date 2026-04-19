@@ -22,10 +22,10 @@ struct Syntaxioms : std::map<strview, Syntaxiom>
 // those starting with a primitive type code and having no essential hypothesis
 // and find their var types.
     Syntaxioms(Assertions const & assertions, class Database const & database);
-// Find syntax axioms with a specific key. Return NULL if none is found.
 private:
     typedef std::map<strview, std::vector<const_pointer> > M_map_type;
 public:
+// Find syntax axioms with a specific key. Return nullptr if none is found.
     M_map_type::mapped_type const * keyis(key_type key) const
     {
         M_map_type::const_iterator iter(m_map.find(key));

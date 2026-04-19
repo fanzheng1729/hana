@@ -28,8 +28,8 @@ Expression & operator+=(Expression & exp, std::pair<Iter, Iter> subexp)
 
 struct Printer;
 // Subroutine for proof verification. Verify proof steps.
-Expression verify(RPN const & proof, Printer & printer, pAss pass = NULL);
-Expression verify(RPN const & proof, pAss pass = NULL);
+Expression verify(RPN const & proof, Printer & printer, pAss pass = pAss());
+Expression verify(RPN const & proof, pAss pass = pAss());
 
 // Verify a regular proof. The "proof" argument should be a non-empty sequence
 // of valid labels. Return the statement the "proof" proves.

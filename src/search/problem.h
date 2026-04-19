@@ -48,7 +48,8 @@ public:
         numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
-        pProbEnv(env.assertion.expression.empty() ? NULL : addProbEnv(env)),
+        pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
+                 addProbEnv(env)),
         staged(env.staged && STAGED)
     {
         if (!pProbEnv) return;
@@ -128,11 +129,11 @@ public:
         return value;
     }
     // Evaluate the leaf. Return {value, sure?}.
-    // p should != NULL.
+    // p should != nullptr.
     virtual Eval evalleaf(pNode p) const;
     Eval evaltheirleaf(pNode p) const;
     // Evaluate the parent. Return {value, sure?}.
-    // p should != NULL.
+    // p should != nullptr.
     virtual Eval evalparent(pNode p) const
     {
         Value   const v = minimax(p);
@@ -239,10 +240,10 @@ private:
         return &*pbiggoal->second.insert(envdata).first;
     }
     // Add a sub-context with hypotheses trimmed.
-    // Return pointer to the new context. Return NULL if unsuccessful.
+    // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
     // Add a super-context with hypotheses trimmed.
-    // Return pointer to the new context. Return NULL if unsuccessful.
+    // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsupEnv(Environ const & env, Move const & move);
     // Initialize a context if existent. Return its pointer.
     Environ const * initEnv(Environ * p)
@@ -266,7 +267,7 @@ private:
             }
     }
 public:
-    // Printing routines. DO NOTHING if ptr is NULL.
+    // Printing routines. DO NOTHING if p is nullptr.
     void printmainline(pNode p, size_type detail = 0) const;
     void printmainline(size_type detail = 0) const
         { printmainline(root(), detail); }

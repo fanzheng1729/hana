@@ -101,16 +101,16 @@ bool Game::writeproof() const
         return false;
 // std::cout << "Writing proof: " << goal().expression();
     // attempt.type == Move::THM || Move::CONJ, goal not proven
-    RPN * pProof = &goaldata().proofdst();
+    RPN * pproof = &goaldata().proofdst();
     // Pointers to proofs of sub-goals
     pProofs const phyps(attempt.phyps());
     // Write proof.
-    if (!attempt.writeproof(*pProof, phyps))
+    if (!attempt.writeproof(*pproof, phyps))
         return false;
-    if (pProof != &goaldatas().proof)
-        if (env().prob().probEnv().legal(*pProof))
+    if (pproof != &goaldatas().proof)
+        if (env().prob().probEnv().legal(*pproof))
             // Proof works in problem context. Move it there.
-            moveproof(pProof, goaldatas().proof);
+            moveproof(pproof, goaldatas().proof);
         else
         // if (false)
         {
@@ -134,7 +134,7 @@ bool Game::writeproof() const
                         if (subiter == subend)
                             break;  // end reached
                         if (*subiter == &subEnv &&
-                            subEnv.legal(*pProof))
+                            subEnv.legal(*pproof))
                         {
                             // Proof holds in sub-context.
                             pcurgoal = &goaldata;
@@ -145,10 +145,10 @@ bool Game::writeproof() const
             } while (found);
             if (pgoal != pcurgoal)
                 // Proof works in sub-context. Move it there.
-                moveproof(pProof, pcurgoal->second.proofdst());
+                moveproof(pproof, pcurgoal->second.proofdst());
         }
     // Verification
-    const Expression & exp(verify(*pProof));
+    const Expression & exp(verify(*pproof));
     const bool okay = (exp == goal().expression());
     if (!okay)
         printthmhypproofs(attempt, phyps);
@@ -160,7 +160,7 @@ bool Game::writeproof() const
     else
     {
         writeprooferr(exp);
-        pProof->clear();
+        pproof->clear();
     }
     return okay;
 }

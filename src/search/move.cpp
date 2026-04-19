@@ -63,10 +63,10 @@ Disjvars Move::findDV(Assertion const & ass) const
     return result;
 }
 
-// Return pointer to proof of subgoal. Return null if out of bound.
-RPN const * Move::psubgoalproof(Hypsize index) const
+// Return pointer to proof of subgoal. Return nullptr if out of bound.
+pProof Move::psubgoalproof(Hypsize index) const
 {
-    return index >= nsubgoals() ? NULL :
+    return index >= nsubgoals() ? pProof() :
             subgoalfloats(index) ? &substitutions[hypvar(index)] :
             &static_cast<pGoal>(subgoals[index])->second.proofsrc();
 }

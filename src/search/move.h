@@ -33,7 +33,7 @@ struct Move
     // mutable std::vector<pGoal> subgoals;
     // Workaround for some compilers
     mutable std::vector<void *> subgoals;
-    Move(Type t = NONE) : type(t), pthm(NULL) {}
+    Move(Type t = NONE) : type(t), pthm() {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :
         type(THM), pthm(ptr), substitutions(subst) {}
@@ -45,17 +45,17 @@ struct Move
     }
     // A move making conjectures, on our turn
     Move(Conjectures const & conjs, Substitutions const & absRPNs) :
-        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs),
+        type(conjs.empty() ? NONE : CONJ), pthm(), absconjs(conjs),
         substitutions(absRPNs) {}
     Move(Conjectures const & conjs, RPNspans const & absRPNs) :
-        type(conjs.empty() ? NONE : CONJ), pthm(NULL), absconjs(conjs)
+        type(conjs.empty() ? NONE : CONJ), pthm(), absconjs(conjs)
     {
         substitutions.resize(absRPNs.size());
         for (Hypsize i = 1; i < absRPNs.size(); ++i)
             substitutions[i].assign(absRPNs[i].first, absRPNs[i].second);
     }
     // A move verifying a hypothesis, on their turn
-    Move(Hypsize i) : index(i), pthm(NULL) {}
+    Move(Hypsize i) : index(i), pthm() {}
     bool isthm() const  { return type == THM; }
     bool isconj() const { return type == CONJ; }
     bool isdefer() const{ return type == DEFER; }
@@ -149,8 +149,8 @@ struct Move
                 return i;
         return i;
     }
-    // Return pointer to proof of subgoal. Return null if out of bound.
-    RPN const * psubgoalproof(Hypsize index) const;
+    // Return pointer to proof of subgoal. Return nullptr if out of bound.
+    pProof psubgoalproof(Hypsize index) const;
     // # of conjectures made
     Hypsize nconjs() const { return isconj() * (absconjs.size() - 1); }
     // Abstract variables in use (must be of type CONJ)

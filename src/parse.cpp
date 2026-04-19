@@ -13,7 +13,7 @@
 typedef std::vector<Substframe> Substack;
 
 // Find the substitution frame for a variable and return its address.
-// Return NULL if not found, or the frame is invalid.
+// Return nullptr if not found, or the frame is invalid.
 static Substframe const * findframe(strview var, Substack const & stack)
 {
     Substack::const_iterator const iter = util::find(stack, var);
@@ -102,7 +102,7 @@ static bool checkDV
 }
 
 // Extract proof pointers from the stack.
-// Return a single NULL if not okay.
+// Return {pProof()} if not okay.
 static pProofs pproofsfromstack(Assertion const & ass, Substack const & stack)
 {
     if (unexpected(ass.nEhyps() > 0, "essential hypothesis", ""))

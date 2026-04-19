@@ -24,7 +24,7 @@ Value Problem::UCBnewstage(pNode p) const
 }
 
 // Evaluate the leaf. Return {value, sure?}.
-// p should != NULL.
+// p should != nullptr.
 Eval Problem::evalleaf(pNode p) const
 {
     Game const & game = p->game();
@@ -90,16 +90,16 @@ void Problem::copyproof(Game const & game)
 }
 
 // Add a sub-context with hypotheses trimmed.
-// Return pointer to the new context. Return NULL if unsuccessful.
+// Return pointer to the new context. Return nullptr if unsuccessful.
 Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotrim)
 {
     if (hypstotrim.empty())
-        return NULL;
+        return Environs::mapped_type();
     // Name of new context
     std::string const & name(env.assertion.hypslabel(hypstotrim));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
-    environs.insert(std::pair<strview, Environ const *>(name, NULL));
+    environs.insert(std::make_pair(name, Environs::mapped_type()));
     // Iterator to the new context
     Environs::iterator const newEnviter = result.first;
     if (!result.second) // already added
@@ -107,7 +107,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     // Simplified assertion
     Assertion & subAss = assertions[newEnviter->first];
     if (subAss.number > 0)
-        return NULL;
+        return Environs::mapped_type();
     // std::cout << "addsubEnv to " << env.name << ' ' << env.assertion.varusage;
     Assertion const & ass = env.assertion.makeAss(hypstotrim);
     // Pointer to the sub-context
@@ -115,7 +115,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
 }
 
 // Add a super-context with hypotheses trimmed.
-// Return pointer to the new context. Return NULL if unsuccessful.
+// Return pointer to the new context. Return nullptr if unsuccessful.
 Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
     Expression const & newvars(move.absvars(bank));
@@ -124,7 +124,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     std::string const & name(env.assertion.hypslabel(newvars, newhyps));
     // Try add the context.
     std::pair<Environs::iterator, bool> const result =
-    environs.insert(std::pair<strview, Environ const *>(name, NULL));
+    environs.insert(std::make_pair(name, Environs::mapped_type()));
     // Iterator to the new context
     Environs::iterator const newEnviter = result.first;
     if (!result.second) // already added
@@ -132,7 +132,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     // Simplified assertion
     Assertion & supAss = assertions[newEnviter->first];
     if (supAss.number > 0)
-        return NULL;
+        return Environs::mapped_type();
 // std::cout << "addsupEnv to " << env.name << ' ' << newvars;
 // std::cout << "env vars " << env.assertion.varusage;
     supAss.number = env.assnum();

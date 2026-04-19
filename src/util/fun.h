@@ -1,7 +1,6 @@
 #ifndef FUN_H_INCLUDED
 #define FUN_H_INCLUDED
 
-#include <cstddef>      // for NULL
 #include <functional>
 #include <utility>      // for std::forward
 
@@ -29,8 +28,8 @@ namespace util
         PM pm;
         PF pf;
     public:
-        const_mem_fn_t(PM mem) : pm(mem), pf(NULL) {}
-        const_mem_fn_t(PF mem) : pm(NULL), pf(mem) {}
+        const_mem_fn_t(PM mem) : pm(mem), pf() {}
+        const_mem_fn_t(PF mem) : pm(), pf(mem) {}
         R operator()(T const * p) const { return pm ? p->*pm : (p->*pf)(); }
         R operator()(T const & t) const { return pm ? t.*pm : (t.*pf)(); }
     }; // struct const_mem_fn_t

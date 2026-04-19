@@ -40,7 +40,7 @@ public:
         // The value
         T value;
         // Constructor. DOES NOT set size
-        TreeNode(T const & x) : parent(NULL), value(x) {}
+        TreeNode(T const & x) : parent(), value(x) {}
         // Change the sizes of the node and its ancestors.
         void incsize(size_type const n)
         {
@@ -80,7 +80,7 @@ public:
         }
 #endif // __cpp_lib_incomplete_container_elements
         // Add a child. Return the pointer to the child.
-        // DOES NOT set the size. *this should != NULL.
+        // DOES NOT set the size. *this should != nullptr.
         pNode m_insert(T const & t) const
         {
             reserve(m_ptr->children.size() + 1);
@@ -102,7 +102,7 @@ public:
         }
 #ifndef __cpp_lib_incomplete_container_elements
         // Add a subtree with copying. Return pointer to the child.
-        // *this should != NULL.
+        // *this should != nullptr.
         pNode m_insert(TreeNode const & node) const
         {
             // Add the root of the subtree.
@@ -114,33 +114,33 @@ public:
             return child;
         }
         // Add all children of a node.
-        // *this should != NULL.
+        // *this should != nullptr.
         void m_insertchildren(TreeNode const & node) const
         {
             FOR (pNode p, node.children) m_insert(*p.m_ptr);
         }
 #endif // __cpp_lib_incomplete_container_elements
     public:
-        pNode() : m_ptr(NULL) {}
+        pNode() : m_ptr() {}
         pNode(TreeNode const & node) : m_ptr(const_cast<TreeNode *>(&node)) {}
         operator TreeNode const * () const { return m_ptr; }
         friend inline bool operator<(pNode x, pNode y)
             { return std::less<TreeNode *>()(x.m_ptr, y.m_ptr); }
-        // Return the parent. Return NULL if *this is NULL.
-        pNode parent() const { return pNode(*this ? m_ptr->parent : NULL); }
-        // Return the size. Return 0 if *this is NULL.
+        // Return the parent. Return nullptr if *this is nullptr.
+        pNode parent() const { return *this ? m_ptr->parent : NULL; }
+        // Return the size. Return 0 if *this is nullptr.
         size_type size() const { return *this ? m_ptr->size : 0; }
-        // Return true if a node has a child. Return 0 if *this is NULL.
+        // Return true if a node has a child. Return 0 if *this is nullptr.
         bool haschild() const { return size() > 1; }
-        // Return # children of a node. Return 0 if *this is NULL.
+        // Return # children of a node. Return 0 if *this is nullptr.
         size_type nchild() const { return *this ? m_ptr->children.size() : 0; }
-        // Return true if a node has grand child. Return 0 if *this is NULL.
+        // Return true if a node has grand child. Return 0 if *this is nullptr.
         bool hasgrandchild() const { return size() > nchild() + 1; }
-        // Return the content of a node. *this != NULL.
+        // Return the content of a node. *this != nullptr.
         T & operator*() const { return m_ptr->value; }
         T * operator->()const { return&m_ptr->value; }
         // Return pointer to the children of a node.
-        // Return NULL if *this is NULL.
+        // Return nullptr if *this is nullptr.
         Children const * children() const
             { return *this ? &m_ptr->children : NULL; }
         // Reserve space for children and fix the parents of existing ones.
@@ -162,7 +162,7 @@ public:
             return false;
         }
         // Return true if *this is ancestor of p.
-        // Return false if p is NULL
+        // Return false if p is nullptr.
         bool isancestorof(pNode p) const
         {
             for (p = p.parent(); p; p = p.parent())
@@ -173,11 +173,11 @@ public:
     }; // class pNode
 public:
     // Construct an empty tree.
-    Tree() : m_data(NULL) {}
+    Tree() : m_data() {}
     // Construct a tree with 1 node.
     Tree(T const & value) : m_data(new TreeNode(value)) { m_data->size = 1; }
     // Copy CTOR
-    Tree(Tree const & other) : m_data(NULL)
+    Tree(Tree const & other) : m_data()
     {
         if (TreeNode const * p = other.m_data)
         {
@@ -219,7 +219,7 @@ public:
     // Return size of the tree.
     size_type size() const {return m_data->size; }
     // Add a child. Return the pointer to the child.
-    // DO NOTHING and Return NULL if p is NULL.
+    // DO NOTHING and return nullptr if p is nullptr.
     pNode insert(pNode p, T const & value)
     {
         if (!p) return pNode();
@@ -231,7 +231,7 @@ public:
         return child;
     }
     // Check data structure integrity.
-    // DO NOTHING and Return true if p is NULL.
+    // DO NOTHING and Return true if p is nullptr.
     bool check(pNode p) const
     {
         if (!p) return true;

@@ -34,7 +34,7 @@ struct Environ : protected Gen
         nhyps(ass.nhyps()),
         hypsweight(ass.hypslen()),
         staged(isstaged),
-        pProb(NULL),
+        pProb(),
         m_subsumedbyProb(false),
         m_rankssimplerthanProb(false)
     {
@@ -93,7 +93,7 @@ struct Environ : protected Gen
     virtual Eval evalourleaf(Game const & game) const
     { return score(weight(game) + game.wDefer()); }
     // Create a new context constructed from an assertion on the heap.
-    // Return its address. Return NULL if unsuccessful.
+    // Return its address. Return nullptr if unsuccessful.
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
     // Return true if a proof is legal.
     bool legal(RPN const & proof) const;

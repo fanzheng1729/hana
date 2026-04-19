@@ -285,7 +285,7 @@ Expression verify(RPN const & proof, pAss pass)
 // {
 //     Assertions const & assertions = database.assertions();
 //     Assiter const iter = assertions.find(label);
-//     pAss const pass = iter == assertions.end() ? NULL : &*iter;
+//     pAss const pass = iter == assertions.end() ? pAss() : &*iter;
 
 //     RPN steps(regular(proof, hypotheses, assertions));
 //     if (steps.empty())

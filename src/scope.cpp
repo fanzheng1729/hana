@@ -29,7 +29,7 @@ bool Scopes::pop_back()
 }
 
 // Find active floating hypothesis corresponding to variable.
-// Return its iterator or NULL if there isn't one.
+// Return its iterator or Hypiter() if there isn't one.
 Hypiter Scopes::getfloatinghyp(strview var) const
 {
     FOR (const_reference scope, *this)
@@ -52,7 +52,7 @@ bool Scopes::isactivevariable(strview var) const
 }
 
 // Determine if a string is the label of an active hypothesis.
-// If so, return the pointer to the hypothesis. Otherwise return NULL.
+// If so, return the pointer to the hypothesis. Otherwise return nullptr.
 pHyp Scopes::activehypptr(strview label) const
 {
     FOR (const_reference scope, *this)
@@ -62,7 +62,7 @@ pHyp Scopes::activehypptr(strview label) const
         if (iterhypvec != scope.activehyp.end())
             return &**iterhypvec;
     }
-    return NULL;
+    return pHyp();
 }
 
 // Determine if a floating hypothesis on a string can be added.

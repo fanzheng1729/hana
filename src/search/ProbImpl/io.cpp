@@ -7,7 +7,7 @@
 #include "../../proof/verify.h"
 
 // Return the only open child of p.
-// Return NULL if p has 0 or at least 2 open children.
+// Return nullptr if p has 0 or at least 2 open children.
 static pNode onlyopenchild(pNode p)
 {
     if (Problem::isourturn(p)) return pNode();
