@@ -84,6 +84,12 @@ static void printthmhypproofs(Move const & move, pProofs const & phyps)
         std::cerr << move.subgoallabel(i) << '\t' << *phyps[i];
 }
 
+static void moveproof(RPN * & src, RPN & dst)
+{
+    dst.swap(*src);
+    src = &dst;
+}
+
 // Add proof for a node using a theorem.
 // Return true if a new proof is written.
 bool Game::writeproof() const
@@ -100,15 +106,12 @@ bool Game::writeproof() const
     // Write proof.
     if (!attempt.writeproof(*pProof, phyps))
         return false;
-    if (false && pProof != &goaldatas().proof)
+    if (pProof != &goaldatas().proof)
         if (env().prob().probEnv().legal(*pProof))
-        {
             // Proof works in problem context. Move it there.
-            goaldatas().proof.swap(*pProof);
-            pProof = &goaldatas().proof;
-        }
+            moveproof(pProof, goaldatas().proof);
         else
-        if (false)
+        // if (false)
         {
             pGoal pcurgoal = pgoal;
             bool found;
@@ -140,11 +143,8 @@ bool Game::writeproof() const
                     }
             } while (found);
             if (pgoal != pcurgoal)
-            {
-                RPN * pdest = &pcurgoal->second.proofdst();
-                pdest->swap(*pProof);
-                pProof = pdest;
-            }
+                // Proof works in sub-context. Move it there.
+                moveproof(pProof, pcurgoal->second.proofdst());
         }
     // Verification
     const Expression & exp(verify(*pProof));

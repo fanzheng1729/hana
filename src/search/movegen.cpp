@@ -16,12 +16,11 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     for (Assiters::size_type i = 1; i < limit; ++i)
     {
         Assertion const & thm = assvec[i]->second;
-        if (!thm.testtype(Asstype::USELESS))
-            if (ontopic(thm))
-                if (stage == 0 ||
-                    (thm.nfreevar() > 0 && stage >= thm.nfreevar()))
-                    if (trythm(game, assvec[i], stage, moves))
-                        break; // Move closes the goal.
+        if (!thm.testtype(Asstype::USELESS) && ontopic(thm))
+            if (stage == 0 ||
+                (thm.nfreevar() > 0 && stage >= thm.nfreevar()))
+                if (trythm(game, assvec[i], stage, moves))
+                    break; // Move closes the goal.
     }
 // if (stage >= 5)
 // std::cout << moves.size() << " moves found" << std::endl;
