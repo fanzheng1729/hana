@@ -110,7 +110,7 @@ int main(int argc, char * argv[])
 
     Value const parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
-    Treesize const maxsize = 1ul << 14;
+    Treesize const maxsize = 1ul << 12;
 
     bool testpropsearch(Database const &, Treesize, Value const[4]);
     if (!testpropsearch(database, maxsize, parameters))
