@@ -5,7 +5,7 @@
 
 // Add a move with validation. Return true if it has no open hypotheses.
 template<Environ::MoveValidity (Environ::*Validator)(Move const &) const>
-bool Environ::addmove(Move const & move, Moves & moves) const
+bool Environ::addvalidmove(Move const & move, Moves & moves) const
 {
     switch ((this->*Validator)(move))
     {
@@ -25,11 +25,11 @@ bool Environ::addmove(Move const & move, Moves & moves) const
 }
 bool Environ::addboundmove(Move const & move, Moves & moves) const
 {
-    return addmove<&Environ::valid>(move, moves);
+    return addvalidmove<&Environ::valid>(move, moves);
 }
 bool Environ::addconjmove(Move const & move, Moves & moves) const
 {
-    return addmove<&Environ::validconjmove>(move, moves);
+    return addvalidmove<&Environ::validconjmove>(move, moves);
 }
 
 // Moves generated at a given stage
