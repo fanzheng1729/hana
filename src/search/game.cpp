@@ -110,7 +110,7 @@ bool Game::writeproof() const
         else
         if (false)
         {
-            Goaldatas::const_pointer pcurgoal = pgoal;
+            pGoal pcurgoal = pgoal;
             bool found;
             do
             {
@@ -120,7 +120,7 @@ bool Game::writeproof() const
                 pEnvs::const_iterator const subend = psubEnvs.end();
 
                 // Loop through sub-contexts.
-                FOR (Goaldatas::const_reference goaldata, goaldatas())
+                FOR (Goaldatas::reference goaldata, goaldatas())
                     if (!goaldata.first->subsumedbyProb())
                     {
                         Environ const & subEnv = *goaldata.first;
@@ -140,7 +140,11 @@ bool Game::writeproof() const
                     }
             } while (found);
             if (pgoal != pcurgoal)
-                throw "Not implemented";
+            {
+                RPN * pdest = &pcurgoal->second.proofdst();
+                pdest->swap(*pProof);
+                pProof = pdest;
+            }
         }
     // Verification
     const Expression & exp(verify(*pProof));
