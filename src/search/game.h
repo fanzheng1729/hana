@@ -3,6 +3,13 @@
 
 #include "move.h"
 
+// Goal pointer
+typedef std::map<Environ const *, Goaldata>::pointer pGoal;
+
+// Map: goal -> context -> evaluation
+typedef std::map<Goal, Goaldatas> Goals;
+typedef Goals::pointer pBIGGOAL;
+
 // Stage
 typedef std::size_t stage_t;
 

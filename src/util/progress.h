@@ -18,7 +18,7 @@ struct Progress
     {
         if (progress > 1) progress = 1;
         for ( ; count < static_cast<int>(progress * 50) + 1; ++count)
-            cout << '<' << std::flush;
+            cout << '>' << std::flush;
         if (progress == 1) cout << std::endl;
     }
 private:

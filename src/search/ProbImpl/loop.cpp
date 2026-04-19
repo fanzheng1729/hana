@@ -1,4 +1,3 @@
-#include "../game.h"
 #include "../goaldata.h"
 
 // If goal appears as the goal of a node or its ancestors,
