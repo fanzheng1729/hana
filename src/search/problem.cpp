@@ -135,7 +135,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
         return NULL;
 // std::cout << "addsupEnv to " << env.name << ' ' << newvars;
 // std::cout << "env vars " << env.assertion.varusage;
-    supAss.number = env.assertion.number;
+    supAss.number = env.assnum();
     supAss.sethyps(env.assertion, newvars, newhyps);
     supAss.disjvars = move.findDV(supAss);
     // Pointer to the super-context

@@ -45,7 +45,7 @@ public:
         MCTS(Game(), params),
         database(env.database),
         bank(database.nvar()),
-        numberlimit(std::min(env.assertion.number,database.assiters().size())),
+        numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? NULL : addProbEnv(env)),

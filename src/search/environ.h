@@ -40,9 +40,10 @@ struct Environ : protected Gen
     {
         // Relevant syntax axioms
         FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
-            if (syntaxiom.second.pass->second.number < assertion.number)
+            if (syntaxiom.second.pass->second.number < assnum())
                 syntaxioms.insert(syntaxiom);
     }
+    Assertions::size_type assnum() const { return assertion.number; }
     Problem const & prob() const { return *pProb; }
     // Context implication relations
     // Updated when new context is added
@@ -96,14 +97,6 @@ struct Environ : protected Gen
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
     // Return true if a proof is legal.
     bool legal(RPN const & proof) const;
-    // A minimal context in which a proof is legal
-    Environ const & minLegalEnv(RPN const & proof) const
-    {
-        FOR (Environ const * psubEnv, psubEnvs())
-            if (psubEnv->legal(proof))
-                return psubEnv->minLegalEnv(proof);
-        return *this;
-    }
 // Data members 
     // Database used
     Database const & database;

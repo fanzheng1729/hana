@@ -240,7 +240,7 @@ bool Gen::dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) con
 // {
 //     Syntaxioms filtered;
 //     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
-//         if (syntaxiom.second.assiter->second.number <= assertion.number)
+//         if (syntaxiom.second.assiter->second.number <= assnum())
 //             filtered.insert(syntaxiom);
 
 //     return generate(assertion.varusage, filtered, type, size);

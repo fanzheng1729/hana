@@ -12,7 +12,8 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     Moves moves;
 
     Assiters const & assvec = database.assiters();
-    Assiters::size_type limit = std::min(assertion.number, prob().numberlimit);
+    Assiters::size_type const limit
+        = std::min(assnum(), prob().numberlimit);
     for (Assiters::size_type i = 1; i < limit; ++i)
     {
         Assertion const & thm = assvec[i]->second;

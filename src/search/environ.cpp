@@ -17,7 +17,7 @@ pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 Goalstatus Environ::printbadgoal(RPN const & badRPN) const
 {
     std::cerr << "Bad goal\n" << badRPN << "in env " << name;
-    std::cerr << " in Problem #" << assertion.number << std::endl;
+    std::cerr << " in Problem #" << assnum() << std::endl;
     // std::cin.get();
     return GOALFALSE;
 }
@@ -118,7 +118,7 @@ bool Environ::legal(RPN const & proof) const
     Hypiter const end = bank.hypotheses().end();
 
     FOR (RPNstep const step, proof)
-        if (step.isthm() && step.pass->second.number >= assertion.number)
+        if (step.isthm() && step.pass->second.number >= assnum())
             return false; // Theorem # too large
         else
         if (step.ishyp() && !step.phyp->second.floats)
