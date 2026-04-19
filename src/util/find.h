@@ -1,7 +1,7 @@
 #ifndef FIND_H_INCLUDED
 #define FIND_H_INCLUDED
 
-#include <algorithm>
+#include <algorithm>    // for std::find and std::lower_bound
 
 namespace util
 {

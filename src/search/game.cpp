@@ -1,3 +1,4 @@
+#include <algorithm>    // for std::lower_bound
 #include "game.h"
 #include "goaldata.h"
 #include "problem.h"
@@ -99,15 +100,48 @@ bool Game::writeproof() const
     // Write proof.
     if (!attempt.writeproof(*pProof, phyps))
         return false;
-    if (pProof != &goaldatas().proof)
+    if (false && pProof != &goaldatas().proof)
         if (env().prob().probEnv().legal(*pProof))
         {
             // Proof works in problem context. Move it there.
             goaldatas().proof.swap(*pProof);
             pProof = &goaldatas().proof;
         }
-        // else if (&env() != &env().minLegalEnv(*pProof))
-        //     throw "Not implemented";
+        else
+        if (false)
+        {
+            Goaldatas::const_pointer pcurgoal = pgoal;
+            bool found;
+            do
+            {
+                found = false;
+                pEnvs const & psubEnvs = pcurgoal->first->psubEnvs();
+                pEnvs::const_iterator subiter = psubEnvs.begin();
+                pEnvs::const_iterator const subend = psubEnvs.end();
+
+                // Loop through sub-contexts.
+                FOR (Goaldatas::const_reference goaldata, goaldatas())
+                    if (!goaldata.first->subsumedbyProb())
+                    {
+                        Environ const & subEnv = *goaldata.first;
+                        subiter = std::lower_bound(subiter, subend, &subEnv);
+                        // while (subiter != subend && less(*subiter, &subEnv))
+                        //     ++subiter;
+                        if (subiter == subend)
+                            break;  // end reached
+                        if (*subiter == &subEnv &&
+                            subEnv.legal(*pProof))
+                        {
+                            // Proof holds in sub-context.
+                            pcurgoal = &goaldata;
+                            found = true;
+                            break;
+                        }
+                    }
+            } while (found);
+            if (pgoal != pcurgoal)
+                throw "Not implemented";
+        }
     // Verification
     const Expression & exp(verify(*pProof));
     const bool okay = (exp == goal().expression());
