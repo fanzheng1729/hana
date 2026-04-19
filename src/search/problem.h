@@ -104,7 +104,7 @@ public:
             Environ const * poldEnv = renv.second;
             if (!poldEnv || poldEnv == &env) continue;
             Environ const & oldEnv = *renv.second;
-            int const cmp = oldEnv.compare(env);
+            int const cmp = oldEnv.compEnv(env);
             if (cmp == 0) continue;
             oldEnv.addEnv(env, cmp);
             env.addEnv(oldEnv, -cmp);
@@ -249,7 +249,7 @@ private:
     {
         if (!p) return p;
         p->pProb = this;
-        p->m_subsumedbyProb = environs.size()<=1 || (probEnv().compare(*p)==1);
+        p->m_subsumedbyProb = environs.size()<=1 || (probEnv().compEnv(*p)==1);
         p->updateimps(maxranks);
         return &addimps(addhypproofs(*p));
     }

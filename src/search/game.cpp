@@ -43,7 +43,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.nDefer = move.isdefer() * (nDefer + 1);
     }
     else if (attempt.isthm() || attempt.isconj()) // Pick the hyp.
-        game.pgoal = attempt.subgoals[move.index];
+        game.pgoal = static_cast<pGoal>(attempt.subgoals[move.index]);
 
     return game;
 }

@@ -65,11 +65,12 @@ bool loops(pNode p)
     {
         if (move.subgoalfloats(i))
             continue;
-        if (move.subgoals[i]->second.proven())
+        pGoal const pgoal = static_cast<pGoal>(move.subgoals[i]);
+        if (pgoal->second.proven())
             continue;
-        if (cycles(move.subgoals[i], p.parent()))
+        if (cycles(pgoal, p.parent()))
             return true;
-        allgoals.insert(move.subgoals[i]);
+        allgoals.insert(pgoal);
     }
     // Check if these hypotheses combined prove a parent node.
     while (pGoal const pgoal = allgoals.saturate())

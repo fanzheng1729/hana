@@ -68,7 +68,7 @@ RPN const * Move::psubgoalproof(Hypsize index) const
 {
     return index >= nsubgoals() ? NULL :
             subgoalfloats(index) ? &substitutions[hypvar(index)] :
-            &subgoals[index]->second.proofsrc();
+            &static_cast<pGoal>(subgoals[index])->second.proofsrc();
 }
 
 // Size of a substitution

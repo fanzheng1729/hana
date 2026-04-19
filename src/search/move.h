@@ -30,7 +30,9 @@ struct Move
     // Abstract conjectures for conjectural moves on our turn
     Conjectures absconjs;
     // Sub-goals needed, on our turn
-    mutable std::vector<pGoal> subgoals;
+    // mutable std::vector<pGoal> subgoals;
+    // Workaround for some compilers
+    mutable std::vector<void *> subgoals;
     Move(Type t = NONE) : type(t), pthm(NULL) {}
     // A move applying a theorem, on our turn
     Move(pAss ptr, Substitutions const & subst) :

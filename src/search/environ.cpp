@@ -154,7 +154,7 @@ static bool includes(C const & x, C const & y, Comp comp)
 }
 
 // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
-int Environ::compare(Environ const & env) const
+int Environ::compEnv(Environ const & env) const
 {
     if (nhyps == env.nhyps)
         return 0;

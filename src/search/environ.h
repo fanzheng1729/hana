@@ -169,7 +169,7 @@ private:
     // Update context implication relations, given comparison result.
     void addEnv(Environ const & env, int cmp) const;
     // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
-    int compare(Environ const & env) const;
+    int compEnv(Environ const & env) const;
 };
 
 #endif // ENVIRON_H_INCLUDED
