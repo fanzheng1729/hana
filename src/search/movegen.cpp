@@ -113,7 +113,8 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
                 subst.assign(thm.maxvarid() + 1, RPNspan());
                 if (findsubst(goalsubexp, thmsubexp, subst) &&
-                    addabsmove(goal, goalspan.first, Move(pthm, subst), moves))
+                    addabsmove(goal, goalspan.first,
+                        Move(pthm, subst).goal(), moves))
                     return true;
             }
         }
@@ -125,14 +126,13 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 // Add an abstraction move. Return true if it has no open hypotheses.
 bool Environ::addabsmove
     (Goal const & goal, RPNspan absRPN,
-     Move const & thmmove, Moves & moves) const
+     Goal const & conj, Moves & moves) const
 {
     if (absRPN.empty())
         return false;
 
-    Goal const & thmgoal(thmmove.goal());
-    AST  const & thmgoalast(ast(thmgoal.rpn));
-    RPNspanAST   thmexp(thmgoal.rpn, thmgoalast), goalexp(goal.rpn, goal.ast);
+    AST  const & conjAST(ast(conj.rpn));
+    RPNspanAST   conjexp(conj.rpn, conjAST), goalexp(goal.rpn, goal.ast);
     // Abstract variable name
     Bank1var const absvar = pProb->bank.addabsvar(absRPN);
     // Abstract move
@@ -142,13 +142,13 @@ bool Environ::addabsmove
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = absmove.absconjs;
     // Conjecture
-    if (skeleton(thmexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
+    if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
         return false;
     // Goal
     if (skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
         return false;
     // Typecodes of 1 conjecture + 1 goal
-    conjs[0].typecode = thmgoal.typecode;
+    conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
 
     return addconjmove(absmove, moves);

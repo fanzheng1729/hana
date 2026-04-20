@@ -130,7 +130,7 @@ private:
     // Add an abstraction move. Return true if it has no open hypotheses.
     bool addabsmove
         (Goal const & goal, RPNspan abstraction,
-         Move const & move, Moves & moves) const;
+         Goal const & conj, Moves & moves) const;
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,
