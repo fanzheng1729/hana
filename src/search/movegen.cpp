@@ -90,8 +90,6 @@ static Move absmove
     if (absRPN.empty())
         return Move::NONE;
 
-    AST  const & conjAST(ast(conj.rpn));
-    RPNspanAST   conjexp(conj.rpn, conjAST), goalexp(goal.rpn, goal.ast);
     // Abstract variable name
     Bank1var const absvar = bank.addabsvar(absRPN);
     // Abstract move
@@ -99,6 +97,8 @@ static Move absmove
     // Abstract variable RPN
     move.substitutions.back() = absRPN;
     // 1 conjecture + 1 goal
+    RPNspanAST const conjexp(conj.rpn, ast(conj.rpn));
+    RPNspanAST const goalexp(goal.rpn, goal.ast);
     Move::Conjectures & conjs = move.absconjs;
     if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE ||
         skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
