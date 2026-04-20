@@ -97,7 +97,8 @@ static Move absmove
     // Abstract variable RPN
     move.substitutions.back() = absRPN;
     // 1 conjecture + 1 goal
-    RPNspanAST const conjexp(conj.rpn, ast(conj.rpn));
+    AST  const & conjAST(ast(conj.rpn));
+    RPNspanAST const conjexp(conj.rpn, conjAST);
     RPNspanAST const goalexp(goal.rpn, goal.ast);
     Move::Conjectures & conjs = move.absconjs;
     if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE ||
