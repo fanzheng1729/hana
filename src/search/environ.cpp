@@ -25,6 +25,10 @@ Goalstatus Environ::printbadgoal(RPN const & badRPN) const
 // Validate a move applying a theorem.
 Environ::MoveValidity Environ::validthmmove(Move const & move) const
 {
+    if (database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
+        return MoveINVALID;
+    if (!move.checkDV(assertion))
+        return MoveINVALID;
     // True if all goals of the move are proven
     bool allproven = true;
     // Record the hypotheses.

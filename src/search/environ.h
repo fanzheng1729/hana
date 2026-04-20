@@ -71,13 +71,9 @@ struct Environ : protected Gen
     // Validate a move.
     MoveValidity valid(Move const & move) const
     {
-        if (database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
-            return MoveINVALID;
-        if (move.isconj())
-            return validconjmove(move);
-        if (!move.isthm() || !move.checkDV(assertion))
-            return MoveINVALID;
-        return validthmmove(move);
+        return move.isconj() ? validconjmove(move) :
+                move.isthm() ? validthmmove(move) :
+                MoveINVALID;
     }
     // Return the hypotheses of a goal to be trimmed.
     virtual Bvector hypstotrim(Goal const & goal) const
@@ -116,6 +112,11 @@ protected:
     // Pointer to the problem
     Problem * pProb;
     friend Problem;
+// Validate
+    // a move applying a theorem
+    MoveValidity validthmmove(Move const & move) const;
+    // a conjectural move
+    MoveValidity validconjmove(Move const & move) const;
 private:
 // Move generation
     // Add a move with validation. Return true if it has no open hypotheses.
@@ -146,11 +147,6 @@ private:
     // Return true if it has no open hypotheses.
     bool trythm
         (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
-// Validate
-    // a move applying a theorem.
-    MoveValidity validthmmove(Move const & move) const;
-    // a conjectural move.
-    MoveValidity validconjmove(Move const & move) const;
 // Private members
     // true if *this <= problem context
     bool m_subsumedbyProb;

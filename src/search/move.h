@@ -35,25 +35,14 @@ struct Move
     mutable std::vector<void *> subgoals;
     Move(Type t = NONE) : type(t), pthm() {}
     // A move applying a theorem, on our turn
-    Move(pAss ptr, Substitutions const & subst) :
-        type(THM), pthm(ptr), substitutions(subst) {}
-    Move(pAss ptr, RPNspans const & subst) : type(THM), pthm(ptr)
-    {
-        substitutions.resize(subst.size());
-        for (Hypsize i = 1; i < subst.size(); ++i)
-            substitutions[i].assign(subst[i].first, subst[i].second);
-    }
+    template<class SUBST>
+    Move(pAss ptr, SUBST const & subst) : type(THM), pthm(ptr)
+    {substitutions.assign(subst.begin(), subst.end());}
     // A move making conjectures, on our turn
-    Move(Conjectures const & conjs, Substitutions const & absRPNs) :
-        type(conjs.empty() ? NONE : CONJ), pthm(), absconjs(conjs),
-        substitutions(absRPNs) {}
-    Move(Conjectures const & conjs, RPNspans const & absRPNs) :
+    template<class ABS>
+    Move(Conjectures const & conjs, ABS const & abs) :
         type(conjs.empty() ? NONE : CONJ), pthm(), absconjs(conjs)
-    {
-        substitutions.resize(absRPNs.size());
-        for (Hypsize i = 1; i < absRPNs.size(); ++i)
-            substitutions[i].assign(absRPNs[i].first, absRPNs[i].second);
-    }
+    {substitutions.assign(abs.begin(), abs.end());}
     // A move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm() {}
     bool isthm() const  { return type == THM; }

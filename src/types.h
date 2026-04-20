@@ -50,6 +50,7 @@ struct RPNspan : std::pair<RPNiter, RPNiter>
     void clear() { second = first; }
     RPNsize size() const { return second - first; }
     RPNstep const & root() const { return second[-1]; }
+    operator RPN() const { return RPN(first, second); }
 };
 // Ranges of proof steps
 typedef std::vector<RPNspan> RPNspans;

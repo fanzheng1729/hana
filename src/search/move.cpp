@@ -19,7 +19,7 @@ static Symbol3s symbols(RPN const & exp)
 // Return true if a move satisfies disjoint variable hypotheses.
 bool Move::checkDV(Assertion const & ass, bool verbose) const
 {
-    if (!pthm)
+    if (!isthm())
         return true;
 
     FOR (Disjvars::const_reference vars, theorem().disjvars)
