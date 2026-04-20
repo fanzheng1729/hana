@@ -54,6 +54,8 @@ struct RPNspan : std::pair<RPNiter, RPNiter>
 };
 // Ranges of proof steps
 typedef std::vector<RPNspan> RPNspans;
+// Range comparator
+typedef bool(* Compspans)(RPNspan, RPNspan);
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<RPNsize> ASTnode;
@@ -63,8 +65,7 @@ typedef std::vector<ASTnode> AST;
 typedef AST::const_iterator ASTiter;
 
 // Ranges governed by a RPNstep, map: span -> AST
-typedef std::map<RPNspan, AST, bool(*)(RPNspan, RPNspan)>
-    GovernedRPNspans;
+typedef std::map<RPNspan, AST, Compspans> GovernedRPNspans;
 // Map: RPNstep -> all spans governed by the RPNstep
 typedef std::map<RPNstep, GovernedRPNspans, std::less<const char *> >
     GovernedRPNspansbystep;

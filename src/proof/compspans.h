@@ -10,6 +10,6 @@ inline bool compspans (RPNspan x, RPNspan y)
 inline bool operator==(RPNspan x, RPNspan y)
 { return util::equal(x.first, x.second, y.first, y.second); }
 inline bool operator!=(RPNspan x, RPNspan y)
-{ return !(x ==y); }
+{ return !(x == y); }
 
 #endif // COMPSPANS_H_DEFINED

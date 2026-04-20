@@ -4,6 +4,7 @@
 #include <algorithm>    // for std::min
 #include "environ.h"
 #include "goaldata.h"
+#include "../proof/compspans.h"
 #include "../util/for.h"
 
 // Problem statement + Proof search tree with loop detection
@@ -23,7 +24,7 @@ private:
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
-    typedef std::set<RPNspan> AbsRPNs;
+    typedef std::set<RPNspan, Compspans> AbsRPNs;
     AbsRPNs absRPNs;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
@@ -48,6 +49,7 @@ public:
         MCTS(Game(), params),
         database(env.database),
         bank(database.nvar()),
+        absRPNs(compspans),
         numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),

@@ -360,7 +360,7 @@ void Problem::navigate(pNode p, bool detailed) const
 void Problem::printabs() const
 {
     FOR (RPNspan const absRPN, absRPNs)
-        std::cout << absRPN;
+        std::cout << verify(absRPN);
 }
 
 void Problem::writeproof(const char * const filename) const
