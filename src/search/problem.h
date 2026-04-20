@@ -112,12 +112,15 @@ public:
         }
         return env;
     }
+// Eval
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(pNode p) const;
     // Do singular extension. Return the value.
     // p should != nullptr.
     Value singularext(pNode p);
+    // Return true if game's rank < Problem's rank.
+    bool ranksimplerthanProb(Game const & game) const;
     // Evaluate the leaf. Return {value, sure?}.
     // p should != nullptr.
     virtual Eval evalleaf(pNode p) const;
@@ -125,59 +128,30 @@ public:
     // Evaluate the parent. Return {value, sure?}.
     // p should != nullptr.
     virtual Eval evalparent(pNode p) const;
-    // Return true if game's rank < Problem's rank.
-    bool ranksimplerthanProb(Game const & game) const
-    {
-        return game.env().rankssimplerthanProb() &&
-            database.syntaxDAG().simplerthan
-            (database.syntaxDAG().RPNranks(game.goal().rpn), maxranks);
-    }
     // Copy proof of the game to other contexts.
+// Node operations
     void copyproof(Game const & game);
     // Close all the nodes with p's proven goal.
-    void closenodes(pNode const p)
-    {
-        if (!p->game().proven()) return;
-        closenodesexcept(p->game().goaldata().pnodes(), p);
-        copyproof(p->game());
-    }
+    void closenodes(pNode const p);
     // Record the proof of proven goals on back propagation.
-    virtual void backpropcallback(pNode p)
-    {
-        if (p->game().proven())
-            setwin(p); // Fix seteval in backprop.
-        else if (p->won() && p->game().writeproof())
-            closenodes(p);
-    }
+    virtual void backpropcallback(pNode p);
     // Called after each playonce()
-    virtual void playoncecallback()
-    {
-        reval();
-        // checkmainline(root());
-    }
-    // Refocus the tree on simpler sub-tree, if almost won.
-    void reval();
+    virtual void playoncecallback();
+// Reval
     // Add the ranks of a node to maxranks, if almost won.
-    void addranks(pNode const p)
-    {
-        if (value(p) < ALMOSTWIN)
-            return;
-        database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
-        database.syntaxDAG().addexp(maxranks, p->game().goal().rpn);
-    }
+    void addranks(pNode const p);
     // Prune the sub-tree at p and update maxranks, if almost won.
     void prune(pNode p);
     // Update implications after problem context is simplified.
-    void updateimps()
-    {
-        FOR (Environs::const_reference renv, environs)
-            renv.second->updateimps(maxranks);
-    }
+    void updateimps();
     // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p);
+    // Refocus the tree on simpler sub-tree, if almost won.
+    void reval();
     // Proof of the assertion, if not empty
     RPN const & proof() const { return root()->game().proof(); }
     // Return true if proof() solves the problem *iter.
+// Stats
     bool checkproof(Assiter iter) const
     {
         return probEnv().legal(proof()) &&
@@ -232,18 +206,8 @@ private:
     // Add a super-context with hypotheses trimmed.
     // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsupEnv(Environ const & env, Move const & move);
-    // close all the nodes except p
-    void closenodesexcept(pNodes const & pnodes, pNode const p = pNode())
-    {
-        FOR (pNode const other, pnodes)
-            if (other != p && !other->won())
-            {
-                setwin(other);
-                pNode const parent = other.parent();
-                if (parent && !parent->won())
-                    backprop(parent);
-            }
-    }
+    // Close all the nodes except p
+    void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
 public:
     // Printing routines. DO NOTHING if p is nullptr.
     void printmainline(pNode p, size_type detail = 0) const;

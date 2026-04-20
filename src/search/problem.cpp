@@ -1,33 +1,5 @@
 #include "problem.h"
 
-// Copy proof of the game to other contexts.
-void Problem::copyproof(Game const & game)
-{
-    if (game.goaldatas().proven() || !game.proven())
-        return;
-    // Super-contexts
-    pEnvs const & psupEnvs = supEnvs(game.env());
-    pEnvs::const_iterator supiter = psupEnvs.begin();
-    pEnvs::const_iterator const supend = psupEnvs.end();
-    // Loop through super-contexts.
-    FOR (Goaldatas::reference goaldata, game.goaldatas())
-        if (!goaldata.second.proven())
-        {
-            Environ const & otherEnv = *goaldata.first;
-            supiter = std::lower_bound(supiter, supend, &otherEnv, less);
-            // while (supiter != supend && less(*supiter, &otherEnv))
-            //     ++supiter;
-            if (supiter == supend)
-                break;  // end reached
-            if (*supiter != &otherEnv)
-                continue;
-            // Super-context found. Copy proof.
-            goaldata.second.proofdst() = game.proof();
-            goaldata.second.settrue();
-            closenodesexcept(goaldata.second.pnodes());
-        }
-}
-
 // Initialize a context if existent. Return its pointer.
 Environ const * Problem::initEnv(Environ * p)
 {

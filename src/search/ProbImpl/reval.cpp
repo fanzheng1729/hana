@@ -15,6 +15,15 @@ void Problem::reval()
     // printranksinfo();
 }
 
+// Add the ranks of a node to maxranks, if almost won.
+void Problem::addranks(pNode const p)
+{
+    if (value(p) < ALMOSTWIN)
+        return;
+    database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
+    database.syntaxDAG().addexp(maxranks, p->game().goal().rpn);
+}
+
 // Prune the sub-tree at p and update maxranks, if almost won.
 void Problem::prune(pNode p)
 {
@@ -30,6 +39,13 @@ void Problem::prune(pNode p)
         setalmostloss(p);
     else
         addranks(p);
+}
+
+// Update implications after problem context is simplified.
+void Problem::updateimps()
+{
+    FOR (Environs::const_reference renv, environs)
+        renv.second->updateimps(maxranks);
 }
 
 // Focus the sub-tree at p, with updated maxranks, if almost won.
