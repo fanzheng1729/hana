@@ -88,7 +88,7 @@ static Move absmove
     (Goal const & goal, Goal const & conj, RPNspan const absRPN, Bank & bank)
 {
     if (absRPN.empty())
-        return false;
+        return Move::NONE;
 
     AST  const & conjAST(ast(conj.rpn));
     RPNspanAST   conjexp(conj.rpn, conjAST), goalexp(goal.rpn, goal.ast);
@@ -102,10 +102,10 @@ static Move absmove
     Move::Conjectures & conjs = move.absconjs;
     // Conjecture
     if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
-        return false;
+        return Move::NONE;
     // Goal
     if (skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
-        return false;
+        return Move::NONE;
     // Typecodes of 1 conjecture + 1 goal
     conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
