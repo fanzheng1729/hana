@@ -141,8 +141,9 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
                 subst.assign(thm.maxvarid() + 1, RPNspan());
                 if (findsubst(goalsubexp, thmsubexp, subst) &&
-                    addconjmove(absmove(goal, Move(pthm, subst).goal(),
-                                        goalabs.first, pProb->bank), moves))
+                    addconjmove(pProb->absmove
+                        (goal, Move(pthm, subst).goal(), goalabs.first),
+                        moves))
                     return true;
             }
         }

@@ -186,7 +186,10 @@ private:
     // Add a super-context with hypotheses trimmed.
     // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsupEnv(Environ const & env, Move const & move);
-    // Close all the nodes except p
+    // Create an abstract move.
+    Move absmove
+        (Goal const & goal, Goal const & conj, RPNspan const absRPN);
+    // Close all the nodes except p.
     void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
 public:
     // Printing routines. DO NOTHING if p is nullptr.

@@ -1,4 +1,5 @@
 #include "problem.h"
+#include "../proof/skeleton.h"
 
 // Initialize a context if existent. Return its pointer.
 Environ const * Problem::initEnv(Environ * p)
@@ -61,4 +62,32 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     supAss.disjvars = move.findDV(supAss);
     // Pointer to the super-context
     return newEnviter->second = initEnv(env.makeEnv(supAss));
+}
+
+// Create an abstract move.
+Move Problem::absmove
+    (Goal const & goal, Goal const & conj, RPNspan const absRPN)
+{
+    if (absRPN.empty())
+        return Move::NONE;
+
+    // Abstract variable name
+    Bank1var const absvar = bank.addabsvar(absRPN);
+    // Abstract move
+    Move move(2, absvar.id + 1);
+    // Abstract variable RPN
+    move.substitutions.back() = absRPN;
+    // 1 conjecture + 1 goal
+    AST  const & conjAST(ast(conj.rpn));
+    RPNspanAST const conjexp(conj.rpn, conjAST);
+    RPNspanAST const goalexp(goal.rpn, goal.ast);
+    Move::Conjectures & conjs = move.absconjs;
+    if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE ||
+        skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
+        return Move::NONE;
+    // Their typecodes
+    conjs[0].typecode = conj.typecode;
+    conjs[1].typecode = goal.typecode;
+
+    return move;
 }

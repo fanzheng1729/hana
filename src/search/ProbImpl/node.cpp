@@ -1,6 +1,6 @@
 #include "../problem.h"
 
-// Close all the nodes except p
+// Close all the nodes except p.
 void Problem::closenodesexcept(pNodes const & pnodes, pNode const p)
 {
     FOR (pNode const other, pnodes)
