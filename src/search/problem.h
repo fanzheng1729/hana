@@ -229,21 +229,14 @@ private:
         Goaldatas::value_type const envdata(&env, Goaldata(s, &env, pbiggoal));
         return &*pbiggoal->second.insert(envdata).first;
     }
+    // Initialize a context if existent. Return its pointer.
+    Environ const * initEnv(Environ * p);
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsubEnv(Environ const & env, Bvector const & hypstotrim);
     // Add a super-context with hypotheses trimmed.
     // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsupEnv(Environ const & env, Move const & move);
-    // Initialize a context if existent. Return its pointer.
-    Environ const * initEnv(Environ * p)
-    {
-        if (!p) return p;
-        p->pProb = this;
-        p->m_subsumedbyProb = environs.size()<=1 || (probEnv().compEnv(*p)==1);
-        p->updateimps(maxranks);
-        return &addimps(addhypproofs(*p));
-    }
     // close all the nodes except p
     void closenodesexcept(pNodes const & pnodes, pNode const p = pNode())
     {
