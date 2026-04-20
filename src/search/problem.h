@@ -116,18 +116,8 @@ public:
     // Change this to turn on staged move generation.
     virtual Value UCBnewstage(pNode p) const;
     // Do singular extension. Return the value.
-    Value singularext(pNode p)
-    {
-        if (isourturn(p)) return value(p);
-        // Their turn
-        Value value = WDL::WIN;
-        if (expand<&Game::moves>(p))
-        {
-            evalnewleaves(p);
-            value = minimax(p);
-        }
-        return value;
-    }
+    // p should != nullptr.
+    Value singularext(pNode p);
     // Evaluate the leaf. Return {value, sure?}.
     // p should != nullptr.
     virtual Eval evalleaf(pNode p) const;

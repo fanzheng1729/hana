@@ -23,6 +23,21 @@ Value Problem::UCBnewstage(pNode p) const
             + UCBbonus(true, p.size(), self);
 }
 
+// Do singular extension. Return the value.
+// p should != nullptr.
+Value Problem::singularext(pNode p)
+{
+    if (isourturn(p)) return value(p);
+    // Their turn
+    Value value = WDL::WIN;
+    if (expand<&Game::moves>(p))
+    {
+        evalnewleaves(p);
+        value = minimax(p);
+    }
+    return value;
+}
+
 // Evaluate the leaf. Return {value, sure?}.
 // p should != nullptr.
 Eval Problem::evalleaf(pNode p) const
