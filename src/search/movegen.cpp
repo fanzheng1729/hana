@@ -136,9 +136,9 @@ bool Environ::addabsmove
     // Abstract variable name
     Bank1var const absvar = pProb->bank.addabsvar(absRPN);
     // Abstract move
-    Move absmove(Move::Conjectures(2), Move::Substitutions(absvar.id+1));
+    Move absmove(2, absvar.id + 1);
     // Abstract variable RPN
-    absmove.substitutions[absvar.id] = absRPN;
+    absmove.substitutions.back() = absRPN;
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = absmove.absconjs;
     // Conjecture

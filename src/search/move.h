@@ -33,17 +33,22 @@ struct Move
     // mutable std::vector<pGoal> subgoals;
     // Workaround for some compilers
     mutable std::vector<void *> subgoals;
+    // Move of specified type, defaulted to NONE
     Move(Type t = NONE) : type(t), pthm() {}
-    // A move applying a theorem, on our turn
+    // Move applying a theorem, on our turn
     template<class SUBST>
     Move(pAss ptr, SUBST const & subst) : type(THM), pthm(ptr)
     {substitutions.assign(subst.begin(), subst.end());}
-    // A move making conjectures, on our turn
+    // Move making nconj conjectures with nabs abstractions, on our turn
+    Move(Conjectures::size_type nconj, Substitutions::size_type nabs) :
+        type(nconj > 0 ? CONJ : NONE), pthm(), absconjs(nconj),
+        substitutions(nabs) {}
+    // Move making conjectures, on our turn
     template<class ABS>
     Move(Conjectures const & conjs, ABS const & abs) :
         type(conjs.empty() ? NONE : CONJ), pthm(), absconjs(conjs)
     {substitutions.assign(abs.begin(), abs.end());}
-    // A move verifying a hypothesis, on their turn
+    // Move verifying a hypothesis, on their turn
     Move(Hypsize i) : index(i), pthm() {}
     bool isthm() const  { return type == THM; }
     bool isconj() const { return type == CONJ; }
