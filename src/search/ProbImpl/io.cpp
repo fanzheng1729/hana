@@ -359,8 +359,8 @@ void Problem::navigate(pNode p, bool detailed) const
 
 void Problem::printabs() const
 {
-    FOR (RPNspan const absRPN, absRPNs)
-        std::cout << verify(absRPN);
+    FOR (AbsRPNs::const_reference absRPN, absRPNs)
+        std::cout << verify(absRPN.first);
 }
 
 void Problem::writeproof(const char * const filename) const

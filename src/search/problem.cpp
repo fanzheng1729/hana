@@ -64,6 +64,27 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     return newEnviter->second = initEnv(env.makeEnv(supAss));
 }
 
+static void addabsubst
+    (RPNspanAST const abs, pAss pthm, Moves & moves)
+{
+    if (!pthm)
+        return;
+        
+    Assertion const & thm = pthm->second;
+    RPNspans subst(thm.maxvarid() + 1);
+    GovernedRPNspansbystep::const_iterator const iter =
+    thm.expmaxabs.find(abs.first.root());
+    if (iter == thm.expmaxabs.end())
+        return;
+    
+    FOR (GovernedRPNspans::const_reference thmabs, iter->second)
+    {
+        subst.assign(thm.maxvarid() + 1, RPNspan());
+        if (findsubst(abs, RPNspanAST(thmabs.first, thmabs.second), subst))
+            moves.push_back(Move(pthm, subst));
+    }
+}
+
 // Create an abstract move.
 Move Problem::absmove
     (Goal const & goal, Goal const & conj, RPNspan const absRPN)
@@ -89,7 +110,7 @@ Move Problem::absmove
     conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
 
-    absRPNs.insert(absRPN);
-    
+    absRPNs[absRPN];
+
     return move;
 }

@@ -24,7 +24,7 @@ private:
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
-    typedef std::set<RPNspan, Compspans> AbsRPNs;
+    typedef std::map<RPNspan, Moves, Compspans> AbsRPNs;
     AbsRPNs absRPNs;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.

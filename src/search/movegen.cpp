@@ -86,6 +86,8 @@ bool Environ::trythm
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 {
+    if (!pthm)
+        return false;
     Assertion const & thm = pthm->second;
     if (thm.expmaxabs.empty())
         return false;
@@ -105,11 +107,11 @@ bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
 
         FOR (GovernedRPNspans::const_reference thmabs, rstep.second)
         {
-            RPNspanAST thmsubexp(thmabs.first, thmabs.second);
+            RPNspanAST const thmsubexp(thmabs.first, thmabs.second);
 
             FOR (GovernedRPNspans::const_reference goalabs, iter->second)
             {
-                RPNspanAST goalsubexp(goalabs.first, goalabs.second);
+                RPNspanAST const goalsubexp(goalabs.first, goalabs.second);
 
                 subst.assign(thm.maxvarid() + 1, RPNspan());
                 if (findsubst(goalsubexp, thmsubexp, subst) &&
