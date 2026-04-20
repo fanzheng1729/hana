@@ -147,6 +147,7 @@ bool Environ::addabsmove
     // Goal
     if (skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
         return false;
+    // Typecodes of 1 conjecture + 1 goal
     conjs[0].typecode = thmgoal.typecode;
     conjs[1].typecode = goal.typecode;
 
