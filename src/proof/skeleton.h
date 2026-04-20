@@ -15,7 +15,7 @@ Tribool skeleton
     (RPNspanAST const exp, T const cansplit, B & bank, RPN & result)
 {
     Tribool retval = FALSE;
-std::cout << "Analyzing " << exp.steps();
+// std::cout << "Analyzing " << exp.steps();
     RPNstep const root = exp.RPNroot();
     switch (root.type)
     {
