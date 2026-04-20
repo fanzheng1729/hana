@@ -150,33 +150,13 @@ public:
     void reval();
     // Proof of the assertion, if not empty
     RPN const & proof() const { return root()->game().proof(); }
-    // Return true if proof() solves the problem *iter.
 // Stats
-    bool checkproof(Assiter iter) const
-    {
-        return probEnv().legal(proof()) &&
-            checkconclusion(iter->first,
-                            verify(proof(), &*iter),
-                            iter->second.expression);
-    }
+    // Return true if proof() solves the problem *iter.
+    bool checkproof(Assiter iter) const;
     // # goals of a given status
-    Goals::size_type countgoal(int status) const
-    {
-        Goals::size_type n = 0;
-        FOR (Goals::const_reference goaldatas, goals)
-            FOR (Goaldatas::const_reference goaldata, goaldatas.second)
-                n += (goaldata.second.getstatus() == status);
-        return n;
-    }
+    Goals::size_type countgoal(int status) const;
     // # proven goals
-    Goals::size_type countproof() const
-    {
-        Goals::size_type n = 0;
-        FOR (Goals::const_reference goaldatas, goals)
-            FOR (Goaldatas::const_reference goaldata, goaldatas.second)
-                n += goaldata.second.proven();
-        return n;
-    }
+    Goals::size_type countproof() const;
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
 private:
