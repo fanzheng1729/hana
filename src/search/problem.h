@@ -132,6 +132,8 @@ public:
             database.syntaxDAG().simplerthan
             (database.syntaxDAG().RPNranks(game.goal().rpn), maxranks);
     }
+    // Copy proof of the game to other contexts.
+    void copyproof(Game const & game);
     // Close all the nodes with p's proven goal.
     void closenodes(pNode const p)
     {
@@ -139,8 +141,6 @@ public:
         closenodesexcept(p->game().goaldata().pnodes(), p);
         copyproof(p->game());
     }
-    // Copy proof of the game to other contexts.
-    void copyproof(Game const & game);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(pNode p)
     {
@@ -152,11 +152,11 @@ public:
     // Called after each playonce()
     virtual void playoncecallback()
     {
-        re_eval();
+        reval();
         // checkmainline(root());
     }
     // Refocus the tree on simpler sub-tree, if almost won.
-    void re_eval();
+    void reval();
     // Add the ranks of a node to maxranks, if almost won.
     void addranks(pNode const p)
     {
