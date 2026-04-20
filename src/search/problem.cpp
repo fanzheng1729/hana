@@ -89,5 +89,7 @@ Move Problem::absmove
     conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
 
+    absRPNs.insert(absRPN);
+    
     return move;
 }

@@ -22,6 +22,8 @@ public:
 private:
     // Bank of variables and hypotheses
     Bank bank;
+    // Abstractions made
+    std::set<RPNspan> absRPNs;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
     Assertions::size_type numberlimit;
