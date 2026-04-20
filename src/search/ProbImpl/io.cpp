@@ -357,6 +357,12 @@ void Problem::navigate(pNode p, bool detailed) const
     std::cout << hline << std::endl;
 }
 
+void Problem::printabs() const
+{
+    FOR (RPNspan const absRPN, absRPNs)
+        std::cout << absRPN;
+}
+
 void Problem::writeproof(const char * const filename) const
 {
     if (proof().empty() || !filename)

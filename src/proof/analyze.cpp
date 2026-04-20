@@ -86,8 +86,7 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
 {
     if (exp.empty() || tmp.empty() || exp.size() < tmp.size())
         return false;
-// std::cout << "Matching " << RPN(exp.first.first, exp.first.second);
-// std::cout << "Against " << RPN(tmp.first.first, tmp.first.second);
+// std::cout << "Matching " << exp.steps() << "Against " << tmp.steps();
     RPNstep exproot = *(exp.first.second-1), tmproot = *(tmp.first.second-1);
     switch(tmproot.type)
     {
@@ -152,8 +151,7 @@ static void maxabs
             GovernedRPNspans & spans = result[root];
             if (spans.empty())
                 spans = GovernedRPNspans(compspans);
-            spans[subexp.first] = ast(RPN(subexp.first.first,
-                                          subexp.first.second));
+            spans[subexp.first] = ast(subexp.steps());
         }
         *pinstep = true;
     }

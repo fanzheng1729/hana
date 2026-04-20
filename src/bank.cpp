@@ -16,7 +16,7 @@ Symbol3 Bank::addabsvar(RPNspan absRPN)
     if (absRPN.empty())
         return "";
 
-    RPNSymbols::value_type RPNvar(RPN(absRPN.first, absRPN.second), "");
+    RPNSymbols::value_type const RPNvar(absRPN, "");
     RPNSymbols::iterator const RPNiter = m_RPNSymbols.insert(RPNvar).first;
     // Abstract variable
     Symbol3 & var = RPNiter->second;

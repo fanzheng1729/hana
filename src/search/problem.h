@@ -23,7 +23,8 @@ private:
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
-    std::set<RPNspan> absRPNs;
+    typedef std::set<RPNspan> AbsRPNs;
+    AbsRPNs absRPNs;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
     Assertions::size_type numberlimit;
@@ -161,6 +162,8 @@ public:
     Goals::size_type countproof() const;
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
+    // # abstractions
+    AbsRPNs::size_type countabs() const { return absRPNs.size(); }
 private:
     // Add the problem context. Return its pointer.
     template<class Env>
@@ -204,6 +207,7 @@ public:
     void printranksinfo() const;
     void navigate(pNode p, bool detailed = true) const;
     void navigate(bool detailed = true) const { navigate(root(), detailed); }
+    void printabs() const;
     void writeproof(const char * const filename) const;
     virtual ~Problem()
     {
