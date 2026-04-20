@@ -67,3 +67,12 @@ Eval Problem::evaltheirleaf(pNode p) const
             addpNode(child);
     return Eval(value, false);
 }
+
+// Evaluate the parent. Return {value, sure?}.
+// p should != nullptr.
+Eval Problem::evalparent(pNode p) const
+{
+    Value   const v = minimax(p);
+    bool    const stuck = staged && isourturn(p) && v == WDL::LOSS;
+    return  stuck ? p->eval() : v;
+}

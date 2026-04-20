@@ -124,12 +124,7 @@ public:
     Eval evaltheirleaf(pNode p) const;
     // Evaluate the parent. Return {value, sure?}.
     // p should != nullptr.
-    virtual Eval evalparent(pNode p) const
-    {
-        Value   const v = minimax(p);
-        bool    const stuck = staged && isourturn(p) && v == WDL::LOSS;
-        return  stuck ? p->eval() : v;
-    }
+    virtual Eval evalparent(pNode p) const;
     // Return true if game's rank < Problem's rank.
     bool ranksimplerthanProb(Game const & game) const
     {
