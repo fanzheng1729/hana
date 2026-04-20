@@ -100,13 +100,10 @@ static Move absmove
     move.substitutions.back() = absRPN;
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = move.absconjs;
-    // Conjecture
-    if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
+    if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE ||
+        skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
         return Move::NONE;
-    // Goal
-    if (skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
-        return Move::NONE;
-    // Typecodes of 1 conjecture + 1 goal
+    // Their typecodes
     conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
 
