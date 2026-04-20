@@ -174,11 +174,9 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
             RPNspans newsubsts(substs);
             if (findsubst
                 (assertion.hypRPNAST(asshyp), thm.hypRPNAST(thmhyp), newsubsts))
-            {
-// std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp);
+// std::cout << assertion.hyplabel(asshyp) << ' ' << assertion.hypexp(asshyp),
                 if (addboundmove(Move(pthm, newsubsts), moves))
                     return true;
-            }
         }
     }
     return false;

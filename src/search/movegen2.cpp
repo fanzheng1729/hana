@@ -73,11 +73,9 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
         // std::cout << hypstack;
         RPNspans const & newsubsts = substack[hypstack.size()];
         if (allvarsfilled(thm.varusage, newsubsts))
-        {
             if (addboundmove(Move(pthm, newsubsts), moves))
                 return true;
-        }
-        else
+        else // Not all variables filled
         if (hypstack.size() < nfreehyps && matchedhyps < maxfreehyps)
         {
             // Match new hypothesis.
