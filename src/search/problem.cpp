@@ -76,7 +76,8 @@ static void addabsubst
     thm.expmaxabs.find(abs.first.root());
     if (iter == thm.expmaxabs.end())
         return;
-    
+
+    moves.reserve(moves.size() + iter->second.size());
     FOR (GovernedRPNspans::const_reference thmabs, iter->second)
     {
         subst.assign(thm.maxvarid() + 1, RPNspan());
