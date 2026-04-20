@@ -372,5 +372,7 @@ void Problem::writeproof(const char * const filename) const
     verify(proof(), printer);
 
     std::ofstream out(filename);
-    out << printer.str(indentations(ast(proof())));
+
+    if (out)
+        out << printer.str(indentations(ast(proof())));
 }
