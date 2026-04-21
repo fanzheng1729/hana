@@ -66,30 +66,30 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 
 // Create an abstract move.
 Move Problem::absmove
-    (Goal const & goal, Goal const & conj, RPNspanAST const subexpAST)
+    (Goal const & goal, Goal const & conj, RPNspanAST const subexp)
 {
-    if (subexpAST.empty())
+    if (subexp.empty())
         return Move::NONE;
 
     // Abstract variable name
-    Bank1var const absvar = bank.addabsvar(subexpAST.first);
+    Bank1var const absvar = bank.addabsvar(subexp.first);
     // Abstract move
     Move move(2, absvar.id + 1);
     // Abstract variable RPN
-    move.substitutions.back() = subexpAST.first;
+    move.substitutions.back() = subexp.first;
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = move.absconjs;
     if (skeleton(RPNspanAST(goal.rpn, goal.ast),
-        Keepspan(subexpAST.first), absvar, conjs[1].rpn) != TRUE ||
+        Keepspan(subexp.first), absvar, conjs[1].rpn) != TRUE ||
         skeleton(RPNspanAST(conj.rpn, ast(conj.rpn)),
-        Keepspan(subexpAST.first), absvar, conjs[0].rpn) != TRUE)
+        Keepspan(subexp.first), absvar, conjs[0].rpn) != TRUE)
         return Move::NONE;
     // Their typecodes
     conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
 
     std::pair<Abstractions::iterator, bool> const result =
-    abstractions.insert(std::make_pair(subexpAST.first, Moves()));
+    abstractions.insert(std::make_pair(subexp.first, Moves()));
 
     return move;
 }

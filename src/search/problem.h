@@ -195,7 +195,7 @@ private:
     Environ const * addsupEnv(Environ const & env, Move const & move);
     // Create an abstract move.
     Move absmove
-        (Goal const & goal, Goal const & conj, RPNspanAST const subexpAST);
+        (Goal const & goal, Goal const & conj, RPNspanAST const subexp);
     // Close all the nodes except p.
     void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
 public:
