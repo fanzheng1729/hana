@@ -64,53 +64,32 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     return newEnviter->second = initEnv(env.makeEnv(supAss));
 }
 
-static void addabsubst
-    (RPNspanAST const abs, pAss pthm, Moves & moves)
-{
-    if (!pthm)
-        return;
-        
-    Assertion const & thm = pthm->second;
-    RPNspans subst(thm.maxvarid() + 1);
-    GovernedRPNspansbystep::const_iterator const iter =
-    thm.expmaxabs.find(abs.first.root());
-    if (iter == thm.expmaxabs.end())
-        return;
-
-    moves.reserve(moves.size() + iter->second.size());
-    FOR (GovernedRPNspans::const_reference thmabs, iter->second)
-    {
-        subst.assign(thm.maxvarid() + 1, RPNspan());
-        if (findsubst(abs, RPNspanAST(thmabs.first, thmabs.second), subst))
-            moves.push_back(Move(pthm, subst));
-    }
-}
-
 // Create an abstract move.
 Move Problem::absmove
-    (Goal const & goal, Goal const & conj, RPNspan const absRPN)
+    (Goal const & goal, Goal const & conj, RPNspanAST const subexpAST)
 {
-    if (absRPN.empty())
+    if (subexpAST.empty())
         return Move::NONE;
 
     // Abstract variable name
-    Bank1var const absvar = bank.addabsvar(absRPN);
+    Bank1var const absvar = bank.addabsvar(subexpAST.first);
     // Abstract move
     Move move(2, absvar.id + 1);
     // Abstract variable RPN
-    move.substitutions.back() = absRPN;
+    move.substitutions.back() = subexpAST.first;
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = move.absconjs;
     if (skeleton(RPNspanAST(goal.rpn, goal.ast),
-        Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE ||
+        Keepspan(subexpAST.first), absvar, conjs[1].rpn) != TRUE ||
         skeleton(RPNspanAST(conj.rpn, ast(conj.rpn)),
-        Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
+        Keepspan(subexpAST.first), absvar, conjs[0].rpn) != TRUE)
         return Move::NONE;
     // Their typecodes
     conjs[0].typecode = conj.typecode;
     conjs[1].typecode = goal.typecode;
 
-    absRPNs[absRPN];
+    std::pair<Abstractions::iterator, bool> const result =
+    abstractions.insert(std::make_pair(subexpAST.first, Moves()));
 
     return move;
 }

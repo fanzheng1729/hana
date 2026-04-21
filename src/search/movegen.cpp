@@ -50,10 +50,31 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
             if (stage == 0 ||
                 (thm.nfreevar() > 0 && stage >= thm.nfreevar()))
                 if (trythm(game, assvec[i], stage, moves))
-                    break; // Move closes the goal.
+                    return moves; // Move closes the goal.
     }
 // if (stage >= 5)
 // std::cout << moves.size() << " moves found" << std::endl;
+    if (stage > 0)
+        return moves;
+    // Abstraction moves @ stabe 0
+    Goal const & goal = game.goal();
+    // Maximal abstractions in the goal
+    goal.fillmaxabs();
+    FOR (GovernedRPNspansbystep::const_reference rstep, goal.maxabs)
+        FOR (GovernedRPNspans::const_reference subexp, rstep.second)
+        {
+            // Substituions in theorems matching the abstaction
+            std::pair<Problem::Abstractions::iterator, bool> const result =
+            pProb->abstractions.insert(std::make_pair(subexp.first, Moves()));
+            Moves & substs = result.first->second;
+            RPNspanAST const subexpAST(subexp.first, subexp.second);
+            if (result.second) // New sub-expression
+                substs = absubsts(subexpAST);
+            // Add abstraction moves.
+            if (addabsmoves(goal, subexpAST, substs, moves))
+                return moves;
+        }
+
     return moves;
 }
 
@@ -70,59 +91,67 @@ bool Environ::trythm
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     RPNspans subst(thm.maxvarid() + 1);
     if (!findsubst(goal, thm.expRPNAST(), subst))
-        return size == 0 && thm.nEhyps() == 0// && false
-                && addabsmoves(goal, &*iter, moves);
-
+        return false;
     // Move with all bound substitutions
     Move move(&*iter, subst);
     if (size > 0)
-        return thm.nfreevar() > 0 && addhardmoves(move.pthm, size, move, moves);
+        return thm.nfreevar() > 0 && addhardmoves(move, size, moves);
     else if (thm.nfreevar() > 0)
         return assertion.nEhyps() > 0 && addhypmoves(move.pthm, moves, subst);
     else
         return addboundmove(move, moves);
 }
 
-// Add abstraction moves. Return true if it has no open hypotheses.
-bool Environ::addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const
+static void addabsubst
+    (RPNspanAST const subexp, pAss pthm, Moves & moves)
 {
-    if (!pthm)
-        return false;
     Assertion const & thm = pthm->second;
-    if (thm.expmaxabs.empty())
-        return false;
-
-    goal.fillmaxabs();
-    if (goal.maxabs.empty())
-        return false;
-
     RPNspans subst(thm.maxvarid() + 1);
+    GovernedRPNspansbystep::const_iterator const iter =
+    thm.expmaxabs.find(subexp.first.root());
+    if (iter == thm.expmaxabs.end())
+        return;
 
-    FOR (GovernedRPNspansbystep::const_reference rstep, thm.expmaxabs)
+    moves.reserve(moves.size() + iter->second.size());
+    FOR (GovernedRPNspans::const_reference thmabs, iter->second)
     {
-        GovernedRPNspansbystep::const_iterator const iter
-        = goal.maxabs.find(rstep.first);
-        if (iter == goal.maxabs.end())
-            continue;
-
-        FOR (GovernedRPNspans::const_reference thmabs, rstep.second)
-        {
-            RPNspanAST const thmsubexp(thmabs.first, thmabs.second);
-
-            FOR (GovernedRPNspans::const_reference goalabs, iter->second)
-            {
-                RPNspanAST const goalsubexp(goalabs.first, goalabs.second);
-
-                subst.assign(thm.maxvarid() + 1, RPNspan());
-                if (findsubst(goalsubexp, thmsubexp, subst) &&
-                    addconjmove(pProb->absmove
-                        (goal, Move(pthm, subst).goal(), goalabs.first),
-                        moves))
-                    return true;
-            }
-        }
+        subst.assign(thm.maxvarid() + 1, RPNspan());
+        if (findsubst(subexp, RPNspanAST(thmabs.first, thmabs.second), subst))
+            moves.push_back(Move(pthm, subst));
     }
-    
+}
+
+// Return abstraction substitutions.
+Moves Environ::absubsts(RPNspanAST const subexp) const
+{
+    Moves moves;
+    Assiters const & assvec = database.assiters();
+    Assiters::size_type const limit
+        = std::min(assnum(), prob().numberlimit);
+
+    for (Assiters::size_type i = 1; i < limit; ++i)
+    {
+        Assertion const & thm = assvec[i]->second;
+        if (!thm.testtype(Asstype::USELESS) && thm.nEhyps() == 0
+            && ontopic(thm))
+            addabsubst(subexp, &*assvec[i], moves);
+    }
+
+    return moves;
+}
+
+// Return abstraction substitutions.
+bool Environ::addabsmoves
+    (Goal const & goal, RPNspanAST const subexp,
+    Moves const & absubsts, Moves & moves) const
+{
+    FOR (Move const & absubst, absubsts)
+    {
+        Goal const & conj = absubst.goal();
+        if (goal != conj &&
+            addconjmove(pProb->absmove(goal, conj, subexp), moves))
+            return true;
+    }
     return false;
 }
 

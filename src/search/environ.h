@@ -125,8 +125,12 @@ private:
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add a conjectural move. Return true if it has no open hypotheses.
     bool addconjmove(Move const & move, Moves & moves) const;
+    // Return abstraction substitutions.
+    Moves absubsts(RPNspanAST const subexp) const;
     // Add abstraction moves. Return true if it has no open hypotheses.
-    bool addabsmoves(Goal const & goal, pAss pthm, Moves & moves) const;
+    bool addabsmoves
+        (Goal const & goal, RPNspanAST const subexp,
+        Moves const & absubsts, Moves & moves) const;
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,
@@ -136,9 +140,8 @@ private:
                      Hypsize maxfreehyps) const;
     // Add moves with free variables.
     // Return true if it has no open hypotheses.
-    virtual bool addhardmoves
-        (pAss pthm, RPNsize size, Move & move, Moves & moves) const
-        { return pthm && !pthm && size && &move && &moves; }
+    virtual bool addhardmoves(Move & move, RPNsize size, Moves & moves) const
+        { return size && !size && &move && &moves; }
     // Try applying the theorem, and add moves if successful.
     // Return true if it has no open hypotheses.
     bool trythm

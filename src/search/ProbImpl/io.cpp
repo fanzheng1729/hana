@@ -359,7 +359,7 @@ void Problem::navigate(pNode p, bool detailed) const
 
 void Problem::printabs() const
 {
-    FOR (AbsRPNs::const_reference absRPN, absRPNs)
+    FOR (Abstractions::const_reference absRPN, abstractions)
         std::cout << verify(absRPN.first);
 }
 

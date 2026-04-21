@@ -104,8 +104,7 @@ struct Prop : Environ
 private:
     // Add moves with free variables.
     // Return true if it has no open hypotheses.
-    virtual bool addhardmoves
-        (pAss pthm, RPNsize size, Move & move, Moves & moves) const;
+    virtual bool addhardmoves(Move & move, RPNsize size, Moves & moves) const;
     // The CNF of all hypotheses combined
     HypsCNF const allhypsCNF;
     Atom hypnatoms;

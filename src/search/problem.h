@@ -24,8 +24,8 @@ private:
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
-    typedef std::map<RPNspan, Moves, Compspans> AbsRPNs;
-    AbsRPNs absRPNs;
+    typedef std::map<RPNspan, Moves, Compspans> Abstractions;
+    Abstractions abstractions;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
     Assertions::size_type numberlimit;
@@ -49,7 +49,7 @@ public:
         MCTS(Game(), params),
         database(env.database),
         bank(database.nvar()),
-        absRPNs(compspans),
+        abstractions(compspans),
         numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
@@ -165,7 +165,7 @@ public:
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
     // # abstractions
-    AbsRPNs::size_type countabs() const { return absRPNs.size(); }
+    Abstractions::size_type countabs() const { return abstractions.size(); }
 private:
     // Add the problem context. Return its pointer.
     template<class Env>
@@ -195,7 +195,7 @@ private:
     Environ const * addsupEnv(Environ const & env, Move const & move);
     // Create an abstract move.
     Move absmove
-        (Goal const & goal, Goal const & conj, RPNspan const absRPN);
+        (Goal const & goal, Goal const & conj, RPNspanAST const subexpAST);
     // Close all the nodes except p.
     void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
 public:
