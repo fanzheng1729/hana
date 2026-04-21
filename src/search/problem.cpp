@@ -100,12 +100,11 @@ Move Problem::absmove
     // Abstract variable RPN
     move.substitutions.back() = absRPN;
     // 1 conjecture + 1 goal
-    AST  const & conjAST(ast(conj.rpn));
-    RPNspanAST const conjexp(conj.rpn, conjAST);
-    RPNspanAST const goalexp(goal.rpn, goal.ast);
     Move::Conjectures & conjs = move.absconjs;
-    if (skeleton(conjexp, Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE ||
-        skeleton(goalexp, Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE)
+    if (skeleton(RPNspanAST(goal.rpn, goal.ast),
+        Keepspan(absRPN), absvar, conjs[1].rpn) != TRUE ||
+        skeleton(RPNspanAST(conj.rpn, ast(conj.rpn)),
+        Keepspan(absRPN), absvar, conjs[0].rpn) != TRUE)
         return Move::NONE;
     // Their typecodes
     conjs[0].typecode = conj.typecode;
