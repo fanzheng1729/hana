@@ -125,12 +125,10 @@ private:
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add a conjectural move. Return true if it has no open hypotheses.
     bool addconjmove(Move const & move, Moves & moves) const;
-    // Return abstraction substitutions.
-    Moves absubsts(RPNspanAST const subexp) const;
-    // Add abstraction moves. Return true if it has no open hypotheses.
-    bool addabsmoves
-        (Goal const & goal, RPNspanAST const subexp,
-        Moves const & absubsts, Moves & moves) const;
+    // Try applying the theorem, and add moves if successful.
+    // Return true if it has no open hypotheses.
+    bool trythm
+        (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,
@@ -142,10 +140,15 @@ private:
     // Return true if it has no open hypotheses.
     virtual bool addhardmoves(Move & move, RPNsize size, Moves & moves) const
         { return size && !size && &move && &moves; }
-    // Try applying the theorem, and add moves if successful.
-    // Return true if it has no open hypotheses.
-    bool trythm
-        (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
+    // Add abstraction moves. Return true if it has no open hypotheses.
+    bool addabsmoves(Goal const & goal, Moves & moves) const;
+    bool addabsmoves
+        (Goal const & goal, RPNspanAST const subexp, Moves & moves) const;
+    bool addabsmoves
+        (Goal const & goal, RPNspanAST const subexp,
+        Moves const & absubsts, Moves & moves) const;
+    // Return abstraction substitutions.
+    Moves absubsts(RPNspanAST const subexp) const;
 // Private members
     // true if *this <= problem context
     bool m_subsumedbyProb;
