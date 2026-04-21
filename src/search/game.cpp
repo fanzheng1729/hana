@@ -26,9 +26,9 @@ bool Game::legal(Move const & move, bool ourturn) const
 {
     if (move.isdefer())
         return true;
-    if (ourturn && (move.isthm() || move.isconj()))
+    if (ourturn && (move.isthmorconj()))
         return goal() == move.goal();
-    if (!ourturn && (attempt.isthm())) // Check index bound.
+    if (!ourturn && (attempt.isthmorconj())) // Check index bound.
         return move.index < attempt.nsubgoals();
     return true;
 }
@@ -43,7 +43,7 @@ Game Game::play(Move const & move, bool ourturn) const
         game.attempt = move;
         game.nDefer = move.isdefer() * (nDefer + 1);
     }
-    else if (attempt.isthm() || attempt.isconj()) // Pick the hyp.
+    else if (attempt.isthmorconj()) // Pick the hyp.
         game.pgoal = static_cast<pGoal>(attempt.subgoals[move.index]);
 
     return game;
