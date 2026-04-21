@@ -170,10 +170,7 @@ Moves Environ::absubsts(RPNspanAST const subexp) const
 {
     Moves moves;
     Assiters const & assvec = database.assiters();
-    Assiters::size_type const limit
-        = std::min(assnum(), prob().numberlimit);
-
-    for (Assiters::size_type i = 1; i < limit; ++i)
+    for (Assiters::size_type i = 1; i < prob().numberlimit; ++i)
     {
         Assertion const & thm = assvec[i]->second;
         if (!thm.testtype(Asstype::USELESS) && thm.nEhyps() == 0
