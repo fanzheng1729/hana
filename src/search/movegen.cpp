@@ -41,8 +41,8 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     Moves moves;
 
     Assiters const & assvec = database.assiters();
-    Assiters::size_type const limit
-        = std::min(assnum(), prob().numberlimit);
+    Assiters::size_type & limit = pProb->numberlimit;
+    if (limit > assnum()) limit = assnum();
     for (Assiters::size_type i = 1; i < limit; ++i)
     {
         Assertion const & thm = assvec[i]->second;
@@ -112,7 +112,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     return false;
 }
 
-// Return abstraction substitutions.
+// Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Goal const & goal, Moves & moves) const
 {
     goal.fillmaxabs();
