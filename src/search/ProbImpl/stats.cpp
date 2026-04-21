@@ -3,8 +3,6 @@
 // Return true if proof() solves the problem *iter.
 bool Problem::checkproof(Assiter iter) const
 {
-    // if (countabs() > 4)
-    //     printabs(), std::cout << countabs(), std::cin.get();
     return probEnv().legal(proof()) &&
         checkconclusion(iter->first,
                         verify(proof(), &*iter),
