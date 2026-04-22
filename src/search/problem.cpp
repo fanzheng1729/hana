@@ -83,10 +83,7 @@ Move Problem::absmove
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = move.absconjs;
     // Conjecture
-    RPN const & conj = absubstmove.second;
-    conjs[0].rpn.resize(conj.size());
-    std::replace_copy(conj.begin(), conj.end(), conjs[0].rpn.begin(),
-                      RPNstep(), RPNstep(absvar.iter));
+    conjs[0].rpn = absubstmove.second;
     conjs[0].typecode = thm.exptypecode();
     // Goal
     skeleton(goal, Keepspan(goalsubexp.first), absvar, conjs[1].rpn);

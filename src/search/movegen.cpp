@@ -146,7 +146,7 @@ bool Environ::addabsmoves
 }
 
 static void addabsubst
-    (RPNspanAST const subexp, pAss const pass,
+    (RPNspanAST const subexp, Symbol3 const absvar, pAss const pass,
      Absubstmoves & absubstmoves)
 {
     Assertion const & ass = pass->second;
@@ -168,11 +168,11 @@ static void addabsubst
             Goal const & conj = move.goal();
             conj.fillast();
             RPN & rpn = absubstmoves.back().second;
-            skeleton(conj, Keepspan(subexp.first), NullBank(), rpn);
+            skeleton(conj, Keepspan(subexp.first), Bank1var(absvar), rpn);
             // std::cout << ass.expression;
             // std::cout << conj.expression();
             // std::cout << subexp.first;
-            // std::cout << rpn.size();
+            // std::cout << rpn;
             // std::cin.get();
         }
     }
@@ -187,7 +187,7 @@ Absubstmoves Environ::absubsts(RPNspanAST const subexp) const
     {
         Assiter const iter = assvec[i];
         if (usableasconj(iter->second))
-            addabsubst(subexp, &*iter, moves);
+            addabsubst(subexp, pProb->bank.addabsvar(subexp.first), &*iter, moves);
     }
     return moves;
 }
