@@ -342,7 +342,7 @@ void Problem::navigate(pNode p, bool detailed) const
             isourturn(p) ? gotoourchild(p) : gototheirchild(p);
             break;
         case 'a': case 'n': case '#':
-            std::cout << number();
+            std::cout << number() << std::endl;
             continue;
         default:
             std::cout << "Invalid command. Try again\n";
