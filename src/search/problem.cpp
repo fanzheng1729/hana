@@ -67,7 +67,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 // Create an abstraction move.
 Move Problem::absmove
     (Goal const & goal, Absubstmove const & absubstmove,
-     RPNspanAST const goalsubexp)
+     RPNspanAST goalsubexp)
 {
     Assertion const & thm = absubstmove.first.pthm->second;
     if (goal.rpn == thm.expRPN && goal.typecode == thm.exptypecode())

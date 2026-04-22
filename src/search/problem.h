@@ -196,7 +196,7 @@ private:
     // Create an abstraction move.
     Move absmove
         (Goal const & goal, Absubstmove const & absubstmove,
-         RPNspanAST const goalsubexp);
+         RPNspanAST goalsubexp);
     // Close all the nodes except p.
     void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
 public:
