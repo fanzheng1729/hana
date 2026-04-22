@@ -1,4 +1,3 @@
-#include <algorithm>    // for std::replace_copy
 #include "problem.h"
 #include "../proof/skeleton.h"
 
