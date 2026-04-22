@@ -312,11 +312,13 @@ void Problem::navigate(pNode p, bool detailed) const
 
     std::cout <<
     "On our turn,\n"
-    "c [name] [n] changes to the n-th node using the assertion [name]\n"
-    "c * changes to the last node\n"
-    "On their turn, c [n] changes to the n-th hypothesis\n"
+    "c|g [name] [n] changes/goes to the n-th node using the assertion [name]\n"
+    "c|g * changes/goes to the last node\n"
+    "On their turn, c|g [n] changes/goes to the n-th hypothesis\n"
     "u[p] goes up a level\nh[ome] or t[op] goes to the top level\n"
-    "b[ye] or e[xit] or q[uit] to leave navigation" << std::endl;
+    "b[ye] or e[xit] or q[uit] to leave navigation\n"
+    "a[ssertion] or n[umber] or # for the assertion number"
+    << std::endl;
 
     std::string token;
     while (true)
@@ -326,8 +328,7 @@ void Problem::navigate(pNode p, bool detailed) const
         std::cout << "> ";
 
         std::cin >> token;
-        unsigned char const c = token[0];
-        switch (std::tolower(c))
+        switch (std::tolower(static_cast<unsigned char>(token[0])))
         {
         case 'b': case 'e': case 'q':
             return;
@@ -337,9 +338,11 @@ void Problem::navigate(pNode p, bool detailed) const
         case 'h': case 't':
             p = root();
             break;
-        case 'c':
+        case 'c': case 'g':
             isourturn(p) ? gotoourchild(p) : gototheirchild(p);
             break;
+        case 'a': case 'n': case '#':
+            std::cout << number();
         default:
             std::cout << "Invalid command. Try again\n";
             continue;
