@@ -69,8 +69,8 @@ Tribool skeleton
 struct Keepspan
 {
     RPNspan span;
-    Keepspan(RPNspan const tokeep) : span(tokeep) {}
-    Splitretval operator()(RPNspan const exp) const
+    Keepspan(RPNspan tokeep) : span(tokeep) {}
+    Splitretval operator()(RPNspan exp) const
     {
         if (span == exp)
             return KEEPRANGE;
