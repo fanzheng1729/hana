@@ -139,7 +139,8 @@ bool Environ::addabsmoves
 
     FOR (Absubstmove const & absubstmove, absubstmoves)
 // std::cout << absubstmove.first.pthm->first << std::endl,
-        if (addconjmove(pProb->absmove(goal, absubstmove, subexp), moves))
+        if (usableasconj(absubstmove.first.pthm->second) &&
+            addconjmove(pProb->absmove(goal, absubstmove, subexp), moves))
             return true;
     return false;
 }
