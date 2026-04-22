@@ -60,7 +60,11 @@ struct Environ : protected Gen
         database.syntaxDAG().simplerthan(maxranks, probmaxranks);
     }
     // Return true if an assertion is on topic.
-    virtual bool ontopic(Assertion const & ass) const { return ass.number; }
+    virtual bool ontopic(Assertion const & ass) const
+    { return ass.number; }
+    // Return true if an assertion can be used in theorem omve.
+    bool usableasthm(Assertion const & ass) const
+    { return !ass.testtype(Asstype::USELESS) && ontopic(ass); }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
     { return goal.rpn.empty() ? GOALFALSE : GOALOPEN; }
@@ -124,9 +128,9 @@ private:
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add a conjectural move. Return true if it has no open hypotheses.
     bool addconjmove(Move const & move, Moves & moves) const;
-    // Try applying the theorem, and add moves if successful.
+    // Try applying an assertion, and add moves if successful.
     // Return true if it has no open hypotheses.
-    bool trythm
+    bool tryass
         (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.

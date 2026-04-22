@@ -91,6 +91,6 @@ Move Problem::absmove
     // Goal
     skeleton(goal, Keepspan(goalsubexp.first), absvar, conjs[1].rpn);
     conjs[1].typecode = goal.typecode;
-
+    // move.printconj();
     return move;
 }
