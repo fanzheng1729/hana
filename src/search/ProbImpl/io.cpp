@@ -158,8 +158,11 @@ void Problem::printmainline(pNode p, size_type detail) const
     // Print children.
     static void (*const printfn[])(pNode) = {&printtheirnode, &printdeferline};
     if (detail)
-        isourturn(p) ? printourchildren(p, *this) :
-            (*printfn[p->game().attempt.isdefer()])(p);
+        if (isourturn(p))
+            printourchildren(p, *this);
+        else
+            (*printfn[p->game().attempt.isdefer()])(p),
+            p->game().attempt.printconj();
 // std::cout << "Children printed" << std::endl;
     size_type level = 0, nDefer = 0;
     while (p = pickchild(p))

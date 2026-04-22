@@ -194,8 +194,9 @@ void Move::printconj() const
     if (!isconj())
         return;
 
-    static const char arrow[] = "-> ";
     std::cout << "Conjectured ";
+
+    static const char arrow[] = "-> ";
     for (Hypsize i = 0; i < nconjs(); ++i)
     {
         std::cout << subgoal(i).expression() << arrow;
