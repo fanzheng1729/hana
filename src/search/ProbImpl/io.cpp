@@ -120,6 +120,7 @@ static void printhypsline(pNode p)
 static void printtheirnode(pNode p)
 {
     printattempt(p);
+    std::cout << ' ';
     printhypsline(p);
 }
 
@@ -213,7 +214,9 @@ void Problem::printstats() const
     static const char * const s[] = {" V, ", " ?, ", " X in "};
     for (int i = GOALTRUE; i >= GOALFALSE; --i)
         std::cout << countgoal(i) << s[GOALTRUE - i];
-    std::cout << countenvs() << " contexts " << std::endl;
+    std::cout << countenvs();
+    std::cout << '(' << countsubenvs() << '/' << countsupenvs() << ')';
+    std::cout << " contexts " << std::endl;
     unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 

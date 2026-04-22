@@ -164,6 +164,10 @@ public:
     Goals::size_type countproof() const;
     // # contexts
     Environs::size_type countenvs() const { return environs.size(); }
+    // # sub-contexts
+    Environs::size_type countsubenvs() const { return probEnv().nsubEnvs(); }
+    // # sup-contexts
+    Environs::size_type countsupenvs() const { return probEnv().nsupEnvs(); }
     // # abstractions
     Abstractions::size_type countabs() const { return abstractions.size(); }
 private:

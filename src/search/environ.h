@@ -49,6 +49,8 @@ struct Environ : protected Gen
     // Updated when new context is added
     pEnvs const & psubEnvs() const { return m_psubEnvs; }
     pEnvs const & psupEnvs() const { return m_psupEnvs; }
+    pEnvs::size_type nsubEnvs() const { return psubEnvs().size(); }
+    pEnvs::size_type nsupEnvs() const { return psupEnvs().size(); }
     // Return true if *this <= problem context
     bool subsumedbyProb() const { return m_subsumedbyProb; }
     // Return true if maxranks is simpler than problem maxranks
