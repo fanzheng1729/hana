@@ -145,14 +145,14 @@ bool Environ::addabsmoves
 }
 
 static void addabsubst
-    (RPNspanAST const subexp, pAss const pthm,
+    (RPNspanAST const subexp, pAss const pass,
      Absubstmoves & absubstmoves)
 {
-    Assertion const & thm = pthm->second;
-    RPNspans subst(thm.maxvarid() + 1);
+    Assertion const & ass = pass->second;
+    RPNspans subst(ass.maxvarid() + 1);
     GovernedRPNspansbystep::const_iterator const iter =
-    thm.expmaxabs.find(subexp.first.root());
-    if (iter == thm.expmaxabs.end())
+    ass.expmaxabs.find(subexp.first.root());
+    if (iter == ass.expmaxabs.end())
         return;
 
     absubstmoves.reserve(absubstmoves.size() + iter->second.size());
@@ -162,13 +162,13 @@ static void addabsubst
         RPNspanAST thmabsAST(thmabs.first, thmabs.second);
         if (findsubst(subexp, thmabs, subst))
         {
-            absubstmoves.push_back(std::make_pair(Move(pthm, subst), RPN()));
+            absubstmoves.push_back(std::make_pair(Move(pass, subst), RPN()));
             Move const & move = absubstmoves.back().first;
             Goal const & conj = move.goal();
             conj.fillast();
             RPN & rpn = absubstmoves.back().second;
             skeleton(conj, Keepspan(subexp.first), NullBank(), rpn);
-            // std::cout << thm.expression;
+            // std::cout << ass.expression;
             // std::cout << conj.expression();
             // std::cout << subexp.first;
             // std::cout << rpn.size();
@@ -184,10 +184,10 @@ Absubstmoves Environ::absubsts(RPNspanAST const subexp) const
     Assiters const & assvec = database.assiters();
     for (Assiters::size_type i = 1; i < prob().numberlimit; ++i)
     {
-        Assertion const & thm = assvec[i]->second;
-        if (!thm.testtype(Asstype::USELESS) && thm.nEhyps() == 0
-            && database.typecodes().isprimitive(thm.exptypecode()) == FALSE
-            && ontopic(thm))
+        Assertion const & ass = assvec[i]->second;
+        if (!ass.testtype(Asstype::USELESS) && ass.nEhyps() == 0
+            && database.typecodes().isprimitive(ass.exptypecode()) == FALSE
+            && ontopic(ass))
             addabsubst(subexp, &*assvec[i], moves);
     }
     return moves;
