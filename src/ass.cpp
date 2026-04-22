@@ -79,7 +79,7 @@ std::string Assertion::hypslabel
     // Copy if there are variables in newhyps but not in newvars.
     Expression copy;
     FOR (Hypiter iter, newhyps)
-        FOR (Symbol3 const var, iter->second.expression)
+        FOR (Symbol3 var, iter->second.expression)
             if (var.id > 0 && varusage.count(var) == 0 &&
                 !util::filter(newvars)(var))
             {
@@ -94,7 +94,7 @@ std::string Assertion::hypslabel
     Labels labels;
     labels.reserve(newnhyps);
     // Floating hypotheses for new variables
-    FOR (Symbol3 const var, allnewvars)
+    FOR (Symbol3 var, allnewvars)
         if (var.id > 0 && varusage.count(var) == 0)
             labels.push_back(hypdelim + var.iter->first.c_str);
     // Hypothesis, old and new
@@ -155,7 +155,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
 static void addvarfromexp
     (Varusage & newvars, Expression const & exp, Varusage const & oldvars)
 {
-    FOR (Symbol3 const var, exp)
+    FOR (Symbol3 var, exp)
         if (var.id > 0 && oldvars.count(var) == 0)
             newvars[var];
 }
