@@ -105,7 +105,7 @@ void Move::makesubst(RPN const & src, RPN & dest) const
         if (id > 0 && !substitutions[id].empty())
             dest += substitutions[id];  // variable with an id
         else
-            dest.push_back(step);     // constant with no id
+            dest.push_back(step);       // constant with no id
     }
 }
 
