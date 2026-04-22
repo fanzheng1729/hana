@@ -80,13 +80,14 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
+// std::cout << "Validating conjecture move in env " << name << std::endl;
     MoveValidity const validity = validthmmove(move);
     if (validity == MoveINVALID)
         return MoveINVALID;
 // return MoveINVALID;
     // Super-context corresponding to the CONJ move
     Environ const * const penv = pProb->addsupEnv(*this, move);
-    // Add the essential hypothesis as a goal.
+    // The goal
     pGoal const pgoal = pProb->addgoal(move.absconjs.back(), *penv, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
 // std::cout << "In env " << penv->name << std::endl;

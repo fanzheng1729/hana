@@ -1,12 +1,15 @@
 #include <algorithm>    // for std::min
 #include "environ.h"
 #include "problem.h"
+#include "../io.h"
 #include "../proof/skeleton.h"
 
 // Add a move with validation. Return true if it has no open hypotheses.
 template<Environ::MoveValidity (Environ::*Validator)(Move const &) const>
 bool Environ::addvalidmove(Move const & move, Moves & moves) const
 {
+    if (!move.isthmorconj())
+        return false;
     switch ((this->*Validator)(move))
     {
     case MoveCLOSED:
@@ -118,36 +121,32 @@ bool Environ::addabsmoves(Goal const & goal, Moves & moves) const
     goal.fillmaxabs();
     FOR (GovernedRPNspansbystep::const_reference rstep, goal.maxabs)
         FOR (GovernedRPNspans::const_reference subexp, rstep.second)
-            if (addabsmoves(goal, RPNspanAST(subexp.first, subexp.second), moves))
+            if (addabsmoves(goal, subexp, moves))
                 return true;
     return false;
 }
 bool Environ::addabsmoves
     (Goal const & goal, RPNspanAST const subexp, Moves & moves) const
 {
+    if (subexp.empty())
+        return false;
+
     std::pair<Problem::Abstractions::iterator, bool> const result =
-    pProb->abstractions.insert(std::make_pair(subexp.first, Moves()));
-    Moves & substs = result.first->second;
+    pProb->abstractions.insert(std::make_pair(subexp.first, Absubstmoves()));
+    Absubstmoves & absubstmoves = result.first->second;
     if (result.second) // New sub-expression
-        substs = absubsts(subexp);
-    return addabsmoves(goal, subexp, substs, moves);
-}
-bool Environ::addabsmoves
-    (Goal const & goal, RPNspanAST const subexp,
-    Moves const & absubsts, Moves & moves) const
-{
-    FOR (Move const & absubst, absubsts)
-    {
-        Goal const & conj = absubst.goal();
-        if (goal != conj &&
-            addconjmove(pProb->absmove(goal, conj, subexp), moves))
+        absubstmoves = absubsts(subexp);
+
+    FOR (Absubstmove const & absubstmove, absubstmoves)
+// std::cout << absubstmove.first.pthm->first << std::endl,
+        if (addconjmove(pProb->absmove(goal, absubstmove, subexp), moves))
             return true;
-    }
     return false;
 }
 
 static void addabsubst
-    (RPNspanAST const subexp, pAss pthm, Moves & moves)
+    (RPNspanAST const subexp, pAss const pthm,
+     Absubstmoves & absubstmoves)
 {
     Assertion const & thm = pthm->second;
     RPNspans subst(thm.maxvarid() + 1);
@@ -156,27 +155,40 @@ static void addabsubst
     if (iter == thm.expmaxabs.end())
         return;
 
-    moves.reserve(moves.size() + iter->second.size());
+    absubstmoves.reserve(absubstmoves.size() + iter->second.size());
     FOR (GovernedRPNspans::const_reference thmabs, iter->second)
     {
-        subst.assign(thm.maxvarid() + 1, RPNspan());
-        if (findsubst(subexp, RPNspanAST(thmabs.first, thmabs.second), subst))
-            moves.push_back(Move(pthm, subst));
+        subst.assign(subst.size(), RPNspan());
+        RPNspanAST thmabsAST(thmabs.first, thmabs.second);
+        if (findsubst(subexp, thmabs, subst))
+        {
+            absubstmoves.push_back(std::make_pair(Move(pthm, subst), RPN()));
+            Move const & move = absubstmoves.back().first;
+            Goal const & conj = move.goal();
+            conj.fillast();
+            RPN & rpn = absubstmoves.back().second;
+            skeleton(conj, Keepspan(subexp.first), NullBank(), rpn);
+            // std::cout << thm.expression;
+            // std::cout << conj.expression();
+            // std::cout << subexp.first;
+            // std::cout << rpn.size();
+            // std::cin.get();
+        }
     }
 }
 
-// Return abstraction substitutions.
-Moves Environ::absubsts(RPNspanAST const subexp) const
+// Abstraction-substitutions for a sub-expression
+Absubstmoves Environ::absubsts(RPNspanAST const subexp) const
 {
-    Moves moves;
+    Absubstmoves moves;
     Assiters const & assvec = database.assiters();
     for (Assiters::size_type i = 1; i < prob().numberlimit; ++i)
     {
         Assertion const & thm = assvec[i]->second;
         if (!thm.testtype(Asstype::USELESS) && thm.nEhyps() == 0
+            && database.typecodes().isprimitive(thm.exptypecode()) == FALSE
             && ontopic(thm))
             addabsubst(subexp, &*assvec[i], moves);
     }
-
     return moves;
 }

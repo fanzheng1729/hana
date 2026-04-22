@@ -223,7 +223,8 @@ struct RPNspanAST: std::pair<RPNspan, ASTiter>
         std::pair<RPNspan, ASTiter>(exp, iter) {}
     RPNspanAST(RPNspan exp, AST const & tree) :
         std::pair<RPNspan, ASTiter>(exp, tree.begin()) { check(tree); }
-    RPN  steps() const { return first; }
+    RPNspanAST(std::pair<const RPNspan, AST> const & exp)
+        { first = exp.first, second = exp.second.begin(); }
     bool empty() const { return first.empty(); }
     void clear() { first.clear(); }
     RPNsize size() const { return first.size(); }

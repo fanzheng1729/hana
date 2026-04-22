@@ -214,4 +214,10 @@ private:
 // List of moves
 typedef std::vector<Move> Moves;
 
+// Abstraction-substitution move
+// = (move with substitution, skeleton with null variable)
+typedef std::pair<Move, RPN> Absubstmove;
+// Abstraction-substitution moves
+typedef std::vector<Absubstmove> Absubstmoves;
+
 #endif // MOVE_H_INCLUDED

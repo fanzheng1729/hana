@@ -24,7 +24,7 @@ private:
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
-    typedef std::map<RPNspan, Moves, Compspans> Abstractions;
+    typedef std::map<RPNspan, Absubstmoves, Compspans> Abstractions;
     Abstractions abstractions;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
@@ -193,9 +193,10 @@ private:
     // Add a super-context with hypotheses trimmed.
     // Return pointer to the new context. Return nullptr if unsuccessful.
     Environ const * addsupEnv(Environ const & env, Move const & move);
-    // Create an abstract move.
+    // Create an abstraction move.
     Move absmove
-        (Goal const & goal, Goal const & conj, RPNspanAST const subexp);
+        (Goal const & goal, Absubstmove const & absubstmove,
+         RPNspanAST const goalsubexp);
     // Close all the nodes except p.
     void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
 public:

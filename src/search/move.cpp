@@ -80,7 +80,8 @@ RPNsize Move::substsize(RPN const & src) const
     FOR (RPNstep const step, src)
     {
         Symbol2::ID const id = step.id();
-        if (id > 0 && !substitutions[id].empty())
+        if (id > 0 && id < substitutions.size() &&
+            !substitutions[id].empty())
             size += substitutions[id].size();
         else
             ++size;
@@ -102,7 +103,8 @@ void Move::makesubst(RPN const & src, RPN & dest) const
     FOR (RPNstep const step, src)
     {
         Symbol2::ID const id = step.id();
-        if (id > 0 && !substitutions[id].empty())
+        if (id > 0 && id < substitutions.size() &&
+            !substitutions[id].empty())
             dest += substitutions[id];  // variable with an id
         else
             dest.push_back(step);     // constant with no id

@@ -7,6 +7,29 @@
 
 enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 
+// Placeholder variable
+static Symbol3 const nullvar = Symbol3("", 1);
+// Bank producing placeholder variables
+struct NullBank
+{
+    Symbol3 addabsvar(RPNspan) const { return nullvar; }
+};
+// Bank with only 1 variable
+struct Bank1var : Symbol3
+{
+    Bank1var(Symbol3 const var) : Symbol3(var) {}
+    Symbol3 addabsvar(RPNspan) const { return *this; }
+};
+
+// Add a step to an RPN.
+template<class B>
+inline Tribool addstep(RPN & rpn, RPNstep const step)
+{ rpn.push_back(step); return TRUE; }
+// Placeholder variable -> empty step
+template<>
+inline Tribool addstep<NullBank>(RPN & rpn, RPNstep const step)
+{ rpn.push_back(RPNstep()); return TRUE; }
+
 // Add the skeleton of an RPN to result.
 // Return UNKNOWN if unsuccessful.
 // Otherwise return if anything has been abstracted.
@@ -15,7 +38,7 @@ Tribool skeleton
     (RPNspanAST const exp, T const cansplit, B & bank, RPN & result)
 {
     Tribool retval = FALSE;
-// std::cout << "Analyzing " << exp.steps();
+// std::cout << "Analyzing " << exp.first;
     RPNstep const root = exp.RPNroot();
     switch (root.type)
     {
@@ -48,7 +71,7 @@ Tribool skeleton
             // Don't split and abstract. Find the abstracting variable.
             Symbol3 const var = bank.addabsvar(exp.first);
 // std::cout << "varid " << var.id << std::endl;
-            return var ? (result.push_back(var.iter), TRUE) : UNKNOWN;
+            return var.id ? addstep<B>(result, var.iter) : UNKNOWN;
         }
     default:
         return UNKNOWN;
@@ -67,13 +90,6 @@ struct Keepspan
             return SPLITALL;
         return SPLITREC;
     }
-};
-
-// Bank with only 1 variable
-struct Bank1var : Symbol3
-{
-    Bank1var(Symbol3 const var) : Symbol3(var) {}
-    Symbol3 addabsvar(RPNspan) const { return *this; }
 };
 
 #endif

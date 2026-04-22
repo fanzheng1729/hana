@@ -1,3 +1,4 @@
+#include <algorithm>    // for std::replace_copy
 #include "problem.h"
 #include "../proof/skeleton.h"
 
@@ -64,32 +65,32 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     return newEnviter->second = initEnv(env.makeEnv(supAss));
 }
 
-// Create an abstract move.
+// Create an abstraction move.
 Move Problem::absmove
-    (Goal const & goal, Goal const & conj, RPNspanAST const subexp)
+    (Goal const & goal, Absubstmove const & absubstmove,
+     RPNspanAST const goalsubexp)
 {
-    if (subexp.empty())
+    Assertion const & thm = absubstmove.first.pthm->second;
+    if (goal.rpn == thm.expRPN && goal.typecode == thm.exptypecode())
         return Move::NONE;
 
     // Abstract variable name
-    Bank1var const absvar = bank.addabsvar(subexp.first);
+    Bank1var const absvar = bank.addabsvar(goalsubexp.first);
     // Abstract move
     Move move(2, absvar.id + 1);
     // Abstract variable RPN
-    move.substitutions.back() = subexp.first;
+    move.substitutions.back() = goalsubexp.first;
     // 1 conjecture + 1 goal
     Move::Conjectures & conjs = move.absconjs;
-    if (skeleton(RPNspanAST(goal.rpn, goal.ast),
-        Keepspan(subexp.first), absvar, conjs[1].rpn) != TRUE ||
-        skeleton(RPNspanAST(conj.rpn, ast(conj.rpn)),
-        Keepspan(subexp.first), absvar, conjs[0].rpn) != TRUE)
-        return Move::NONE;
-    // Their typecodes
-    conjs[0].typecode = conj.typecode;
+    // Conjecture
+    RPN const & conj = absubstmove.second;
+    conjs[0].rpn.resize(conj.size());
+    std::replace_copy(conj.begin(), conj.end(), conjs[0].rpn.begin(),
+                      RPNstep(), RPNstep(absvar.iter));
+    conjs[0].typecode = thm.exptypecode();
+    // Goal
+    skeleton(goal, Keepspan(goalsubexp.first), absvar, conjs[1].rpn);
     conjs[1].typecode = goal.typecode;
-
-    std::pair<Abstractions::iterator, bool> const result =
-    abstractions.insert(std::make_pair(subexp.first, Moves()));
 
     return move;
 }
