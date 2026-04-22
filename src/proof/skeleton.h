@@ -10,7 +10,7 @@ enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
 // Bank with only 1 variable
 struct Bank1var : Symbol3
 {
-    Bank1var(Symbol3 const var) : Symbol3(var) {}
+    Bank1var(Symbol3 var) : Symbol3(var) {}
     Symbol3 addabsvar(RPNspan) const { return *this; }
 };
 
@@ -57,7 +57,7 @@ Tribool skeleton
             return result.push_back(root), retval;
         case KEEPRANGE:
             // Don't split and abstract. Find the abstracting variable.
-            Symbol3 const var = bank.addabsvar(exp.first);
+            Symbol3 var = bank.addabsvar(exp.first);
 // std::cout << "varid " << var.id << std::endl;
             return var.id ? addstep(result, var.iter) : UNKNOWN;
         }

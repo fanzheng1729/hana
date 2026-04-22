@@ -87,7 +87,7 @@ bool Prop::addhardmoves(Move & move, RPNsize size, Moves & moves) const
         if (!var.second.back())
             freevars.push_back(var.first), types.push_back(var.first.typecode());
     // Generate substitution terms.
-    FOR (Symbol3 const var, freevars)
+    FOR (Symbol3 var, freevars)
         generateupto(var.typecode(), size);
     // Generate substitutions.
     Substadder adder(freevars, moves, move, *this);
