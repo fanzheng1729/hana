@@ -190,10 +190,6 @@ struct Move
         }
         return nconjs();
     }
-    // Size of a substitution
-    RPNsize substsize(RPN const & src) const;
-    // Make a substitution.
-    void makesubst(RPN const & src, RPN & dest) const;
     // Pointers to proofs of sub-goals
     pProofs phyps() const
     {
@@ -202,13 +198,18 @@ struct Move
             result[i] = psubgoalproof(i);
         return result;
     }
+private:
+    // Size of a substitution
+    RPNsize substsize(RPN const & src) const;
+    // Make a substitution.
+    void makesubst(RPN const & src, RPN & dest) const;
+    // Size of full proof (must be of type CONJ)
+    RPNsize fullproofsize(pProofs const & phyps) const;
+public:
     // Write proof.
     bool writeproof(RPN & dest, pProofs const & phyps) const;
     // Print a CONJ move.
     void printconj() const;
-private:
-    // Size of full proof (must be of type CONJ)
-    RPNsize fullproofsize(pProofs const & phyps) const;
 };
 
 // List of moves
