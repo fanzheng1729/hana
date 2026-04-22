@@ -62,9 +62,16 @@ struct Environ : protected Gen
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.number; }
-    // Return true if an assertion can be used in theorem omve.
+    // Return true if an assertion can be used in theorem moves.
     bool usableasthm(Assertion const & ass) const
     { return !ass.testtype(Asstype::USELESS) && ontopic(ass); }
+    // Return true if an assertion can be used in conjecture moves.
+    bool usableasconj(Assertion const & ass) const
+    {
+        return !ass.testtype(Asstype::USELESS) && ass.nEhyps() == 0
+                && database.typecodes().isprimitive(ass.exptypecode()) == FALSE
+                && ontopic(ass);
+    }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
     { return goal.rpn.empty() ? GOALFALSE : GOALOPEN; }

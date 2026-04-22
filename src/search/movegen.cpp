@@ -184,11 +184,9 @@ Absubstmoves Environ::absubsts(RPNspanAST const subexp) const
     Assiters const & assvec = database.assiters();
     for (Assiters::size_type i = 1; i < prob().numberlimit; ++i)
     {
-        Assertion const & ass = assvec[i]->second;
-        if (!ass.testtype(Asstype::USELESS) && ass.nEhyps() == 0
-            && database.typecodes().isprimitive(ass.exptypecode()) == FALSE
-            && ontopic(ass))
-            addabsubst(subexp, &*assvec[i], moves);
+        Assiter const iter = assvec[i];
+        if (usableasconj(iter->second))
+            addabsubst(subexp, &*iter, moves);
     }
     return moves;
 }
