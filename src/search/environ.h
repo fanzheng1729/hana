@@ -153,9 +153,9 @@ private:
     // Add abstraction moves. Return true if it has no open hypotheses.
     bool addabsmoves(Goal const & goal, Moves & moves) const;
     bool addabsmoves
-        (Goal const & goal, RPNspanAST const subexp, Moves & moves) const;
+        (Goal const & goal, RPNspanAST subexp, Moves & moves) const;
     // Abstraction-substitutions for a sub-expression
-    Absubstmoves absubsts(RPNspanAST const subexp) const;
+    Absubstmoves absubsts(RPNspanAST subexp) const;
 // Private members
     // true if *this <= problem context
     bool m_subsumedbyProb;

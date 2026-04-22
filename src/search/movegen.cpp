@@ -131,7 +131,7 @@ bool Environ::addabsmoves(Goal const & goal, Moves & moves) const
     return false;
 }
 bool Environ::addabsmoves
-    (Goal const & goal, RPNspanAST const subexp, Moves & moves) const
+    (Goal const & goal, RPNspanAST subexp, Moves & moves) const
 {
     if (subexp.empty())
         return false;
@@ -151,7 +151,7 @@ bool Environ::addabsmoves
 }
 
 static void addabsubst
-    (RPNspanAST const subexp, Symbol3 const absvar, pAss const pass,
+    (RPNspanAST subexp, Symbol3 absvar, pAss pass,
      Absubstmoves & absubstmoves)
 {
     Assertion const & ass = pass->second;
@@ -184,7 +184,7 @@ static void addabsubst
 }
 
 // Abstraction-substitutions for a sub-expression
-Absubstmoves Environ::absubsts(RPNspanAST const subexp) const
+Absubstmoves Environ::absubsts(RPNspanAST subexp) const
 {
     Absubstmoves moves;
     Assiters const & assvec = database.assiters();
