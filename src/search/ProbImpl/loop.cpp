@@ -10,7 +10,7 @@ static pNode cycles(pGoal pgoal, pNode pnode)
         Game const & game = pnode->game();
         if (game.nDefer == 0 && pgoal == game.pgoal)
             return pnode;
-        if (pNode const parent = pnode.parent())
+        if (pNode parent = pnode.parent())
             pnode = parent.parent();
         else break;
     }
@@ -25,7 +25,7 @@ struct pGoals : std::set<pGoal>
     // Return true if all open children of p are present.
     bool hasallchildren(pNode p) const
     {
-        FOR (pNode const child, *p.children())
+        FOR (pNode child, *p.children())
         {
             if (child->game().proven())
                 continue;
@@ -39,9 +39,9 @@ struct pGoals : std::set<pGoal>
     pGoal saturate()
     {
         FOR (pGoal const pgoal, *this)
-            FOR (pNode const pnode, pgoal->second.pnodes())
+            FOR (pNode pnode, pgoal->second.pnodes())
             {
-                pNode const parent = pnode.parent();
+                pNode parent = pnode.parent();
                 if (parent->game().proven())
                     continue;
                 pGoal const pnewgoal = parent->game().pgoal;
@@ -73,7 +73,7 @@ bool loops(pNode p)
     }
     // Check if these hypotheses combined prove a parent node.
     while (pGoal const pgoal = allgoals.saturate())
-        FOR (pNode const pnewnode, pgoal->second.pnodes())
+        FOR (pNode pnewnode, pgoal->second.pnodes())
             if (pnewnode.isancestorof(p))
                 return true;
     return false;
