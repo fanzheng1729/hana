@@ -166,9 +166,7 @@ void Problem::printmainline(pNode p, size_type detail) const
 // std::cout << "Children printed" << std::endl;
     size_type level = 0, nDefer = 0;
     while (p = pickchild(p))
-    {
         if (!isourturn(p))
-        {
             switch (p->game().attempt.type)
             {
             case Move::DEFER:
@@ -184,7 +182,7 @@ void Problem::printmainline(pNode p, size_type detail) const
                 std::cerr << "Empty move" << std::endl;
                 return;
             }
-        }
+        // Our turn
         else if (p->game().nDefer == 0)
         {
             std::cout << '\t';
@@ -192,13 +190,11 @@ void Problem::printmainline(pNode p, size_type detail) const
             if (detail > level)
                 printourchildren(p, *this);
         }
-    }
 }
 
 void Problem::checkmainline(pNode p) const
 {
     for ( ; p; p = pickchild(p))
-    {
         if (isourturn(p) && p->game().nDefer == 0
             && p->game().proven() && !p->won())
         {
@@ -207,7 +203,6 @@ void Problem::checkmainline(pNode p) const
             std::cout << *p;
             navigate();
         }
-    }
 }
 
 // Format: n nodes, x V, y ?, z X in m contexts
