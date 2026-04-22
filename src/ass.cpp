@@ -137,7 +137,7 @@ void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
         if (ass.hypfloats(i))
         {
             // var in use
-            Symbol3 const var = ass.hypexp(i)[1];
+            Symbol3 var = ass.hypexp(i)[1];
             // Use of var in new assertion
             Bvector & usage = varusage[var];
             usage.clear();
