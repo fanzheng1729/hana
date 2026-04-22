@@ -19,13 +19,6 @@ struct Goal
     Goal(Goalview view) :
         rpn(view.first), typecode(view.second), maxabsfilled(false) {}
     void fillast() const { if (ast.empty()) ast = ::ast(rpn); }
-    void fillmaxabs() const
-    {
-        if (maxabsfilled) return;
-        fillast();
-        maxabs = ::maxabs(rpn, ast);
-        maxabsfilled = true;
-    }
     RPNsize size() const { return rpn.size(); }
     operator RPNspanAST() const { return RPNspanAST(rpn, ast); }
     Expression expression() const
