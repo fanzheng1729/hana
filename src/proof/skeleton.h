@@ -23,7 +23,7 @@ inline Tribool addstep(RPN & rpn, RPNstep const step)
 // Otherwise return if anything has been abstracted.
 template<class T, class B>
 Tribool skeleton
-    (RPNspanAST const exp, T const cansplit, B & bank, RPN & result)
+    (RPNspanAST exp, T cansplit, B & bank, RPN & result)
 {
     Tribool retval = FALSE;
 // std::cout << "Analyzing " << exp.first;
