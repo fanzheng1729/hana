@@ -137,14 +137,14 @@ public:
 // Node operations
     void copyproof(Game const & game);
     // Close all the nodes with p's proven goal.
-    void closenodes(pNode const p);
+    void closenodes(pNode p);
     // Record the proof of proven goals on back propagation.
     virtual void backpropcallback(pNode p);
     // Called after each playonce()
     virtual void playoncecallback();
 // Reval
     // Add the ranks of a node to maxranks, if almost won.
-    void addranks(pNode const p);
+    void addranks(pNode p);
     // Prune the sub-tree at p and update maxranks, if almost won.
     void prune(pNode p);
     // Update implications after problem context is simplified.
@@ -198,7 +198,7 @@ private:
         (Goal const & goal, Absubstmove const & absubstmove,
          RPNspanAST goalsubexp);
     // Close all the nodes except p.
-    void closenodesexcept(pNodes const & pnodes, pNode const p = pNode());
+    void closenodesexcept(pNodes const & pnodes, pNode p = pNode());
 public:
     // Printing routines. DO NOTHING if p is nullptr.
     void printmainline(pNode p, size_type detail = 0) const;

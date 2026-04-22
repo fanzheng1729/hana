@@ -1,13 +1,13 @@
 #include "../problem.h"
 
 // Close all the nodes except p.
-void Problem::closenodesexcept(pNodes const & pnodes, pNode const p)
+void Problem::closenodesexcept(pNodes const & pnodes, pNode p)
 {
-    FOR (pNode const other, pnodes)
+    FOR (pNode other, pnodes)
         if (other != p && !other->won())
         {
             setwin(other);
-            pNode const parent = other.parent();
+            pNode parent = other.parent();
             if (parent && !parent->won())
                 backprop(parent);
         }
@@ -42,7 +42,7 @@ void Problem::copyproof(Game const & game)
 }
 
 // Close all the nodes with p's proven goal.
-void Problem::closenodes(pNode const p)
+void Problem::closenodes(pNode p)
 {
     if (!p->game().proven()) return;
     closenodesexcept(p->game().goaldata().pnodes(), p);

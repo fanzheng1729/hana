@@ -16,7 +16,7 @@ void Problem::reval()
 }
 
 // Add the ranks of a node to maxranks, if almost won.
-void Problem::addranks(pNode const p)
+void Problem::addranks(pNode p)
 {
     if (value(p) < ALMOSTWIN)
         return;
