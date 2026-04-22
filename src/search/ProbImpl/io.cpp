@@ -343,6 +343,7 @@ void Problem::navigate(pNode p, bool detailed) const
             break;
         case 'a': case 'n': case '#':
             std::cout << number();
+            break;
         default:
             std::cout << "Invalid command. Try again\n";
             continue;
