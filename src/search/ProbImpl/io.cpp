@@ -29,21 +29,12 @@ static pNode onlyopenchild(pNode p)
 // Move to the only open child of a node. Return true if it exists.
 static bool gotoonlyopenchild(pNode & p)
 {
-    if (pNode const child = onlyopenchild(p))
+    if (pNode child = onlyopenchild(p))
         return p = child;
     return false;
 }
 
-static const char strproven[] = "V";
-
-// Format: ax-mp[!]
-static void printrefname(pNode p)
-{
-    std::cout << p->game().attempt.thmlabel();
-    if (onlyopenchild(p)) std::cout << '!';
-}
-
-// Format: ax-mp[!] or DEFER(n) or CONJ
+// Format: ax-mp[!] or DEFER(n) or CONJ[!]
 static void printattempt(pNode p)
 {
     switch (p->game().attempt.type)
@@ -52,10 +43,12 @@ static void printattempt(pNode p)
         std::cout << "DEFER(" << p->game().nDefer << ')';
         break;
     case Move::THM:
-        printrefname(p);
+        std::cout << p->game().attempt.thmlabel();
+        if (onlyopenchild(p)) std::cout << '!';
         break;
     case Move::CONJ:
         std::cout << "CONJ";
+        if (onlyopenchild(p)) std::cout << '!';
         break;
     default :
         std::cout << "NONE";
@@ -72,7 +65,7 @@ static void printeval(pNode p, Problem const & tree)
     printeval(p); std::cout << '=' << tree.UCB(p) << '\t';
 }
 
-// Format: ax-mp score*size=UCB ...
+// Format: ax-mp[!] or DEFER(n) or CONJ[!] score*size=UCB ...
 static void printourchildren(pNode p, Problem const & tree)
 {
     FOR (pNode child, *p.children())
@@ -86,6 +79,8 @@ static void printstage(stage_t stage)
     if (stage)
         std::cout << '(' << stage << ") ";
 }
+
+static const char strproven[] = "V";
 
 // Format: [(n)] maj score*size   [V]|- ...
 static void printournode(pNode p, stage_t stage)
@@ -121,10 +116,10 @@ static void printhypsline(pNode p)
     std::cout << std::endl;
 }
 
-// Format: ax-mp[!] score*size score*size
+// Format: ax-mp[!] or DEFER(n) or CONJ score*size score*size
 static void printtheirnode(pNode p)
 {
-    printrefname(p);
+    printattempt(p);
     FOR (pNode child, *p.children())
         printeval(child);
     std::cout << std::endl;
@@ -157,7 +152,7 @@ static void printgoal(pNode p)
  | min score*size maj score*size OR
  | DEFER(n) score*size
 **/
-// n.   (n) ax-mp[!] score*size score*size
+// n.   (n) ax-mp[!] or CONJ score*size score*size
 //      maj score*size  |- ...
 void Problem::printmainline(pNode p, size_type detail) const
 {
