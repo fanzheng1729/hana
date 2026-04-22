@@ -116,13 +116,11 @@ static void printhypsline(pNode p)
     std::cout << std::endl;
 }
 
-// Format: ax-mp[!] or DEFER(n) or CONJ score*size score*size
+// Format: ax-mp[!] or CONJ score*size score*size
 static void printtheirnode(pNode p)
 {
     printattempt(p);
-    FOR (pNode child, *p.children())
-        printeval(child);
-    std::cout << std::endl;
+    printhypsline(p);
 }
 
 // Format:
@@ -149,16 +147,16 @@ static void printgoal(pNode p)
  | Goal score |- ...
  | [Hyps hyp1 hyp2]
  | ax-mp score*size=UCB ... OR
- | min score*size maj score*size OR
+ | ax-mp[!] or CONJ score*size score*size OR
  | DEFER(n) score*size
 **/
-// n.   (n) ax-mp[!] or CONJ score*size score*size
+// n.   (n) ax-mp[!] or CONJ min score*size maj score*size
 //      maj score*size  |- ...
 void Problem::printmainline(pNode p, size_type detail) const
 {
     printgoal(p);
     // Print children.
-    static void (*const printfn[])(pNode) = {&printhypsline, &printdeferline};
+    static void (*const printfn[])(pNode) = {&printtheirnode, &printdeferline};
     if (detail)
         isourturn(p) ? printourchildren(p, *this) :
             (*printfn[p->game().attempt.isdefer()])(p);
@@ -173,7 +171,7 @@ void Problem::printmainline(pNode p, size_type detail) const
             case Move::DEFER:
                 ++nDefer;
                 continue;
-            case Move::THM:
+            case Move::THM: case Move::CONJ:
                 std::cout << ++level << ".\t";
                 printstage(nDefer);
                 nDefer = 0;
