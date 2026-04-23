@@ -43,7 +43,7 @@ struct Assertion
     strview exptypecode() const
         { return expression.empty() ? strview() : expression[0]; }
     // # of variables
-    Varusage::size_type nvars() const { return varusage.size(); }
+    Hypsize nvars() const { return varusage.size(); }
     // Max id of variables
     Symbol2::ID maxvarid() const
     {
@@ -105,6 +105,19 @@ struct Assertion
     {
         return hypsorder.rend() -
         std::upper_bound(hypsorder.rbegin() + 1, hypsorder.rend(), 0);
+    }
+    // Return true if there is a var only used in exp.
+    bool hasvarnotinhyps() const
+    {
+        for (Varusage::const_iterator iter = varusage.begin();
+             iter != varusage.end(); ++iter)
+        {
+            Bvector const & usage = iter->second;
+            Bvector::const_iterator const end = usage.end() - 1;
+            if (std::find(usage.begin(), end - 1, true) == end - 1)
+                return true; // Variable used only in exp.
+            return false;
+        }
     }
     // Remove unnecessary variables.
     Bvector trimvars(Bvector const & hypstotrim, RPN const & conclusion) const
