@@ -23,6 +23,20 @@ struct Param
     { return in >> this->*p, true; }
     void fill(std::istream & in);
     void update(const char * filename);
+    bool checkexploration() const { return exploration >= 0; }
+    bool checkfreqbias() const { return freqbias >= 0; }
+    bool checkstaged() const { return true; }
+    bool checkmaxsize() const{ return true; }
+    bool good() const
+    {
+        return
+            checkexploration() &&
+            checkfreqbias() &&
+            checkstaged() &&
+            checkmaxsize() &&
+        true;
+    }
+    bool bad() const;
 };
 
 std::ostream & operator<<(std::ostream & out, Param const & param);
