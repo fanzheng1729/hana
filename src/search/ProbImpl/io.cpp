@@ -251,9 +251,11 @@ static bool moveup(pNode & p)
     if (!p.parent()) return false;
 
     p = p.parent();
-    if (onlyopenchild(p) && p.parent() &&
-        askyn("Go to grandparent y/n?"))
-        p = p.parent();
+    if (p.parent())
+        if (p.children()->size() == 1 ||
+            (onlyopenchild(p) &&
+            askyn("Go to grandparent y/n?")))
+            p = p.parent();
 
     return true;
 }
