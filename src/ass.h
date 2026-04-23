@@ -116,8 +116,8 @@ struct Assertion
             Bvector::const_iterator const end = usage.end() - 1;
             if (std::find(usage.begin(), end - 1, true) == end - 1)
                 return true; // Variable used only in exp.
-            return false;
         }
+        return false;
     }
     // Remove unnecessary variables.
     Bvector trimvars(Bvector const & hypstotrim, RPN const & conclusion) const
