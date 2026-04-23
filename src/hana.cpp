@@ -18,6 +18,14 @@ int test()
     return EXIT_SUCCESS;
 }
 
+// Load parameter. Return true if okay.
+bool readparam(Param & param, const char * filename)
+{
+    std::ifstream in(filename, std::ios::binary);
+    if (!in) return false;
+    in.read(reinterpret_cast<char *>(&param), sizeof Param);
+    return true;
+}
 // Save parameter. Return true if okay.
 bool saveparam(Param const & param, const char * filename)
 {
@@ -26,13 +34,11 @@ bool saveparam(Param const & param, const char * filename)
     out.write(reinterpret_cast<const char *>(&param), sizeof Param);
     return out.good();
 }
-// Load parameter. Return true if okay.
-bool readparam(Param & param, const char * filename)
+// Update parameter.
+void updateparam(Param & param, const char * filename)
 {
-    std::ifstream in(filename, std::ios::binary);
-    if (!in) return false;
-    in.read(reinterpret_cast<char *>(&param), sizeof Param);
-    return true;
+    readparam(param, filename);
+    saveparam(param, filename);
 }
 
 // Read tokens. Return true if okay.
@@ -130,8 +136,7 @@ int main(int argc, char * argv[])
     Param param = {1e-3, 0, false, 1ul << 14};
     // Param param = {1e-4, 0, true, 1ul << 14};
     const char paramfile[] = "param.bin";
-    if (!saveparam(param, paramfile)) return EXIT_FAILURE;
-    if (!readparam(param, paramfile)) return EXIT_FAILURE;
+    updateparam(param, paramfile);
 
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param)) return EXIT_FAILURE;
