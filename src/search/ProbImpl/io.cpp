@@ -299,10 +299,15 @@ static bool gotoourchild(pNode & p)
             return false;
     }
 
-    pNode grandchild = p;
-    if (gotoonlyopenchild(grandchild) &&
-        askyn("Go to only open child y/n?"))
-        p = grandchild;
+    if (p.children()->size() == 1)
+        p = p.children()->front();
+    else
+    {
+        pNode grandchild = p;
+        if (gotoonlyopenchild(grandchild) &&
+            askyn("Go to only open child y/n?"))
+            p = grandchild;
+    }
     return true;
 }
 
