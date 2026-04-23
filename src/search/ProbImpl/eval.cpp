@@ -1,15 +1,17 @@
 #include "../problem.h"
 
+// Return true if a new batch of moves is needed.
+// Override this to turn on staged move generation.
+bool Problem::neednewstage(pNode p, pNode child) const
+{
+    return !staged || !isourturn(p) ? false :
+            isourturn(p) ? UCB(child) < UCBnewstage(p) :
+            UCB(child) > UCBnewstage(p);
+}
 // UCB threshold for generating a new batch of moves
-// Change this to turn on staged move generation.
+// Override this to turn on staged move generation.
 Value Problem::UCBnewstage(pNode p) const
 {
-    if (!staged)
-        return MCTS<Game>::UCBnewstage(p);
-    // Staged
-    if (!isourturn(p))
-        return std::numeric_limits<Value>::max();
-    // Our turn
     Treesize const self = static_cast<Treesize>(1) << (p->stage()*2);
     return score(p->game().env().weight(p->game()) + p->stage())
             + UCBbonus(true, p.size(), self);

@@ -95,13 +95,10 @@ public:
         int const raw = dif > 0 ? 1 : dif < 0 ? -1: 0;
         return !isourturn(x) ? raw : -raw;
     }
-    // UCB threshold for generating a new batch of moves
-    // Change this to turn on staged move generation.
-    virtual Value UCBnewstage(pNode p) const
-    {
-        static Value const inf = std::numeric_limits<Value>::max();
-        return isourturn(p) ? -inf : inf;
-    }
+    // Return true if a new batch of moves is needed.
+    // Override this to turn on staged move generation.
+    virtual bool neednewstage(pNode p, pNode child) const
+    { return p && !p && child; }
     // Return the unsure child with largest UCB.
     // Return nullptr if there is no such a child.
     pNode pickchild(pNode p) const
@@ -123,8 +120,7 @@ public:
             if (compchild(*child, *iter) < 0) child = iter;
         }
         // Determine whether to generate a new batch of moves.
-        if (isourturn(p) ? UCB(*child) < UCBnewstage(p) :
-            UCB(*child) > UCBnewstage(p))
+        if (neednewstage(p, *child))
             return pNode();
 
         return *child;
