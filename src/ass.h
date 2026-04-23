@@ -113,8 +113,9 @@ struct Assertion
              iter != varusage.end(); ++iter)
         {
             Bvector const & usage = iter->second;
-            Bvector::const_iterator const end = usage.end() - 1;
-            if (std::find(usage.begin(), end, true) == end)
+            Bvector::const_iterator const begin = usage.begin();
+            Bvector::const_iterator const end = begin + nhyps();
+            if (std::find(begin, end, true) == end)
                 return true; // Variable used only in exp.
         }
         return false;

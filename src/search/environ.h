@@ -33,6 +33,7 @@ struct Environ : protected Gen
         name(ass.hypslabel()),
         nhyps(ass.nhyps()),
         hypsweight(ass.hypslen()),
+        hasnewvarinexp(ass.hasnewvarinexp()),
         staged(isstaged),
         pProb(),
         m_subsumedbyProb(false),
@@ -118,6 +119,8 @@ struct Environ : protected Gen
     Hypsize const nhyps;
     // Weight of all the hypotheses combined
     Weight hypsweight;
+    // True if there is a var only used in exp.
+    bool const hasnewvarinexp;
     // Is staged move generation used?
     bool const staged;
 protected:
