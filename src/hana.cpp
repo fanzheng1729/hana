@@ -132,8 +132,6 @@ int main(int argc, char * argv[])
     const char paramfile[] = "param.bin";
     if (!saveparam(param, paramfile)) return EXIT_FAILURE;
     if (!readparam(param, paramfile)) return EXIT_FAILURE;
-    Value const parameters[] = {0, 1e-3, 0, 0};
-    // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
 
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param)) return EXIT_FAILURE;
