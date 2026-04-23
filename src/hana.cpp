@@ -1,5 +1,4 @@
 #include <cstdlib>  // for EXIT_..., std::size_t
-#include <fstream>
 #include "comment.h"
 #include "database.h"
 #include "io.h"
@@ -18,29 +17,6 @@ int test()
     return EXIT_SUCCESS;
 }
 
-// Load parameter. Return true if okay.
-bool readparam(Param & param, const char * filename)
-{
-    std::ifstream in(filename, std::ios::binary);
-    if (!in) return false;
-    in.read(reinterpret_cast<char *>(&param), sizeof Param);
-    return true;
-}
-// Save parameter. Return true if okay.
-bool saveparam(Param const & param, const char * filename)
-{
-    std::ofstream out(filename, std::ios::binary);
-    if (!out) return false;
-    out.write(reinterpret_cast<const char *>(&param), sizeof Param);
-    return out.good();
-}
-// Update parameter.
-void updateparam(Param & param, const char * filename)
-{
-    readparam(param, filename);
-    saveparam(param, filename);
-}
-
 // Read tokens. Return true if okay.
 bool read(const char * filename, Tokens & tokens, Comments & comments)
 {
@@ -50,14 +26,6 @@ bool read(const char * filename, Tokens & tokens, Comments & comments)
     if (!doread(filename, tokens, comments)) return false;
     std::cout << "done in " << timer << 's' << std::endl;
     return true;
-}
-
-bool checkassiters(Database const & database)
-{
-    std::cout << "Checking iterators to assertions" << std::endl;
-    bool checkassiters
-        (Assertions const & assertions, Assiters const & assiters);
-    return checkassiters(database.assertions(), database.assiters());
 }
 
 bool addRPN(Database & database)
@@ -99,7 +67,12 @@ int main(int argc, char * argv[])
     Timer timer;
     if (!database.read(tokens, comments, size)) return EXIT_FAILURE;
     std::cout << " done in " << timer << 's' << std::endl;
-    if (!checkassiters(database)) return EXIT_FAILURE;
+
+    bool checkassiters
+        (Assertions const & assertions, Assiters const & assiters);
+    if (!checkassiters(database.assertions(), database.assiters()))
+        return std::cout << "Bad assiters" << std::endl, EXIT_FAILURE;
+
     if (!addRPN(database)) return EXIT_FAILURE;
 
     // std::cout << "Marking duplicate assertions";
@@ -133,10 +106,10 @@ int main(int argc, char * argv[])
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
 
-    Param param = {1e-3, 0, false, 1ul << 14};
+    Param param;
     // Param param = {1e-4, 0, true, 1ul << 14};
     const char paramfile[] = "param.bin";
-    updateparam(param, paramfile);
+    param.update(paramfile);
 
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param)) return EXIT_FAILURE;
