@@ -107,7 +107,7 @@ struct Assertion
         std::upper_bound(hypsorder.rbegin() + 1, hypsorder.rend(), 0);
     }
     // Return true if there is a var only used in exp.
-    bool hasvarnotinhyps() const
+    bool hasnewvarinexp() const
     {
         for (Varusage::const_iterator iter = varusage.begin();
              iter != varusage.end(); ++iter)
