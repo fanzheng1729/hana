@@ -108,8 +108,7 @@ int main(int argc, char * argv[])
 
     Param param;
     // Param param = {1e-4, 0, true, 1ul << 14};
-    const char paramfile[] = "param.bin";
-    param.update(paramfile);
+    param.update("param.bin");
 
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param)) return EXIT_FAILURE;
