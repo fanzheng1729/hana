@@ -167,10 +167,8 @@ void Scopes::completeass(struct Assertion & ass) const
             Hypothesis const & hyp = hypiter->second;
             Expression const & hypexp = hyp.expression;
             if (hyp.floats && vars.count(hypexp[1]))
-            {
-//std::cout << "Mandatory floating Hypothesis: " << hypexp;
+//std::cout << "Mandatory floating Hypothesis: " << hypexp,
                 ass.hypiters.push_back(hypiter);
-            }
             else if (!hyp.floats)
             {
 //std::cout << "Essential hypothesis: " << hypexp;
@@ -190,7 +188,7 @@ void Scopes::completeass(struct Assertion & ass) const
     }
     // Reverse order of hypotheses.
     std::reverse(ass.hypiters.begin(), ass.hypiters.end());
-    // Reverse variable appearance vectors.
+    // Reverse variable usage vectors.
     FOR (Varusage::reference vardata, ass.varusage)
     {
         vardata.second.resize(ass.nhyps() + 1);
