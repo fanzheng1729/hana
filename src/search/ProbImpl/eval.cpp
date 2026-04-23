@@ -4,9 +4,8 @@
 // Override this to turn on staged move generation.
 bool Problem::needwidening(pNode p, pNode child) const
 {
-    return !staged || !isourturn(p) ? false :
-            isourturn(p) ? UCB(child) < UCBwidening(p) :
-            UCB(child) > UCBwidening(p);
+    return staged && isourturn(p) &&
+            UCB(child) < UCBwidening(p);
 }
 // UCB threshold for generating a new batch of moves
 // Override this to turn on staged move generation.
