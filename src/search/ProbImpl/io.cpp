@@ -299,7 +299,7 @@ static bool gotoourchild(pNode & p)
             return false;
     }
 
-    if (p.children()->size() == 1)
+    if (!Problem::isourturn(p) && p.children()->size() == 1)
         p = p.children()->front();
     else
     {
