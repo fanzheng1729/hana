@@ -245,7 +245,7 @@ void Problem::printranksinfo() const
 }
 
 
-// Move up to the parent. Return true if successful.
+// Move up to the parent. Return true if okay.
 static bool moveup(pNode & p)
 {
     if (!p.parent()) return false;
@@ -258,7 +258,7 @@ static bool moveup(pNode & p)
     return true;
 }
 
-// Input the index and move to the child. Return true if successful.
+// Input the index and move to the child. Return true if okay.
 static bool gototheirchild(pNode & p)
 {
     std::size_t i;
@@ -268,7 +268,7 @@ static bool gototheirchild(pNode & p)
     return i >= children.size() ? pNode() : (p = children[i]);
 }
 
-// Move to the child with given assertion and index. Return true if successful.
+// Move to the child with given assertion and index. Return true if okay.
 static bool findourchild(pNode & p, strview token, std::size_t index)
 {
     FOR (pNode child, *p.children())
@@ -280,7 +280,7 @@ static bool findourchild(pNode & p, strview token, std::size_t index)
     return false;
 }
 
-// Input the assertion and the index and move to the child. Return true if successful.
+// Input the assertion and the index and move to the child. Return true if okay.
 static bool gotoourchild(pNode & p)
 {
     if (!p.haschild())

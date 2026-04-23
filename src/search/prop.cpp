@@ -1,6 +1,7 @@
 #include "../disjvars.h"
 #include "goaldata.h"
 #include "../io.h"
+#include "../param.h"
 #include "problem.h"
 #include "prop.h"
 #include "../util/progress.h"
@@ -150,4 +151,10 @@ bool testpropsearch
     printtime(nodes, timer);
     printpercent(proven, "/", allprop, " = ", "% proven\n");
     return okay;
+}
+bool testpropsearch
+    (Database const & database, Param const & param)
+{
+    Value v[4] = {0, param.exploration, param.freqbias, param.staged};
+    return testpropsearch(database, param.treesize, v);
 }

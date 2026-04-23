@@ -62,7 +62,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     return moves;
 }
 
-// Try applying an assertion, and add moves if successful.
+// Try applying an assertion, and add moves if okay.
 // Return true if it has no open hypotheses.
 bool Environ::tryass
     (Game const & game, Assiter iter, RPNsize size, Moves & moves) const

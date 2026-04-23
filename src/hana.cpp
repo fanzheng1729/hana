@@ -3,6 +3,7 @@
 #include "comment.h"
 #include "database.h"
 #include "io.h"
+#include "param.h"
 #include "search/problem.h"
 #include "sect.h"
 #include "token.h"
@@ -17,6 +18,24 @@ int test()
     return EXIT_SUCCESS;
 }
 
+// Save parameter. Return true if okay.
+bool saveparam(Param const & param, const char * filename)
+{
+    std::ofstream out(filename, std::ios::binary);
+    if (!out) return false;
+    out.write(reinterpret_cast<const char *>(&param), sizeof Param);
+    return out.good();
+}
+// Load parameter. Return true if okay.
+bool readparam(Param & param, const char * filename)
+{
+    std::ifstream in(filename, std::ios::binary);
+    if (!in) return false;
+    in.read(reinterpret_cast<char *>(&param), sizeof Param);
+    return true;
+}
+
+// Read tokens. Return true if okay.
 bool read(const char * filename, Tokens & tokens, Comments & comments)
 {
     std::cout << "Reading file " << filename << ' ';
@@ -108,20 +127,22 @@ int main(int argc, char * argv[])
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
 
+    Param param = {1e-3, 0, false, 1ul << 14};
+    // Param param = {1e-4, 0, true, 1ul << 14};
+    const char paramfile[] = "param.bin";
+    if (!saveparam(param, paramfile)) return EXIT_FAILURE;
+    if (!readparam(param, paramfile)) return EXIT_FAILURE;
     Value const parameters[] = {0, 1e-3, 0, 0};
     // Value parameters[] = {0, 1e-4, 0, Problem::STAGED};
-    Treesize const maxsize = 1ul << 14;
 
-    bool testpropsearch(Database const &, Treesize, Value const[4]);
-    if (!testpropsearch(database, maxsize, parameters))
-        return EXIT_FAILURE;
+    bool testpropsearch(Database const &, Param const &);
+    if (!testpropsearch(database, param)) return EXIT_FAILURE;
 // Uncomment these lines if you want to output to a file.
     // std::ofstream out("result.txt");
     // std::streambuf * coutbuf = std::cout.rdbuf(out.rdbuf());
-    // bool const okay = testpropsearch(database, maxsize, parameters);
+    // bool const okay = testpropsearch(database, param);
     // std::cout.rdbuf(coutbuf);
-    // if (!okay)
-    //     return EXIT_FAILURE;
+    // if (!okay) return EXIT_FAILURE;
 
     return EXIT_SUCCESS;
 }
