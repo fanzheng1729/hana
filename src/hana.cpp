@@ -106,8 +106,7 @@ int main(int argc, char * argv[])
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
 
-    Param param;
-    // Param param = {1e-4, 0, true, 1ul << 14};
+    Param param = Param::default;
     param.update("param.bin");
 
     bool testpropsearch(Database const &, Param const &);

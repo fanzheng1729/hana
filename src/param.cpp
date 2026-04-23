@@ -4,6 +4,8 @@
 #include "io.h"
 #include "param.h"
 
+Param const Param::default = {1e-3, 0, false, 1u << 14};
+//Param const Param::default = {1e-4, 0, true, 1u << 14};
 bool Param::bad() const
 {
     return unexpected(!good(), "parameter\n", *this);
@@ -19,7 +21,7 @@ bool Param::read(const char * filename)
     return param.good() ? (*this = param, true) : !param.bad();
 }
 
-void Param::fill(std::istream & in)
+bool Param::fill(std::istream & in)
 {
     std::cout << "Format: field value, ended with anything invalid\n";
     Param param = *this;
@@ -27,7 +29,7 @@ void Param::fill(std::istream & in)
     {
         std::string field, value;
         in >> field >> value;
-        if (!in.good()) return;
+        if (!in.good()) return false;
 #define FILLFIELD(FIELD) \
         { \
             std::istringstream s(value); \
@@ -50,8 +52,8 @@ void Param::fill(std::istream & in)
         break;
     }
     std::cout << "New parameters\n" << param;
-    if (askyn("Save new parameters y/n?"))
-        *this = param;
+    return
+    askyn("Save new parameters y/n?") && !bad() ? (*this = param, true) : false;
 }
 
 bool Param::save(const char * filename) const
@@ -69,9 +71,9 @@ void Param::update(const char * filename)
     read(filename);
     const char p[] = "Parameters ", s[] = "not saved\n";
     std::cout << p << std::endl << *this;
-    if (askyn("Edit parameters y/n?"))
-        fill(std::cin);
-    std::cout << p << &s[4 * save(filename)];
+    const bool saved = askyn("Edit parameters y/n") &&
+        fill(std::cin) && save(filename);
+    std::cout << p << &s[4 * saved];
 }
 
 std::ostream & operator<<(std::ostream & out, Param const & param)

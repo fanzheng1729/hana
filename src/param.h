@@ -10,18 +10,13 @@ struct Param
     double freqbias;
     bool staged;
     std::size_t maxsize;
-    Param()
-        : exploration(1e-3)
-        , freqbias(0)
-        , staged(false)
-        , maxsize(1u << 14)
-    {}
+    static Param const default;
     bool read(const char * filename);
     bool save(const char * filename) const;
     template<class T>
     bool fillfield(T Param::* p, std::istream & in)
     { return in >> this->*p, true; }
-    void fill(std::istream & in);
+    bool fill(std::istream & in);
     void update(const char * filename);
     bool checkexploration() const { return exploration >= 0; }
     bool checkfreqbias() const { return freqbias >= 0; }
