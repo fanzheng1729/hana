@@ -6,7 +6,7 @@
 #include "environ.h"
 #include "../util/find.h"
 #include "../util/for.h"
-// #include "../io.h"
+#include "../io.h"
 // Propositional proof search, using SAT pruning
 struct Prop : Environ
 {
@@ -20,6 +20,8 @@ struct Prop : Environ
         frequencybias(freqbias)
     {
 // std::cout << "newEnv " << name << ' ' << ass.varusage;
+// std::cout << hasnewvarinexp << std::endl;
+// std::cin.get();
         // Reinitialize weights of all hypotheses combined.
         hypsweight = 0;
         for (Hypsize i = 0; i < ass.nhyps(); ++i)
@@ -73,7 +75,9 @@ struct Prop : Environ
     {
         Bvector result(nhyps, false);
         CNFClauses conclusion;
-        bool trimmed = false;
+        // True if a floating hypothesis could be trimmed.
+        bool trimmed = hasnewvarinexp;
+        // Check for essential hypotheses to be trimmed.
         for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
         {
             if (assertion.hypfloats(i)) continue;
