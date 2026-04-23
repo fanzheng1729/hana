@@ -2,15 +2,15 @@
 
 // Return true if a new batch of moves is needed.
 // Override this to turn on staged move generation.
-bool Problem::neednewstage(pNode p, pNode child) const
+bool Problem::needwidening(pNode p, pNode child) const
 {
     return !staged || !isourturn(p) ? false :
-            isourturn(p) ? UCB(child) < UCBnewstage(p) :
-            UCB(child) > UCBnewstage(p);
+            isourturn(p) ? UCB(child) < UCBwidening(p) :
+            UCB(child) > UCBwidening(p);
 }
 // UCB threshold for generating a new batch of moves
 // Override this to turn on staged move generation.
-Value Problem::UCBnewstage(pNode p) const
+Value Problem::UCBwidening(pNode p) const
 {
     Treesize const self = static_cast<Treesize>(1) << (p->stage()*2);
     return score(p->game().env().weight(p->game()) + p->stage())

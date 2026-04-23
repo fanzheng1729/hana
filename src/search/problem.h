@@ -120,10 +120,10 @@ public:
 // Eval
     // Return true if a new batch of moves is needed.
     // Override this to turn on staged move generation.
-    virtual bool neednewstage(pNode p, pNode child) const;
+    virtual bool needwidening(pNode p, pNode child) const;
     // UCB threshold for generating a new batch of moves
     // Change this to turn on staged move generation.
-    Value UCBnewstage(pNode p) const;
+    Value UCBwidening(pNode p) const;
     // Do singular extension. Return the value.
     // p should != nullptr.
     Value singularext(pNode p);
