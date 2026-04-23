@@ -311,12 +311,10 @@ void Problem::navigate(pNode p, bool detailed) const
     if (empty()) return;
 
     std::cout <<
-    "On our turn,\n"
-    "c|g [name] [n] changes/goes to the n-th node using the assertion [name]\n"
-    "c|g * changes/goes to the last node\n"
-    "On their turn, c|g [n] changes/goes to the n-th hypothesis\n"
-    "u[p] goes up a level\nh[ome] or t[op] goes to the top level\n"
-    "b[ye] or e[xit] or q[uit] to leave navigation\n"
+    "Our turn: c|g [name] [n] -> n-th node using [name], c|g * -> last node\n"
+    "Their turn, c|g [n] -> n-th hypothesis\n"
+    "u[p] up a level\nh[ome] or t[op] -> the top level\n"
+    "b[ye] or e[xit] or q[uit] to end navigation\n"
     "a[ssertion] or n[umber] or # for the assertion number"
     << std::endl;
 

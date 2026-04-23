@@ -94,7 +94,7 @@ struct Assertion
             if (hypexp(i) == expression) return true;
         return false;
     }
-    // # free variables
+    // # free variables in the conclusion
     Hypsize nfreevar() const
         { return nfreevars.empty() ? 0 : nfreevars.back(); }
     // # free variables in a hypothesis

@@ -84,6 +84,7 @@ struct Prop : Environ
             // If the conclusion still holds, the hypothesis can be trimmed.
             trimmed |= (result[i] = !hypsCNF(result).sat(conclusion));
         }
+        // return assertion.trimvars(result, goal.rpn);
         return trimmed ? assertion.trimvars(result, goal.rpn) : Bvector();
     }
     // Weight of the goal

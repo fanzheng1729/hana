@@ -16,11 +16,10 @@ Bvector & Assertion::trimvars(Bvector & hypstotrim, RPN const & conclusion) cons
         if (!hypfloats(i)) continue;
         // Use of the variable in hypotheses
         Bvector const & usage = varusage.at(hypexp(i)[1]);
-// std::cout << "use of " << hypexp(i)[1] << ' ';
         Hypsize j = nhyps() - 1;
         for ( ; j != static_cast<Hypsize>(-1); --j)
             if (hypstotrim[j] && usage[j]) break;
-// std::cout << j << ' ';
+// std::cout << hypexp(i)[1] << " used in hyp " << j << ' ';
         hypstotrim[i] = (j != static_cast<Hypsize>(-1) ||
                         util::filter(conclusion)(hyplabel(i).c_str));
     }
@@ -174,13 +173,13 @@ void Assertion::sethyps(Assertion const & ass,
     hypiters.clear();
     // Preallocate for efficiency
     hypiters.reserve(newnhyps);
-    // Variable usage and floating hypotheses for new variables
+    // New var usage and floating hypotheses
     FOR (Varusage::reference rvar, varusage)
     {
         rvar.second.resize(newnhyps);
         hypiters.push_back(rvar.first.iter);
     }
-    // Old variable usage
+    // Old var usage
     // std::cout << "oldvars " << ass.varusage;
     FOR (Varusage::const_reference rvar, ass.varusage)
     {
