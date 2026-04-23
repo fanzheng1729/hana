@@ -14,9 +14,9 @@ Treesize testsearch(Assiter iter, Problem & tree, Treesize maxsize)
     //     tree.printstats(), std::cin.get();
     if (tree.size() > maxsize)
     {
-        // printass(*iter); std::cout << std::endl;
-        // tree.printstats();
-        // tree.navigate();
+        printass(*iter); std::cout << std::endl;
+        tree.printstats();
+        tree.navigate();
     }
     else if (unexpected(tree.empty(), "empty tree for", iter->first))
         return 0;
