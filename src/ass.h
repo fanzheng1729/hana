@@ -114,7 +114,7 @@ struct Assertion
         {
             Bvector const & usage = iter->second;
             Bvector::const_iterator const end = usage.end() - 1;
-            if (std::find(usage.begin(), end - 1, true) == end - 1)
+            if (std::find(usage.begin(), end, true) == end)
                 return true; // Variable used only in exp.
         }
         return false;

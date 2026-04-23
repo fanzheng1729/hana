@@ -148,8 +148,6 @@ Assertions::iterator Database::addass
     Assertion & ass = iter->second;
     ass.expression = exp;
     scopes.completeass(ass);
-    std::cout << label << ' ' << ass.hasnewvarinexp();
-    std::cin.get();
     ass.number = assertions().size();
     ass.tokenpos = tokenpos;
     m_assiters.push_back(iter);
