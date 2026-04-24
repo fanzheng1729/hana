@@ -4,7 +4,7 @@
 // Test proof search. Return tree.size if okay. Return 0 if not.
 Treesize testsearch(Assiter iter, Problem & tree, Treesize maxsize)
 {
-    // printass(*iter);
+    printass(*iter);
     tree.play(maxsize);
     tree.printstats();
     // std::cin.get();
