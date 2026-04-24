@@ -91,11 +91,19 @@ struct Prop : Environ
         // return assertion.trimvars(result, goal.rpn);
         return trimmed ? assertion.trimvars(result, goal.rpn) : Bvector();
     }
+    Weight weight(RPNstep step) const
+    {
+        if (!step.isthm()) return 0;
+        Weight n = assnum();
+        return n/(n - step.pass->second.number);
+    }
     // Weight of the goal
     virtual Weight weight(RPN const & goal) const
     {
-        return goal.size();
-        // return ::weight(goal, propctors());
+        Weight w = goal.size();
+        FOR (RPNstep step, goal)
+            w += weight(step);
+        return w;
     }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const;

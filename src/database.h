@@ -185,9 +185,6 @@ public:
             if (iter != propctors().end())
                 iter->second.weight = 1;
         }
-        // Add weights for other propositional syntax axioms.
-        FOR (Propctors::reference rdef, m_propctors)
-            addweight(m_propctors, rdef.second);
     }
 // Mark propositional assertions. Return its number.
     Assertions::size_type markpropassertions()

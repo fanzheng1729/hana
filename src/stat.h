@@ -192,49 +192,4 @@ Frequencies frequencies(T const & definitions)
     return freqs;
 }
 
-// Find the weights of a definition
-template<class T>
-void addweight(T & definitions, typename T::mapped_type & definition)
-{
-    if (!definition.pdef)
-        definition.weight = 1;
-    else if (definition.weight == 0)
-    {
-        Weight & sum = definition.weight;
-        FOR (RPNstep const step, definition.rhs)
-            if (step.ishyp() && step.phyp)
-                ++sum;
-            else if (step.isthm() && step.pass)
-                if (const char * const label = step.pass->first.c_str)
-                {
-                    typename T::iterator const iter = definitions.find(label);
-                    if (iter == definitions.end())
-                        continue;
-                    addweight(definitions, iter->second);
-                    sum += iter->second.weight;
-                }
-        sum -= (definition.lhs.size() - 1);
-    }
-}
-
-// Weight of a rev-Polish notation.
-template<class T>
-Weight weight(RPN const & exp, T const & definitions)
-{
-    Weight sum = 0;
-
-    FOR (RPNstep const step, exp)
-        if (step.ishyp())
-            ++sum;
-        else if (step.isthm() && step.pass)
-            if (const char * const label = step.pass->first.c_str)
-            {
-                typename T::const_iterator const iter = definitions.find(label);
-                if (iter != definitions.end())
-                    sum += iter->second.weight;
-            }
-
-    return sum;
-}
-
 #endif // STAT_H_INCLUDED
