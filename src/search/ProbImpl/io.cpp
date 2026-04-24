@@ -282,11 +282,20 @@ static bool findourchild(pNode & p, strview token, std::size_t index)
     return false;
 }
 
+// Ask the user for going to the only open child.
+static void askonlyopenchild(pNode & p)
+{
+    pNode child = p;
+    if (gotoonlyopenchild(child) &&
+        askyn("Go to only open child y/n?"))
+        p = child;
+}
+
 // Input the assertion and the index and move to the child. Return true if okay.
 static bool gotoourchild(pNode & p)
 {
     if (!p.haschild())
-        return false;
+        return std::cout << "No child" << std::endl, false;
 
     std::string token;
     std::cin >> token;
@@ -304,32 +313,27 @@ static bool gotoourchild(pNode & p)
     if (!Problem::isourturn(p) && p.children()->size() == 1)
         p = p.children()->front();
     else
-    {
-        pNode grandchild = p;
-        if (gotoonlyopenchild(grandchild) &&
-            askyn("Go to only open child y/n?"))
-            p = grandchild;
-    }
+        askonlyopenchild(p);
     return true;
 }
 
+// Go down a given # of levels.
 void Problem::gotolevel(pNode & p, size_type level) const
 {
-    if (level == 0)
+    if (!p || level == 0)
         return;
 
-    size_type n = 0, nDefer = 0;
-    while (p = pickchild(p))
-        if (!isourturn(p))
+    pNode q;
+    size_type n = 0;
+    while (q = pickchild(p))
+        if (!isourturn(p = q))
             switch (p->game().attempt.type)
             {
             case Move::DEFER:
-                ++nDefer;
                 continue;
             case Move::THM: case Move::CONJ:
                 if (++n == level)
-                    return;
-                nDefer = 0;
+                    return askonlyopenchild(p);
                 continue;
             case Move::NONE:
                 std::cerr << "Empty move" << std::endl;
@@ -337,6 +341,7 @@ void Problem::gotolevel(pNode & p, size_type level) const
             }
 }
 
+// Go down a # of levels read from input.
 void Problem::gotolevel(pNode & p) const
 {
     size_type n;
@@ -351,8 +356,9 @@ void Problem::navigate(pNode p, bool detailed) const
     std::cout <<
     "c|g name n -> n-th name node, c|g * -> last node\n"
     "c|g n -> n-th hypothesis\n"
-    "d(ive) or j(ump) n -> the n-th level"
-    "u(p) a level\nh(ome) or t(op) -> the top level\n"
+    "d(ive) or j(ump) n -> the n-th level\n"
+    "u(p) -> parent, uu -> the closest non-defer parent\n"
+    "h(ome) or t(op) -> the top level\n"
     "b(ye) or e(xit) or q(uit) to end navigation\n"
     "a(ssertion) or n(umber) or # for the assertion number\n";
 
@@ -373,6 +379,9 @@ void Problem::navigate(pNode p, bool detailed) const
             break;
         case 'u':
             moveup(p);
+            if (token[1] == 'u')
+                while (p->game().nDefer)
+                    moveup(p);
             break;
         case 'h': case 't':
             p = root();
@@ -384,7 +393,7 @@ void Problem::navigate(pNode p, bool detailed) const
             std::cout << number() << std::endl;
             continue;
         default:
-            std::cout << "Invalid command. Try again\n";
+            unexpected(true, "command", token);
             continue;
         }
         printmainline(p, detailed);
