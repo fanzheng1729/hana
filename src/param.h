@@ -11,12 +11,14 @@ struct Param
     bool staged;
     std::size_t maxsize;
     static Param const default;
+private:
     bool read(const char * filename);
     bool save(const char * filename) const;
     template<class T>
     bool fillfield(T Param::* p, std::istream & in)
     { return in >> this->*p, true; }
     bool fill(std::istream & in);
+public:
     void update(const char * filename);
     bool checkexploration() const { return exploration >= 0; }
     bool checkfreqbias() const { return freqbias >= 0; }
