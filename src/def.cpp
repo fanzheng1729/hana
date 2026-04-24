@@ -11,7 +11,7 @@
 
 // Find the revPolish notation of (LHS, RHS).
 Definition::Definition(Assertions::const_reference rass)
-    : pdef(), weight(0), freqcount(0)
+    : pdef(), freqcount(0)
 {
     strview label = rass.first;
     Assertion const & ass = rass.second;
@@ -100,7 +100,7 @@ Definition::Definition
     (Assertions::const_reference rass,
         struct Typecodes const & typecodes,
         struct Relations const & equalities)
-        : pdef(), weight(0), freqcount(0)
+        : pdef(), freqcount(0)
 {
     int err = 0;
     Assertion const & ass = rass.second;

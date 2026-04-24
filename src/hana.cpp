@@ -98,10 +98,6 @@ int main(int argc, char * argv[])
     FOR (Propctors::const_reference propctor, database.propctors())
         std::cout << propctor.first << ' ' << propctor.second.freqcount << ' ';
     std::cout << std::endl;
-    std::cout << "Propositional syntax axiom weights\n";
-    FOR (Propctors::const_reference propctor, database.propctors())
-        std::cout << propctor.first << ' ' << propctor.second.weight << ' ';
-    std::cout << std::endl;
 
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();

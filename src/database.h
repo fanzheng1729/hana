@@ -178,13 +178,6 @@ public:
             m_propctors.addbatch
             (relations(maskpatterns[i][0], maskpatterns[i][1]), tts[i]);
         m_propctors.adddefs(definitions());
-        // Set weights of equivalences to 1.
-        FOR (Relations::const_reference relation, equalities())
-        {
-            Propctors::iterator const iter = m_propctors.find(relation.first);
-            if (iter != propctors().end())
-                iter->second.weight = 1;
-        }
     }
 // Mark propositional assertions. Return its number.
     Assertions::size_type markpropassertions()
