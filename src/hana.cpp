@@ -1,4 +1,5 @@
 #include <cstdlib>  // for EXIT_..., std::size_t
+#include <fstream>
 #include "comment.h"
 #include "database.h"
 #include "io.h"
@@ -108,7 +109,7 @@ int main(int argc, char * argv[])
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param)) return EXIT_FAILURE;
 // Uncomment these lines if you want to output to a file.
-    // std::ofstream out("result.txt");
+    // std::ofstream out("result2.txt");
     // std::streambuf * coutbuf = std::cout.rdbuf(out.rdbuf());
     // bool const okay = testpropsearch(database, param);
     // std::cout.rdbuf(coutbuf);
