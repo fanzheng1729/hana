@@ -77,17 +77,6 @@ public:
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
     }
-    // Add 1-step proof of all the hypotheses of the problem context.
-    void addhypproofs()
-    {
-        Assertion const & ass = probAss();
-        for (Hypsize i = 0; i < ass.nhyps(); ++i)
-        {
-            if (ass.hypfloats(i)) continue;
-            goals[Goalview(ass.hypRPN(i), ass.hyptypecode(i))]
-            .proof.assign(1, ass.hypptr(i));
-        }
-    }
     Environ const & addhypproofs(Environ const & env)
     {
         if (&env != &probEnv() && env.subsumedbyProb())
