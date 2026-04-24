@@ -68,12 +68,16 @@ bool Param::save(const char * filename) const
 
 void Param::update(const char * filename)
 {
-    read(filename);
-    const char p[] = "Parameters ", s[] = "not saved\n";
+    if (!read(filename))
+    {
+        std::cout << "Using current parameters\n" << *this;
+        return;
+    }
+    const char p[] = "Parameters ";
     std::cout << p << std::endl << *this;
     const bool saved = askyn("Edit parameters y/n") &&
         fill(std::cin) && save(filename);
-    std::cout << p << &s[4 * saved];
+    std::cout << p << &"not saved\n"[4 * saved];
 }
 
 std::ostream & operator<<(std::ostream & out, Param const & param)
