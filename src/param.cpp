@@ -17,6 +17,7 @@ bool Param::read(const char * filename)
     std::ifstream in(filename, std::ios::binary);
     if (!in.good())
         return !unexpected(true, "file open error", filename);
+
     in.read(reinterpret_cast<char *>(&param), sizeof Param);
     return param.good() ? (*this = param, true) : !param.bad();
 }
@@ -59,10 +60,13 @@ bool Param::fill(std::istream & in)
 
 bool Param::save(const char * filename) const
 {
-    if (bad()) return false;
+    if (bad())
+        return false;
+
     std::ofstream out(filename, std::ios::binary);
     if (!out.good())
         return !unexpected(true, "file save error", filename);
+
     out.write(reinterpret_cast<const char *>(this), sizeof Param);
     return out.good();
 }
@@ -74,10 +78,13 @@ void Param::update(const char * filename)
         std::cout << "Using current parameters\n" << *this;
         return;
     }
-    const char p[] = "Parameters ";
+
+    static const char p[] = "Parameters ";
     std::cout << p << std::endl << *this;
-    const bool saved = askyn("Edit parameters y/n") &&
-        fill(std::cin) && save(filename);
+    if (!askyn("Edit parameters y/n"))
+        return;
+
+    const bool saved = fill(std::cin) && save(filename);
     std::cout << p << &"not saved\n"[4 * saved];
 }
 
