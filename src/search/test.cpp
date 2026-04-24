@@ -6,12 +6,10 @@ Treesize testsearch(Assiter iter, Problem & tree, Treesize maxsize)
 {
     // printass(*iter);
     tree.play(maxsize);
-    // tree.printstats();
+    tree.printstats();
     // std::cin.get();
     // if (iter->first == "impbii")
     //     tree.navigate();
-    // if (iter->second.number == 203)
-    //     tree.printstats(), std::cin.get();
     if (tree.size() > maxsize)
     {
         // printass(*iter); std::cout << std::endl;
