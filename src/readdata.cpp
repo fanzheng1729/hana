@@ -187,9 +187,9 @@ static void inactivereferr(strview token, strview label)
 // Add a step to a proof.
 static bool operator+=(RPN & proof, RPNstep step)
 {
-    if (step.type != RPNstep::NONE)
+    if (!step.empty())
         proof.push_back(step);
-    return step.type;
+    return !step.empty();
 }
 
 // Discouragement ($4.4.1)
@@ -234,27 +234,25 @@ RPN Imp::getlabels(strview label, Hypiters const & hyps)
         m_tokens.pop();
 
         if (unexpected(token == label, "self-reference in proof of", label))
-        {
-            return RPN(1, RPNstep::NONE);
-        }
+            return RPN(1);
 
         if (util::filter(hyps)(token))
         {
             std::cerr << "Compressed proof of theorem " << label
                       << " has mandatory hypothesis " << token
                       << " in label list" << std::endl;
-            return RPN(1, RPNstep::NONE);
+            return RPN(1);
         }
 
         if (!(labels += getRPNstep(token)))
         {
             inactivereferr(token, label);
-            return RPN(1, RPNstep::NONE);
+            return RPN(1);
         }
     }
 
     if (unfinishedstat(m_tokens, "$p", label))
-        return RPN(1, RPNstep::NONE);
+        return RPN(1);
 
     // Discard closing parenthesis
     m_tokens.pop();

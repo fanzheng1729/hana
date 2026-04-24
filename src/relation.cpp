@@ -42,10 +42,8 @@ static RPNstep match(Assertion const & ass, const int pattern[])
     const int * end = pattern;
     while (*end != Relations::PATTERN_END) ++end;
 
-    // Max # variables to substitute
-    const int argc = *std::max_element(pattern, end);
     // Substitution vector
-    RPN substs(argc + 1, RPNstep::NONE);
+    RPN substs(*std::max_element(pattern, end) + 1);
 
     // Match hypotheses.
     const int * cur = pattern;

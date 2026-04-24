@@ -313,6 +313,37 @@ static bool gotoourchild(pNode & p)
     return true;
 }
 
+void Problem::gotolevel(pNode & p, size_type level) const
+{
+    if (level == 0)
+        return;
+
+    size_type n = 0, nDefer = 0;
+    while (p = pickchild(p))
+        if (!isourturn(p))
+            switch (p->game().attempt.type)
+            {
+            case Move::DEFER:
+                ++nDefer;
+                continue;
+            case Move::THM: case Move::CONJ:
+                if (++n == level)
+                    return;
+                nDefer = 0;
+                continue;
+            case Move::NONE:
+                std::cerr << "Empty move" << std::endl;
+                return;
+            }
+}
+
+void Problem::gotolevel(pNode & p) const
+{
+    size_type n;
+    std::cin>>n;
+    gotolevel(p, n);
+}
+
 void Problem::navigate(pNode p, bool detailed) const
 {
     if (!p) return;
@@ -320,7 +351,7 @@ void Problem::navigate(pNode p, bool detailed) const
     std::cout <<
     "Our turn: c|g [name] [n] -> n-th node using [name], c|g * -> last node\n"
     "Their turn, c|g [n] -> n-th hypothesis\n"
-    "u[p] up a level\nh[ome] or t[op] -> the top level\n"
+    "u[p] a level\nh[ome] or t[op] -> the top level\n"
     "b[ye] or e[xit] or q[uit] to end navigation\n"
     "a[ssertion] or n[umber] or # for the assertion number"
     << std::endl;
@@ -337,6 +368,9 @@ void Problem::navigate(pNode p, bool detailed) const
         {
         case 'b': case 'e': case 'q':
             return;
+        case 'd': case 'j':
+            gotolevel(p);
+            break;
         case 'u':
             moveup(p);
             break;

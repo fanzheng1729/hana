@@ -215,6 +215,8 @@ public:
     void printstats() const;
     void printenvs() const;
     void printranksinfo() const;
+    void gotolevel(pNode & p, size_type level) const;
+    void gotolevel(pNode & p) const;
     void navigate(pNode p, bool detailed = true) const;
     void navigate(bool detailed = true) const { navigate(root(), detailed); }
     void printabs() const;

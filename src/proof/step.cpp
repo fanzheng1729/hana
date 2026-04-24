@@ -49,7 +49,7 @@ RPNstep RPNstep::Builder::operator()(strview label) const
         return &*assiter;
 
     std::cerr << steperr << label.c_str << std::endl;
-    return RPNstep::NONE;
+    return RPNstep();
 }
 
 static void writeprooferr(const char * thmlabel)
