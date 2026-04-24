@@ -196,14 +196,14 @@ void Problem::printmainline(pNode p, size_type detail) const
 void Problem::checkmainline(pNode p) const
 {
     for ( ; p; p = pickchild(p))
-        if (isourturn(p) && p->game().nDefer == 0
-            && p->game().proven() && !p->won())
-        {
-            for (pNode q = root(); q && q != p; q = pickchild(q))
-                std::cout << *q;
-            std::cout << *p;
-            navigate();
-        }
+        if (isourturn(p) && p->game().nDefer == 0)
+            if (p->game().proven() != p->won())
+            {
+                for (pNode q = root(); q && q != p; q = pickchild(q))
+                    std::cout << *q;
+                std::cout << *p;
+                navigate();
+            }
 }
 
 // Format: n nodes, x V, y ?, z X in m contexts
@@ -315,7 +315,7 @@ static bool gotoourchild(pNode & p)
 
 void Problem::navigate(pNode p, bool detailed) const
 {
-    if (empty()) return;
+    if (!p) return;
 
     std::cout <<
     "Our turn: c|g [name] [n] -> n-th node using [name], c|g * -> last node\n"
