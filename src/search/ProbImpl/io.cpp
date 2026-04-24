@@ -252,7 +252,7 @@ static bool moveup(pNode & p)
 
     p = p.parent();
     if (p.parent())
-        if (p.children()->size() == 1 ||
+        if (p.nchild() == 1 ||
             (onlyopenchild(p) &&
             askyn("Go to grandparent y/n?")))
             p = p.parent();
@@ -310,7 +310,7 @@ static bool gotoourchild(pNode & p)
             return false;
     }
 
-    if (!Problem::isourturn(p) && p.children()->size() == 1)
+    if (!Problem::isourturn(p) && p.nchild() == 1)
         p = p.children()->front();
     else
         askonlyopenchild(p);

@@ -5,6 +5,7 @@
 bool Problem::needwidening(pNode p, pNode child) const
 {
     return staged && isourturn(p) &&
+            // p.size() > p.nchild() * p.nchild();
             UCB(child) < UCBwidening(p);
 }
 // UCB threshold for generating a new batch of moves

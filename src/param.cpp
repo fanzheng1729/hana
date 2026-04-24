@@ -5,7 +5,7 @@
 #include "param.h"
 
 Param const Param::default = {1e-3, 0, false, 1u << 14};
-//Param const Param::default = {1e-4, 0, true, 1u << 14};
+
 bool Param::bad() const
 {
     return unexpected(!good(), "parameter\n", *this);
