@@ -29,7 +29,8 @@ bool Param::fill(std::istream & in)
     {
         std::string field, value;
         in >> field >> value;
-        if (!in.good()) return false;
+        if (!in.good())
+            break;
 #define FILLFIELD(FIELD) \
         { \
             std::istringstream s(value); \
