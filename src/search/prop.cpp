@@ -7,34 +7,6 @@
 #include "../util/progress.h"
 #include "../util/timer.h"
 
-static double distance(Freqcounts const & goal, Frequencies const & ref)
-{
-    std::size_t const size = goal.size();
-    if (unexpected(size != ref.size(), "size mismatch", ""))
-        return 0;
-    return 0;
-    // Total occurrence count
-    double const total = static_cast<double>(goal.sum());
-
-    double dist = 0;
-    for (std::size_t i = 0; i < size; ++i)
-    {
-        double  diff = goal[i]/total - ref[i];
-        dist += diff * diff;
-    }
-    return dist;
-}
-
-// Evaluate leaf games, and record the proof if proven.
-Eval Prop::evalourleaf(Game const & game) const
-{
-    Weight const w = this->Environ::weight(game) + game.wDefer();
-    Freqcounts propctorcounts = hypspropctorcounts;
-    addfreqcounts(game.goal().rpn, propctorlabels, propctorcounts);
-    double const d = distance(propctorcounts, propctorfreqs);
-    return score(w + d * frequencybias);
-}
-
 // Adds substitutions to a move.
 struct Substadder : Adder
 {

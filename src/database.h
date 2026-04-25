@@ -190,10 +190,7 @@ public:
             ass.settype(isprop * Asstype::PROPOSITIONAL);
             // Check if it is propositional and starts with a non-primitive type code.
             if (isprop && typecodes().isprimitive(ass.exptypecode()) == FALSE)
-            {
-                addfreqcount(ass, m_propctors);
                 ++n;
-            }
         }
         return n;
     }

@@ -13,11 +13,7 @@ struct Prop : Environ
     Prop(Assertion const & ass, Database const & db,
          std::size_t maxsize, double freqbias, bool staged = false) :
         Environ(ass, db, maxsize, staged),
-        allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
-        propctorlabels(labels(propctors())),
-        propctorfreqs(frequencies(propctors())),
-        hypspropctorcounts(hypsfreqcounts(ass, propctorlabels)),
-        frequencybias(freqbias)
+        allhypsCNF(db.propctors().hypscnf(ass, hypnatoms))
     {
 // std::cout << "newEnv " << name << ' ' << ass.varusage;
 // std::cout << hasnewvarinexp << std::endl;
@@ -106,13 +102,14 @@ struct Prop : Environ
         return w;
     }
     // Evaluate leaf games, and record the proof if proven.
-    virtual Eval evalourleaf(Game const & game) const;
+    virtual Eval evalourleaf(Game const & game) const
+    { return score(this->Environ::weight(game) + game.wDefer()); }
     // Create a new context constructed from an assertion on the heap.
     // Return its address.
     virtual Prop * makeEnv(Assertion const & ass) const
     {
         return new(std::nothrow)
-        Prop(ass, database, m_maxmoves, frequencybias, staged);
+        Prop(ass, database, m_maxmoves, 0, staged);
     }
 private:
     // Add moves with free variables.
@@ -121,14 +118,6 @@ private:
     // The CNF of all hypotheses combined
     HypsCNF const allhypsCNF;
     Atom hypnatoms;
-    // Propositional syntax axiom labels
-    std::vector<strview> const propctorlabels;
-    // Propositional syntax axiom frequencies
-    Frequencies const propctorfreqs;
-    // Propositional syntax axiom counts in hypotheses
-    Freqcounts const hypspropctorcounts;
-    // Frequency bias
-    double const frequencybias;
 };
 
 #endif // PROP_H_INCLUDED
