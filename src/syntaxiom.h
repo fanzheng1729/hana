@@ -24,6 +24,7 @@ struct Syntaxioms : std::map<strview, Syntaxiom>
     Syntaxioms(Assertions const & assertions, class Database const & database);
 private:
     typedef std::map<strview, std::vector<const_pointer> > M_map_type;
+    M_map_type m_map;
 public:
 // Find syntax axioms with a specific key. Return nullptr if none is found.
     M_map_type::mapped_type const * keyis(key_type key) const
@@ -46,7 +47,6 @@ public:
     bool checkRPN
         (Assertion ass, struct Typecodes const & typecodes) const;
 private:
-    M_map_type m_map;
     friend class Database;
 // Map syntax axioms.
     void _map();
