@@ -25,6 +25,8 @@ struct Assertion
 // Derived properties:
     // Map: variable used in statement -> (is used in hyp i, is used in exp)
     Varusage varusage;
+    // Max id of variables
+    Symbol2::ID maxvarid;
     // (# free variables in hyp i, total # free variables)
     Hypsizes nfreevars;
     // Indices of hypotheses containing most to fewest free variables
@@ -44,16 +46,6 @@ struct Assertion
         { return expression.empty() ? strview() : expression[0]; }
     // # of variables
     Hypsize nvars() const { return varusage.size(); }
-    // Max id of variables
-    Symbol2::ID maxvarid() const
-    {
-        Symbol2::ID max = 0;
-        for (Varusage::const_iterator iter = varusage.begin();
-             iter != varusage.end(); ++iter)
-            if (iter->first.id > max)
-                max = iter->first.id;
-        return max;
-    }
     // # of hypotheses
     Hypsize nhyps() const {return hypiters.size();}
     // # of essential hypotheses

@@ -138,6 +138,16 @@ struct Hypcomp
     }
 };
 
+// Max id of variables in an assertion
+Symbol2::ID maxvarid(Varusage const & varusage)
+{
+    Symbol2::ID max = 0;
+    FOR (Varusage::const_reference var, varusage)
+        if (var.first.id > max)
+            max = var.first.id;
+    return max;
+}
+
 // Complete an Assertion from its Expression. That is, determine the
 // mandatory hypotheses and disjoint variable restrictions and the #.
 void Scopes::completeass(struct Assertion & ass) const
@@ -196,6 +206,9 @@ void Scopes::completeass(struct Assertion & ass) const
     }
     // Find disjoint variable hypotheses
     ass.disjvars = disjvars(vars);
+    // Max id of variables
+    ass.maxvarid = maxvarid(ass.varusage);
+
     if (hasfreevar)
     {
         ass.nfreevars = nfreevars(ass.varusage);

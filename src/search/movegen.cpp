@@ -73,7 +73,7 @@ bool Environ::tryass
     if (ass.expression.empty() || ass.exptypecode() != goal.typecode)
         return false; // Type code mismatch
 // std::cout << "Trying " << iter->first << " with " << game.goal().expression();
-    RPNspans subst(ass.maxvarid() + 1);
+    RPNspans subst(ass.maxvarid + 1);
     if (!findsubst(goal, ass.expRPNAST(), subst))
         return false;
     // Move with all bound substitutions
@@ -155,7 +155,7 @@ static void addabsubst
      Absubstmoves & absubstmoves)
 {
     Assertion const & ass = pass->second;
-    RPNspans subst(ass.maxvarid() + 1);
+    RPNspans subst(ass.maxvarid + 1);
     GovernedRPNspansbystep::const_iterator const iter =
     ass.expmaxabs.find(subexp.first.root());
     if (iter == ass.expmaxabs.end())

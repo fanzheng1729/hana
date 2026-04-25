@@ -185,7 +185,7 @@ static bool verifystep
 
     // Find the necessary substitutions.
     substs.clear();
-    substs.resize(thm.maxvarid() + 1);
+    substs.resize(thm.maxvarid + 1);
     std::vector<Expression>::size_type const base = findsubst
         (label, pthm->first, pthm->second.hypiters, stack, substs);
     if (base == stack.size())

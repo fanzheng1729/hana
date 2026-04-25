@@ -204,7 +204,7 @@ bool Syntaxioms::addRPN
 // Determine if proof is the revPolish notation for the expression of ass.
 static bool checkRPN(Assertion const & ass, RPNspanAST exp)
 {
-    RPNspans subst(ass.maxvarid() + 1);
+    RPNspans subst(ass.maxvarid + 1);
     return !unexpected(!findsubst(exp, exp, subst),
                         "failed unification test for",
                         RPN(exp.first.first, exp.first.second));
