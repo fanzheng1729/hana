@@ -131,12 +131,12 @@ static bool hasallvars(RPNspan span1, RPNspan span2)
 
 static Hypsize number(RPNstep x)
 { return x.ishyp() ? 0-x.var().id : x.isthm() ? x.pass->second.number : 0; }
-static bool compstep(RPNstep x, RPNstep y)
+static bool compstepstable(RPNstep x, RPNstep y)
 { return number(x) < number(y); }
 static bool compspanstable(RPNspan x, RPNspan y)
 {
     return std::lexicographical_compare
-    (x.first, x.second, y.first, y.second, compstep);
+    (x.first, x.second, y.first, y.second, compstepstable);
 }
 
 // Map: RPNstep -> is in a tree governed by the step
@@ -175,9 +175,9 @@ static void maxabs
 // Find all maximal abstractions governed by a syntax axiom.
 GovernedRPNspansbystep maxabs(RPNspan exp, AST ast)
 {
-    GovernedRPNspansbystep result;
-    Instep instep;
+    GovernedRPNspansbystep result(compstepstable);
 
+    Instep instep;
     maxabs(RPNspanAST(exp, ast), exp, instep, result);
 
     return result;

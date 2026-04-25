@@ -38,6 +38,8 @@ typedef std::vector<pProof> pProofs;
 typedef RPN::size_type RPNsize;
 // Iterator to a proof step
 typedef RPN::const_iterator RPNiter;
+// Step comparator
+typedef bool(* Compstep)(RPNstep, RPNstep);
 
 // Begin and end of a sequence of proof steps
 struct RPNspan : std::pair<RPNiter, RPNiter>
@@ -55,7 +57,7 @@ struct RPNspan : std::pair<RPNiter, RPNiter>
 // Ranges of proof steps
 typedef std::vector<RPNspan> RPNspans;
 // Range comparator
-typedef bool(* Compspans)(RPNspan, RPNspan);
+typedef bool(* Compspan)(RPNspan, RPNspan);
 
 // Node of an abstract syntax tree, listing the indices of all its hypotheses
 typedef std::vector<RPNsize> ASTnode;
@@ -65,9 +67,9 @@ typedef std::vector<ASTnode> AST;
 typedef AST::const_iterator ASTiter;
 
 // Ranges governed by a RPNstep, map: span -> AST
-typedef std::map<RPNspan, AST, Compspans> GovernedRPNspans;
+typedef std::map<RPNspan, AST, Compspan> GovernedRPNspans;
 // Map: RPNstep -> all spans governed by the RPNstep
-typedef std::map<RPNstep, GovernedRPNspans, std::less<const char *> >
+typedef std::map<RPNstep, GovernedRPNspans, Compstep>
     GovernedRPNspansbystep;
 
 // List of indentations

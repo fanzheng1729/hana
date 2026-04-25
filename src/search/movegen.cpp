@@ -32,6 +32,7 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 }
 bool Environ::addconjmove(Move const & move, Moves & moves) const
 {
+// std::cout << prob().nplays() << '\t' << move.substitutions.size() << std::endl;
     return addvalidmove<&Environ::validconjmove>(move, moves);
 }
 
@@ -125,9 +126,13 @@ bool Environ::addabsmoves(Goal const & goal, Moves & moves) const
         goal.maxabsfilled = true;
     }
     FOR (GovernedRPNspansbystep::const_reference rstep, goal.maxabs)
+    {
+// std::cout << rstep.second.size() << std::endl,
+// std::cout << rstep.second;
         FOR (GovernedRPNspans::const_reference subexp, rstep.second)
             if (addabsmoves(goal, subexp, moves))
                 return true;
+    }
     return false;
 }
 bool Environ::addabsmoves
@@ -135,7 +140,8 @@ bool Environ::addabsmoves
 {
     if (subexp.empty())
         return false;
-
+// if (prob().nplays() == 8)
+// std::cout << subexp.first;
     std::pair<Problem::Abstractions::iterator, bool> const result =
     pProb->abstractions.insert(std::make_pair(subexp.first, Absubstmoves()));
     Absubstmoves & absubstmoves = result.first->second;

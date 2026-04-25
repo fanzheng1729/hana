@@ -90,6 +90,7 @@ bool testpropsearch
     Assiters const & assiters = database.assiters();
     Assiters::size_type const all = assiters.size();
     for (Assiters::size_type i = 1; i < all; ++i)
+    // for (Assiters::size_type i = 1719; i < 1720; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
