@@ -4,7 +4,7 @@
 #include "io.h"
 #include "param.h"
 
-Param const Param::default = {1e-3, 0, false, 1u << 14};
+Param const Param::default = {3e-3, 0.5, false, 1u << 14};
 
 bool Param::bad() const
 {
