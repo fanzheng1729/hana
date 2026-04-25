@@ -27,6 +27,13 @@ inline bool badlabelchar(unsigned char c)
 }
 
 // Determine if a token is a label token ($4.1.1).
+inline bool islabeltoken(char const * token)
+{
+    while (char c = *token++)
+        if (badlabelchar(c))
+            return false;
+    return true;
+}
 inline bool islabeltoken(Token const & token)
 {
     return util::none_of(token.begin(), token.end(), badlabelchar);
