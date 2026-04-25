@@ -11,9 +11,10 @@
 struct Prop : Environ
 {
     Prop(Assertion const & ass, Database const & db,
-         std::size_t maxsize, double freqbias, bool staged = false) :
+         std::size_t maxsize, double wfactor, bool staged = false) :
         Environ(ass, db, maxsize, staged),
-        allhypsCNF(db.propctors().hypscnf(ass, hypnatoms))
+        allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
+        weightfactor(wfactor)
     {
 // std::cout << "newEnv " << name << ' ' << ass.varusage;
 // std::cout << hasnewvarinexp << std::endl;
@@ -118,6 +119,7 @@ private:
     // The CNF of all hypotheses combined
     HypsCNF const allhypsCNF;
     Atom hypnatoms;
+    double const weightfactor;
 };
 
 #endif // PROP_H_INCLUDED

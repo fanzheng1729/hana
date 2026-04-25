@@ -47,7 +47,7 @@ bool Param::fill(std::istream & in)
             } \
         }
         FILLFIELD(exploration);
-        FILLFIELD(freqbias);
+        FILLFIELD(weightfactor);
         FILLFIELD(staged);
         FILLFIELD(maxsize);
 #undef FILLFIELD
@@ -92,7 +92,7 @@ std::ostream & operator<<(std::ostream & out, Param const & param)
 {
 #define SHOWFIELD(FIELD) (out << #FIELD << '\t' << param.FIELD << std::endl)
     SHOWFIELD(exploration);
-    SHOWFIELD(freqbias);
+    SHOWFIELD(weightfactor);
     SHOWFIELD(staged);
     SHOWFIELD(maxsize);
 #undef SHOWFIELD

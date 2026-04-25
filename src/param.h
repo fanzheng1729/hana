@@ -7,7 +7,7 @@
 struct Param
 {
     double exploration;
-    double freqbias;
+    double weightfactor;
     bool staged;
     std::size_t maxsize;
     static Param const default;
@@ -21,14 +21,14 @@ private:
 public:
     void update(const char * filename);
     bool checkexploration() const { return exploration >= 0; }
-    bool checkfreqbias() const { return freqbias >= 0; }
+    bool checkweightfactor() const { return weightfactor >= 0; }
     bool checkstaged() const { return true; }
     bool checkmaxsize() const{ return true; }
     bool good() const
     {
         return
             checkexploration() &&
-            checkfreqbias() &&
+            checkweightfactor() &&
             checkstaged() &&
             checkmaxsize() &&
         true;
