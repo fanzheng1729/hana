@@ -1,24 +1,10 @@
 #include "problem.h"
 #include "../proof/skeleton.h"
 
-#include "io.h"
-static bool badhyplabels(Hypiters const & hypiters)
-{
-    bool bad = false;
-    FOR (Hypiter iter, hypiters)
-        if (!islabeltoken(iter->first.c_str))
-            bad = true, std::cout << iter->first.c_str << ' ';
-    if (bad) std::cout << std::endl;
-    return bad;
-}
-
 // Initialize a context if existent. Return its pointer.
 Environ const * Problem::initEnv(Environ * p)
 {
     if (!p) return p;
-    std::cout << p->name << std::endl;
-    if (badhyplabels(p->assertion.hypiters))
-        std::cin.get();
 
     p->pProb = this;
     p->m_subsumedbyProb =
