@@ -16,15 +16,13 @@ void Syntaxioms::_map()
 {
     FOR (const_reference axiom, *this)
     {
-        // set of constants in the syntax axiom.
-        Constants const & constants = axiom.second.constants;
         // Find the constant whose vector is shortest.
         typedef M_map_type::mapped_type Minvec;
         Minvec * pminvec = NULL;
 
-        FOR (strview str, constants)
+        // Iterate through constants in the syntax axiom.
+        FOR (strview str, axiom.second.constants)
         {
-            // *iter2 = a constant in the set.
             Minvec & vec = m_map[str];
             // Update shortest vector and its size.
             if (!pminvec || vec.size() < pminvec->size())
