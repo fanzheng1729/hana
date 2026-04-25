@@ -6,6 +6,8 @@
 #include <vector>
 #include "for.h"
 
+namespace util
+{
 template<class Key, class T, class Comp = std::less<Key> >
 class WeakInc : std::map<Key, std::vector<T>, Comp>
 {
@@ -13,12 +15,8 @@ class WeakInc : std::map<Key, std::vector<T>, Comp>
     Minvec * addkey(Key const & key, Minvec * p)
     {
         Minvec & v = (*this)[key];
-        // Update shortest vector and its size.
-        if (!p || v.size() < p->size())
-        {
-            p = &v;
-            if (v.empty()) break; // Cannot be shoter.
-        }
+        // Find shortest vector.
+        if (!p || v.size() < p->size()) p = &v;
         return p;
     }
 public:
@@ -26,8 +24,12 @@ public:
     void addkeys(C const & keys, T const & item)
     {
         Minvec * p = NULL;
-        FOR (Key const & key, keys) p = addkey(key, p);
-        if (!p) p = (*this)[Key()];
+        FOR (Key const & key, keys)
+        {
+            p = addkey(key, p);
+            if (p->empty()) break;
+        }
+        if (!p) p = &(*this)[Key()];
         p->push_back(item);
     }
     Minvec const * keyis(Key const & key) const
@@ -48,5 +50,6 @@ public:
         return result;
     }
 };
+} // namespace util
 
 #endif // INCL_H_INCLUDED

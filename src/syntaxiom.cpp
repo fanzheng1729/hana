@@ -11,34 +11,6 @@
 #include "util/iter.h"
 #include "util/progress.h"
 
-// Map syntax axioms.
-void Syntaxioms::_map()
-{
-    FOR (const_reference axiom, *this)
-    {
-        // Find the constant whose vector is shortest.
-        typedef M_map_type::mapped_type Minvec;
-        Minvec * pminvec = NULL;
-
-        // Iterate through constants in the syntax axiom.
-        FOR (strview str, axiom.second.constants)
-        {
-            Minvec & vec = m_map[str];
-            // Update shortest vector and its size.
-            if (!pminvec || vec.size() < pminvec->size())
-            {
-                pminvec = &vec;
-                if (vec.empty())
-                    break; // New constant found.
-            }
-        }
-        // Add the syntax axiom.
-        if (!pminvec) // No constant in the syntax axiom.
-            pminvec = &m_map[""];
-        pminvec->push_back(&axiom);
-    }
-}
-
 // Filter assertions for syntax axioms, i.e.,
 // those starting with a primitive type code and having no essential hypothesis
 // and find their var types.
@@ -66,7 +38,8 @@ Syntaxioms::Syntaxioms
         }
     }
 //std::cout << std::endl;
-    _map();
+    FOR (const_reference axiom, *this)
+        m_map.addkeys(axiom.second.constants, &axiom);
 }
 
 void Syntaxioms::addfromvec
@@ -99,14 +72,11 @@ Syntaxioms Syntaxioms::filterbyexp(Expression const & exp) const
     std::remove_copy_if(exp.begin() + 1, exp.end(),
                         end_inserter(exp2), id);
     // Scan and add syntax axioms with no constant symbols.
-    filtered.addfromvec(exp2, keyis(""));
+    filtered.addfromvec(exp2, m_map.keyis(strview()));
     // Scan and add syntax axioms whose key appears in exp.
     FOR (strview str, exp2)
-    {
-// std::cout << str << ' ';
-        filtered.addfromvec(exp2, keyis(str));
-    }
-// std::cout << std::endl;
+        filtered.addfromvec(exp2, m_map.keyis(str));
+
     return filtered;
 }
 

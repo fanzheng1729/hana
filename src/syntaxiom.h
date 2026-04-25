@@ -2,6 +2,7 @@
 #define SYNTAXIOM_H_INCLUDED
 
 #include "ass.h"
+#include "util/incl.h"
 
 // Set of constants
 typedef std::set<strview> Constants;
@@ -23,15 +24,8 @@ struct Syntaxioms : std::map<strview, Syntaxiom>
 // and find their var types.
     Syntaxioms(Assertions const & assertions, class Database const & database);
 private:
-    typedef std::map<strview, std::vector<const_pointer> > M_map_type;
-    M_map_type m_map;
+    util::WeakInc<strview, const_pointer> m_map;
 public:
-// Find syntax axioms with a specific key. Return nullptr if none is found.
-    M_map_type::mapped_type const * keyis(key_type key) const
-    {
-        M_map_type::const_iterator iter(m_map.find(key));
-        return iter == m_map.end() ? NULL : &iter->second;
-    }
     Syntaxioms filterbyexp(Expression const & exp) const;
 // Return the revPolish notation of exp. Return the empty proof iff not okay.
     RPN parse(Expression const & exp, Assertion const & ass) const;
@@ -48,8 +42,6 @@ public:
         (Assertion ass, struct Typecodes const & typecodes) const;
 private:
     friend class Database;
-// Map syntax axioms.
-    void _map();
     void addfromvec
         (Constants const & expconstants, std::vector<const_pointer> const * pv);
 };
