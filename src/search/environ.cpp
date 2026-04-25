@@ -160,7 +160,7 @@ int Environ::compEnv(Environ const & env) const
 
     Hypiters const & xhypiters = hypiters;
     Hypiters const & yhypiters = env.hypiters;
-    
+
     if (nhyps > env.nhyps && includes(xhypiters, yhypiters, comphypiters))
         return 1; // *this > env
 
@@ -168,31 +168,4 @@ int Environ::compEnv(Environ const & env) const
         return -1; // *this < env
 
     return 0; // Not comparable
-}
-
-// Return true if an assertion duplicates a previous one.
-static bool isduplicate(Assertion const & ass, Database const & db)
-{
-    static Value const zeros[2] = {};
-    return !ass.testtype(Asstype::AXIOM + Asstype::TRIVIAL) &&
-            Problem(Environ(ass, db, -1), zeros).playonce() == WDL::WIN;
-}
-
-// Mark duplicate assertions. Return its number.
-Assertions::size_type Database::markduplicate()
-{
-    Assertions::size_type n = 0, ndups = 0;
-    Progress progress;
-    FOR (Assertions::reference rass, m_assertions)
-    {
-        // printass(rass);
-        Assertion & ass = rass.second;
-        bool const isdup = isduplicate(ass, *this);
-        ass.settype(isdup * Asstype::DUPLICATE);
-        // Check if it is duplicate and starts with a non-primitive type code.
-        if (isdup && typecodes().isprimitive(ass.exptypecode()) == FALSE)
-            ++ndups;
-        progress << ++n/static_cast<Ratio>(assertions().size());
-    }
-    return ndups;
 }

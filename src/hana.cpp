@@ -100,12 +100,6 @@ int main(int argc, char * argv[])
 
     if (!addRPN(database)) return EXIT_FAILURE;
 
-    // std::cout << "Marking duplicate assertions";
-    // timer.reset();
-    // printpercent(database.markduplicate(), "/",
-    //              database.assertions().size(), " duplicates");
-    // std::cout << " marked in " << timer << 's' << std::endl;
-
     database.loaddefinitions();
     std::cout << "Primitive syntax axioms\n" << database.primitivesyntaxioms();
     if (!database.checkdefinitions()) return EXIT_FAILURE;

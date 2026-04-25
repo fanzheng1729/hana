@@ -138,8 +138,6 @@ public:
     }
 // Test syntax parser. Return true if okay.
     bool checkRPN() const;
-// Mark duplicate assertions. Return its number.
-    Assertions::size_type markduplicate();
 // Find definitions in assertions.
     void loaddefinitions()
     {
