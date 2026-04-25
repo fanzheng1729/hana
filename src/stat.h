@@ -75,35 +75,4 @@ Assertions::size_type maxsymboldefnumber
     return max;
 }
 
-// Return max # of syntax axiom in a revPolish notation.
-inline Assertions::size_type maxsymboldefnumber
-    (RPN const & exp, Syntaxioms const & syntaxioms)
-{
-    Assertions::size_type max = 0;
-
-    FOR (RPNstep const step, exp)
-        if (step.isthm() && step.pass)
-            if (const char * const label = step.pass->first.c_str)
-                if (syntaxioms.count(label))
-                    max = std::max(max, step.pass->second.number);
-
-    return max;
-}
-
-// Return true if an assertion is hard, i.e., uses a new syntax in its proof.
-inline bool isasshard(Assertion const & ass, Syntaxioms const & syntaxioms)
-{
-    // Largest # of syntax axiom in the assertion
-    Assertions::size_type const symbolnumber
-        (maxsymboldefnumber(ass, Definitions(), syntaxioms));
-    if (symbolnumber == 0)
-        return false; // Undefined syntax
-    // Largest # of syntax axiom in the proof
-    Assertions::size_type const proofsymbolnumber
-        (maxsymboldefnumber(ass.proof, syntaxioms));
-    if (proofsymbolnumber == 0)
-        return false; // Undefined syntax
-    return proofsymbolnumber > symbolnumber;
-}
-
 #endif // STAT_H_INCLUDED
