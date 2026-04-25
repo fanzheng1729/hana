@@ -5,7 +5,10 @@
 #include "sect.h"
 #include "util/for.h"
 
-std::size_t Section::tokenpos() const { return pcomment->tokenpos; }
+std::size_t Section::tokenpos() const
+{
+    return pcomment->tokenpos;
+}
 
 std::ostream & operator<<(std::ostream & out, const Sectionnumber & sn)
 {

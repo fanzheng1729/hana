@@ -101,9 +101,9 @@ struct Gom
 };
 template<std::size_t M, std::size_t N, std::size_t K>
 inline bool operator==(Gom<M,N,K> const & x, Gom<M,N,K> const & y)
-    { return std::memcmp(x.board[0], y.board[0], sizeof(Gom<M,N,K>::board)) == 0; }
+{ return std::memcmp(x.board[0], y.board[0], sizeof(Gom<M,N,K>::board)) == 0; }
 template<std::size_t M, std::size_t N, std::size_t K>
 inline bool operator!=(Gom<M,N,K> const & x, Gom<M,N,K> const & y)
-    { return !(x == y); }
+{ return !(x == y); }
 
 #endif // GOM_H_INCLUDED
