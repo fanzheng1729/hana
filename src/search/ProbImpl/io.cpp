@@ -216,7 +216,7 @@ void Problem::printstats() const
         std::cout << countgoal(i) << s[GOALTRUE - i];
     std::cout << countenvs();
     std::cout << '(' << countsubenvs() << '/' << countsupenvs() << ')';
-    std::cout << " contexts " << std::endl;
+    std::cout << " contexts" << std::endl;
     unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 
