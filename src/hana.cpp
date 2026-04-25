@@ -75,11 +75,13 @@ int main(int argc, char * argv[])
 
     static const char paramfilename[] = "param.bin";
 
-    if (!ismm(argv[1])) return config(argv[1], paramfilename);
+    if (!ismm(argv[1]))
+        return config(argv[1], paramfilename);
 
     Tokens tokens;
     Comments comments;
-    if (!read(argv[1], tokens, comments)) return EXIT_FAILURE;
+    if (!read(argv[1], tokens, comments))
+        return EXIT_FAILURE;
 
     Sections const sections(comments);
     if (!sections.empty())
@@ -96,7 +98,8 @@ int main(int argc, char * argv[])
     std::cout << "Reading and verifying " << size << " tokens";
     Database database;
     Timer timer;
-    if (!database.read(tokens, comments, size)) return EXIT_FAILURE;
+    if (!database.read(tokens, comments, size))
+        return EXIT_FAILURE;
     std::cout << " done in " << timer << 's' << std::endl;
 
     bool checkassiters
@@ -104,19 +107,23 @@ int main(int argc, char * argv[])
     if (!checkassiters(database.assertions(), database.assiters()))
         return std::cout << "Bad assiters" << std::endl, EXIT_FAILURE;
 
-    if (!addRPN(database)) return EXIT_FAILURE;
+    if (!addRPN(database))
+        return EXIT_FAILURE;
 
-    database.loaddefinitions();
+    if (database.loaddefinitions(),
+        !database.checkdefinitions()) return EXIT_FAILURE;
+
     std::cout << "Primitive syntax axioms\n" << database.primitivesyntaxioms();
-    if (!database.checkdefinitions()) return EXIT_FAILURE;
 
-    database.loadpropctors();
-    if (!database.propctors().check(database.definitions())) return EXIT_FAILURE;
+    if (database.loadpropctors(),
+        !database.propctors().check(database.definitions()))
+        return EXIT_FAILURE;
 
     printpercent(database.markpropassertions(), "/",
                  database.assertions().size(), " propositional assertions\n");
     timer.reset();
-    if (!database.checkpropassertion()) return EXIT_FAILURE;
+    if (!database.checkpropassertion())
+        return EXIT_FAILURE;
     std::cout << "checked in " << timer << 's' << std::endl;
 
     database.buildsyntaxDAG();
@@ -127,7 +134,8 @@ int main(int argc, char * argv[])
     param.read(paramfilename);
 
     bool testpropsearch(Database const &, Param const &);
-    if (!testpropsearch(database, param)) return EXIT_FAILURE;
+    if (!testpropsearch(database, param))
+        return EXIT_FAILURE;
 // Uncomment these lines if you want to output to a file.
     // std::ofstream out("result2.txt");
     // std::streambuf * coutbuf = std::cout.rdbuf(out.rdbuf());
