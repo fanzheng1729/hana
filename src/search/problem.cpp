@@ -6,7 +6,8 @@ Environ const * Problem::initEnv(Environ * p)
 {
     if (!p) return p;
     p->pProb = this;
-    p->m_subsumedbyProb = environs.size()<=1 || (probEnv().compEnv(*p)==1);
+    p->m_subsumedbyProb =
+    environs.size() <= 1 || (probEnv().compEnv(*p) == 1);
     p->updateimps(maxranks);
     return &addimps(addhypproofs(*p));
 }
