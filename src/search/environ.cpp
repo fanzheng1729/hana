@@ -145,12 +145,6 @@ void Environ::addEnv(Environ const & env, int cmp) const
     util::addordered(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
 }
 
-// Compare two hypiters by address.
-static int comphypiters(Hypiter x, Hypiter y)
-{
-    return std::less<pHyp>()(&*x, &*y);
-}
-
 // Return true if x includes y.
 template <class C, class Comp>
 static bool includes(C const & x, C const & y, Comp comp)
@@ -164,11 +158,9 @@ int Environ::compEnv(Environ const & env) const
     if (nhyps == env.nhyps)
         return 0;
 
-    Hypiters xhypiters(assertion.hypiters);
-    Hypiters yhypiters(env.assertion.hypiters);
-    std::sort(xhypiters.begin(), xhypiters.end(), comphypiters);
-    std::sort(yhypiters.begin(), yhypiters.end(), comphypiters);
-
+    Hypiters const & xhypiters = hypiters;
+    Hypiters const & yhypiters = env.hypiters;
+    
     if (nhyps > env.nhyps && includes(xhypiters, yhypiters, comphypiters))
         return 1; // *this > env
 

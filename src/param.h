@@ -1,8 +1,8 @@
 #ifndef PARAM_H_INCLUDED
 #define PARAM_H_INCLUDED
 
+#include <cstddef>  // for std::size_t
 #include <iosfwd>
-#include "MCTS/stageval.h"
 
 struct Param
 {
@@ -11,9 +11,9 @@ struct Param
     bool staged;
     std::size_t maxsize;
     static Param const default;
-private:
     bool read(const char * filename);
     bool save(const char * filename) const;
+private:
     template<class T>
     bool fillfield(T Param::* p, std::istream & in)
     { return in >> this->*p, true; }

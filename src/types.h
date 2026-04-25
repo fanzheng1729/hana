@@ -93,6 +93,10 @@ typedef Hypotheses::const_pointer pHyp;
 typedef Hypotheses::const_iterator Hypiter;
 // Return true if the name of the hypothesis pointed to is label.
 inline bool operator==(Hypiter iter, strview label) {return iter->first==label;}
+// Compare two hypiters by address.
+inline int comphypiters(Hypiter x, Hypiter y)
+{ return std::less<pHyp>()(&*x, &*y); }
+
 // A sequence of hypothesis iterators
 typedef std::vector<Hypiter> Hypiters;
 // # of hypotheses

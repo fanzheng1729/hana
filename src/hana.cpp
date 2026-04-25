@@ -18,6 +18,14 @@ int test()
     return EXIT_SUCCESS;
 }
 
+// Return true if s ends in ".mm".
+bool ismm(const char * s)
+{
+    std::cout << s;
+    std::size_t n = std::strlen(s);
+    return std::strncmp(s + n - 3, ".mm", 3) == 0;
+}
+
 // Read tokens. Return true if okay.
 bool read(const char * filename, Tokens & tokens, Comments & comments)
 {
@@ -46,6 +54,22 @@ bool addRPN(Database & database)
 int main(int argc, char * argv[])
 {
     if (argc <= 1) return test();
+
+    static const char paramfilename[] = "param.bin";
+
+    if (!ismm(argv[1]))
+        switch (std::tolower(static_cast<unsigned char>(argv[1][0])))
+        {
+        case 'r':
+            if (!Param::default.save(paramfilename))
+                return EXIT_FAILURE;
+            std::cout << "Default parameters\n";
+            std::cout << Param::default << "saved" << std::endl;
+            return EXIT_SUCCESS;
+        default:
+            unexpected(true, "Command", argv[1]);
+            return EXIT_FAILURE;
+        }
 
     Tokens tokens;
     Comments comments;
@@ -99,7 +123,8 @@ int main(int argc, char * argv[])
     std::cout << database.syntaxDAG();
 
     Param param = Param::default;
-    param.update("param.bin");
+    // param.update(paramfilename);
+    param.read(paramfilename);
 
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param)) return EXIT_FAILURE;
