@@ -8,7 +8,7 @@ Treesize testsearch(Assiter iter, Problem & tree, Treesize maxsize)
     tree.play(maxsize);
     // tree.printstats();
     // std::cin.get();
-    // if (iter->first == "impbii")
+    // if (iter->first == "biluk")
     //     tree.navigate();
     if (tree.size() > maxsize)
     {
