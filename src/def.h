@@ -11,11 +11,9 @@ struct Definition
     pAss pdef;
     // Left and right hand side of definition
     RPN lhs, rhs;
-    // # occurrences
-    Freqcount freqcount;
     // # of the defining assertion
     operator Assertions::size_type() const { return pdef->second.number; }
-    Definition() : pdef(), freqcount(0) {}
+    Definition() : pdef() {}
     // Find the revPolish notation of (LHS, RHS).
     Definition(Assertions::const_reference rass);
     Definition

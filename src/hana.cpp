@@ -95,11 +95,6 @@ int main(int argc, char * argv[])
     if (!database.checkpropassertion()) return EXIT_FAILURE;
     std::cout << "checked in " << timer << 's' << std::endl;
 
-    std::cout << "Propositional syntax axioms frequency count\n";
-    FOR (Propctors::const_reference propctor, database.propctors())
-        std::cout << propctor.first << ' ' << propctor.second.freqcount << ' ';
-    std::cout << std::endl;
-
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
 
