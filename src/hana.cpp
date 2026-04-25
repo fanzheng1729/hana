@@ -9,6 +9,7 @@
 #include "token.h"
 #include "util/timer.h"
 
+// Pre-run test
 int test()
 {
     Timer timer;
@@ -18,12 +19,29 @@ int test()
     return EXIT_SUCCESS;
 }
 
-// Return true if s ends in ".mm".
+// .mm file extension check
 bool ismm(const char * s)
 {
     std::cout << s;
     std::size_t n = std::strlen(s);
     return std::strncmp(s + n - 3, ".mm", 3) == 0;
+}
+
+// Configuration only
+int config(const char * cmd, const char * filename)
+{
+    switch (std::tolower(static_cast<unsigned char>(cmd[0])))
+    {
+    case 'r':
+        if (!Param::default.save(filename))
+            return EXIT_FAILURE;
+        std::cout << "Default parameters\n";
+        std::cout << Param::default << "saved" << std::endl;
+        return EXIT_SUCCESS;
+    default:
+        unexpected(true, "Command", cmd);
+        return EXIT_FAILURE;
+    }
 }
 
 // Read tokens. Return true if okay.
@@ -57,19 +75,7 @@ int main(int argc, char * argv[])
 
     static const char paramfilename[] = "param.bin";
 
-    if (!ismm(argv[1]))
-        switch (std::tolower(static_cast<unsigned char>(argv[1][0])))
-        {
-        case 'r':
-            if (!Param::default.save(paramfilename))
-                return EXIT_FAILURE;
-            std::cout << "Default parameters\n";
-            std::cout << Param::default << "saved" << std::endl;
-            return EXIT_SUCCESS;
-        default:
-            unexpected(true, "Command", argv[1]);
-            return EXIT_FAILURE;
-        }
+    if (!ismm(argv[1])) return config(argv[1], paramfilename);
 
     Tokens tokens;
     Comments comments;
