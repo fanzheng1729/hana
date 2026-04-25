@@ -49,7 +49,7 @@ public:
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
-        // envsbyhyp(comphypiter),
+        envsbyhyp(comphypiter),
         database(env.database),
         bank(database.nvar()),
         abstractions(compspan),
