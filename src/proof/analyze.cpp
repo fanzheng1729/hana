@@ -1,7 +1,7 @@
 #include "../ass.h"
 #include "../io.h"
 #include "analyze.h"
-#include "compspans.h"
+#include "compspan.h"
 #include "verify.h"
 
 // Subroutine for building AST.
@@ -150,7 +150,7 @@ static void maxabs
             // Record the spans.
             GovernedRPNspans & spans = result[root];
             if (spans.empty())
-                spans = GovernedRPNspans(compspans);
+                spans = GovernedRPNspans(compspan);
             spans[subexp.first] = ast(subexp.first);
         }
         *pinstep = true;

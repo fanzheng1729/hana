@@ -4,7 +4,7 @@
 #include <algorithm>    // for std::min
 #include "environ.h"
 #include "goaldata.h"
-#include "../proof/compspans.h"
+#include "../proof/compspan.h"
 #include "../util/for.h"
 
 // Problem statement + Proof search tree with loop detection
@@ -49,7 +49,7 @@ public:
         MCTS(Game(), params),
         database(env.database),
         bank(database.nvar()),
-        abstractions(compspans),
+        abstractions(compspan),
         numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),

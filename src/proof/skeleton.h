@@ -2,7 +2,7 @@
 #define SKELETON_H_INCLUDED
 
 // #include "../io.h"
-#include "compspans.h"
+#include "compspan.h"
 #include "../util/tribool.h"
 
 enum Splitretval {KEEPRANGE = 0, SPLITREC = 1, SPLITALL = 2};
