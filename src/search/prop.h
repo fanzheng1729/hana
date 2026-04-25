@@ -100,7 +100,9 @@ struct Prop : Environ
         Weight w = 0;
         FOR (RPNstep step, goal)
             w += weight(step);
-        return static_cast<Weight>(goal.size() + w * weightfactor);
+        if (weightfactor != 1)
+        { std::cout << weightfactor; throw; }
+        return static_cast<Weight>(goal.size() + w * 1);
     }
     // Evaluate leaf games, and record the proof if proven.
     virtual Eval evalourleaf(Game const & game) const
@@ -110,7 +112,7 @@ struct Prop : Environ
     virtual Prop * makeEnv(Assertion const & ass) const
     {
         return new(std::nothrow)
-        Prop(ass, database, m_maxmoves, 0, staged);
+        Prop(ass, database, m_maxmoves, weightfactor, staged);
     }
 private:
     // Add moves with free variables.
