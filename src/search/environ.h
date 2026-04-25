@@ -7,6 +7,7 @@
 #include "goalstat.h"
 #include "../MCTS/stageval.h"
 #include "../syntaxDAG.h"
+#include "../util/algo.h"   // for util::addordered
 
 class Problem;
 struct Environ;
@@ -174,10 +175,13 @@ private:
     // true if maxranks is simpler than problem maxranks
     // Updated when problem is simplified
     mutable bool m_rankssimplerthanProb;
-    // Update context implication relations, given comparison result.
-    void addEnv(Environ const & env, int cmp) const;
-    // Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
-    int compEnv(Environ const & env) const;
+    // Update context implication relations.
+    void addsubEnv(Environ const & env) const
+    { util::addordered(m_psubEnvs, &env); }
+    void addsupEnv(Environ const & env) const
+    { util::addordered(m_psupEnvs, &env); }
+    // Return true if hypotheses of *this contains those of env.
+    bool implies(Environ const & env) const;
 };
 
 #endif // ENVIRON_H_INCLUDED

@@ -17,6 +17,8 @@ class Problem : public MCTS<Game>
     Environs environs;
     // Map: abstraction hypothesis -> contexts using it
     util::WeakIncl<Hypiter, Environ const *, Comphypiter> envsbyhyp;
+    // Map: abstraction hypothesis -> all contexts using it
+    util::Incl<Hypiter, Environ const *, Comphypiter> allenvsbyhyp;
     // Map: goal -> context -> evaluation
     Goals goals;
 public:
@@ -49,7 +51,7 @@ public:
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
-        envsbyhyp(comphypiter),
+        envsbyhyp(comphypiter), allenvsbyhyp(comphypiter),
         database(env.database),
         bank(database.nvar()),
         abstractions(compspan),
@@ -80,35 +82,11 @@ public:
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
     }
-    Environ const & addhypproofs(Environ const & env)
-    {
-        if (&env != &probEnv() && env.subsumedbyProb())
-            return env; // Skip contexts properly subsumed by the problem context.
-        // env is either problem context or not subsumed by it.
-        Assertion const & ass = env.assertion;
-        for (Hypsize i = 0; i < ass.nhyps(); ++i)
-        {
-            if (ass.hypfloats(i)) continue;
-            addgoal(Goalview(ass.hypRPN(i), ass.hyptypecode(i)), env, GOALTRUE)
-            ->second.proofdst().assign(1, ass.hypptr(i));
-        }
-        return env;
-    }
+    // Add 1-step proofs of all hypotheses of a context.
+    Environ const & addhypproofs(Environ const & env);
     // Add implication relation for newly added context. Return env.
-    Environ const & addimps(Environ const & env)
-    {
-        FOR (Environs::const_reference renv, environs)
-        {
-            Environ const * poldEnv = renv.second;
-            if (!poldEnv || poldEnv == &env) continue;
-            Environ const & oldEnv = *renv.second;
-            int const cmp = oldEnv.compEnv(env);
-            if (cmp == 0) continue;
-            oldEnv.addEnv(env, cmp);
-            env.addEnv(oldEnv, -cmp);
-        }
-        return env;
-    }
+    void addimps(Environ const & x, Environ const & y);
+    Environ const & addimps(Environ const & env);
 // Eval
     // Return true if a new batch of moves is needed.
     // Override this to turn on staged move generation.

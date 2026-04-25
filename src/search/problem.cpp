@@ -1,5 +1,41 @@
 #include "problem.h"
 #include "../proof/skeleton.h"
+#include "../io.h"
+
+// Add 1-step proofs of all hypotheses of a context.
+Environ const & Problem::addhypproofs(Environ const & env)
+{
+    if (&env != &probEnv() && env.subsumedbyProb())
+        return env; // Skip contexts properly subsumed by the problem context.
+    // env is either problem context or not subsumed by it.
+    Assertion const & ass = env.assertion;
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
+    {
+        if (ass.hypfloats(i)) continue;
+        addgoal(Goalview(ass.hypRPN(i), ass.hyptypecode(i)), env, GOALTRUE)
+        ->second.proofdst().assign(1, ass.hypptr(i));
+    }
+    return env;
+}
+
+// Add implication relation for newly added context. Return env.
+void Problem::addimps(Environ const & x, Environ const & y)
+{
+    if (!x.implies(y)) return;
+    x.addsubEnv(y);
+    y.addsupEnv(x);
+}
+Environ const & Problem::addimps(Environ const & env)
+{
+    if (env.subsumedbyProb()) return env;
+    pEnvs const & psubEnvs = envsbyhyp.keyin(env.hypiters);
+    FOR (Environ const * poldenv, psubEnvs)
+        addimps(env, *poldenv);
+    pEnvs const & psupEnvs = *allenvsbyhyp.hasall(env.hypiters);
+    FOR (Environ const * poldenv, psupEnvs)
+        addimps(*poldenv, env);
+    return env;
+}
 
 // Initialize a context if existent. Return its pointer.
 Environ const * Problem::initEnv(Environ * p)
@@ -8,14 +44,24 @@ Environ const * Problem::initEnv(Environ * p)
 
     p->pProb = this;
     p->m_subsumedbyProb =
-    environs.size() <= 1 || (probEnv().compEnv(*p) == 1);
+    environs.size() <= 1 || probEnv().implies(*p);
     p->updateimps(maxranks);
 
-    Hypiters hyps;
-    FOR (Hypiter const iter, p->hypiters)
-        if (!islabeltoken(iter->first.c_str))
-            hyps.push_back(iter);
-    envsbyhyp.addkeys(hyps, p);
+    if (!p->m_subsumedbyProb)
+    {
+        Hypiters hyps;
+        FOR (Hypiter const iter, p->hypiters)
+            if (!islabeltoken(iter->first.c_str))
+                hyps.push_back(iter);
+        envsbyhyp.addkeys(hyps, p);
+        allenvsbyhyp.addkeys(hyps, p);
+
+        // pEnvs const * penvs = allenvsbyhyp.hasall(hyps);
+        // std::cout << p->name << std::endl;
+        // FOR (Environ const * q, *penvs)
+        //     std::cout << q->name << ' ';
+        // std::cin.get();
+    }
 
     return &addimps(addhypproofs(*p));
 }

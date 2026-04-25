@@ -2,7 +2,6 @@
 #include "../io.h"
 #include "goaldata.h"
 #include "problem.h"
-#include "../util/algo.h"   // for util::addordered
 #include "../util/filter.h"
 #include "../util/progress.h"
 
@@ -139,12 +138,6 @@ bool Environ::legal(RPN const & proof) const
     return true;
 }
 
-// Add env to context implication relations, given comparison result.
-void Environ::addEnv(Environ const & env, int cmp) const
-{
-    util::addordered(cmp == 1 ? m_psubEnvs : m_psupEnvs, &env);
-}
-
 // Return true if x includes y.
 template <class C, class Comp>
 static bool includes(C const & x, C const & y, Comp comp)
@@ -152,20 +145,9 @@ static bool includes(C const & x, C const & y, Comp comp)
     return std::includes(x.begin(), x.end(), y.begin(), y.end(), comp);
 }
 
-// Compare contexts. Return -1 if *this < env, 1 if *this > env, 0 if not comparable.
-int Environ::compEnv(Environ const & env) const
+// Return true if hypotheses of *this contains those of env.
+bool Environ::implies(Environ const & env) const
 {
-    if (nhyps == env.nhyps)
-        return 0;
-
-    Hypiters const & xhypiters = hypiters;
-    Hypiters const & yhypiters = env.hypiters;
-
-    if (nhyps > env.nhyps && includes(xhypiters, yhypiters, comphypiter))
-        return 1; // *this > env
-
-    if (nhyps < env.nhyps && includes(yhypiters, xhypiters, comphypiter))
-        return -1; // *this < env
-
-    return 0; // Not comparable
+    return nhyps > env.nhyps &&
+            includes(hypiters, env.hypiters, comphypiter);
 }
