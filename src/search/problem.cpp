@@ -11,6 +11,12 @@ Environ const * Problem::initEnv(Environ * p)
     environs.size() <= 1 || (probEnv().compEnv(*p) == 1);
     p->updateimps(maxranks);
 
+    Hypiters hyps;
+    FOR (Hypiter const iter, p->hypiters)
+        if (!islabeltoken(iter->first.c_str))
+            hyps.push_back(iter);
+    envsbyhyp.addkeys(hyps, p);
+
     return &addimps(addhypproofs(*p));
 }
 

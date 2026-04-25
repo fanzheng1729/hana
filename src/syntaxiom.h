@@ -24,7 +24,7 @@ struct Syntaxioms : std::map<strview, Syntaxiom>
 // and find their var types.
     Syntaxioms(Assertions const & assertions, class Database const & database);
 private:
-    util::WeakInc<strview, const_pointer> m_map;
+    util::WeakIncl<strview, const_pointer> m_map;
 public:
     Syntaxioms filterbyexp(Expression const & exp) const;
 // Return the revPolish notation of exp. Return the empty proof iff not okay.

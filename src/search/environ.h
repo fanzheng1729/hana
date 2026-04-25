@@ -40,7 +40,7 @@ struct Environ : protected Gen
         m_subsumedbyProb(false),
         m_rankssimplerthanProb(false)
     {
-        std::sort(hypiters.begin(), hypiters.end(), comphypiters);
+        std::sort(hypiters.begin(), hypiters.end(), comphypiter);
         // Relevant syntax axioms
         FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
             if (syntaxiom.second.pass->second.number < assnum())

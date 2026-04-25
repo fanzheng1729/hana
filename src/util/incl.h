@@ -9,7 +9,7 @@
 namespace util
 {
 template<class Key, class T, class Comp = std::less<Key> >
-class WeakInc : std::map<Key, std::vector<T>, Comp>
+class WeakIncl : std::map<Key, std::vector<T>, Comp>
 {
     typedef typename mapped_type Minvec;
     Minvec * addkey(Key const & key, Minvec * p)
@@ -20,6 +20,9 @@ class WeakInc : std::map<Key, std::vector<T>, Comp>
         return p;
     }
 public:
+    WeakIncl() {}
+    WeakIncl(Comp const & comp) :
+        std::map<Key, std::vector<T>, Comp>(comp) {}
     template<class C>
     void addkeys(C const & keys, T const & item)
     {

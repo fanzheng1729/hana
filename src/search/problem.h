@@ -11,10 +11,12 @@
 // + context management + goal management + UI
 class Problem : public MCTS<Game>
 {
-    // Assertions corresponding to contexts
+    // Assertions corresponding to sub-/sup-contexts
     Assertions assertions;
     // Polymorphic contexts
     Environs environs;
+    // Map: abstraction hypothesis -> contexts using it
+    util::WeakIncl<Hypiter, Environ const *, Comphypiter> envsbyhyp;
     // Map: goal -> context -> evaluation
     Goals goals;
 public:
@@ -47,6 +49,7 @@ public:
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
+        // envsbyhyp(comphypiter),
         database(env.database),
         bank(database.nvar()),
         abstractions(compspan),

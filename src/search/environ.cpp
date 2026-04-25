@@ -161,10 +161,10 @@ int Environ::compEnv(Environ const & env) const
     Hypiters const & xhypiters = hypiters;
     Hypiters const & yhypiters = env.hypiters;
 
-    if (nhyps > env.nhyps && includes(xhypiters, yhypiters, comphypiters))
+    if (nhyps > env.nhyps && includes(xhypiters, yhypiters, comphypiter))
         return 1; // *this > env
 
-    if (nhyps < env.nhyps && includes(yhypiters, xhypiters, comphypiters))
+    if (nhyps < env.nhyps && includes(yhypiters, xhypiters, comphypiter))
         return -1; // *this < env
 
     return 0; // Not comparable
