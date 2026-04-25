@@ -42,42 +42,29 @@ Syntaxioms::Syntaxioms
         m_map.addkeys(axiom.second.constants, &axiom);
 }
 
-void Syntaxioms::addfromvec
-    (Constants const & expconstants, std::vector<const_pointer> const * pv)
+Syntaxioms::Syntaxioms
+    (Constants const & expconstants, std::vector<const_pointer> const & v)
 {
-    if (!pv) return;
-
-    FOR (const_pointer p, *pv)
+    FOR (const_pointer p, v)
     {
 //std::cout << p->first << ' ';
         Constants const & constants = p->second.constants;
         // If the constants in the syntax axiom are all found in exp,
         if (std::includes(expconstants.begin(), expconstants.end(),
                           constants.begin(), constants.end()))
-        {
             // add it to the set of filtered syntax axioms.
+            // std::cout << "\\/ ",
             insert(*p);
-//std::cout << "\\/ ";
-        }
     }
 }
 
 // Filter syntax axioms whose constants are all in exp.
 Syntaxioms Syntaxioms::filterbyexp(Expression const & exp) const
 {
-    Syntaxioms filtered;
-// std::cout << "Filtering syntax axioms against: " << exp;
-    // Constants in exp
-    Constants exp2;
+    Constants constants; // Constants in exp
     std::remove_copy_if(exp.begin() + 1, exp.end(),
-                        end_inserter(exp2), id);
-    // Scan and add syntax axioms with no constant symbols.
-    filtered.addfromvec(exp2, m_map.keyis(strview()));
-    // Scan and add syntax axioms whose key appears in exp.
-    FOR (strview str, exp2)
-        filtered.addfromvec(exp2, m_map.keyis(str));
-
-    return filtered;
+                        end_inserter(constants), id);
+    return Syntaxioms(constants, m_map.keyin(constants));
 }
 
 // Return the revPolish notation of exp. Return the empty proof iff not okay.

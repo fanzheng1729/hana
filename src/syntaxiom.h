@@ -42,8 +42,8 @@ public:
         (Assertion ass, struct Typecodes const & typecodes) const;
 private:
     friend class Database;
-    void addfromvec
-        (Constants const & expconstants, std::vector<const_pointer> const * pv);
+    Syntaxioms
+        (Constants const & expconstants, std::vector<const_pointer> const & v);
 };
 
 #endif // SYNTAXIOM_H_INCLUDED

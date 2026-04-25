@@ -38,12 +38,14 @@ public:
         return iter == this->end() ? NULL : &iter->second;
     }
     template<class C>
-    Minvec keyis(C const & keys) const
+    Minvec keyin(C const & keys) const
     {
         Minvec result;
+        Minvec const * const p0 = keyis(Key());
+        if (p0) result = *p0;
         FOR (Key const & key, keys)
         {
-            Minvec const * p = keyis(key);
+            Minvec const * const p = keyis(key);
             if (p)
                 result.insert(result.end(), p->begin(), p->end());
         }
