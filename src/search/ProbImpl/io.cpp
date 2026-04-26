@@ -220,14 +220,14 @@ void Problem::printstats() const
     unexpected(nGoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 
-// Format: [*]name  maxrank1 maxrank2 ...
+// Format: [*]label     maxrank1 maxrank2 ...
 void Problem::printenvs() const
 {
     FOR (Environs::const_reference env, environs)
     {
         SyntaxDAG::Ranks const & envranks = env.second->maxranks;
         char const c = " *"[env.second->rankssimplerthanProb()];
-        std::cout << c << env.second->name << '\t';
+        std::cout << c << env.second->label << '\t';
         FOR (std::string const & rank, env.second->maxranks)
             std::cout << rank << ' ';
         std::cout << std::endl;
@@ -354,7 +354,7 @@ void Problem::navigate(pNode p, bool detailed) const
     if (!p) return;
 
     std::cout <<
-    "c|g name n -> n-th name node, c|g * -> last node\n"
+    "c|g label n -> n-th node w/label, c|g * -> last node\n"
     "c|g n -> n-th hypothesis\n"
     "d(ive) or j(ump) n -> the n-th level\n"
     "u(p) -> parent, uu -> the closest non-defer parent\n"
@@ -414,7 +414,7 @@ void Problem::writeproof(const char * const filename) const
     if (proof().empty() || !filename)
         return;
 
-    Printer printer(&database.typecodes());
+    Printer printer(&database().typecodes());
     verify(proof(), printer);
 
     std::ofstream out(filename);

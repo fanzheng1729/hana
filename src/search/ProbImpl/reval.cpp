@@ -11,7 +11,7 @@ void Problem::reval()
     prune(root());
     updateimps();
     focus(root());
-    maxranknumber = database.syntaxDAG().maxranknumber(maxranks);
+    maxranknumber = database().syntaxDAG().maxranknumber(maxranks);
     // printranksinfo();
 }
 
@@ -20,8 +20,8 @@ void Problem::addranks(pNode p)
 {
     if (value(p) < ALMOSTWIN)
         return;
-    database.syntaxDAG().addranks(maxranks, p->game().env().maxranks);
-    database.syntaxDAG().addexp(maxranks, p->game().goal().rpn);
+    database().syntaxDAG().addranks(maxranks, p->game().env().maxranks);
+    database().syntaxDAG().addexp(maxranks, p->game().goal().rpn);
 }
 
 // Prune the sub-tree at p and update maxranks, if almost won.

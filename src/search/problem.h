@@ -19,7 +19,7 @@ class Problem : public MCTS<Game>
 {
     // Assertions corresponding to sub-/sup-contexts
     std::map<nAss, Assertion> assertions;
-    // Map: name -> polymorphic contexts
+    // Map: hypotheses -> polymorphic contexts
     typedef std::map<Hypiters, Environ const *> Environs;
     // Polymorphic contexts
     Environs environs;
@@ -41,10 +41,15 @@ class Problem : public MCTS<Game>
     // Map: goal -> context -> evaluation
     Goals goals;
 public:
+    // Bind to a database.
+    static void bind(Database const & db)
+    {
+        pDB = &db;
+    }
     // Database used
-    Database const & database;
+    static Database const & database() { return *pDB; }
 private:
-    Database const * pdatabase;
+    static Database const * pDB;
     // Map: typecode -> theorems
     typedef std::map<strview, Assiters> Theorempool;
     Theorempool theorempool;
@@ -59,7 +64,7 @@ private:
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
     nAss numberlimit;
-    // Maximal ranks of the assertion
+    // Max ranks of the assertion
     SyntaxDAG::Ranks maxranks;
     // Max # of rank in maxranks
     nAss maxranknumber;
@@ -76,12 +81,11 @@ public:
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
-        database(env.database),
-        bank(database.nvar()),
+        bank(database().nvar()),
         abstractions(compspan),
-        numberlimit(std::min(env.assnum(), database.assiters().size())),
-        maxranks(database.assmaxranks(env.assertion)),
-        maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
+        numberlimit(std::min(env.assnum(), database().assiters().size())),
+        maxranks(database().assmaxranks(env.assertion)),
+        maxranknumber(database().syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
         staged(env.staged && STAGED)
@@ -108,12 +112,12 @@ public:
         // Usable theorems
         for (nAss i = 1; i < numberlimit; ++i)
         {
-            Assiter iter = database.assiters()[i];
+            Assiter iter = database().assiters()[i];
             Assertion const & ass = iter->second;
             if (ass.testtype(Asstype::USELESS))
                 continue;
             strview typecode = ass.exptypecode();
-            if (database.typecodes().isprimitive(typecode) != FALSE)
+            if (database().typecodes().isprimitive(typecode) != FALSE)
                 continue;
             Assiters & assvec = theorempool[typecode];
             assvec.reserve(numberlimit - 1);

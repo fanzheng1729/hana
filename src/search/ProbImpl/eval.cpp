@@ -36,8 +36,8 @@ Value Problem::singularext(pNode p)
 bool Problem::ranksimplerthanProb(Game const & game) const
 {
     return game.env().rankssimplerthanProb() &&
-        database.syntaxDAG().simplerthan
-        (database.syntaxDAG().RPNranks(game.goal().rpn), maxranks);
+        database().syntaxDAG().simplerthan
+        (database().syntaxDAG().RPNranks(game.goal().rpn), maxranks);
 }
 
 // Evaluate the leaf. Return {value, sure?}.

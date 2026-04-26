@@ -3,6 +3,8 @@
 #include "../io.h"
 #include "../util/filter.h"
 
+Database const * Problem::pDB;
+
 // Add 1-step proofs of all hypotheses of a context.
 Environ const & Problem::addhypproofs(Environ const & env)
 {
@@ -73,7 +75,7 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
         return newEnviter->second;
     // Simplified assertion
     Assertion & subAss = assertions[assertions.size()];
-    // std::cout << "addsubEnv to " << env.name << ' ' << env.assertion.varusage;
+    // std::cout << "addsubEnv to " << env.label << ' ' << env.assertion.varusage;
     Assertion const & ass(env.assertion.makeAss(hypstotrim));
     // Pointer to the sub-context
     return newEnviter->second = initEnv(env.makeEnv(subAss = ass));
@@ -96,7 +98,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
         return newEnviter->second;
     // Simplified assertion
     Assertion & supAss = assertions[assertions.size()];
-// std::cout << "addsupEnv to " << env.name << ' ' << newvars;
+// std::cout << "addsupEnv to " << env.label << ' ' << newvars;
 // std::cout << "env vars " << env.assertion.varusage;
     supAss.number = env.assnum();
     supAss.sethyps(env.assertion, newvars, newhyps);

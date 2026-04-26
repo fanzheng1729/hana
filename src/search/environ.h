@@ -27,7 +27,7 @@ struct Environ : protected Gen
         database(db),
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
-        name(ass.hypslabel()),
+        label(ass.hypslabel()),
         nhyps(ass.nhyps()),
         hypsweight(ass.hypslen()),
         hasnewvarinexp(ass.hasnewvarinexp()),
@@ -41,7 +41,8 @@ struct Environ : protected Gen
         // Relevant syntax axioms
         FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
             if (syntaxiom.second.pass->second.number < assnum())
-                syntaxioms.insert(syntaxiom);
+                if (ontopic(syntaxiom.second.pass->second))
+                    syntaxioms.insert(syntaxiom);
     }
     nAss assnum() const { return assertion.number; }
     Problem const & prob() const { return *pProb; }
@@ -103,10 +104,10 @@ struct Environ : protected Gen
     Database const & database;
     // The assertion to be proved
     Assertion const & assertion;
-    // Maximal ranks of all the hypotheses combined
+    // Max ranks of all the hypotheses combined
     SyntaxDAG::Ranks const maxranks;
     // Name of context = labels of all hypotheses combined
-    std::string const name;
+    std::string const label;
     // # hypotheses
     Hypsize const nhyps;
     // Weight of all the hypotheses combined

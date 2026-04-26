@@ -17,7 +17,7 @@ struct Prop : Environ
         allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
         weightfactor(wfactor)
     {
-// std::cout << "newEnv " << name << ' ' << ass.varusage;
+// std::cout << "newEnv " << label << ' ' << ass.varusage;
 // std::cout << hasnewvarinexp << std::endl;
 // std::cin.get();
         // Reinitialize weights of all hypotheses combined.
@@ -26,7 +26,8 @@ struct Prop : Environ
             hypsweight += weight(ass.hypRPN(i));
     }
     // Return the propositional syntax constructors.
-    Propctors const & propctors() const { return database.propctors(); }
+    Propctors const & propctors() const
+    { return prob().database().propctors(); }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.testtype(Asstype::PROPOSITIONAL); }

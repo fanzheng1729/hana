@@ -15,7 +15,7 @@ pEnvs const & supEnvs(Environ const & env) { return env.psupEnvs(); }
 // Report false goal and return GOALFALSE.
 Goalstatus Environ::printbadgoal(RPN const & badRPN) const
 {
-    std::cerr << "Bad goal\n" << badRPN << "in env " << name;
+    std::cerr << "Bad goal\n" << badRPN << "in env " << label;
     std::cerr << " in Problem #" << assnum() << std::endl;
     // std::cin.get();
     return GOALFALSE;
@@ -24,7 +24,7 @@ Goalstatus Environ::printbadgoal(RPN const & badRPN) const
 // Validate a move applying a theorem.
 Environ::MoveValidity Environ::validthmmove(Move const & move) const
 {
-    if (database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
+    if (prob().database().typecodes().isprimitive(move.goaltypecode()) != FALSE)
         return MoveINVALID;
     if (!move.checkDV(assertion))
         return MoveINVALID;
@@ -69,7 +69,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 // if (psimpEnv)
 //     std::cout << "Simplified " << goal.expression();
 // if (psimpEnv)
-//     std::cout << name << "\n->\n" << (psimpEnv ? psimpEnv->name : "") << std::endl;
+//     std::cout << label << "\n->\n" << (psimpEnv ? psimpEnv->label : "") << std::endl;
         }
         // Record the goal in the hypotheses of the move.
         move.subgoals[i] = addsimpgoal(pgoal);
@@ -79,7 +79,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 
 Environ::MoveValidity Environ::validconjmove(Move const & move) const
 {
-// std::cout << "Validating conjecture move in env " << name << std::endl;
+// std::cout << "Validating conjecture move in env " << label << std::endl;
     MoveValidity const validity = validthmmove(move);
     if (validity == MoveINVALID)
         return MoveINVALID;
@@ -89,7 +89,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     // The goal
     pGoal const pgoal = pProb->addgoal(move.absconjs.back(), *penv, GOALNEW);
 // std::cout << "Validating " << pgoal->second.goal().expression();
-// std::cout << "In env " << penv->name << std::endl;
+// std::cout << "In env " << penv->label << std::endl;
     Goalstatus & s = pgoal->second.getstatus();
     if (s == GOALFALSE) // Refuted
         return MoveINVALID;
@@ -111,7 +111,7 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
     psimpEnv = pProb->addsubEnv(*pgoal->first, penv->hypstotrim(goal));
     // Record the goal in the hypotheses of the move.
     move.subgoals.back() = addsimpgoal(pgoal);
-// std::cout << penv->name << "\n->\n" << (psimpEnv ? psimpEnv->name : "") << std::endl;
+// std::cout << penv->label << "\n->\n" << (psimpEnv ? psimpEnv->label : "") << std::endl;
     return MoveVALID;
 }
 

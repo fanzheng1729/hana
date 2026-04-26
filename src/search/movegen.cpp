@@ -199,7 +199,7 @@ static void addabsubst
 Absubstmoves Environ::absubsts(RPNspanAST subexp) const
 {
     Absubstmoves moves;
-    Assiters const & assvec = database.assiters();
+    Assiters const & assvec = prob().database().assiters();
     for (nAss i = 1; i < prob().numberlimit; ++i)
     {
         Assiter const iter = assvec[i];
