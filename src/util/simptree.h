@@ -35,19 +35,14 @@ public:
         Children children;
         // The value
         T value;
-        TreeNode(T const & x) : value(x) {}
-        friend bool operator==(T const & x, TreeNode const & y)
-        { return x == y.value; }
-        friend bool operator==(TreeNode const & x, T const & y)
-        { return x.value == y; }
-        friend bool operator!=(T const & x, TreeNode const & y)
+        TreeNode(T const & t) : value(t) {}
+    public:
+        friend bool operator==(TreeNode const & x, TreeNode const & y)
+        { return x.value == y.value; }
+        friend bool operator!=(TreeNode const & x, TreeNode const & y)
         { return !(x == y); }
-        friend bool operator!=(TreeNode const & x, T const & y)
-        { return !(x == y); }
-        friend bool operator< (T const & x, TreeNode const & y)
-        { return x < y.value; }
-        friend bool operator< (TreeNode const & x, T const & y)
-        { return x.value == y; }
+        friend bool operator< (TreeNode const & x, TreeNode const & y)
+        { return x.value < y.value; }
     }; // class TreeNode
 private:
     // Pointer to the root
@@ -134,26 +129,25 @@ public:
         { return *this ? m_insert(t) : pNode(); }
         pNode insertordered(T const & t) const
         {
-            if (!*this) return pNode;
+            if (!*this) return pNode();
             reserve(m_ptr->children.size() + 1);
 #ifdef __cpp_lib_incomplete_container_elements
             // Pointer to the child.
-            TreeNode * child = &*util::addordered(m_ptr->children, t);
+            return &*util::addordered(m_ptr->children, TreeNode(t));
 #else
             // Pointer to the child.
-            TreeNode * child = new TreeNode(t);
+            pNode child = new TreeNode(t);
             // Update the parent.
             util::addordered(m_ptr->children, child);
-#endif // __cpp_lib_incomplete_container_elements
-
             return child;
+#endif // __cpp_lib_incomplete_container_elements
         }
     };
 public:
     // Construct an empty tree.
     SimpTree() : m_data() {}
     // Construct a tree with 1 node.
-    SimpTree(T const & value) : m_data(new TreeNode(value)) { m_data->size = 1; }
+    SimpTree(T const & value) : m_data(new TreeNode(value)) {}
     // Copy CTOR
     SimpTree(SimpTree const & other) : m_data()
     {

@@ -40,7 +40,7 @@ public:
         // The value
         T value;
         // Constructor. DOES NOT set size
-        TreeNode(T const & x) : parent(), value(x) {}
+        TreeNode(T const & t) : parent(), value(t) {}
         // Change the sizes of the node and its ancestors.
         void incsize(size_type const n)
         {

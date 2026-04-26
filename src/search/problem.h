@@ -4,7 +4,6 @@
 #include <algorithm>    // for std::min
 #include "environ.h"
 #include "goaldata.h"
-#include "../proof/ASTPool.h"
 #include "../proof/compspan.h"
 #include "../util/for.h"
 
@@ -45,11 +44,12 @@ public:
     // Database used
     Database const & database;
 private:
+    Database const * pdatabase;
     // Map: typecode -> theorems
     typedef std::map<strview, Assiters> Theorempool;
     Theorempool theorempool;
-    typedef ASTPool<Assiters> ThmASTPool;
-    typedef std::map<strview, ThmASTPool> Theorempool2;
+    typedef std::map<RPNprofile, Assiters> RPNprofiles;
+    typedef std::map<strview, RPNprofiles> Theorempool2;
     Theorempool2 theorempool2;
     // Bank of variables and hypotheses
     Bank bank;

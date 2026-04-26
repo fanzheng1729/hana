@@ -172,13 +172,49 @@ static void maxabs
         *pinstep = false;
 }
 
-// Find all maximal abstractions governed by a syntax axiom.
+// All maximal abstractions governed by a syntax axiom.
 GovernedRPNspansbystep maxabs(RPNspan exp, AST ast)
 {
     GovernedRPNspansbystep result(compstepstable);
 
     Instep instep;
     maxabs(RPNspanAST(exp, ast), exp, instep, result);
+
+    return result;
+}
+
+static RPNheads gotochildren(RPNspanASTs & parents)
+{
+    RPNheads heads;
+    RPNspanASTs children;
+
+    FOR (RPNspanAST parent, parents)
+    {
+        RPNstep const root = parent.RPNroot();
+        if (root.isthm())
+            heads.push_back(root);
+        for (ASTnode::size_type i = 0; i < parent.nchild(); ++i)
+            children.push_back(parent.child(i));
+    }
+
+    parents = children;
+    return heads;
+}
+
+RPNprofile profile(RPNspanAST exp)
+{
+    RPNprofile result;
+
+    RPNspanASTs subexps(1, exp);
+    while (!subexps.empty())
+    {
+        RPNheads const & heads(gotochildren(subexps));
+        std::cout << heads;
+        if (!heads.empty())
+            result.push_back(heads);
+        else
+            return result;
+    }
 
     return result;
 }

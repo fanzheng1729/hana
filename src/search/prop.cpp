@@ -90,10 +90,13 @@ bool testpropsearch
     Assiters const & assiters = database.assiters();
     nAss const all = assiters.size();
     for (nAss i = 1; i < all; ++i)
-    // for (nAss i = 1719; i < 1720; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
+
+        // printass(*iter);
+        // profile(ass.expRPNAST());
+        // std::cin.get();
 
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))
