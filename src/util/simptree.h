@@ -5,6 +5,7 @@
 #include <functional>   // for std::less
 #include <vector>
 #include "for.h"
+#include "../util/algo.h"   // for util::addordered
 
 // #undef __cpp_lib_incomplete_container_elements
 
@@ -118,6 +119,22 @@ public:
         // DO NOTHING and return nullptr if *this is nullptr.
         pNode insert(T const & t) const
         { return *this ? m_insert(t) : pNode(); }
+        pNode insertordered(T const & t) const
+        {
+            if (!*this) return pNode;
+            reserve(m_ptr->children.size() + 1);
+#ifdef __cpp_lib_incomplete_container_elements
+            // Pointer to the child.
+            TreeNode * child = &*util::addordered(m_ptr->children, t);
+#else
+            // Pointer to the child.
+//             TreeNode * child = new TreeNode(t);
+            // Update the parent.
+//             m_ptr->children.push_back(child);
+#endif // __cpp_lib_incomplete_container_elements
+
+            return child;
+        }
     };
 public:
     // Construct an empty tree.
