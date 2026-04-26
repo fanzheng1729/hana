@@ -45,17 +45,29 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     Moves moves;
 
     Assiters const & assvec = database.assiters();
-    Assiters::size_type & limit = pProb->numberlimit;
-    if (limit > assnum()) limit = assnum();
-    for (Assiters::size_type i = 1; i < limit; ++i)
+    nAss & limit = pProb->numberlimit;
+    if (limit > assnum())
+        limit = assnum();
+    FOR (Assiter iter, assvec)
     {
-        Assertion const & ass = assvec[i]->second;
+        if (iter == Assiter()) continue;
+        Assertion const & ass = iter->second;
+        if (ass.number >= limit) break;
         if (usableasthm(ass) &&
             (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar())))
-            if (tryass(game, assvec[i], stage, moves))
+            if (tryass(game, iter, stage, moves))
                 return moves; // Move closes the goal.
     }
+    // for (nAss i = 1; i < limit; ++i)
+    // {
+    //     Assertion const & ass = assvec[i]->second;
+    //     if (usableasthm(ass) &&
+    //         (stage == 0 ||
+    //         (ass.nfreevar() > 0 && stage >= ass.nfreevar())))
+    //         if (tryass(game, assvec[i], stage, moves))
+    //             return moves; // Move closes the goal.
+    // }
 // if (stage >= 5)
 // std::cout << moves.size() << " moves found" << std::endl;
     if (stage == 0)
@@ -194,7 +206,7 @@ Absubstmoves Environ::absubsts(RPNspanAST subexp) const
 {
     Absubstmoves moves;
     Assiters const & assvec = database.assiters();
-    for (Assiters::size_type i = 1; i < prob().numberlimit; ++i)
+    for (nAss i = 1; i < prob().numberlimit; ++i)
     {
         Assiter const iter = assvec[i];
         if (usableasconj(iter->second))

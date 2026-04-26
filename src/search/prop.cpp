@@ -85,12 +85,12 @@ bool testpropsearch
     Timer timer;
     bool okay = true;
     Treesize nodes = 0;
-    Assiters::size_type allprop = 0, proven = 0;
+    nAss allprop = 0, proven = 0;
     // Test assertions
     Assiters const & assiters = database.assiters();
-    Assiters::size_type const all = assiters.size();
-    for (Assiters::size_type i = 1; i < all; ++i)
-    // for (Assiters::size_type i = 1719; i < 1720; ++i)
+    nAss const all = assiters.size();
+    for (nAss i = 1; i < all; ++i)
+    // for (nAss i = 1719; i < 1720; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;

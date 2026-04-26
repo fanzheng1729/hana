@@ -197,7 +197,7 @@ unsigned Imp::discouragement() const
 {
     // Classify if the assertion has discouragement for use or proof change.
     Assiters const & assiters = m_database.assiters();
-    Assiters::size_type const nass = assiters.size();
+    nAss const nass = assiters.size();
     Tokens::size_type const to = assiters.back()->second.tokenpos;
     Tokens::size_type const from =
         nass > 2 ? assiters[nass - 2]->second.tokenpos : 0;

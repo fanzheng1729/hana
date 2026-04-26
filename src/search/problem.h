@@ -44,6 +44,8 @@ public:
     // Database used
     Database const & database;
 private:
+    // Map: typecode -> theorems
+    std::map<strview, Assiters> theorempool;
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
