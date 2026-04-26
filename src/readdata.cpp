@@ -208,7 +208,7 @@ unsigned Imp::discouragement() const
 void Imp::addasstype(Assertion & ass, bool isaxiom) const
 {
     ass.settype(isaxiom * Asstype::AXIOM);
-    ass.settype(ass.istrivial() * Asstype::TRIVIAL);
+    ass.settype(ass.exacthyp() * Asstype::EXACTHYP);
     ass.settype(discouragement());
 }
 

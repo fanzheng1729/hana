@@ -79,7 +79,7 @@ struct Assertion
         return sum;
     }
     // Return true if the expression matches a hypothesis.
-    bool istrivial() const
+    bool exacthyp() const
     {
         Hypsize i = 0;
         for ( ; i < nhyps(); ++i)

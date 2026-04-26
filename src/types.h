@@ -159,9 +159,9 @@ typedef std::vector<Assiter> Assiters;
 enum Asstype
 {
     AXIOM = 1,
-    TRIVIAL = 2,
+    EXACTHYP = 2,
     DUPLICATE = 4,
-    USELESS = TRIVIAL | DUPLICATE,
+    USELESS = EXACTHYP | DUPLICATE,
     NOUSE = 8,
     NONEWPROOF = 16,
     PROPOSITIONAL = 32
