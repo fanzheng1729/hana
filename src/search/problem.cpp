@@ -76,9 +76,9 @@ Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotr
     if (!result.second) // already added
         return newEnviter->second;
     // Simplified assertion
-    Assertion & subAss = assertions[newEnviter->first];
+    Assertion & subAss = assertions[assertions.size()];
     // std::cout << "addsubEnv to " << env.name << ' ' << env.assertion.varusage;
-    Assertion const & ass = env.assertion.makeAss(hypstotrim);
+    Assertion const & ass(env.assertion.makeAss(hypstotrim));
     // Pointer to the sub-context
     return newEnviter->second = initEnv(env.makeEnv(subAss = ass));
 }
@@ -99,7 +99,7 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
     if (!result.second) // already added
         return newEnviter->second;
     // Simplified assertion
-    Assertion & supAss = assertions[newEnviter->first];
+    Assertion & supAss = assertions[assertions.size()];
 // std::cout << "addsupEnv to " << env.name << ' ' << newvars;
 // std::cout << "env vars " << env.assertion.varusage;
     supAss.number = env.assnum();

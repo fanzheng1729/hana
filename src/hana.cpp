@@ -23,9 +23,9 @@ int test()
 bool ismmfile(const char * filename)
 {
     std::cout << filename;
-    return
-    std::strncmp(filename + std::strlen(filename) - 3,
-                 ".mm", 3) == 0;
+    std::size_t len = std::strlen(filename);
+    return len > 3 &&
+    std::strncmp(filename + len - 3, ".mm", 3) == 0;
 }
 
 // Configuration only

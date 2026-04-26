@@ -12,7 +12,7 @@
 class Problem : public MCTS<Game>
 {
     // Assertions corresponding to sub-/sup-contexts
-    Assertions assertions;
+    std::map<Asssize, Assertion> assertions;
     // Polymorphic contexts
     Environs environs;
     // Map: abstraction hypothesis -> contexts using it
