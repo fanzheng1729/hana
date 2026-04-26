@@ -158,7 +158,7 @@ bool Environ::addabsmoves(Goal const & goal, Moves & moves) const
 bool Environ::addabsmoves
     (Goal const & goal, RPNspanAST subexp, Moves & moves) const
 {
-    if (subexp.empty())
+    if (!pProb || subexp.empty())
         return false;
 // if (prob().nplays() == 8)
 // std::cout << subexp.first;
@@ -213,8 +213,7 @@ static void addabsubst
 Absubstmoves Environ::absubsts(RPNspanAST subexp) const
 {
     Absubstmoves moves;
-    if (!pProb)
-        return moves;
+
     Assiters const & assvec = prob().database().assiters();
     for (nAss i = 1; i < prob().numberlimit; ++i)
     {
@@ -222,5 +221,6 @@ Absubstmoves Environ::absubsts(RPNspanAST subexp) const
         if (usableasconj(iter->second))
             addabsubst(subexp, pProb->bank.addabsvar(subexp.first), &*iter, moves);
     }
+
     return moves;
 }
