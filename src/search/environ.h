@@ -66,13 +66,14 @@ struct Environ : protected Gen
     { return ass.number; }
     // Return true if an assertion can be used in theorem moves.
     bool usableasthm(Assertion const & ass) const
-    { return !ass.testtype(Asstype::USELESS) && ontopic(ass); }
+    {
+        return !ass.testtype(Asstype::USELESS) && ontopic(ass);
+    }
     // Return true if an assertion can be used in conjecture moves.
     bool usableasconj(Assertion const & ass) const
     {
-        return !ass.testtype(Asstype::USELESS) && ass.nEhyps() == 0
-                && database.typecodes().isprimitive(ass.exptypecode()) == FALSE
-                && ontopic(ass);
+        return usableasthm(ass) && ass.nEhyps() == 0
+                && database.typecodes().isprimitive(ass.exptypecode()) == FALSE;
     }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
