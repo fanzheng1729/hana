@@ -7,8 +7,24 @@
 typedef std::vector<RPNstep> RPNheads;
 
 template<class T>
-struct ASTPool : private util::SimpTree<std::pair<RPNheads, T> >
+struct ASTNode : std::pair<RPNheads, T>
 {
+    bool operator==(ASTNode const & other) const
+    { return first == other.first; }
+    bool operator!=(ASTNode const & other) const
+    { return !(*this == other); }
+    bool operator< (ASTNode const & other) const
+    { return first < other.first; }
+};
+
+template<class T>
+struct ASTPool : private util::SimpTree<ASTNode<T> >
+{
+    struct pASTNode : util::SimpTree<ASTNode<T> >::pNode
+    {
+        pASTNode operator[](RPNheads const & heads);
+        pASTNode at(RPNheads const & heads) const;
+    };
     void addRPN(RPNspanAST exp, T const & item);
 };
 

@@ -114,6 +114,10 @@ public:
         // Reserve space for children and fix the parents of existing ones.
         void reserve(size_type n) const
         { if (*this) m_ptr->children.reserve(n); }
+        // Add a child. Return the pointer to the child.
+        // DO NOTHING and return nullptr if *this is nullptr.
+        pNode insert(T const & t) const
+        { return *this ? m_insert(t) : pNode(); }
     };
 public:
     // Construct an empty tree.
@@ -176,12 +180,7 @@ public:
     pNode insert(pNode p, T const & value)
     {
         if (!p) return pNode();
-        // Pointer to the child.
-        pNode const child = p.m_insert(value);
-        // Adjust sizes of ancestors.
-        p.m_ptr->incsize(child.m_ptr->size = 1);
-
-        return child;
+        return p.m_insert(value);
     }
 }; // class SimpTree
 } // namespase util
