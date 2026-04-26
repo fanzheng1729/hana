@@ -12,7 +12,7 @@ struct Syntaxiom
 {
     pAss pass;
     Constants constants;
-    operator Asssize() const { return pass->second.number; }
+    operator nAss() const { return pass->second.number; }
 };
 
 // Map: label -> syntax axioms

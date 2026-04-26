@@ -10,7 +10,7 @@ bool Problem::checkproof(Assiter iter) const
 }
 
 // # goals of a given status
-Goals::size_type Problem::countgoal(int status) const
+Goals::size_type Problem::nGoal(int status) const
 {
     Goals::size_type n = 0;
     FOR (Goals::const_reference goaldatas, goals)
@@ -20,7 +20,7 @@ Goals::size_type Problem::countgoal(int status) const
 }
 
 // # proven goals
-Goals::size_type Problem::countproof() const
+Goals::size_type Problem::nProof() const
 {
     Goals::size_type n = 0;
     FOR (Goals::const_reference goaldatas, goals)

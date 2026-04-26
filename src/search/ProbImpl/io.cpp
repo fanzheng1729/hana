@@ -210,14 +210,14 @@ void Problem::checkmainline(pNode p) const
 void Problem::printstats() const
 {
     std::cout << nplays() << " plays, " << size() << " nodes, ";
-    std::cout << countproof() << '/';
+    std::cout << nProof() << '/';
     static const char * const s[] = {" V, ", " ?, ", " X in "};
     for (int i = GOALTRUE; i >= GOALFALSE; --i)
-        std::cout << countgoal(i) << s[GOALTRUE - i];
-    std::cout << countenvs();
-    std::cout << '(' << countsubenvs() << '/' << countsupenvs() << ')';
+        std::cout << nGoal(i) << s[GOALTRUE - i];
+    std::cout << nEnvs();
+    std::cout << '(' << nsubEnvs() << '/' << nsupEnvs() << ')';
     std::cout << " contexts" << std::endl;
-    unexpected(countgoal(GOALNEW) > 0, "unevaluated", "goal");
+    unexpected(nGoal(GOALNEW) > 0, "unevaluated", "goal");
 }
 
 // Format: [*]name  maxrank1 maxrank2 ...
@@ -227,7 +227,7 @@ void Problem::printenvs() const
     {
         SyntaxDAG::Ranks const & envranks = env.second->maxranks;
         char const c = " *"[env.second->rankssimplerthanProb()];
-        std::cout << c << env.first << '\t';
+        std::cout << c << env.second->name << '\t';
         FOR (std::string const & rank, env.second->maxranks)
             std::cout << rank << ' ';
         std::cout << std::endl;

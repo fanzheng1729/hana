@@ -1,6 +1,7 @@
 #include "problem.h"
 #include "../proof/skeleton.h"
 #include "../io.h"
+#include "../util/filter.h"
 
 // Add 1-step proofs of all hypotheses of a context.
 Environ const & Problem::addhypproofs(Environ const & env)
@@ -22,13 +23,22 @@ Environ const & Problem::addhypproofs(Environ const & env)
 Environ const & Problem::addimps(Environ const & env)
 {
     if (env.subsumedbyProb()) return env;
-    pEnvs const & psubEnvs = envsbyhyp.keyin(env.sortedhyps);
+    pEnvs const & psubEnvs(envsbyhyp.psubEnvs(env.sortedhyps));
     FOR (Environ const * poldenv, psubEnvs)
         env.addimps(*poldenv);
-    pEnvs const & psupEnvs = *allenvsbyhyp.hasall(env.sortedhyps);
+    pEnvs const & psupEnvs = envsbyhyp.psupEnvs(env.sortedhyps);
     FOR (Environ const * poldenv, psupEnvs)
         poldenv->addimps(env);
     return env;
+}
+
+static Hypiters filterauxilliary(Hypiters const & hypiters)
+{
+    Hypiters result;
+    FOR (Hypiter iter, hypiters)
+        if (!islabeltoken(iter->first.c_str))
+            result.push_back(iter);
+    return result;
 }
 
 // Initialize a context if existent. Return its pointer.
@@ -37,25 +47,11 @@ Environ const * Problem::initEnv(Environ * p)
     if (!p) return p;
 
     p->pProb = this;
-    p->m_subsumedbyProb =
-    environs.size() <= 1 || probEnv().implies(*p);
+    p->m_subsumedbyProb = nEnvs() <= 1 || probEnv().implies(*p);
     p->updateimps(maxranks);
 
-    if (!p->m_subsumedbyProb)
-    {
-        Hypiters hyps;
-        FOR (Hypiter const iter, p->sortedhyps)
-            if (!islabeltoken(iter->first.c_str))
-                hyps.push_back(iter);
-        envsbyhyp.addkeys(hyps, p);
-        allenvsbyhyp.addkeys(hyps, p);
-
-        // pEnvs const * penvs = allenvsbyhyp.hasall(hyps);
-        // std::cout << p->name << std::endl;
-        // FOR (Environ const * q, *penvs)
-        //     std::cout << q->name << ' ';
-        // std::cin.get();
-    }
+    if (!p->subsumedbyProb())
+        envsbyhyp.addkeys(filterauxilliary(p->sortedhyps), p);
 
     return &addimps(addhypproofs(*p));
 }
@@ -64,15 +60,15 @@ Environ const * Problem::initEnv(Environ * p)
 // Return pointer to the new context. Return nullptr if unsuccessful.
 Environ const * Problem::addsubEnv(Environ const & env, Bvector const & hypstotrim)
 {
-    if (hypstotrim.empty())
+    if (!util::filter(hypstotrim)(true))
         return Environs::mapped_type();
-    // Name of new context
-    std::string const & name(env.assertion.hypslabel(hypstotrim));
+    // Hypiters of new context
+    Hypiters const & hypiters(env.assertion.sortedhyps(hypstotrim));
     // Try add the context.
-    std::pair<Environs::iterator, bool> const result =
-    environs.insert(std::make_pair(name, Environs::mapped_type()));
+    std::pair<Enviter, bool> const result =
+    environs.insert(std::make_pair(hypiters, Environs::mapped_type()));
     // Iterator to the new context
-    Environs::iterator const newEnviter = result.first;
+    Enviter const newEnviter = result.first;
     if (!result.second) // already added
         return newEnviter->second;
     // Simplified assertion
@@ -89,13 +85,13 @@ Environ const * Problem::addsupEnv(Environ const & env, Move const & move)
 {
     Expression const & newvars(move.absvars(bank));
     Hypiters const & newhyps(move.addconjsto(bank));
-    // Name of new context
-    std::string const & name(env.assertion.hypslabel(newvars, newhyps));
+    // Hypiters of new context
+    Hypiters const & hypiters(env.assertion.sortedhyps(newvars, newhyps));
     // Try add the context.
-    std::pair<Environs::iterator, bool> const result =
-    environs.insert(std::make_pair(name, Environs::mapped_type()));
+    std::pair<Enviter, bool> const result =
+    environs.insert(std::make_pair(hypiters, Environs::mapped_type()));
     // Iterator to the new context
-    Environs::iterator const newEnviter = result.first;
+    Enviter const newEnviter = result.first;
     if (!result.second) // already added
         return newEnviter->second;
     // Simplified assertion

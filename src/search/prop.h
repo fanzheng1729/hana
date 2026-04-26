@@ -4,6 +4,7 @@
 #include <algorithm>// for std::accumulate
 #include <new>      // for std::nothrow
 #include "environ.h"
+#include "../util/filter.h"
 #include "../util/find.h"
 #include "../util/for.h"
 #include "../io.h"
@@ -55,7 +56,7 @@ struct Prop : Environ
     CNFClauses hypsCNF(Bvector const & hypstotrim) const
     {
         CNFClauses const & hyps = allhypsCNF.first;
-        if (hypstotrim.empty())
+        if (!util::filter(hypstotrim)(true))
             return hyps;
         CNFClauses cnf;
         Proofnumbers const & ends = allhypsCNF.second;

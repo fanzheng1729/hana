@@ -12,7 +12,7 @@ struct Definition
     // Left and right hand side of definition
     RPN lhs, rhs;
     // # of the defining assertion
-    operator Asssize() const { return pdef->second.number; }
+    operator nAss() const { return pdef->second.number; }
     Definition() : pdef() {}
     // Find the revPolish notation of (LHS, RHS).
     Definition(Assertions::const_reference rass);

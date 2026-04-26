@@ -18,10 +18,6 @@ typedef std::vector<Environ const *> pEnvs;
 inline Value score(Weight w) { return 1. / (w + 1); }
 inline Value score(double w) { return 1. / ((w < 1 ? 1 : w) + 1); }
 
-// Map: name -> polymorphic contexts
-typedef std::map<std::string, Environ const *> Environs;
-// Iterator to polymorphic contexts
-typedef Environs::const_iterator Enviter;
 // Polymorphic context, with move generation and goal evaluation
 struct Environ : protected Gen
 {
@@ -47,7 +43,7 @@ struct Environ : protected Gen
             if (syntaxiom.second.pass->second.number < assnum())
                 syntaxioms.insert(syntaxiom);
     }
-    Asssize assnum() const { return assertion.number; }
+    nAss assnum() const { return assertion.number; }
     Problem const & prob() const { return *pProb; }
     // Context implication relations
     // Updated when new context is added

@@ -167,7 +167,7 @@ Assertion Assertion::makeAss(Bvector const & hypstotrim) const
 // Set the hypotheses, trimming away specified ones.
 void Assertion::sethyps(Assertion const & ass, Bvector const & hypstotrim)
 {
-    if (hypstotrim.empty())
+    if (!util::filter(hypstotrim)(true))
         return;
     // # hypotheses in new assertion
     Hypsize const newnhyps

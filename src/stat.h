@@ -13,17 +13,17 @@
 // If so, return max # of def/syntax axiom.
 // If a symbol has no definition, its # is n. Otherwise return 0.
 template<class T>
-Asssize maxsymboldefnumber
+nAss maxsymboldefnumber
     (RPN const & exp, T const & definitions,
-     Syntaxioms const & syntaxioms, Asssize n)
+     Syntaxioms const & syntaxioms, nAss n)
 {
-    Asssize max = 1;
+    nAss max = 1;
 //std::cout << definitions << syntaxioms;
     FOR (RPNstep const step, exp)
         if (step.isthm() && step.pass)
             if (const char * const label = step.pass->first.c_str)
     {
-        Asssize number = 0;
+        nAss number = 0;
         typename T::const_iterator iterdf = definitions.find(label);
 //std::cout << "sa";
         if (iterdf != definitions.end())
@@ -49,11 +49,11 @@ Asssize maxsymboldefnumber
 // If so, return max # of def/syntax axiom.
 // If a symbol has empty definition, return n. Otherwise return 0.
 template<class T>
-Asssize maxsymboldefnumber
+nAss maxsymboldefnumber
     (Assertion const & ass, T const & definitions,
-     Syntaxioms const & syntaxioms, Asssize n = 0)
+     Syntaxioms const & syntaxioms, nAss n = 0)
 {
-    Asssize max = 0;
+    nAss max = 0;
 
     max = maxsymboldefnumber(ass.expRPN, definitions, syntaxioms, n);
 //std::cout << ass.expression << "has number " << max << std::endl;
@@ -62,7 +62,7 @@ Asssize maxsymboldefnumber
     // Check the hypotheses.
     for (Hypsize i = 0; i < ass.nhyps(); ++i)
     {
-        Asssize const maxi =
+        nAss const maxi =
             maxsymboldefnumber(ass.hypRPN(i), definitions, syntaxioms, n);
         if (maxi == 0)
             return 0;

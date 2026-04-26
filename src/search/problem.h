@@ -18,13 +18,26 @@ inline bool operator<(Hypiters const & x, Hypiters const & y)
 class Problem : public MCTS<Game>
 {
     // Assertions corresponding to sub-/sup-contexts
-    std::map<Asssize, Assertion> assertions;
+    std::map<nAss, Assertion> assertions;
+    // Map: name -> polymorphic contexts
+    typedef std::map<Hypiters, Environ const *> Environs;
     // Polymorphic contexts
     Environs environs;
+    // Iterator to polymorphic contexts
+    typedef Environs::iterator Enviter;
     // Map: abstraction hypothesis -> contexts using it
-    util::WeakIncl<Hypiter, Environ const *, Comphypiter> envsbyhyp;
-    // Map: abstraction hypothesis -> all contexts using it
-    util::Incl<Hypiter, Environ const *, Comphypiter> allenvsbyhyp;
+    struct Envsbyhyp
+    {
+        util::WeakIncl<Hypiter, Environ const *, Comphypiter> weakincl;
+        util::Incl<Hypiter, Environ const *, Comphypiter> incl;
+        Envsbyhyp() : weakincl(comphypiter), incl(comphypiter) {}
+        void addkeys(Hypiters const & hyps, Environ const * p)
+        { weakincl.addkeys(hyps, p), incl.addkeys(hyps, p); }
+        pEnvs psubEnvs(Hypiters const & hyps) const
+        { return weakincl.keyin(hyps); }
+        pEnvs const & psupEnvs(Hypiters const & hyps) const
+        { return *incl.hasall(hyps); }
+    } envsbyhyp;
     // Map: goal -> context -> evaluation
     Goals goals;
 public:
@@ -38,25 +51,24 @@ private:
     Abstractions abstractions;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
-    Asssize numberlimit;
+    nAss numberlimit;
     // Maximal ranks of the assertion
     SyntaxDAG::Ranks maxranks;
     // Max # of rank in maxranks
-    Asssize maxranknumber;
+    nAss maxranknumber;
 public:
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     // Assertion to be proven
     Assertion const & probAss() const { return probEnv().assertion; }
-    Asssize number() const { return pProbEnv ? probAss().number : 0; }
+    nAss number() const { return pProbEnv ? probAss().number : 0; }
     // Is staged move generation used?
     enum { STAGED = true };
     bool const staged;
     template<class Env>
     Problem(Env const & env, MCTSParams const params) :
         MCTS(Game(), params),
-        envsbyhyp(comphypiter), allenvsbyhyp(comphypiter),
         database(env.database),
         bank(database.nvar()),
         abstractions(compspan),
@@ -136,24 +148,24 @@ public:
     // Return true if proof() solves the problem *iter.
     bool checkproof(Assiter iter) const;
     // # goals of a given status
-    Goals::size_type countgoal(int status) const;
+    Goals::size_type nGoal(int status) const;
     // # proven goals
-    Goals::size_type countproof() const;
+    Goals::size_type nProof() const;
     // # contexts
-    Environs::size_type countenvs() const { return environs.size(); }
+    Environs::size_type nEnvs() const { return environs.size(); }
     // # sub-contexts
-    Environs::size_type countsubenvs() const { return probEnv().nsubEnvs(); }
+    Environs::size_type nsubEnvs() const { return probEnv().nsubEnvs(); }
     // # sup-contexts
-    Environs::size_type countsupenvs() const { return probEnv().nsupEnvs(); }
+    Environs::size_type nsupEnvs() const { return probEnv().nsupEnvs(); }
     // # abstractions
-    Abstractions::size_type countabs() const { return abstractions.size(); }
+    Abstractions::size_type nAbs() const { return abstractions.size(); }
 private:
     // Add the problem context. Return its pointer.
     template<class Env>
     Environ const * addProbEnv(Env const & env)
     {
-        Environ * const p  = new Env(env);
-        environs[env.name] = p;
+        Environ * p = new Env(env);
+        environs[env.assertion.sortedhyps()] = p;
         return initEnv(p);
     }
     friend Environ;
@@ -197,8 +209,8 @@ public:
     void writeproof(const char * const filename) const;
     virtual ~Problem()
     {
-        FOR (Environs::const_reference subenv, environs)
-            delete subenv.second;
+        FOR (Environs::const_reference env, environs)
+            delete env.second;
     }
 };
 
