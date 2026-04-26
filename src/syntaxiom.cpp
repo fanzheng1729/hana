@@ -141,7 +141,7 @@ bool Syntaxioms::addRPN
 {
     Progress progress;
 
-    Assertions::size_type nass = 0, all = assertions.size();
+    Asssize nass = 0, all = assertions.size();
     FOR (Assertions::reference rass, assertions)
     {
         if (!addRPN(rass.second, typecodes))
@@ -199,7 +199,7 @@ bool Database::checkRPN() const
 {
     Progress progress;
 
-    Assertions::size_type nass = 0, all = assertions().size();
+    Asssize nass = 0, all = assertions().size();
     FOR (Assertions::const_reference rass, assertions())
     {
         if (!syntaxioms().checkRPN(rass.second, typecodes()))

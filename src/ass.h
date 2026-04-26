@@ -10,7 +10,7 @@ static const std::string hypdelim = "~";
 // An axiom or a theorem
 struct Assertion
 {
-    Assertion(Assertions::size_type n = 0) : number(n), tokenpos(0), type(0) {}
+    Assertion(Asssize n = 0) : number(n), tokenpos(0), type(0) {}
 // Essential properties:
     // Hypotheses of this axiom or theorem
     Hypiters hypiters;
@@ -19,7 +19,7 @@ struct Assertion
     // Statement of axiom or theorem
     Expression expression;
     // # of axiom or theorem as ordered in the input file, starting from 1
-    Assertions::size_type number;
+    Asssize number;
     // Position in tokens
     std::size_t tokenpos;
 // Derived properties:

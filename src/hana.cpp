@@ -20,11 +20,12 @@ int test()
 }
 
 // .mm file extension check
-bool ismm(const char * s)
+bool ismmfile(const char * filename)
 {
-    std::cout << s;
-    std::size_t n = std::strlen(s);
-    return std::strncmp(s + n - 3, ".mm", 3) == 0;
+    std::cout << filename;
+    return
+    std::strncmp(filename + std::strlen(filename) - 3,
+                 ".mm", 3) == 0;
 }
 
 // Configuration only
@@ -75,7 +76,7 @@ int main(int argc, char * argv[])
 
     static const char paramfilename[] = "param.bin";
 
-    if (!ismm(argv[1]))
+    if (!ismmfile(argv[1]))
         return config(argv[1], paramfilename);
 
     Tokens tokens;

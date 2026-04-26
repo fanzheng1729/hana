@@ -12,7 +12,7 @@ struct Syntaxiom
 {
     pAss pass;
     Constants constants;
-    operator Assertions::size_type() const { return pass->second.number; }
+    operator Asssize() const { return pass->second.number; }
 };
 
 // Map: label -> syntax axioms

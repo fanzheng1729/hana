@@ -148,6 +148,7 @@ typedef std::set<std::pair<Symbol2, Symbol2> > Disjvars;
 struct Assertion;
 // Map: label -> assertion
 typedef std::map<strview, Assertion> Assertions;
+typedef Assertions::size_type Asssize;
 // Pointer to (label, assertion)
 typedef Assertions::const_pointer pAss;
 // Iterator to an assertion

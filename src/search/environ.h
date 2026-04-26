@@ -47,7 +47,7 @@ struct Environ : protected Gen
             if (syntaxiom.second.pass->second.number < assnum())
                 syntaxioms.insert(syntaxiom);
     }
-    Assertions::size_type assnum() const { return assertion.number; }
+    Asssize assnum() const { return assertion.number; }
     Problem const & prob() const { return *pProb; }
     // Context implication relations
     // Updated when new context is added

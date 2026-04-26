@@ -178,9 +178,9 @@ public:
         m_propctors.adddefs(definitions());
     }
 // Mark propositional assertions. Return its number.
-    Assertions::size_type markpropassertions()
+    Asssize markpropassertions()
     {
-        Assertions::size_type n = 0;
+        Asssize n = 0;
         FOR (Assertions::reference rass, m_assertions)
         {
             Assertion & ass = rass.second;
@@ -206,8 +206,7 @@ public:
         FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
         {
             strview const label = syntaxiom.first;
-            Assertions::size_type const number
-            = syntaxiom.second.pass->second.number;
+            Asssize const n = syntaxiom.second.pass->second.number;
             strview rank = "other";
 
             if (props.count(label))
@@ -216,7 +215,7 @@ public:
                 else
                     rank = label;
 
-            m_syntaxDAG.addsyntax(label, number, rank);
+            m_syntaxDAG.addsyntax(label, n, rank);
         }
         FOR (Definitions::const_reference def, definitions())
             if (def.second.pdef)

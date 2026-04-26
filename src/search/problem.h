@@ -32,19 +32,18 @@ private:
     Abstractions abstractions;
 // Updated when problem is simplified
     // Must use assertion whose number is smaller than this.
-    Assertions::size_type numberlimit;
+    Asssize numberlimit;
     // Maximal ranks of the assertion
     SyntaxDAG::Ranks maxranks;
     // Max # of rank in maxranks
-    Assertions::size_type maxranknumber;
+    Asssize maxranknumber;
 public:
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
     // Assertion to be proven
     Assertion const & probAss() const { return probEnv().assertion; }
-    Assertions::size_type number() const
-    { return pProbEnv ? probAss().number : 0; }
+    Asssize number() const { return pProbEnv ? probAss().number : 0; }
     // Is staged move generation used?
     enum { STAGED = true };
     bool const staged;
