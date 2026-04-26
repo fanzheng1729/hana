@@ -4,6 +4,18 @@
 #include "../io.h"
 #include "../proof/skeleton.h"
 
+// Prepare term generator
+void Environ::prepareGen() const
+{
+    if (genready) return;
+    // Relevant syntax axioms
+    FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
+        if (syntaxiom.second.pass->second.number < assnum())
+            if (ontopic(syntaxiom.second.pass->second))
+                syntaxioms.insert(syntaxiom);
+    genready = true;
+}
+
 // Add a move with validation. Return true if it has no open hypotheses.
 template<Environ::MoveValidity (Environ::*Validator)(Move const &) const>
 bool Environ::addvalidmove(Move const & move, Moves & moves) const
@@ -54,6 +66,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         limit = assnum();
 // if (stage >= 5)
 // std::cout << "Finding moves at stage " << stage << " for " << game;
+    // Prepare term generator
+    prepareGen();
+
     Moves moves;
     FOR (Assiter iter, assvec)
     {

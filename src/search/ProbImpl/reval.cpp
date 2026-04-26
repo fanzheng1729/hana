@@ -42,10 +42,16 @@ void Problem::prune(pNode p)
 }
 
 // Update implications after problem context is simplified.
+void Problem::updateimps(Environ const & env)
+{
+    env.m_rankssimplerthanProb =
+    database().syntaxDAG().simplerthan(env.maxranks, maxranks);
+}
 void Problem::updateimps()
 {
     FOR (Environs::const_reference env, environs)
-        env.second->updateimps(maxranks);
+        if (Environ const * p = env.second)
+            updateimps(*p);
 }
 
 // Focus the sub-tree at p, with updated maxranks, if almost won.

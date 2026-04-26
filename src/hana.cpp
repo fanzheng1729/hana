@@ -140,7 +140,7 @@ int main(int argc, char * argv[])
     if (!testpropsearch(database, param))
         return EXIT_FAILURE;
 // Uncomment these lines if you want to output to a file.
-    // std::ofstream out("result2.txt");
+    // std::ofstream out("result.txt");
     // std::streambuf * coutbuf = std::cout.rdbuf(out.rdbuf());
     // bool const okay = testpropsearch(database, param);
     // std::cout.rdbuf(coutbuf);

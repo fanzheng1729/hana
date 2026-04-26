@@ -50,7 +50,7 @@ Environ const * Problem::initEnv(Environ * p)
 
     p->pProb = this;
     p->m_subsumedbyProb = nEnvs() <= 1 || probEnv().implies(*p);
-    p->updateimps(maxranks);
+    updateimps(*p);
 
     if (!p->subsumedbyProb())
         envsbyhyp.addkeys(filterauxilliary(p->sortedhyps), p);

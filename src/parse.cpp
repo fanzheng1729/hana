@@ -174,7 +174,7 @@ Substframe::Subexpends const & RPNmap
     // Match syntax axioms.
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
     {
-        pAss const psyntaxiom = syntaxiom.second.pass;
+        pAss psyntaxiom = syntaxiom.second.pass;
         Expression const & saexp(psyntaxiom->second.expression);
         if (saexp.empty() || saexp[0] != type)
             continue; // Type mismatch

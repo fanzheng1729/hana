@@ -162,6 +162,7 @@ public:
     // Prune the sub-tree at p and update maxranks, if almost won.
     void prune(pNode p);
     // Update implications after problem context is simplified.
+    void updateimps(Environ const & env);
     void updateimps();
     // Focus the sub-tree at p, with updated maxranks, if almost won.
     void focus(pNode p);

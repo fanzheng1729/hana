@@ -21,6 +21,8 @@ inline Value score(double w) { return 1. / ((w < 1 ? 1 : w) + 1); }
 // Polymorphic context, with move generation and goal evaluation
 struct Environ : protected Gen
 {
+    // Prepare term generator
+    void prepareGen() const;
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         Gen(ass.varusage, maxsize),
@@ -32,17 +34,14 @@ struct Environ : protected Gen
         hypsweight(ass.hypslen()),
         hasnewvarinexp(ass.hasnewvarinexp()),
         staged(isstaged),
+        genready(false),
         pProb(),
         sortedhyps(ass.hypiters),
         m_subsumedbyProb(false),
         m_rankssimplerthanProb(false)
     {
         std::sort(sortedhyps.begin(), sortedhyps.end(), comphypiter);
-        // Relevant syntax axioms
-        FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
-            if (syntaxiom.second.pass->second.number < assnum())
-                if (ontopic(syntaxiom.second.pass->second))
-                    syntaxioms.insert(syntaxiom);
+        prepareGen();
     }
     nAss assnum() const { return assertion.number; }
     Problem const & prob() const { return *pProb; }
@@ -56,12 +55,6 @@ struct Environ : protected Gen
     bool subsumedbyProb() const { return m_subsumedbyProb; }
     // Return true if maxranks is simpler than problem maxranks
     bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
-    // Update when problem is simplified
-    void updateimps(SyntaxDAG::Ranks const & probmaxranks) const
-    {
-        m_rankssimplerthanProb =
-        database.syntaxDAG().simplerthan(maxranks, probmaxranks);
-    }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.number; }
@@ -117,6 +110,8 @@ struct Environ : protected Gen
     // Is staged move generation used?
     bool const staged;
 protected:
+    // Is term generator ready?
+    bool mutable genready;
     // Pointer to the problem
     Problem * pProb;
     friend Problem;

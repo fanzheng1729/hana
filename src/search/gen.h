@@ -29,7 +29,7 @@ struct Gen
         m_varusage(varusage), m_maxmoves(maxmoves) {}
     Varusage    const m_varusage;
     Proofnumber const m_maxmoves;
-    Syntaxioms  syntaxioms;
+    Syntaxioms  mutable syntaxioms;
     Genresult   mutable genresult;
     Termcounts  mutable termcounts;
 // Return a lower bound of the number of potential substitutions.
