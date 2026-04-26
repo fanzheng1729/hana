@@ -121,8 +121,13 @@ struct Assertion
     Bvector & trimvars(Bvector & hypstotrim, RPN const & conclusion) const;
     // Label with hypotheses trimmed
     std::string hypslabel(Bvector const & hypstotrim = Bvector()) const;
+    // Hypotheses trimmed and sorted
+    Hypiters sortedhyps(Bvector const & hypstotrim = Bvector()) const;
     // Label with new variables and new hypotheses added
     std::string hypslabel
+        (Expression const & newvars, Hypiters const & newhyps) const;
+    // Hypotheses with new ones and variables sorted
+    Hypiters sortedhyps
         (Expression const & newvars, Hypiters const & newhyps) const;
     // Simplified assertion with hypotheses trimmed
     Assertion makeAss(Bvector const & hypstotrim = Bvector()) const;

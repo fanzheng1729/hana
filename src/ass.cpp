@@ -63,6 +63,23 @@ std::string Assertion::hypslabel(Bvector const & hypstotrim) const
     return sortconcat(labels);
 }
 
+// Hypotheses trimmed and sorted
+Hypiters Assertion::sortedhyps(Bvector const & hypstotrim) const
+{
+    // Preallocate for efficiency.
+    Hypiters result;
+    result.reserve(nhyps() - hypstotrim.size());
+
+    for (Hypsize i = 0; i < hypstotrim.size(); ++i)
+        if (!hypstotrim[i])
+            result.push_back(hypiters[i]);
+    for (Hypsize i = hypstotrim.size(); i < nhyps(); ++i)
+            result.push_back(hypiters[i]);
+
+    std::sort(result.begin(), result.end(), comphypiter);
+    return result;
+}
+
 static void sortedcopy(Expression const & src, Expression & dest)
 {
     if (dest.size() >= src.size())
@@ -103,6 +120,39 @@ std::string Assertion::hypslabel
         labels.push_back(hypdelim + iter->first.c_str);
 
     return sortconcat(labels);
+}
+
+// Hypotheses with new ones and variables sorted
+Hypiters Assertion::sortedhyps
+    (Expression const & newvars, Hypiters const & newhyps) const
+{
+    // Copy if there are variables in newhyps but not in newvars.
+    Expression copy;
+    FOR (Hypiter iter, newhyps)
+        FOR (Symbol3 var, iter->second.expression)
+            if (var.id > 0 && varusage.count(var) == 0 &&
+                !util::filter(newvars)(var))
+            {
+                sortedcopy(newvars, copy);
+                util::addordered(copy, var);
+            }
+    // New variables in newvars and newhyps combined
+    Expression const & allnewvars = copy.empty() ? newvars : copy;
+    // # hypotheses in new assertion
+    Hypsize const newnhyps = nhyps() + allnewvars.size() + newhyps.size();
+    // Preallocate for efficiency.
+    Hypiters result;
+    result.reserve(newnhyps);
+    // Floating hypotheses for new variables
+    FOR (Symbol3 var, allnewvars)
+        if (var.id > 0 && varusage.count(var) == 0)
+            result.push_back(var.iter);
+    // Hypothesis, old and new
+    result.insert(result.end(), hypiters.begin(), hypiters.end());
+    result.insert(result.end(), newhyps.begin(), newhyps.end());
+
+    std::sort(result.begin(), result.end(), comphypiter);
+    return result;
 }
 
 // Return the simplified assertion with hypotheses trimmed.

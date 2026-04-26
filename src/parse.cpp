@@ -1,4 +1,3 @@
-#include <algorithm>
 #include "ass.h"
 #include "disjvars.h"
 #include "io.h"

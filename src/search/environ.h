@@ -37,11 +37,11 @@ struct Environ : protected Gen
         hasnewvarinexp(ass.hasnewvarinexp()),
         staged(isstaged),
         pProb(),
-        hypiters(ass.hypiters),
+        sortedhyps(ass.hypiters),
         m_subsumedbyProb(false),
         m_rankssimplerthanProb(false)
     {
-        std::sort(hypiters.begin(), hypiters.end(), comphypiter);
+        std::sort(sortedhyps.begin(), sortedhyps.end(), comphypiter);
         // Relevant syntax axioms
         FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
             if (syntaxiom.second.pass->second.number < assnum())
@@ -166,7 +166,7 @@ private:
     Absubstmoves absubsts(RPNspanAST subexp) const;
 // Private members
     // Sorted iterators to hypotheses
-    Hypiters hypiters;
+    Hypiters sortedhyps;
     // true if *this <= problem context
     bool m_subsumedbyProb;
     // Cache for context implication relations

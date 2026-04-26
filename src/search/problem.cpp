@@ -22,10 +22,10 @@ Environ const & Problem::addhypproofs(Environ const & env)
 Environ const & Problem::addimps(Environ const & env)
 {
     if (env.subsumedbyProb()) return env;
-    pEnvs const & psubEnvs = envsbyhyp.keyin(env.hypiters);
+    pEnvs const & psubEnvs = envsbyhyp.keyin(env.sortedhyps);
     FOR (Environ const * poldenv, psubEnvs)
         env.addimps(*poldenv);
-    pEnvs const & psupEnvs = *allenvsbyhyp.hasall(env.hypiters);
+    pEnvs const & psupEnvs = *allenvsbyhyp.hasall(env.sortedhyps);
     FOR (Environ const * poldenv, psupEnvs)
         poldenv->addimps(env);
     return env;
@@ -44,7 +44,7 @@ Environ const * Problem::initEnv(Environ * p)
     if (!p->m_subsumedbyProb)
     {
         Hypiters hyps;
-        FOR (Hypiter const iter, p->hypiters)
+        FOR (Hypiter const iter, p->sortedhyps)
             if (!islabeltoken(iter->first.c_str))
                 hyps.push_back(iter);
         envsbyhyp.addkeys(hyps, p);

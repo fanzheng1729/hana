@@ -149,5 +149,5 @@ static bool includes(C const & x, C const & y, Comp comp)
 bool Environ::implies(Environ const & env) const
 {
     return nhyps > env.nhyps &&
-            includes(hypiters, env.hypiters, comphypiter);
+            includes(sortedhyps, env.sortedhyps, comphypiter);
 }
