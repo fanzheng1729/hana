@@ -4,6 +4,7 @@
 #include <algorithm>    // for std::min
 #include "environ.h"
 #include "goaldata.h"
+#include "../proof/ASTPool.h"
 #include "../proof/compspan.h"
 #include "../util/for.h"
 
@@ -47,6 +48,9 @@ private:
     // Map: typecode -> theorems
     typedef std::map<strview, Assiters> Theorempool;
     Theorempool theorempool;
+    typedef ASTPool<Assiters> ThmASTPool;
+    typedef std::map<strview, ThmASTPool> Theorempool2;
+    Theorempool2 theorempool2;
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made

@@ -66,9 +66,7 @@ struct Environ : protected Gen
     { return ass.number; }
     // Return true if an assertion can be used in conjecture moves.
     bool usableasconj(Assertion const & ass) const
-    {
-        return ontopic(ass) && ass.nEhyps() == 0;
-    }
+    { return ontopic(ass) && ass.nEhyps() == 0; }
     // Determine status of a goal.
     virtual Goalstatus status(Goal const & goal) const
     { return goal.rpn.empty() ? GOALFALSE : GOALOPEN; }
