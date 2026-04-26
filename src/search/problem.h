@@ -7,6 +7,12 @@
 #include "../proof/compspan.h"
 #include "../util/for.h"
 
+inline bool operator<(Hypiters const & x, Hypiters const & y)
+{
+    return std::lexicographical_compare
+    (x.begin(), x.end(), y.begin(), y.end(), comphypiter);
+}
+
 // Problem statement + Proof search tree with loop detection
 // + context management + goal management + UI
 class Problem : public MCTS<Game>
