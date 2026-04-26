@@ -240,6 +240,7 @@ struct RPNspanAST: std::pair<RPNspan, ASTiter>
     void check(AST const & tree) { if (size() != tree.size()) clear(); }
     RPNstep const & RPNroot() const { return first.root(); }
     ASTnode const & ASTroot() const { return second[size() - 1]; }
+    ASTnode::size_type nchild() const { return ASTroot().size(); }
     // Child i's subspan
     RPNspanAST child(ASTnode::size_type index) const
     {
@@ -252,6 +253,7 @@ struct RPNspanAST: std::pair<RPNspan, ASTiter>
         return RPNspanAST(RPNspan(newRPN, newend), newAST);
     }
 };
+typedef std::vector<RPNspanAST> RPNspanASTs;
 
 struct Relations;
 // Type of relations

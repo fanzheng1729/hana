@@ -36,6 +36,18 @@ public:
         // The value
         T value;
         TreeNode(T const & x) : value(x) {}
+        friend bool operator==(T const & x, TreeNode const & y)
+        { return x == y.value; }
+        friend bool operator==(TreeNode const & x, T const & y)
+        { return x.value == y; }
+        friend bool operator!=(T const & x, TreeNode const & y)
+        { return !(x == y); }
+        friend bool operator!=(TreeNode const & x, T const & y)
+        { return !(x == y); }
+        friend bool operator< (T const & x, TreeNode const & y)
+        { return x < y.value; }
+        friend bool operator< (TreeNode const & x, T const & y)
+        { return x.value == y; }
     }; // class TreeNode
 private:
     // Pointer to the root
@@ -99,8 +111,6 @@ public:
         pNode() : m_ptr() {}
         pNode(TreeNode const & node) : m_ptr(const_cast<TreeNode *>(&node)) {}
         operator TreeNode const * () const { return m_ptr; }
-        friend inline bool operator<(pNode x, pNode y)
-            { return std::less<TreeNode *>()(x.m_ptr, y.m_ptr); }
         // Return true if a node has a child. Return 0 if *this is nullptr.
         bool haschild() const { return *this && !m_ptr->children.empty(); }
         // Return # children of a node. Return 0 if *this is nullptr.
@@ -108,6 +118,9 @@ public:
         // Return the content of a node. *this != nullptr.
         T & operator*() const { return m_ptr->value; }
         T * operator->()const { return&m_ptr->value; }
+        friend bool operator==(pNode x, pNode y){ return *x == *y; }
+        friend bool operator!=(pNode x, pNode y){ return *x != *y; }
+        friend bool operator< (pNode x, pNode y){ return *x < *y; }
         // Return pointer to the children of a node.
         // Return nullptr if *this is nullptr.
         Children const * children() const
@@ -128,9 +141,9 @@ public:
             TreeNode * child = &*util::addordered(m_ptr->children, t);
 #else
             // Pointer to the child.
-//             TreeNode * child = new TreeNode(t);
+            TreeNode * child = new TreeNode(t);
             // Update the parent.
-//             m_ptr->children.push_back(child);
+            util::addordered(m_ptr->children, child);
 #endif // __cpp_lib_incomplete_container_elements
 
             return child;

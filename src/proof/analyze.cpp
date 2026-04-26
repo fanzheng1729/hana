@@ -107,7 +107,7 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
         if (exproot != tmproot)
             return false;
         // Match children.
-        for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
+        for (ASTnode::size_type i = 0; i < exp.nchild(); ++i)
             if (!findsubst(exp.child(i), tmp.child(i), subst))
                 return false;
         return true;
@@ -166,7 +166,7 @@ static void maxabs
         *pinstep = true;
     }
     // Recurse to all children.
-    for (ASTnode::size_type i = 0; i < subexp.ASTroot().size(); ++i)
+    for (ASTnode::size_type i = 0; i < subexp.nchild(); ++i)
         maxabs(subexp.child(i), exp, instep, result);
     if (pinstep)
         *pinstep = false;

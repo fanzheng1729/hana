@@ -6,26 +6,57 @@
 
 typedef std::vector<RPNstep> RPNheads;
 
-template<class T>
-struct ASTNode : std::pair<RPNheads, T>
+inline RPNheads gotochildren(RPNspanASTs & parents)
 {
-    bool operator==(ASTNode const & other) const
+    RPNheads heads;
+    RPNspanASTs children;
+
+    FOR (RPNspanAST parent, parents)
+    {
+        RPNstep const root = parent.RPNroot();
+        if (root.isthm())
+            heads.push_back(root);
+        for (ASTnode::size_type i = 0; i < parent.nchild(); ++i)
+            children.push_back(parent.child(i));
+    }
+
+    parents = children;
+    return heads;
+}
+
+template<class T>
+struct ASTPoolNode : std::pair<RPNheads, T>
+{
+    bool operator==(ASTPoolNode const & other) const
     { return first == other.first; }
-    bool operator!=(ASTNode const & other) const
+    bool operator!=(ASTPoolNode const & other) const
     { return !(*this == other); }
-    bool operator< (ASTNode const & other) const
+    bool operator< (ASTPoolNode const & other) const
     { return first < other.first; }
 };
 
 template<class T>
-struct ASTPool : private util::SimpTree<ASTNode<T> >
+struct ASTPool : private util::SimpTree<ASTPoolNode<T> >
 {
-    struct pASTNode : util::SimpTree<ASTNode<T> >::pNode
+    typedef util::SimpTree<ASTPoolNode<T> > Tree;
+    struct pASTNode : Tree::pNode
     {
-        pASTNode operator[](RPNheads const & heads);
+        pASTNode(typename Tree::pNode p) : Tree:pNode(p) {}
+        pASTNode operator[](RPNheads const & heads)
+        {
+            ASTPoolNode value(heads, T());
+            return this->insertordered(value);
+        }
         pASTNode at(RPNheads const & heads) const;
     };
-    void addRPN(RPNspanAST exp, T const & item);
+    // Root is atomic.
+    ASTPool() : Tree(ASTPoolNode<T>()) {}
+    void addRPN(RPNspanAST exp, T const & item)
+    {
+        RPNspanASTs subexps(1, exp);
+        while (!subexps.empty())
+            RPNheads const & heads(gotochildren(subexps));
+    }
 };
 
 #endif // ASTPOOL_H_INCLUDED

@@ -124,8 +124,6 @@ public:
         pNode() : m_ptr() {}
         pNode(TreeNode const & node) : m_ptr(const_cast<TreeNode *>(&node)) {}
         operator TreeNode const * () const { return m_ptr; }
-        friend inline bool operator<(pNode x, pNode y)
-            { return std::less<TreeNode *>()(x.m_ptr, y.m_ptr); }
         // Return the parent. Return nullptr if *this is nullptr.
         pNode parent() const { return *this ? m_ptr->parent : NULL; }
         // Return the size. Return 0 if *this is nullptr.

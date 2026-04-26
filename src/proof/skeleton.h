@@ -41,7 +41,7 @@ Tribool skeleton
             return FALSE;
         case SPLITREC:
             // Split and recurse to children.
-            for (ASTnode::size_type i = 0; i < exp.ASTroot().size(); ++i)
+            for (ASTnode::size_type i = 0; i < exp.nchild(); ++i)
             {
                 switch (skeleton(exp.child(i), cansplit, bank, result))
                 {
