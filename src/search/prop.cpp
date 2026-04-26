@@ -100,7 +100,7 @@ bool testpropsearch
             continue;
 
         // Skip non propositional theorems.
-        static  const Prop prop1(ass, database, 0, 0, false);
+        static const Prop prop1(ass, database, 0, 0, false);
         if (!(prop1.ontopic(ass)))
             continue;
 
