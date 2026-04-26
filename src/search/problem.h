@@ -85,7 +85,6 @@ public:
     // Add 1-step proofs of all hypotheses of a context.
     Environ const & addhypproofs(Environ const & env);
     // Add implication relation for newly added context. Return env.
-    void addimps(Environ const & x, Environ const & y);
     Environ const & addimps(Environ const & env);
 // Eval
     // Return true if a new batch of moves is needed.

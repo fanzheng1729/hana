@@ -175,13 +175,15 @@ private:
     // true if maxranks is simpler than problem maxranks
     // Updated when problem is simplified
     mutable bool m_rankssimplerthanProb;
+    // Return true if hypotheses of *this contains those of env.
+    bool implies(Environ const & env) const;
     // Update context implication relations.
     void addsubEnv(Environ const & env) const
     { util::addordered(m_psubEnvs, &env); }
     void addsupEnv(Environ const & env) const
     { util::addordered(m_psupEnvs, &env); }
-    // Return true if hypotheses of *this contains those of env.
-    bool implies(Environ const & env) const;
+    void addimps(Environ const & env) const
+    { if (implies(env)) addsubEnv(env), env.addsupEnv(*this); }
 };
 
 #endif // ENVIRON_H_INCLUDED

@@ -19,21 +19,15 @@ Environ const & Problem::addhypproofs(Environ const & env)
 }
 
 // Add implication relation for newly added context. Return env.
-void Problem::addimps(Environ const & x, Environ const & y)
-{
-    if (!x.implies(y)) return;
-    x.addsubEnv(y);
-    y.addsupEnv(x);
-}
 Environ const & Problem::addimps(Environ const & env)
 {
     if (env.subsumedbyProb()) return env;
     pEnvs const & psubEnvs = envsbyhyp.keyin(env.hypiters);
     FOR (Environ const * poldenv, psubEnvs)
-        addimps(env, *poldenv);
+        env.addimps(*poldenv);
     pEnvs const & psupEnvs = *allenvsbyhyp.hasall(env.hypiters);
     FOR (Environ const * poldenv, psupEnvs)
-        addimps(*poldenv, env);
+        poldenv->addimps(env);
     return env;
 }
 
