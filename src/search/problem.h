@@ -45,7 +45,8 @@ public:
     Database const & database;
 private:
     // Map: typecode -> theorems
-    std::map<strview, Assiters> theorempool;
+    typedef std::map<strview, Assiters> Theorempool;
+    Theorempool theorempool;
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
@@ -100,6 +101,20 @@ public:
         // Root node
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
+        // Usable theorems
+        for (nAss i = 1; i < numberlimit; ++i)
+        {
+            Assiter iter = database.assiters()[i];
+            Assertion const & ass = iter->second;
+            if (ass.testtype(Asstype::USELESS))
+                continue;
+            strview typecode = ass.exptypecode();
+            if (database.typecodes().isprimitive(typecode) != FALSE)
+                continue;
+            Assiters & assvec = theorempool[typecode];
+            assvec.reserve(numberlimit - 1);
+            assvec.push_back(iter);
+        }
     }
     // Add 1-step proofs of all hypotheses of a context.
     Environ const & addhypproofs(Environ const & env);

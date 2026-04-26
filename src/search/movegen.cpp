@@ -39,35 +39,32 @@ bool Environ::addconjmove(Move const & move, Moves & moves) const
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {
-    game.goal().fillast();
-// if (stage >= 5)
-// std::cout << "Finding moves at stage " << stage << " for " << game;
-    Moves moves;
-
-    Assiters const & assvec = database.assiters();
+    Goal const & goal = game.goal();
+    // Check goal type code.
+    Problem::Theorempool::const_iterator iter =
+    prob().theorempool.find(goal.typecode);
+    if (iter == prob().theorempool.end())
+        return Moves();
+    Assiters const & assvec = iter->second;
+    // Fill AST of goal.
+    goal.fillast();
+    // Adjust assertion # limit.
     nAss & limit = pProb->numberlimit;
     if (limit > assnum())
         limit = assnum();
+// if (stage >= 5)
+// std::cout << "Finding moves at stage " << stage << " for " << game;
+    Moves moves;
     FOR (Assiter iter, assvec)
     {
-        if (iter == Assiter()) continue;
         Assertion const & ass = iter->second;
         if (ass.number >= limit) break;
-        if (usableasthm(ass) &&
-            (stage == 0 ||
-            (ass.nfreevar() > 0 && stage >= ass.nfreevar())))
-            if (tryass(game, iter, stage, moves))
-                return moves; // Move closes the goal.
+        if (ontopic(ass))
+            if (stage == 0 ||
+                (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
+                if (tryass(game, iter, stage, moves))
+                    return moves; // Move closes the goal.
     }
-    // for (nAss i = 1; i < limit; ++i)
-    // {
-    //     Assertion const & ass = assvec[i]->second;
-    //     if (usableasthm(ass) &&
-    //         (stage == 0 ||
-    //         (ass.nfreevar() > 0 && stage >= ass.nfreevar())))
-    //         if (tryass(game, assvec[i], stage, moves))
-    //             return moves; // Move closes the goal.
-    // }
 // if (stage >= 5)
 // std::cout << moves.size() << " moves found" << std::endl;
     if (stage == 0)
@@ -80,12 +77,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 bool Environ::tryass
     (Game const & game, Assiter iter, RPNsize size, Moves & moves) const
 {
-// std::cout << "Trying " << iter->first << " with " << game.goal().expression();
     Assertion const & ass = iter->second;
     Goal const & goal = game.goal();
-    if (ass.expression.empty() || ass.exptypecode() != goal.typecode)
-        return false; // Type code mismatch
-// std::cout << "Trying " << iter->first << " with " << game.goal().expression();
+// std::cout << "Trying " << iter->first << " with " << goal.expression();
     RPNspans subst(ass.maxvarid + 1);
     if (!findsubst(goal, ass.expRPNAST(), subst))
         return false;
