@@ -46,6 +46,8 @@ struct Substadder : Adder
 // Add a move with free variables. Return false.
 bool Prop::addhardmoves(Move & move, RPNsize size, Moves & moves) const
 {
+// if (size == 3)
+// std::cout << syntaxioms, std::cin.get();
     pAss pthm = move.pthm;
 // if (size >= 5)
 // std::cout << "Trying " << pthm->first << ' ' << size << std::endl;
@@ -90,6 +92,7 @@ bool testpropsearch
     Assiters const & assiters = database.assiters();
     nAss const all = assiters.size();
     for (nAss i = 1; i < all; ++i)
+    // for (nAss i = 1658; i < 1659; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;

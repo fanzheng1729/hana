@@ -62,5 +62,6 @@ void Problem::playoncecallback()
 {
     reval();
     // checkmainline(root());
-// navigate();
+    // if (nplays() >= 9)
+    // navigate();
 }

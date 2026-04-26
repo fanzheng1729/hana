@@ -129,7 +129,7 @@ Terms Gen::generateupto1(strview type) const
 
 // Generate all terms with RPN up to a given size.
 // Stop and return false when max count is exceeded.
-bool Gen::generateupto(strview type, RPNsize size) const
+void Gen::generateupto(strview type, RPNsize size) const
 {
     Terms & terms = genresult[type];
     Termcounts::mapped_type & countbysize = termcounts[type];
@@ -145,10 +145,9 @@ bool Gen::generateupto(strview type, RPNsize size) const
     }
 
     if (countbysize.size() >= size + 1)
-        return true; // already generated
+        return; // already generated
 
-    if (!generateupto(type, size - 1))
-        return false;// argument generation failed
+    generateupto(type, size - 1);
 
     FOR (Syntaxioms::const_reference syntaxiom, syntaxioms)
     {
@@ -164,17 +163,16 @@ bool Gen::generateupto(strview type, RPNsize size) const
         // Callback functor to add terms
         Termadder adder(terms, ass.expRPN.back());
         // Main loop of term generation
-        if (!dogenerate(types, size, adder))
-            return false; // Argument generation failed
+        dogenerate(types, size, adder);
     }
     // Record the # of terms.
     countbysize.insert(countbysize.end(),
                        size + 1 - countbysize.size(), terms.size());
-    return true;
 }
 
 // Generate all terms for all arguments with RPN up to a given size.
-// Stop and return false when max count is exceeded.
+// Skip when max count is exceeded.
+// Return true if a move closed the goal.
 bool Gen::dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) const
 {
     // Stack of terms to be tried
@@ -189,7 +187,8 @@ bool Gen::dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) con
             strview type = argtypes[stack.size()];
             RPNsize argsize = size - nargs + stack.size();
             argsize -= argssize(argtypes, genresult, stack);
-            if (!generateupto(type, argsize) || genresult[type].empty())
+            generateupto(type, argsize);
+            if (genresult[type].empty())
                 return false; // Argument generation failed
 
             if (stack.size() < nargs - 1) // At least 2 args unseen
@@ -200,14 +199,12 @@ bool Gen::dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) con
                 RPNsize lastsize = size - 1 - argssize(argtypes, genresult, stack);
                 // 1st substitution with that size
                 stack.push_back(termcounts[type][lastsize - 1]);
-                // # substitutions to be generated
-                // if (substcount(argtypes, stack) > m_maxmoves/16)
-                //     return false;  // Too many substitutions
             }
         }
         else
         {
             // All arguments seen. Write RPN of term.
+            // if (substcount(argtypes, stack) <= m_maxmoves/16)
             if (adder(argtypes, genresult, stack))
                 return true;
             // Try the next substitution.

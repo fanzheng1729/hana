@@ -40,10 +40,11 @@ struct Gen
 // Generate all terms of size 1.
     Terms generateupto1(strview type) const;
 // Generate all terms with RPN up to a given size.
-// Stop and return false when max count is exceeded.
-    bool generateupto(strview type, RPNsize size) const;
+// Skip when max count is exceeded.
+    void generateupto(strview type, RPNsize size) const;
 // Generate all terms for all arguments with RPN up to a given size.
-// Stop and return false when max count is exceeded.
+// Skip when max count is exceeded.
+// Return true if a move closed the goal.
     bool dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) const;
 };
 

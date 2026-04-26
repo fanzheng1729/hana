@@ -7,13 +7,14 @@
 // Prepare term generator
 void Environ::prepareGen() const
 {
-    if (genready) return;
+    if (!pProb || !syntaxioms.empty())
+        return;
     // Relevant syntax axioms
-    FOR (Syntaxioms::const_reference syntaxiom, database.syntaxioms())
+    FOR (Syntaxioms::const_reference syntaxiom, prob().database().syntaxioms())
         if (syntaxiom.second.pass->second.number < assnum())
             if (ontopic(syntaxiom.second.pass->second))
                 syntaxioms.insert(syntaxiom);
-    genready = true;
+    // std::cout << syntaxioms, std::cin.get();
 }
 
 // Add a move with validation. Return true if it has no open hypotheses.
@@ -64,9 +65,8 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     nAss & limit = pProb->numberlimit;
     if (limit > assnum())
         limit = assnum();
-// if (stage >= 5)
-// std::cout << "Finding moves at stage " << stage << " for " << game;
     // Prepare term generator
+    if (!pProb) throw;
     prepareGen();
 
     Moves moves;
@@ -80,8 +80,6 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
                 if (tryass(game, iter, stage, moves))
                     return moves; // Move closes the goal.
     }
-// if (stage >= 5)
-// std::cout << moves.size() << " moves found" << std::endl;
     if (stage == 0)
         addabsmoves(game.goal(), moves);
     return moves;

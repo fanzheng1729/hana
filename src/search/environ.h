@@ -34,15 +34,11 @@ struct Environ : protected Gen
         hypsweight(ass.hypslen()),
         hasnewvarinexp(ass.hasnewvarinexp()),
         staged(isstaged),
-        genready(false),
         pProb(),
         sortedhyps(ass.hypiters),
         m_subsumedbyProb(false),
         m_rankssimplerthanProb(false)
-    {
-        std::sort(sortedhyps.begin(), sortedhyps.end(), comphypiter);
-        prepareGen();
-    }
+    { std::sort(sortedhyps.begin(), sortedhyps.end(), comphypiter); }
     nAss assnum() const { return assertion.number; }
     Problem const & prob() const { return *pProb; }
     // Context implication relations
@@ -110,8 +106,6 @@ struct Environ : protected Gen
     // Is staged move generation used?
     bool const staged;
 protected:
-    // Is term generator ready?
-    bool mutable genready;
     // Pointer to the problem
     Problem * pProb;
     friend Problem;
