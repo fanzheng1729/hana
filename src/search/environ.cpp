@@ -24,6 +24,8 @@ Goalstatus Environ::printbadgoal(RPN const & badRPN) const
 // Validate a move applying a theorem.
 Environ::MoveValidity Environ::validthmmove(Move const & move) const
 {
+    if (!pProb)
+        return MoveINVALID;
     if (prob().database().typecodes().isprimitive(move.goaltypecode()) != FALSE)
         return MoveINVALID;
     if (!move.checkDV(assertion))
@@ -118,6 +120,9 @@ Environ::MoveValidity Environ::validconjmove(Move const & move) const
 // Return true if a proof is legal.
 bool Environ::legal(RPN const & proof) const
 {
+    if (!pProb)
+        return false;
+
     Bank const & bank = prob().bank;
     Hypiter const end = bank.hypotheses().end();
 

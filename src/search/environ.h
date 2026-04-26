@@ -26,7 +26,6 @@ struct Environ : protected Gen
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         Gen(ass.varusage, maxsize),
-        database(db),
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         label(ass.hypslabel()),
@@ -88,9 +87,7 @@ struct Environ : protected Gen
     virtual Environ * makeEnv(Assertion const &) const { return NULL; };
     // Return true if a proof is legal.
     bool legal(RPN const & proof) const;
-// Data members 
-    // Database used
-    Database const & database;
+// Data members
     // The assertion to be proved
     Assertion const & assertion;
     // Max ranks of all the hypotheses combined

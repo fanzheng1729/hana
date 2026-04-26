@@ -45,13 +45,14 @@ bool Environ::addboundmove(Move const & move, Moves & moves) const
 }
 bool Environ::addconjmove(Move const & move, Moves & moves) const
 {
-// std::cout << prob().nplays() << '\t' << move.substitutions.size() << std::endl;
     return addvalidmove<&Environ::validconjmove>(move, moves);
 }
 
 // Moves generated at a given stage
 Moves Environ::ourmoves(Game const & game, stage_t stage) const
 {
+    if (!pProb)
+        return Moves();
     Goal const & goal = game.goal();
     // Check goal type code.
     Problem::Theorempool::const_iterator iter =
@@ -212,6 +213,8 @@ static void addabsubst
 Absubstmoves Environ::absubsts(RPNspanAST subexp) const
 {
     Absubstmoves moves;
+    if (!pProb)
+        return moves;
     Assiters const & assvec = prob().database().assiters();
     for (nAss i = 1; i < prob().numberlimit; ++i)
     {

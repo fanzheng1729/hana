@@ -25,7 +25,7 @@ struct Prop : Environ
         for (Hypsize i = 0; i < ass.nhyps(); ++i)
             hypsweight += weight(ass.hypRPN(i));
     }
-    // Return the propositional syntax constructors.
+    // Propositional syntax constructors
     Propctors const & propctors() const
     { return prob().database().propctors(); }
     // Return true if an assertion is on topic/useful.
@@ -111,8 +111,9 @@ struct Prop : Environ
     // Return its address.
     virtual Prop * makeEnv(Assertion const & ass) const
     {
+        if (!pProb) return NULL;
         return new(std::nothrow)
-        Prop(ass, database, m_maxmoves, weightfactor, staged);
+        Prop(ass, prob().database(), m_maxmoves, weightfactor, staged);
     }
 private:
     // Add moves with free variables.
