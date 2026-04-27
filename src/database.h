@@ -218,8 +218,8 @@ public:
             m_syntaxDAG.addsyntax(label, n, rank);
         }
         FOR (Definitions::const_reference def, definitions())
-            if (def.second.pdef)
-                m_syntaxDAG.adddef(def.first, def.second.pdef->second.expRPN);
+            if (pAss const pdef = def.second.pdef)
+                m_syntaxDAG.adddef(def.first, pdef->second.expRPN);
     }
     // The maximal ranks of the hypotheses of an assertion
     SyntaxDAG::Ranks hypsmaxranks(Assertion const & ass) const
