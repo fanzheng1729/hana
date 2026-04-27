@@ -173,12 +173,12 @@ static void maxabs
 }
 
 // All maximal abstractions governed by a syntax axiom.
-GovernedRPNspansbystep maxabs(RPNspan exp, AST ast)
+GovernedRPNspansbystep maxabs(RPNspanAST exp)
 {
     GovernedRPNspansbystep result(compstepstable);
 
     Instep instep;
-    maxabs(RPNspanAST(exp, ast), exp, instep, result);
+    maxabs(exp, exp.first, instep, result);
 
     return result;
 }

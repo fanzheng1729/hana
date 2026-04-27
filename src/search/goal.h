@@ -16,7 +16,8 @@ struct Goal
     Goal(Goalview view) : rpn(view.first), typecode(view.second) {}
     void fillast() const { if (ast.empty()) ast = ::ast(rpn); }
     RPNsize size() const { return rpn.size(); }
-    operator RPNspanAST() const { return RPNspanAST(rpn, ast); }
+    operator RPNspanAST() const
+    { fillast(); return RPNspanAST(rpn, ast); }
     Expression expression() const
     {
         Expression result(verify(rpn));

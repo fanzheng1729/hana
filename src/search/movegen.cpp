@@ -61,8 +61,6 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     if (iter == prob().theorempool.end())
         return Moves();
     Assiters const & assvec = iter->second;
-    // Fill AST of goal.
-    goal.fillast();
     // Adjust assertion # limit.
     nAss & limit = pProb->numberlimit;
     if (limit > assnum())
@@ -196,7 +194,6 @@ static void addabsubst
             absubstmoves.push_back(std::make_pair(Move(pass, subst), RPN()));
             Move const & move = absubstmoves.back().first;
             Goal const & conj = move.goal();
-            conj.fillast();
             RPN & rpn = absubstmoves.back().second;
             skeleton(conj, Keepspan(subexp.first), Bank1var(absvar), rpn);
             // std::cout << ass.expression;

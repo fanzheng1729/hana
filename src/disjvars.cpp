@@ -1,4 +1,3 @@
-#include <algorithm>    // for std::remove_copy_if
 #include "io.h"
 #include "types.h"
 #include "util/filter.h"// for is_disjoint

@@ -20,7 +20,7 @@ Indentations indentations(AST const & ast);
 bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst);
 
 // All maximal abstractions governed by a syntax axiom.
-GovernedRPNspansbystep maxabs(RPNspan exp, AST ast);
+GovernedRPNspansbystep maxabs(RPNspanAST exp);
 
 // Profile of an expression
 RPNprofile profile(RPNspanAST exp);

@@ -157,8 +157,7 @@ public:
     GovernedRPNspansbystep const & maxabs()
     {
         if (maxabsfilled) return m_maxabs;
-        goal().fillast();
-        m_maxabs = ::maxabs(goal().rpn, goal().ast);
+        m_maxabs = ::maxabs(goal());
         maxabsfilled = true;
         return m_maxabs;
     }
