@@ -1,3 +1,4 @@
+#include "../../database.h"
 #include "../problem.h"
 
 // Refocus the tree on simpler sub-tree, if almost won.

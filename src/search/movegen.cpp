@@ -1,4 +1,5 @@
 #include <algorithm>    // for std::min
+#include "../database.h"
 #include "environ.h"
 #include "problem.h"
 #include "../io.h"

@@ -1,3 +1,4 @@
+#include "../database.h"
 #include "environ.h"
 #include "../io.h"
 #include "goaldata.h"

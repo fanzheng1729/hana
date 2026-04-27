@@ -3,6 +3,7 @@
 
 #include <algorithm>// for std::accumulate
 #include <new>      // for std::nothrow
+#include "../database.h"
 #include "environ.h"
 #include "../util/filter.h"
 #include "../util/find.h"
@@ -11,10 +12,10 @@
 // Propositional proof search, using SAT pruning
 struct Prop : Environ
 {
-    Prop(Assertion const & ass, Database const & db,
-         double wfactor, std::size_t maxsize) :
+    Prop(Assertion const & ass, Propctors const & propctors,
+         double wfactor, std::size_t maxsize = -1) :
         Environ(ass, maxsize),
-        allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
+        allhypsCNF(propctors.hypscnf(ass, hypnatoms)),
         weightfactor(wfactor)
     {
 // std::cout << "newEnv " << label << ' ' << ass.varusage;
@@ -113,7 +114,7 @@ struct Prop : Environ
     {
         if (!pProb) return NULL;
         return new(std::nothrow)
-        Prop(ass, prob().database(), weightfactor, m_maxmoves);
+        Prop(ass, prob().database().propctors(), weightfactor, m_maxmoves);
     }
 private:
     // Add moves with free variables.

@@ -13,6 +13,7 @@ inline bool operator<(Hypiters const & x, Hypiters const & y)
     (x.begin(), x.end(), y.begin(), y.end(), comphypiter);
 }
 
+class Database;
 // Problem statement + Proof search tree with loop detection
 // + context management + goal management + UI
 class Problem : public MCTS<Game>

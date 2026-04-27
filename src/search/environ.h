@@ -1,7 +1,6 @@
 #ifndef ENVIRON_H_INCLUDED
 #define ENVIRON_H_INCLUDED
 
-#include "../database.h"
 #include "game.h"
 #include "gen.h"
 #include "goalstat.h"

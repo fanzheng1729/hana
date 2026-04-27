@@ -1,3 +1,4 @@
+#include "../../database.h"
 #include "../problem.h"
 
 // Return true if a new batch of moves is needed.

@@ -1,3 +1,4 @@
+#include "../database.h"
 #include "problem.h"
 #include "../proof/skeleton.h"
 #include "../io.h"
