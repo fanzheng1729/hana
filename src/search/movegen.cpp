@@ -5,7 +5,7 @@
 #include "../proof/skeleton.h"
 
 // Prepare term generator
-void Environ::prepareGen() const
+void Environ::initGen() const
 {
     if (!pProb || !syntaxioms.empty())
         return;
@@ -68,7 +68,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         limit = assnum();
     // Prepare term generator
     if (!pProb) throw;
-    prepareGen();
+    initGen();
 
     Moves moves;
     FOR (Assiter iter, assvec)

@@ -204,7 +204,7 @@ private:
         Goaldatas::value_type const envdata(&env, Goaldata(s, &env, pbiggoal));
         return &*pbiggoal->second.insert(envdata).first;
     }
-    // Initialize a context if existent. Return its pointer.
+    // Prepare a context  and return its pointer.
     Environ const * initEnv(Environ * p);
     // Add a sub-context with hypotheses trimmed.
     // Return pointer to the new context. Return nullptr if unsuccessful.

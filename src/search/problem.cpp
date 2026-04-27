@@ -43,7 +43,7 @@ static Hypiters filterauxilliary(Hypiters const & hypiters)
     return result;
 }
 
-// Initialize a context if existent. Return its pointer.
+// Prepare a context  and return its pointer.
 Environ const * Problem::initEnv(Environ * p)
 {
     if (!p) return p;

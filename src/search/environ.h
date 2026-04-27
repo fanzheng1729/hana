@@ -22,7 +22,7 @@ inline Value score(double w) { return 1. / ((w < 1 ? 1 : w) + 1); }
 struct Environ : protected Gen
 {
     // Prepare term generator
-    void prepareGen() const;
+    void initGen() const;
     Environ(Assertion const & ass, Database const & db,
             std::size_t maxsize, bool isstaged = false) :
         Gen(ass.varusage, maxsize),
