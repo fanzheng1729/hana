@@ -154,14 +154,14 @@ public:
 
         return status;
     }
-    void fillabs()
+    GovernedRPNspansbystep const & maxabs()
     {
-        if (maxabsfilled) return;
+        if (maxabsfilled) return m_maxabs;
         goal().fillast();
         m_maxabs = ::maxabs(goal().rpn, goal().ast);
         maxabsfilled = true;
+        return m_maxabs;
     }
-    GovernedRPNspansbystep const & maxabs() const { return m_maxabs; }
 };
 
 #endif // GOALDATA_H_INCLUDED
