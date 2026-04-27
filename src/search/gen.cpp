@@ -204,9 +204,9 @@ bool Gen::dogenerate(Argtypes const & argtypes, RPNsize size, Adder & adder) con
         else
         {
             // All arguments seen. Write RPN of term.
-            // if (substcount(argtypes, stack) <= m_maxmoves/16)
-            if (adder(argtypes, genresult, stack))
-                return true;
+            if (substcount(argtypes, stack) <= m_maxmoves)
+                if (adder(argtypes, genresult, stack))
+                    return true;
             // Try the next substitution.
             next(argtypes, size, stack);
         }

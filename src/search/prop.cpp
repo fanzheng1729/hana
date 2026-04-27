@@ -112,7 +112,7 @@ bool testpropsearch
 
         // Try search proof.
         ++allprop;
-        const   Prop prop(ass, database, param.maxsize, param.weightfactor);
+        const   Prop prop(ass, database, param.weightfactor, param.maxsize);
         const   MCTSParams v = {0, param.exploration};
         Problem tree(prop, v, param.staged);
         const   Treesize treesize = testsearch(iter, tree, param.maxsize);
