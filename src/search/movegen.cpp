@@ -82,7 +82,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
                     return moves; // Move closes the goal.
     }
     if (stage == 0)
-        addabsmoves(game.goal(), moves);
+        addabsmoves(game, moves);
     return moves;
 }
 
@@ -137,24 +137,26 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
 }
 
 // Add abstraction moves. Return true if it has no open hypotheses.
-bool Environ::addabsmoves(Goal const & goal, Moves & moves) const
+bool Environ::addabsmoves(Game const & game, Moves & moves) const
 {
-    if (!goal.maxabsfilled)
+    Goaldata & goaldata = game.goaldata();
+    Goal const & goal = game.goal();
+
+    if (!goaldata.maxabsfilled)
     {
         goal.fillast();
-        goal.maxabs = maxabs(goal.rpn, goal.ast);
-        goal.maxabsfilled = true;
+        goaldata.maxabs = maxabs(goal.rpn, goal.ast);
+        goaldata.maxabsfilled = true;
     }
-    FOR (GovernedRPNspansbystep::const_reference rstep, goal.maxabs)
-    {
-// std::cout << rstep.second.size() << std::endl,
-// std::cout << rstep.second;
+
+    FOR (GovernedRPNspansbystep::const_reference rstep, goaldata.maxabs)
         FOR (GovernedRPNspans::const_reference subexp, rstep.second)
             if (addabsmoves(goal, subexp, moves))
                 return true;
-    }
+
     return false;
 }
+
 bool Environ::addabsmoves
     (Goal const & goal, RPNspanAST subexp, Moves & moves) const
 {

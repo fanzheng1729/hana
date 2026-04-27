@@ -127,7 +127,7 @@ private:
     virtual bool addhardmoves(Move & move, RPNsize size, Moves & moves) const
         { return size && !size && &move && &moves; }
     // Add abstraction moves. Return true if it has no open hypotheses.
-    bool addabsmoves(Goal const & goal, Moves & moves) const;
+    bool addabsmoves(Game const & game, Moves & moves) const;
     bool addabsmoves
         (Goal const & goal, RPNspanAST subexp, Moves & moves) const;
     // Abstraction-substitutions for a sub-expression
