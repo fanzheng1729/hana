@@ -98,7 +98,7 @@ bool testpropsearch
         Assertion const & ass = iter->second;
 
         // printass(*iter);
-        // profile(ass.expRPNAST());
+        // std::cout << profile(ass.expRPNAST());
         // std::cin.get();
 
         // Skip axioms, trivial and duplicate theorems.

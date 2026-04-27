@@ -45,9 +45,6 @@ public:
     // Database used
     Database const & database;
 private:
-    // Map: typecode -> theorems
-    typedef std::map<strview, Assiters> Theorempool;
-    Theorempool theorempool;
     typedef std::map<RPNprofile, Assiters> RPNprofiles;
     typedef std::map<strview, RPNprofiles> Theorempool2;
     Theorempool2 theorempool2;
@@ -64,6 +61,8 @@ private:
     // Max # of rank in maxranks
     nAss maxranknumber;
 public:
+    // Pool of usable theorems
+    Theorempool theorempool;
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
@@ -83,6 +82,7 @@ public:
         numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
+        theorempool(usablethms(database.assiters(), numberlimit, database.typecodes())),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
         staged(isstaged && STAGED)
@@ -106,21 +106,6 @@ public:
         // Root node
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
-        // Usable theorems
-        Assiters const & assiters = database.assiters();
-        for (nAss i = 1; i < numberlimit; ++i)
-        {
-            Assiter iter = assiters[i];
-            Assertion const & ass = iter->second;
-            if (ass.testtype(Asstype::USELESS))
-                continue;
-            strview typecode = ass.exptypecode();
-            if (database.typecodes().isprimitive(typecode) != FALSE)
-                continue;
-            Assiters & assvec = theorempool[typecode];
-            assvec.reserve(numberlimit - 1);
-            assvec.push_back(iter);
-        }
     }
     // Add 1-step proofs of all hypotheses of a context.
     Environ const & addhypproofs(Environ const & env);

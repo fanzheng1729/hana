@@ -209,7 +209,6 @@ RPNprofile profile(RPNspanAST exp)
     while (!subexps.empty())
     {
         RPNheads const & heads(gotochildren(subexps));
-        std::cout << heads;
         if (!heads.empty())
             result.push_back(heads);
         else

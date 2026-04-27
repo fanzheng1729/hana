@@ -35,17 +35,19 @@ Symbol3 Bank::addabsvar(RPNspan absRPN)
     // Iterator to floating hypothesis associated to the variable
     Hypotheses::iterator const hypiter
     = m_hypotheses.insert(std::make_pair(hyplabel, Hypothesis())).first;
-    hypiter->second.floats = true;
-    // Expression of the hypothesis = {type code, variable}
-    Expression & exp = hypiter->second.expression;
+    // Floating hypothesis associated to the variable
+    Hypothesis & hyp = hypiter->second;
+    hyp.floats = true;
+    // Expression of the hypothesis
+    Expression & exp = hyp.expression;
+    // = {type code, symbol for the variable}
     exp.resize(2);
     exp[0] = typecode;
-    // Symbol for the variable
     exp[1] = var = Symbol3(varlabel, id, hypiter);
     // rev-Polish notation of the hypothesis
-    hypiter->second.rpn.assign(1, hypiter);
+    hyp.rpn.assign(1, hypiter);
     // Abstract syntax tree of the hypothesis
-    hypiter->second.ast.resize(1);
+    hyp.ast.resize(1);
 
     return var;
 }

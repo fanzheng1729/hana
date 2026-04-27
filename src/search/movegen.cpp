@@ -56,7 +56,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         return Moves();
     Goal const & goal = game.goal();
     // Check goal type code.
-    Problem::Theorempool::const_iterator iter =
+    Theorempool::const_iterator iter =
     prob().theorempool.find(goal.typecode);
     if (iter == prob().theorempool.end())
         return Moves();

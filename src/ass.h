@@ -143,4 +143,12 @@ struct Assertion
     unsigned settype(unsigned mask) { return type |= mask; }
 };
 
+// Map: typecode -> theorems
+typedef std::map<strview, Assiters> Theorempool;
+
+// Map usable theorems.
+Theorempool usablethms
+    (Assiters const & assiters, Assiters::size_type limit,
+     struct Typecodes const & typecodes);
+
 #endif // ASS_H_INCLUDED
