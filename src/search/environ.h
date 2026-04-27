@@ -35,7 +35,7 @@ struct Environ : protected Gen
         pProb(),
         sortedhyps(ass.hypiters),
         m_subsumedbyProb(false),
-        m_rankssimplerthanProb(false)
+        rankssimplerthanProb(false)
     { std::sort(sortedhyps.begin(), sortedhyps.end(), comphypiter); }
     // Assertion #
     nAss assnum() const { return assertion.number; }
@@ -50,8 +50,6 @@ struct Environ : protected Gen
     pEnvs::size_type nsupEnvs() const { return psupEnvs().size(); }
     // Return true if *this <= problem context
     bool subsumedbyProb() const { return m_subsumedbyProb; }
-    // Return true if maxranks is simpler than problem maxranks
-    bool rankssimplerthanProb() const { return m_rankssimplerthanProb; }
     // Return true if an assertion is on topic.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.number; }
@@ -150,7 +148,7 @@ private:
     mutable pEnvs m_psubEnvs, m_psupEnvs;
     // true if maxranks is simpler than problem maxranks
     // Updated when problem is simplified
-    mutable bool m_rankssimplerthanProb;
+    mutable bool rankssimplerthanProb;
     // Return true if hypotheses of *this contains those of env.
     bool implies(Environ const & env) const;
     // Update context implication relations.

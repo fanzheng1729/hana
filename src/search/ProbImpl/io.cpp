@@ -226,7 +226,7 @@ void Problem::printenvs() const
     FOR (Environs::const_reference env, environs)
     {
         SyntaxDAG::Ranks const & envranks = env.second->maxranks;
-        char const c = " *"[env.second->rankssimplerthanProb()];
+        char const c = " *"[env.second->rankssimplerthanProb];
         std::cout << c << env.second->label << '\t';
         FOR (std::string const & rank, env.second->maxranks)
             std::cout << rank << ' ';

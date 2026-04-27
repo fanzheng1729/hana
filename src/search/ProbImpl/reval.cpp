@@ -44,7 +44,7 @@ void Problem::prune(pNode p)
 // Update implications after problem context is simplified.
 void Problem::updateimps(Environ const & env)
 {
-    env.m_rankssimplerthanProb =
+    env.rankssimplerthanProb =
     database().syntaxDAG().simplerthan(env.maxranks, maxranks);
 }
 void Problem::updateimps()

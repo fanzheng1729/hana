@@ -35,7 +35,7 @@ Value Problem::singularext(pNode p)
 // Return true if game's rank < Problem's rank.
 bool Problem::ranksimplerthanProb(Game const & game) const
 {
-    return game.env().rankssimplerthanProb() &&
+    return game.env().rankssimplerthanProb &&
         database().syntaxDAG().simplerthan
         (database().syntaxDAG().RPNranks(game.goal().rpn), maxranks);
 }
