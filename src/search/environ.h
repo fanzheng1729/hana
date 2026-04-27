@@ -29,7 +29,6 @@ struct Environ : protected Gen
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         label(ass.hypslabel()),
-        nhyps(ass.nhyps()),
         hypsweight(ass.hypslen()),
         hasnewvarinexp(ass.hasnewvarinexp()),
         staged(isstaged),
@@ -38,7 +37,10 @@ struct Environ : protected Gen
         m_subsumedbyProb(false),
         m_rankssimplerthanProb(false)
     { std::sort(sortedhyps.begin(), sortedhyps.end(), comphypiter); }
+    // Assertion #
     nAss assnum() const { return assertion.number; }
+    // # hypotheses
+    Hypsize nhyps() const { return assertion.nhyps(); };
     Problem const & prob() const { return *pProb; }
     // Context implication relations
     // Updated when new context is added
@@ -94,8 +96,6 @@ struct Environ : protected Gen
     SyntaxDAG::Ranks const maxranks;
     // Name of context = labels of all hypotheses combined
     std::string const label;
-    // # hypotheses
-    Hypsize const nhyps;
     // Weight of all the hypotheses combined
     Weight hypsweight;
     // True if there is a var only used in exp.

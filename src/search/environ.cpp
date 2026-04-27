@@ -153,6 +153,6 @@ static bool includes(C const & x, C const & y, Comp comp)
 // Return true if hypotheses of *this contains those of env.
 bool Environ::implies(Environ const & env) const
 {
-    return nhyps > env.nhyps &&
+    return nhyps() > env.nhyps() &&
             includes(sortedhyps, env.sortedhyps, comphypiter);
 }

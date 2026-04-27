@@ -61,7 +61,7 @@ struct Prop : Environ
             return hyps;
         CNFClauses cnf;
         Proofnumbers const & ends = allhypsCNF.second;
-        for (Hypsize j = 0; j < nhyps; ++j)
+        for (Hypsize j = 0; j < nhyps(); ++j)
             if (!assertion.hypfloats(j) && !hypstotrim[j]) // Not floating nor trimmed
 // std::cout << "Adding hypothesis " << assertion.hyplabel(j) << std::endl,
                 cnf.insert(cnf.end(),
@@ -72,12 +72,12 @@ struct Prop : Environ
     // Return the hypotheses of a goal to trim.
     virtual Bvector hypstotrim(Goal const & goal) const
     {
-        Bvector result(nhyps, false);
+        Bvector result(nhyps(), false);
         CNFClauses conclusion;
         // True if a floating hypothesis could be trimmed.
         bool trimmed = hasnewvarinexp;
         // Check for essential hypotheses to be trimmed.
-        for (Hypsize i = nhyps - 1; i != static_cast<Hypsize>(-1); --i)
+        for (Hypsize i = nhyps() - 1; i != static_cast<Hypsize>(-1); --i)
         {
             if (assertion.hypfloats(i)) continue;
             // Add conclusion if not already there.

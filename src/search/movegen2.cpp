@@ -58,7 +58,7 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
     // Substitution stack
     Hypsize const nfreehyps = thm.nfreehyps();
     std::vector<RPNspans> substack(nfreehyps + 1);
-    if (substack.empty() || nhyps + 1 == 0)
+    if (substack.empty() || nhyps() + 1 == 0)
         return false; // size overflow
     // Preallocate for efficiency.
     hypstack.reserve(nfreehyps);
