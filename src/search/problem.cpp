@@ -47,7 +47,7 @@ Environ const * Problem::initEnv(Environ * p)
 {
     if (!p) return p;
 
-    p->maxranks = mdatabase.hypsmaxranks(p->assertion);
+    p->maxranks = database.hypsmaxranks(p->assertion);
     p->pProb = this;
     p->m_subsumedbyProb = nEnvs() <= 1 || probEnv().implies(*p);
     updateimps(*p);

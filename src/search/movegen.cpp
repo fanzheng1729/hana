@@ -11,7 +11,7 @@ void Environ::initGen() const
     if (!pProb || !syntaxioms.empty())
         return;
     // Relevant syntax axioms
-    FOR (Syntaxioms::const_reference syntaxiom, prob().mdatabase.syntaxioms())
+    FOR (Syntaxioms::const_reference syntaxiom, prob().database.syntaxioms())
         if (syntaxiom.second.pass->second.number < assnum())
             if (ontopic(syntaxiom.second.pass->second))
                 syntaxioms.insert(syntaxiom);
@@ -214,7 +214,7 @@ Absubstmoves Environ::absubsts(RPNspanAST subexp) const
 {
     Absubstmoves moves;
 
-    Assiters const & assvec = prob().mdatabase.assiters();
+    Assiters const & assvec = prob().database.assiters();
     for (nAss i = 1; i < prob().numberlimit; ++i)
     {
         Assiter const iter = assvec[i];

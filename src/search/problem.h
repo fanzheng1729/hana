@@ -43,7 +43,7 @@ class Problem : public MCTS<Game>
     Goals goals;
 public:
     // Database used
-    Database const & mdatabase;
+    Database const & database;
 private:
     // Map: typecode -> theorems
     typedef std::map<strview, Assiters> Theorempool;
@@ -77,12 +77,12 @@ public:
     Problem(Env const & env, Database const & db,
             MCTSParams const params, bool isstaged = false) :
         MCTS(Game(), params),
-        mdatabase(db),
-        bank(mdatabase.nvar()),
+        database(db),
+        bank(database.nvar()),
         abstractions(compspan),
-        numberlimit(std::min(env.assnum(), mdatabase.assiters().size())),
-        maxranks(mdatabase.assmaxranks(env.assertion)),
-        maxranknumber(mdatabase.syntaxDAG().maxranknumber(maxranks)),
+        numberlimit(std::min(env.assnum(), database.assiters().size())),
+        maxranks(database.assmaxranks(env.assertion)),
+        maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
         staged(isstaged && STAGED)
@@ -107,7 +107,7 @@ public:
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
         // Usable theorems
-        Assiters const & assiters = mdatabase.assiters();
+        Assiters const & assiters = database.assiters();
         for (nAss i = 1; i < numberlimit; ++i)
         {
             Assiter iter = assiters[i];
@@ -115,7 +115,7 @@ public:
             if (ass.testtype(Asstype::USELESS))
                 continue;
             strview typecode = ass.exptypecode();
-            if (mdatabase.typecodes().isprimitive(typecode) != FALSE)
+            if (database.typecodes().isprimitive(typecode) != FALSE)
                 continue;
             Assiters & assvec = theorempool[typecode];
             assvec.reserve(numberlimit - 1);

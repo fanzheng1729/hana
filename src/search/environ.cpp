@@ -27,7 +27,7 @@ Environ::MoveValidity Environ::validthmmove(Move const & move) const
 {
     if (!pProb)
         return MoveINVALID;
-    if (prob().mdatabase.typecodes().isprimitive(move.goaltypecode()) != FALSE)
+    if (prob().database.typecodes().isprimitive(move.goaltypecode()) != FALSE)
         return MoveINVALID;
     if (!move.checkDV(assertion))
         return MoveINVALID;

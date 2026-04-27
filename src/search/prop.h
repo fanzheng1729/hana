@@ -28,7 +28,7 @@ struct Prop : Environ
     }
     // Propositional syntax constructors
     Propctors const & propctors() const
-    { return prob().mdatabase.propctors(); }
+    { return prob().database.propctors(); }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.testtype(Asstype::PROPOSITIONAL); }
@@ -113,7 +113,7 @@ struct Prop : Environ
     {
         if (!pProb) return NULL;
         return new(std::nothrow)
-        Prop(ass, prob().mdatabase.propctors(), weightfactor, m_maxmoves);
+        Prop(ass, prob().database.propctors(), weightfactor, m_maxmoves);
     }
 private:
     // Add moves with free variables.
