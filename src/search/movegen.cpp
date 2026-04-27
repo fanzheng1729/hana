@@ -91,9 +91,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 bool Environ::tryass
     (Game const & game, Assiter iter, RPNsize size, Moves & moves) const
 {
+// std::cout << "Trying " << iter->first << " with " << goal.expression();
     Assertion const & ass = iter->second;
     Goal const & goal = game.goal();
-// std::cout << "Trying " << iter->first << " with " << goal.expression();
     RPNspans subst(ass.maxvarid + 1);
     if (!findsubst(goal, ass.expRPNAST(), subst))
         return false;
