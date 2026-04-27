@@ -38,12 +38,12 @@ class Goaldata
     Environ const * pEnv;
     // Pointer to the different contexts where the goal is evaluated
     pBIGGOAL pbigGoal;
+    // Maximal abstractions
+    bool maxabsfilled;
+    GovernedRPNspansbystep m_maxabs;
 public:
     // Simplified context after trimming unnecessary hypotheses
     Environ const * psimpEnv;
-    // Maximal abstractions
-    bool maxabsfilled;
-    GovernedRPNspansbystep maxabs;
     Goaldata(Goalstatus s, Environ const * envptr, pBIGGOAL bigpGoal) :
         status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv(),
         maxabsfilled(false) {}
@@ -154,6 +154,14 @@ public:
 
         return status;
     }
+    void fillabs()
+    {
+        if (maxabsfilled) return;
+        goal().fillast();
+        m_maxabs = ::maxabs(goal().rpn, goal().ast);
+        maxabsfilled = true;
+    }
+    GovernedRPNspansbystep const & maxabs() const { return m_maxabs; }
 };
 
 #endif // GOALDATA_H_INCLUDED

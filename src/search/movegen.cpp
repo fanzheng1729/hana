@@ -140,18 +140,12 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
 bool Environ::addabsmoves(Game const & game, Moves & moves) const
 {
     Goaldata & goaldata = game.goaldata();
-    Goal const & goal = game.goal();
 
-    if (!goaldata.maxabsfilled)
-    {
-        goal.fillast();
-        goaldata.maxabs = maxabs(goal.rpn, goal.ast);
-        goaldata.maxabsfilled = true;
-    }
+    goaldata.fillabs();
 
-    FOR (GovernedRPNspansbystep::const_reference rstep, goaldata.maxabs)
+    FOR (GovernedRPNspansbystep::const_reference rstep, goaldata.maxabs())
         FOR (GovernedRPNspans::const_reference subexp, rstep.second)
-            if (addabsmoves(goal, subexp, moves))
+            if (addabsmoves(game.goal(), subexp, moves))
                 return true;
 
     return false;
