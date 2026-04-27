@@ -114,7 +114,7 @@ bool testpropsearch
         ++allprop;
         const   Prop prop(ass, database.propctors(), param.weightfactor, param.maxsize);
         const   MCTSParams v = {0, param.exploration};
-        Problem tree(prop, v, param.staged);
+        Problem tree(prop, database, v, param.staged);
         const   Treesize treesize = testsearch(iter, tree, param.maxsize);
         if (treesize == 0)
         {

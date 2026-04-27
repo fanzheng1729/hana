@@ -4,8 +4,6 @@
 #include "../io.h"
 #include "../util/filter.h"
 
-Database const * Problem::pDB;
-
 // Add 1-step proofs of all hypotheses of a context.
 Environ const & Problem::addhypproofs(Environ const & env)
 {
@@ -49,8 +47,7 @@ Environ const * Problem::initEnv(Environ * p)
 {
     if (!p) return p;
 
-    if (pDB)
-        p->maxranks = database().hypsmaxranks(p->assertion);
+    p->maxranks = mdatabase.hypsmaxranks(p->assertion);
     p->pProb = this;
     p->m_subsumedbyProb = nEnvs() <= 1 || probEnv().implies(*p);
     updateimps(*p);

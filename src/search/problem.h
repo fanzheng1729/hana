@@ -42,15 +42,9 @@ class Problem : public MCTS<Game>
     // Map: goal -> context -> evaluation
     Goals goals;
 public:
-    // Bind to a database.
-    static void bind(Database const & db)
-    {
-        pDB = &db;
-    }
     // Database used
-    static Database const & database() { return *pDB; }
+    Database const & mdatabase;
 private:
-    static Database const * pDB;
     // Map: typecode -> theorems
     typedef std::map<strview, Assiters> Theorempool;
     Theorempool theorempool;
@@ -80,13 +74,15 @@ public:
     enum { STAGED = true };
     bool const staged;
     template<class Env>
-    Problem(Env const & env, MCTSParams const params, bool isstaged = false) :
+    Problem(Env const & env, Database const & db,
+            MCTSParams const params, bool isstaged = false) :
         MCTS(Game(), params),
-        bank(database().nvar()),
+        mdatabase(db),
+        bank(m_database.nvar()),
         abstractions(compspan),
-        numberlimit(std::min(env.assnum(), database().assiters().size())),
-        maxranks(database().assmaxranks(env.assertion)),
-        maxranknumber(database().syntaxDAG().maxranknumber(maxranks)),
+        numberlimit(std::min(env.assnum(), m_database.assiters().size())),
+        maxranks(m_database.assmaxranks(env.assertion)),
+        maxranknumber(m_database.syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
         staged(isstaged && STAGED)
@@ -94,7 +90,7 @@ public:
         if (!pProbEnv) return;
         // Check goal.
         Goalview const goal(probAss().expRPN, probAss().exptypecode());
-        Goalstatus const s = env.status(goal);
+        Goalstatus const s = probEnv().status(goal);
         if (s == GOALFALSE) return;
         // Add proofs of hypotheses.
         addhypproofs(probEnv());
@@ -111,14 +107,15 @@ public:
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
         // Usable theorems
+        Assiters const & assiters = m_database.assiters();
         for (nAss i = 1; i < numberlimit; ++i)
         {
-            Assiter iter = database().assiters()[i];
+            Assiter iter = assiters[i];
             Assertion const & ass = iter->second;
             if (ass.testtype(Asstype::USELESS))
                 continue;
             strview typecode = ass.exptypecode();
-            if (database().typecodes().isprimitive(typecode) != FALSE)
+            if (m_database.typecodes().isprimitive(typecode) != FALSE)
                 continue;
             Assiters & assvec = theorempool[typecode];
             assvec.reserve(numberlimit - 1);

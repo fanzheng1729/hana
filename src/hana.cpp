@@ -134,8 +134,6 @@ int main(int argc, char * argv[])
     // param.update(paramfilename);
     param.read(paramfilename);
 
-    Problem::bind(database);
-
     bool testpropsearch(Database const &, Param const &);
     if (!testpropsearch(database, param))
         return EXIT_FAILURE;
