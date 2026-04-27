@@ -14,8 +14,7 @@ static Argtypes argtypes(RPN const & syntaxiom)
     for (RPNsize i = 0; i < syntaxiom.size() - 1; ++i)
     {
         RPNstep const step = syntaxiom[i];
-        if (!step.ishyp() || !step.phyp ||
-            step.phyp->second.expression.empty())
+        if (!step.id())
             return Argtypes();
         result[i] = step.phyp->second.expression[0];
     }
