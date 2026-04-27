@@ -23,8 +23,7 @@ struct Environ : protected Gen
 {
     // Prepare term generator
     void initGen() const;
-    Environ(Assertion const & ass, Database const & db,
-            std::size_t maxsize) :
+    Environ(Assertion const & ass, std::size_t maxsize) :
         Gen(ass.varusage, maxsize),
         assertion(ass),
         label(ass.hypslabel()),

@@ -13,7 +13,7 @@ struct Prop : Environ
 {
     Prop(Assertion const & ass, Database const & db,
          std::size_t maxsize, double wfactor) :
-        Environ(ass, db, maxsize),
+        Environ(ass, maxsize),
         allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
         weightfactor(wfactor)
     {
