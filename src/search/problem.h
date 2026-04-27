@@ -99,7 +99,6 @@ public:
         if (s == GOALTRUE)
         {
             Goal const & rootgoal = pgoal->second.goal();
-            rootgoal.fillast();
             pgoal->second.psimpEnv = addsubEnv
                 (probEnv(), probEnv().hypstotrim(rootgoal));
         }
