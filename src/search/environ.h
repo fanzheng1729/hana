@@ -27,7 +27,6 @@ struct Environ : protected Gen
             std::size_t maxsize) :
         Gen(ass.varusage, maxsize),
         assertion(ass),
-        maxranks(db.hypsmaxranks(ass)),
         label(ass.hypslabel()),
         hypsweight(ass.hypslen()),
         hasnewvarinexp(ass.hasnewvarinexp()),
@@ -90,7 +89,7 @@ struct Environ : protected Gen
     // The assertion to be proved
     Assertion const & assertion;
     // Max ranks of all the hypotheses combined
-    SyntaxDAG::Ranks const maxranks;
+    SyntaxDAG::Ranks maxranks;
     // Name of context = labels of all hypotheses combined
     std::string const label;
     // Weight of all the hypotheses combined
