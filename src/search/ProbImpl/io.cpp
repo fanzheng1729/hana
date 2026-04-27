@@ -415,7 +415,7 @@ void Problem::writeproof(const char * const filename) const
     if (proof().empty() || !filename)
         return;
 
-    Printer printer(&m_database.typecodes());
+    Printer printer(&mdatabase.typecodes());
     verify(proof(), printer);
 
     std::ofstream out(filename);

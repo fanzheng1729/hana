@@ -78,11 +78,11 @@ public:
             MCTSParams const params, bool isstaged = false) :
         MCTS(Game(), params),
         mdatabase(db),
-        bank(m_database.nvar()),
+        bank(mdatabase.nvar()),
         abstractions(compspan),
-        numberlimit(std::min(env.assnum(), m_database.assiters().size())),
-        maxranks(m_database.assmaxranks(env.assertion)),
-        maxranknumber(m_database.syntaxDAG().maxranknumber(maxranks)),
+        numberlimit(std::min(env.assnum(), mdatabase.assiters().size())),
+        maxranks(mdatabase.assmaxranks(env.assertion)),
+        maxranknumber(mdatabase.syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
         staged(isstaged && STAGED)
@@ -107,7 +107,7 @@ public:
         *root() = Game(addsimpgoal(pgoal));
         addpNode(root());
         // Usable theorems
-        Assiters const & assiters = m_database.assiters();
+        Assiters const & assiters = mdatabase.assiters();
         for (nAss i = 1; i < numberlimit; ++i)
         {
             Assiter iter = assiters[i];
@@ -115,7 +115,7 @@ public:
             if (ass.testtype(Asstype::USELESS))
                 continue;
             strview typecode = ass.exptypecode();
-            if (m_database.typecodes().isprimitive(typecode) != FALSE)
+            if (mdatabase.typecodes().isprimitive(typecode) != FALSE)
                 continue;
             Assiters & assvec = theorempool[typecode];
             assvec.reserve(numberlimit - 1);
