@@ -12,8 +12,8 @@
 struct Prop : Environ
 {
     Prop(Assertion const & ass, Database const & db,
-         std::size_t maxsize, double wfactor, bool staged = false) :
-        Environ(ass, db, maxsize, staged),
+         std::size_t maxsize, double wfactor) :
+        Environ(ass, db, maxsize),
         allhypsCNF(db.propctors().hypscnf(ass, hypnatoms)),
         weightfactor(wfactor)
     {
@@ -113,7 +113,7 @@ struct Prop : Environ
     {
         if (!pProb) return NULL;
         return new(std::nothrow)
-        Prop(ass, prob().database(), m_maxmoves, weightfactor, staged);
+        Prop(ass, prob().database(), m_maxmoves, weightfactor);
     }
 private:
     // Add moves with free variables.

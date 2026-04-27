@@ -68,7 +68,7 @@ Moves Game::ourmoves(stage_t stage) const
 // std::cout << "Finding moves at stage " << stage << " for " << *this;
     if (proven())
         return Moves();
-    if (env().staged)
+    if (env().prob().staged)
         return env().ourmoves(*this, stage);
 // std::cout << "with nDefer " << nDefer << ' ';
     Moves moves(env().ourmoves(*this, nDefer));

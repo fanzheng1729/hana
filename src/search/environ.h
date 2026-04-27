@@ -24,14 +24,13 @@ struct Environ : protected Gen
     // Prepare term generator
     void initGen() const;
     Environ(Assertion const & ass, Database const & db,
-            std::size_t maxsize, bool isstaged = false) :
+            std::size_t maxsize) :
         Gen(ass.varusage, maxsize),
         assertion(ass),
         maxranks(db.hypsmaxranks(ass)),
         label(ass.hypslabel()),
         hypsweight(ass.hypslen()),
         hasnewvarinexp(ass.hasnewvarinexp()),
-        staged(isstaged),
         pProb(),
         sortedhyps(ass.hypiters),
         m_subsumedbyProb(false),
@@ -98,8 +97,6 @@ struct Environ : protected Gen
     Weight hypsweight;
     // True if there is a var only used in exp.
     bool const hasnewvarinexp;
-    // Is staged move generation used?
-    bool const staged;
 protected:
     // Pointer to the problem
     Problem * pProb;

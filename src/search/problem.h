@@ -79,7 +79,7 @@ public:
     enum { STAGED = true };
     bool const staged;
     template<class Env>
-    Problem(Env const & env, MCTSParams const params) :
+    Problem(Env const & env, MCTSParams const params, bool isstaged = false) :
         MCTS(Game(), params),
         bank(database().nvar()),
         abstractions(compspan),
@@ -88,7 +88,7 @@ public:
         maxranknumber(database().syntaxDAG().maxranknumber(maxranks)),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
-        staged(env.staged && STAGED)
+        staged(isstaged && STAGED)
     {
         if (!pProbEnv) return;
         // Check goal.
