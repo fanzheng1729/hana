@@ -16,7 +16,7 @@ static bool matchline
         if (*cur == 0 && !step.isthm())
             return false;
         // !0 corresponds to a variable.
-        if (*cur != 0 && !step.ishyp())
+        if (*cur != 0 && !step.id())
             return false;
 
         if (substs[*cur].empty())

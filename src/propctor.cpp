@@ -266,8 +266,8 @@ bool Propctors::addformula
     for (RPNsize i = 0; i < rpn.size(); ++i)
     {
         const char * step = rpn[i];
-//std::cout << "Step " << step << ":\t";
-        if (rpn[i].ishyp())
+// std::cout << "Step " << step << ":\t";
+        if (rpn[i].id())
         {
             Hypsize const hypindex = util::find(hyps, step) - hyps.begin();
             if (hypindex < hyps.size())

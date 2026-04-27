@@ -39,7 +39,7 @@ AST ast(RPN const & exp)
     for (RPNsize i = 0; i < exp.size(); ++i)
     {
         RPNstep const step = exp[i];
-        if (step.ishyp())
+        if (step.id())
             stack.push_back(i);
         else
         if (step.isthm() &&
@@ -121,7 +121,7 @@ static bool hasallvars(RPNspan span1, RPNspan span2)
 {
     for (RPNiter iter2 = span2.first; iter2 < span2.second; ++iter2)
     {
-        if (!iter2->ishyp())
+        if (!iter2->id())
             continue;
         if (std::find(span1.first, span1.second, *iter2) == span1.second)
             return false;
