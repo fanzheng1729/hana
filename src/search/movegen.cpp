@@ -86,6 +86,14 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     return moves;
 }
 
+static bool findsubst
+    (Game const & game, Assiter iter, RPNspans & subst)
+{
+    Assertion const & ass = iter->second;
+    subst.assign(ass.maxvarid + 1, RPNspan());
+    return findsubst(game.goal(), ass.expRPNAST(), subst);
+}
+
 // Try applying an assertion, and add moves if okay.
 // Return true if it has no open hypotheses.
 bool Environ::tryass
@@ -93,18 +101,18 @@ bool Environ::tryass
 {
 // std::cout << "Trying " << iter->first << " with " << goal.expression();
     Assertion const & ass = iter->second;
-    Goal const & goal = game.goal();
-    RPNspans subst(ass.maxvarid + 1);
-    if (!findsubst(goal, ass.expRPNAST(), subst))
+    RPNspans subst;
+    if (!findsubst(game, iter, subst))
         return false;
     // Move with all bound substitutions
-    Move move(&*iter, subst);
     if (size > 0)
-        return ass.nfreevar() > 0 && addhardmoves(move, size, moves);
+        return ass.nfreevar() > 0
+            && addhardmoves(Move(&*iter, subst), size, moves);
     else if (ass.nfreevar() > 0)
-        return assertion.nEhyps() > 0 && addhypmoves(move.pthm, moves, subst);
+        return assertion.nEhyps() > 0
+            && addhypmoves(&*iter, moves, subst);
     else
-        return addboundmove(move, moves);
+        return addboundmove(Move(&*iter, subst), moves);
 }
 
 // Add Hypothesis-oriented moves.
