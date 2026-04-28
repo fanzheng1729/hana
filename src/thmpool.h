@@ -2,6 +2,7 @@
 #define THMPOOL_H_INCLUDED
 
 #include "types.h"
+#include "util/for.h"
 #include "util/simptree.h"
 
 // Node in theorem pool = {RPN, iterators to corresponding assertions}
@@ -11,6 +12,8 @@ inline bool operator==(Theorempoolnode const & x, Theorempoolnode const & y)
 { return x.first == y.first; }
 inline bool operator< (Theorempoolnode const & x, Theorempoolnode const & y)
 { return x.first < y.first; }
+
+typedef std::vector<RPN> RPNs;
 
 struct Theorempool : private SimpTree<Theorempoolnode>
 {
@@ -28,6 +31,20 @@ struct Theorempool : private SimpTree<Theorempoolnode>
             return findordered(node);
         }
     };
+    pNode operator[](RPNs const & rpns)
+    {
+        pNode p = root();
+        FOR (RPN const & rpn, rpns)
+            p = p[rpn];
+        return p;
+    }
+    pNode at(RPNs const & rpns) const
+    {
+        pNode p = root();
+        FOR (RPN const & rpn, rpns)
+            p = p.at(rpn);
+        return p;
+    }
 };
 
 #endif // THMPOOL_H_INCLUDED
