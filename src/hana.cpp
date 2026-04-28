@@ -110,9 +110,11 @@ int main(int argc, char * argv[])
 
     if (!addRPN(database))
         return EXIT_FAILURE;
+    database.buildsyntaxDAG();
+    std::cout << database.syntaxDAG();
 
-    if (database.loadpropctors(),
-        !database.propctors().check(database.definitions()))
+    database.loadpropctors();
+    if (!database.propctors().check(database.definitions()))
         return EXIT_FAILURE;
 
     printpercent(database.markpropassertions(), "/",
@@ -121,9 +123,6 @@ int main(int argc, char * argv[])
     if (!database.checkpropassertion())
         return EXIT_FAILURE;
     std::cout << "checked in " << timer << 's' << std::endl;
-
-    database.buildsyntaxDAG();
-    std::cout << database.syntaxDAG();
 
     Param param = Param::default;
     // param.update(paramfilename);
