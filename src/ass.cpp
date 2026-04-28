@@ -253,11 +253,11 @@ void Assertion::sethyps(Assertion const & ass,
 }
 
 // Map usable theorems.
-Theorempool usablethms
+Thmpool usablethms
     (Assiters const & assiters, Assiters::size_type limit,
      struct Typecodes const & typecodes)
 {
-    Theorempool result;
+    Thmpool result;
 
     for (nAss i = 1; i < limit; ++i)
     {

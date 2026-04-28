@@ -93,21 +93,10 @@ bool testpropsearch
     nAss const all = assiters.size();
     std::map<RPN, Assiters> map;
     for (nAss i = 1; i < all; ++i)
-    // for (nAss i = 1658; i < 1659; ++i)
+    // for (nAss i = 1638; i < all; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
-
-        // printass(*iter);
-        // RPN rpn(ass.expRPN.size());
-        // std::replace_copy_if(ass.expRPN.begin(), ass.expRPN.end(),
-        //                      rpn.begin(), id, RPNstep());
-        // map[rpn].push_back(iter);
-        // RPNs const & rpns = profile(ass.expRPNAST());
-        // std::size_t cn = 0;
-        // FOR (RPN const & rpn, rpns)
-        //     cn += map[rpn].size();
-        // std::cout << cn << std::endl;
 
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))

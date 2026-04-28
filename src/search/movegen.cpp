@@ -56,15 +56,25 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         return Moves();
     Goal const & goal = game.goal();
     // Check goal type code.
-    Theorempool::const_iterator iter =
-    prob().theorempool.find(goal.typecode);
-    if (iter == prob().theorempool.end())
+    Thmpool::const_iterator iter =
+    prob().thmpool.find(goal.typecode);
+    if (iter == prob().thmpool.end())
         return Moves();
-    Assiters const & assvec = iter->second;
-    // Adjust assertion # limit.
+    // Problem assertion #
     nAss & limit = pProb->numberlimit;
+    // Assiters const & assvec = iter->second;
+    // Adjust assertion # limit.
     if (limit > assnum())
         limit = assnum();
+    Assiters & assvec = game.goaldatas().usabletheorems;
+    if (assvec.empty())
+        assvec = iter->second;
+        // assvec = usabletheorems(prob().database.theorempool(), limit,
+        //                         goal.typecode, goal);
+    if (assvec.empty())
+        assvec.resize(1);
+    if (assvec[0] == Assiter())
+        return Moves();
     // Prepare term generator
     initGen();
 

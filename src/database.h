@@ -3,8 +3,10 @@
 
 #include "comment.h"
 #include "def.h"
+#include "proof/analyze.h"
 #include "propctor.h"
 #include "relation.h"
+#include "search/goal.h"
 #include "stat.h"
 #include "syntaxDAG.h"
 #include "syntaxiom.h"
@@ -19,6 +21,7 @@ class Database
     Hypotheses m_hypotheses;
     Assertions m_assertions;
     Assiters m_assiters;
+    Theorempool m_theorempool;
     SyntaxDAG m_syntaxDAG;
     Syntaxioms m_syntaxioms;
     Commentinfo m_commentinfo;
@@ -35,6 +38,7 @@ public:
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Assertions const & assertions() const { return m_assertions; }
     Assiters const & assiters() const { return m_assiters; }
+    Theorempool const & theorempool() const { return m_theorempool; }
     SyntaxDAG const & syntaxDAG() const { return m_syntaxDAG; }
     Syntaxioms const & syntaxioms() const { return m_syntaxioms; }
     Syntaxioms primitivesyntaxioms() const
@@ -138,6 +142,10 @@ public:
     }
 // Test syntax parser. Return true if okay.
     bool checkRPN() const;
+    void addtheorempool()
+    {
+        m_theorempool = ::theorempool(assiters(), typecodes());
+    }
 // Find definitions in assertions.
     void loaddefinitions()
     {

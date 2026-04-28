@@ -36,6 +36,8 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     RPN proof;
     bool proven() const { return !proof.empty(); }
     Goaldatas() : maxabsfilled(false) {}
+    // Usable theorems
+    Assiters usabletheorems;
     // Maximal abstractions
     bool maxabsfilled;
     GovernedRPNspansbystep maxabs;

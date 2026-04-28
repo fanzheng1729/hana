@@ -144,10 +144,10 @@ struct Assertion
 };
 
 // Map: typecode -> theorems
-typedef std::map<strview, Assiters> Theorempool;
+typedef std::map<strview, Assiters> Thmpool;
 
 // Map usable theorems.
-Theorempool usablethms
+Thmpool usablethms
     (Assiters const & assiters, Assiters::size_type limit,
      struct Typecodes const & typecodes);
 

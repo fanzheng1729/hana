@@ -67,6 +67,7 @@ bool addRPN(Database & database)
     timer.reset();
     if (!database.checkRPN()) return false;
     std::cout << "done in " << timer << 's' << std::endl;
+    database.addtheorempool();
 
     database.loaddefinitions();
     std::cout << "Primitive syntax axioms\n" << database.primitivesyntaxioms();
@@ -137,6 +138,7 @@ int main(int argc, char * argv[])
     // bool const okay = testpropsearch(database, param);
     // std::cout.rdbuf(coutbuf);
     // if (!okay) return EXIT_FAILURE;
-
+extern std::size_t nfind;
+std::cout << nfind;
     return EXIT_SUCCESS;
 }

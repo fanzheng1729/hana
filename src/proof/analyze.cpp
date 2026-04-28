@@ -1,5 +1,8 @@
+#include <algorithm>    // for std::replace_copy_if
 #include "../ass.h"
 #include "../io.h"
+#include "../search/goal.h"
+#include "../typecode.h"
 #include "analyze.h"
 #include "compspan.h"
 #include "verify.h"
@@ -80,10 +83,11 @@ Indentations indentations(AST const & ast)
         indentations(ast.begin(), ast.end(), result);
     return result;
 }
-
+extern std::size_t nfind = 0;
 // Return true if the RPN of an expression matches a template.
 bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
 {
+    ++nfind;
     if (exp.empty() || tmp.empty() || exp.size() < tmp.size())
         return false;
 // std::cout << "Matching " << exp.first << "Against " << tmp.first;
@@ -183,57 +187,75 @@ GovernedRPNspansbystep maxabs(RPNspanAST exp)
     return result;
 }
 
-// Heads = roots of sub-expressions
-typedef std::vector<RPNstep> RPNheads;
-static RPNheads gotochildren(RPNspanASTs & parents)
+Theorempool theorempool
+    (Assiters const & assiters, struct Typecodes const & typecodes)
 {
-    RPNheads heads;
-    RPNspanASTs children;
+    Theorempool result;
 
-    FOR (RPNspanAST parent, parents)
+    FOR (Assiter const iter, assiters)
     {
-        RPNstep const root = parent.RPNroot();
-        if (root.isthm())
-            heads.push_back(root);
-        for (ASTnode::size_type i = 0; i < parent.nchild(); ++i)
-            children.push_back(parent.child(i));
+        if (iter == Assiter())
+            continue;
+    
+        Assertion const & ass = iter->second;
+        if (ass.testtype(Asstype::USELESS))
+            continue;
+    
+        strview typecode = ass.exptypecode();
+        if (typecodes.isprimitive(typecode) != FALSE)
+            continue;
+
+        RPN rpn(ass.expRPN.size());
+        std::replace_copy_if(ass.expRPN.begin(), ass.expRPN.end(),
+                             rpn.begin(), id, RPNstep());
+
+        Goalview goal(rpn, typecode);
+        result[goal].push_back(iter);
     }
 
-    parents = children;
-    return heads;
+    return result;
 }
+
+// All RPN skeletons of an RPN
+typedef std::set<RPN> RPNs;
 
 static RPNs profile(std::vector<RPNs> const & children, RPNstep root)
 {
     RPNs result;
 
     if (root.id())
-        return RPNs(1, RPN(1)); // variable
+    {
+        result.insert(RPN(1));
+        return result;
+    }
     if (root.isthm())
         if (children.empty())
         {
-            result.assign(2, RPN(1));
-            result[1][0] = root;
+            result.insert(RPN(1));
+            result.insert(RPN(1, root));
+            return result;
         }
         else
         {
-            result.push_back(RPN(1));
+            result.insert(RPN(1));
 
-            typedef std::vector<RPNs::size_type> Stack;
+            typedef std::vector<RPNs::const_iterator> Stack;
             Stack stack(children.size());
+            for (Stack::size_type i = 0; i < stack.size(); ++i)
+                stack[i] = children[i].begin();
             do
             {
                 // New RPN
                 RPN rpn;
                 for (Stack::size_type i = 0; i < stack.size(); ++i)
-                    rpn += children[i][stack[i]];
+                    rpn += *stack[i];
                 rpn.push_back(root);
-                result.push_back(rpn);
+                result.insert(rpn);
                 // Move stack forward.
                 Stack::size_type i = stack.size() - 1;
-                while (++stack[i] == children[i].size())
+                while (++stack[i] == children[i].end())
                 {
-                    stack[i] = 0;
+                    stack[i] = children[i].begin();
                     if (i == 0) return result;
                     --i;
                 }
@@ -243,12 +265,59 @@ static RPNs profile(std::vector<RPNs> const & children, RPNstep root)
     return result;
 }
 
-RPNs profile(RPNspanAST exp)
+// Find all RPN skeletons of an RPN.
+static RPNs profile(RPNspanAST exp)
 {
     ASTnode::size_type const n = exp.nchild();
     std::vector<RPNs> children(n);
     for (ASTnode::size_type i = 0; i < n; ++i)
         children[i] = profile(exp.child(i));
-
+RPNs result(profile(children, exp.RPNroot()));
+std::cout << "size " << result.size() << std::endl;
+    return result;
     return profile(children, exp.RPNroot());
+}
+
+static void additers(Assiters const & src, Assiters & dest, nAss limit)
+{
+    FOR (Assiter const iter, src)
+        if (iter != Assiter())
+            if (nAss const n = iter->second.number)
+                if (n < limit)
+                    dest.push_back(iter);
+}
+
+static bool compassiter(Assiter x, Assiter y)
+{
+    return (x == Assiter() ? 0 : x->second.number)
+            < (y == Assiter() ? 0 : y->second.number);
+}
+
+// Find all assertions matching a set of skeletons.
+static Assiters usabletheorems
+    (Theorempool const & pool, nAss limit,
+     strview typecode, RPNs const & rpns)
+{
+    Assiters result;
+    result.reserve(limit);
+
+    FOR (RPN const & rpn, rpns)
+    {
+        Goalview goal(rpn, typecode);
+        Theorempool::const_iterator iter = pool.find(goal);
+        if (iter != pool.end())
+            additers(iter->second, result, limit);
+    }
+
+    std::sort(result.begin(), result.end(), compassiter);
+
+    return result;
+}
+
+// Find all assertions matching an expression.
+Assiters usabletheorems
+    (Theorempool const & pool, nAss limit,
+     strview typecode, RPNspanAST exp)
+{
+    return usabletheorems(pool, limit, typecode, profile(exp));
 }
