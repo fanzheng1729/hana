@@ -34,19 +34,15 @@ class Goaldata
     RPN proof;
     // Set of pointers to nodes trying to prove the open goal
     pNodes m_pnodes;
-    // Pointer to the context
-    Environ const * pEnv;
-    // Pointer to the different contexts where the goal is evaluated
-    pBIGGOAL pbigGoal;
-    // Maximal abstractions
-    bool maxabsfilled;
-    GovernedRPNspansbystep m_maxabs;
 public:
+    // Pointer to the context
+    Environ const * const pEnv;
+    // Pointer to the different contexts where the goal is evaluated
+    pBIGGOAL const pbigGoal;
     // Simplified context after trimming unnecessary hypotheses
     Environ const * psimpEnv;
     Goaldata(Goalstatus s, Environ const * envptr, pBIGGOAL bigpGoal) :
-        status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv(),
-        maxabsfilled(false) {}
+        status(s), pEnv(envptr), pbigGoal(bigpGoal), psimpEnv() {}
     Goal const & goal() const { return pbigGoal->first; }
     Goaldatas & goaldatas() const { return pbigGoal->second; }
     // Source of proof to be read from
@@ -156,10 +152,11 @@ public:
     }
     GovernedRPNspansbystep const & maxabs()
     {
-        if (maxabsfilled) return m_maxabs;
-        m_maxabs = ::maxabs(goal());
-        maxabsfilled = true;
-        return m_maxabs;
+        if (goaldatas().maxabsfilled)
+            return goaldatas().maxabs;
+        goaldatas().maxabs = ::maxabs(goal());
+        goaldatas().maxabsfilled = true;
+        return goaldatas().maxabs;
     }
 };
 

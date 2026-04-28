@@ -1,4 +1,5 @@
 #include "environ.h"
+#include "goaldata.h"
 
 // Return true if all variables in use have been substituted.
 static bool allvarsfilled(Varusage const & varusage, RPNspans const & subst)
