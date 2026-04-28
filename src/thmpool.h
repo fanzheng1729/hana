@@ -4,10 +4,25 @@
 #include "types.h"
 #include "util/simptree.h"
 
+// Node in theorem pool = {RPN, iterators to corresponding assertions}
 typedef std::pair<RPN, Assiters> Theorempoolnode;
+// Node are compared only by RPN.
+inline bool operator==(Theorempoolnode const & x, Theorempoolnode const & y)
+{ return x.first == y.first; }
+inline bool operator< (Theorempoolnode const & x, Theorempoolnode const & y)
+{ return x.first < y.first; }
+
 struct Theorempool : private SimpTree<Theorempoolnode>
 {
-    typedef SimpTree::pNode pNode;
+    struct pNode : SimpTree::pNode
+    {
+        pNode(SimpTree::pNode node) : SimpTree::pNode(node) {}
+        pNode operator[](RPN const & rpn) const
+        {
+            Theorempoolnode node(rpn, Assiters());
+            return insertordered(node);
+        }
+    };
 };
 
 #endif // THMPOOL_H_INCLUDED

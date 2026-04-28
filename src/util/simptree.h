@@ -125,6 +125,28 @@ public:
         // DO NOTHING and return nullptr if *this is nullptr.
         pNode insert(T const & t) const
         { return *this ? m_insert(t) : pNode(); }
+        // Find a child with value t and return its pointer.
+        // Return nullptr if not found.
+        pNode find(T const & t) const
+        {
+            Children const * p = children();
+            if (!p) return pNode();
+            typename Children::const_iterator iter =
+            std::find(p->begin(), p->end(), t);
+            return iter == p->end() ? pNode() : *iter;
+        }
+        // Find a child with value t and return its pointer.
+        // Return nullptr if not found.
+        pNode findordered(T const & t) const
+        {
+            Children const * p = children();
+            if (!p) return pNode();
+            typename Children::const_iterator iter =
+            std::lower_bound(p->begin(), p->end(), t);
+            return (iter == p->end() || *iter != t) ? pNode() : *iter;
+        }
+        // Add a child. Return the pointer to the child.
+        // DO NOTHING and return nullptr if *this is nullptr.
         pNode insertordered(T const & t) const
         {
             if (!*this) return pNode();
