@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "util/for.h"
+#include "io.h"
 #include "util/simptree.h"
 
 // Node in theorem pool = {RPN, iterators to corresponding assertions}
@@ -14,6 +15,17 @@ inline bool operator< (Theorempoolnode const & x, Theorempoolnode const & y)
 { return x.first < y.first; }
 
 typedef std::vector<RPN> RPNs;
+
+std::ostream & operator<<(std::ostream & out, RPNs const & rpns)
+{
+    FOR (RPN const & rpn, rpns)
+    {
+        FOR (RPNstep const step, rpn)
+            out << (step.empty() ? '0' : step) << ' ';
+        out << std::endl;
+    }
+    return out;
+}
 
 struct Theorempool : private SimpTree<Theorempoolnode>
 {

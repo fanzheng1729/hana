@@ -1,4 +1,4 @@
-#include <algorithm>    // for std::replace_copy_if
+#include <algorithm>    // for std::find and std::lexicographic_compare
 #include "../ass.h"
 #include "../io.h"
 #include "../search/goal.h"
