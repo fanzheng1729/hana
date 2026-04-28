@@ -53,8 +53,11 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
                 if (n == 0 || n >= limit) continue;
                 RPNspans subst;
                 if (::findsubst(goal, iter, subst))
-                    usabletheorems.push_back(iter),
-                    substitutions.push_back(subst);
+                {
+                    usabletheorems.push_back(iter);
+                    substitutions.push_back(RPNspans());
+                    substitutions.back().swap(subst);
+                }
             }
         if (usabletheorems.empty()) // No match
             return usabletheorems.resize(1), empty;
