@@ -121,10 +121,6 @@ public:
         // Reserve space for children and fix the parents of existing ones.
         void reserve(size_type n) const
         { if (*this) m_ptr->children.reserve(n); }
-        // Add a child. Return the pointer to the child.
-        // DO NOTHING and return nullptr if *this is nullptr.
-        pNode insert(T const & t) const
-        { return *this ? m_insert(t) : pNode(); }
         // Find a child with value t and return its pointer.
         // Return nullptr if not found.
         pNode find(T const & t) const
@@ -135,6 +131,10 @@ public:
             std::find(p->begin(), p->end(), t);
             return iter == p->end() ? pNode() : *iter;
         }
+        // Add a child. Return the pointer to the child.
+        // DO NOTHING and return nullptr if *this is nullptr.
+        pNode insert(T const & t) const
+        { return *this ? m_insert(t) : pNode(); }
         // Find a child with value t and return its pointer.
         // Return nullptr if not found.
         pNode findordered(T const & t) const
