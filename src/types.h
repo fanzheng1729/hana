@@ -76,7 +76,7 @@ typedef std::map<RPNstep, GovernedRPNspans, Compstep>
 typedef std::vector<RPNsize> Indentations;
 
 // Statistics
-typedef RPNsize Freqcount, Weight;
+typedef RPNsize Weight;
 
 struct Hypothesis
 {

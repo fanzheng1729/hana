@@ -9,8 +9,6 @@
 
 // #undef __cpp_lib_incomplete_container_elements
 
-namespace util
-{
 template<class T>
 class SimpTree
 {
@@ -206,7 +204,6 @@ public:
         if (!p) return pNode();
         return p.m_insert(value);
     }
-}; // class SimpTree
-} // namespase util
+};
 
 #endif // SIMPTREE_H_INCLUDED
