@@ -96,19 +96,9 @@ bool Environ::tryass
     (Game const & game, Assiter iter, RPNsize size, Moves & moves) const
 {
 // std::cout << "Trying " << iter->first << " with " << goal.expression();
-    Assertion const & ass = iter->second;
     RPNspans subst;
-    if (!findsubst(game.goal(), iter, subst))
-        return false;
-    // Move with all bound substitutions
-    if (size > 0)
-        return ass.nfreevar() > 0
-            && addhardmoves(Move(&*iter, subst), size, moves);
-    else if (ass.nfreevar() > 0)
-        return assertion.nEhyps() > 0
-            && addhypmoves(&*iter, moves, subst);
-    else
-        return addboundmove(Move(&*iter, subst), moves);
+    return findsubst(game.goal(), iter, subst)
+        && addmoves(iter, subst, size, moves);
 }
 
 // Add various moves.
