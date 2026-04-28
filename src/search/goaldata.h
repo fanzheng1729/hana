@@ -3,10 +3,12 @@
 
 #include <algorithm>    // for std::lower_bound
 #include "game.h"
-#include "goalstat.h"
 #include "../MCTS/MCTS.h"
 #include "../types.h"
 #include "../util/for.h"
+
+// Proof status of a goal
+enum Goalstatus {GOALNEW = -2, GOALFALSE, GOALOPEN, GOALTRUE};
 
 // Pointer to node in proof search tree
 typedef MCTS<Game>::pNode pNode;
@@ -26,6 +28,22 @@ bool subsumedbyProb(Environ const & env);
 pEnvs const & subEnvs(Environ const & env);
 // Return super-contexts of env.
 pEnvs const & supEnvs(Environ const & env);
+
+// Map: context -> evaluation
+struct Goaldatas : std::map<Environ const *, class Goaldata>
+{
+    // Proof that holds in the problem context
+    RPN proof;
+    bool proven() const { return !proof.empty(); }
+    Goaldatas() : maxabsfilled(false) {}
+    // Maximal abstractions
+    bool maxabsfilled;
+    GovernedRPNspansbystep maxabs;
+};
+
+// Map: goal -> context -> evaluation
+typedef std::map<Goal, Goaldatas> Goals;
+typedef Goals::pointer pBIGGOAL;
 
 // Data associated with the goal
 class Goaldata

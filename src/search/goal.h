@@ -40,20 +40,4 @@ inline bool operator<(Goal const & x, Goal const & y)
     return cmp < 0 || cmp == 0 && x.typecode < y.typecode;
 }
 
-// Polymorphic context, with move generation and goal evaluation
-struct Environ;
-// Data associated with the goal
-class Goaldata;
-// Map: context -> evaluation
-struct Goaldatas : std::map<Environ const *, Goaldata>
-{
-    // Proof that holds in the problem context
-    RPN proof;
-    bool proven() const { return !proof.empty(); }
-    Goaldatas() : maxabsfilled(false) {}
-    // Maximal abstractions
-    bool maxabsfilled;
-    GovernedRPNspansbystep maxabs;
-};
-
 #endif // GOAL_H_INCLUDED

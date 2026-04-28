@@ -3,15 +3,14 @@
 
 #include "game.h"
 #include "gen.h"
-#include "goalstat.h"
+#include "goaldata.h"
 #include "../MCTS/stageval.h"
 #include "../syntaxDAG.h"
 #include "../util/algo.h"   // for util::addordered
 
 class Problem;
-struct Environ;
 // Pointers to contexts
-typedef std::vector<Environ const *> pEnvs;
+typedef std::vector<struct Environ const *> pEnvs;
 
 // Weight-based score
 inline Value score(Weight w) { return 1. / (w + 1); }
