@@ -3,11 +3,6 @@
 
 #include "../types.h"
 
-// Heads = roots of sub-expressions
-typedef std::vector<RPNstep> RPNheads;
-// Heads at all levels of an expression
-typedef std::vector<RPNheads> RPNprofile;
-
 // Return the AST.
 // Retval[i] = {index of hyp1, index of hyp2, ...}
 // Return an empty AST if not okay. Only for uncompressed proofs
@@ -22,7 +17,8 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst);
 // All maximal abstractions governed by a syntax axiom.
 GovernedRPNspansbystep maxabs(RPNspanAST exp);
 
-// Profile of an expression
-RPNprofile profile(RPNspanAST exp);
+typedef std::vector<RPN> RPNs;
+
+RPNs profile(RPNspanAST exp);
 
 #endif // ANALYZE_H_INCLUDED

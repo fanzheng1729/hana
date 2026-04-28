@@ -183,6 +183,8 @@ GovernedRPNspansbystep maxabs(RPNspanAST exp)
     return result;
 }
 
+// Heads = roots of sub-expressions
+typedef std::vector<RPNstep> RPNheads;
 static RPNheads gotochildren(RPNspanASTs & parents)
 {
     RPNheads heads;
@@ -201,19 +203,52 @@ static RPNheads gotochildren(RPNspanASTs & parents)
     return heads;
 }
 
-RPNprofile profile(RPNspanAST exp)
+static RPNs profile(std::vector<RPNs> const & children, RPNstep root)
 {
-    RPNprofile result;
+    RPNs result;
 
-    RPNspanASTs subexps(1, exp);
-    while (!subexps.empty())
-    {
-        RPNheads const & heads(gotochildren(subexps));
-        if (!heads.empty())
-            result.push_back(heads);
+    if (root.id())
+        return RPNs(1, RPN(1)); // variable
+    if (root.isthm())
+        if (children.empty())
+        {
+            result.assign(2, RPN(1));
+            result[1][0] = root;
+        }
         else
-            return result;
-    }
+        {
+            result.push_back(RPN(1));
+
+            typedef std::vector<RPNs::size_type> Stack;
+            Stack stack(children.size());
+            do
+            {
+                // New RPN
+                RPN rpn;
+                for (Stack::size_type i = 0; i < stack.size(); ++i)
+                    rpn += children[i][stack[i]];
+                rpn.push_back(root);
+                result.push_back(rpn);
+                // Move stack forward.
+                Stack::size_type i = stack.size() - 1;
+                while (++stack[i] == children[i].size())
+                {
+                    stack[i] = 0;
+                    if (i == 0) return result;
+                    --i;
+                }
+            } while (true);
+        }
 
     return result;
+}
+
+RPNs profile(RPNspanAST exp)
+{
+    ASTnode::size_type const n = exp.nchild();
+    std::vector<RPNs> children(n);
+    for (ASTnode::size_type i = 0; i < n; ++i)
+        children[i] = profile(exp.child(i));
+
+    return profile(children, exp.RPNroot());
 }

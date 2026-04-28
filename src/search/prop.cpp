@@ -91,6 +91,7 @@ bool testpropsearch
     // Test assertions
     Assiters const & assiters = database.assiters();
     nAss const all = assiters.size();
+    std::map<RPN, Assiters> map;
     for (nAss i = 1; i < all; ++i)
     // for (nAss i = 1658; i < 1659; ++i)
     {
@@ -98,8 +99,15 @@ bool testpropsearch
         Assertion const & ass = iter->second;
 
         // printass(*iter);
-        // std::cout << profile(ass.expRPNAST());
-        // std::cin.get();
+        // RPN rpn(ass.expRPN.size());
+        // std::replace_copy_if(ass.expRPN.begin(), ass.expRPN.end(),
+        //                      rpn.begin(), id, RPNstep());
+        // map[rpn].push_back(iter);
+        // RPNs const & rpns = profile(ass.expRPNAST());
+        // std::size_t cn = 0;
+        // FOR (RPN const & rpn, rpns)
+        //     cn += map[rpn].size();
+        // std::cout << cn << std::endl;
 
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))

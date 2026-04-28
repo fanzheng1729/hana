@@ -45,9 +45,6 @@ public:
     // Database used
     Database const & database;
 private:
-    typedef std::map<RPNprofile, Assiters> RPNprofiles;
-    typedef std::map<strview, RPNprofiles> Theorempool2;
-    Theorempool2 theorempool2;
     // Bank of variables and hypotheses
     Bank bank;
     // Abstractions made
