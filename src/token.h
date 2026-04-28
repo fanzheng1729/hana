@@ -18,6 +18,7 @@ struct Tokens : private std::deque<Token>
     bool empty() const { return position >= size(); }
     strview front() const { return (*this)[position]; }
     void pop() { ++position; }
+    void rewind() { position = 0; }
 };
 
 // Determine if a char cannot appear in a label ($4.1.1).

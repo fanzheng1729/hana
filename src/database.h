@@ -22,7 +22,6 @@ class Database
     Assertions m_assertions;
     Assiters m_assiters;
     Thmpool m_thmpool;
-    Theorempool m_theorempool;
     SyntaxDAG m_syntaxDAG;
     Syntaxioms m_syntaxioms;
     Commentinfo m_commentinfo;
@@ -40,7 +39,6 @@ public:
     Assertions const & assertions() const { return m_assertions; }
     Assiters const & assiters() const { return m_assiters; }
     Thmpool const & thmpool() const { return m_thmpool; }
-    Theorempool const & theorempool() const { return m_theorempool; }
     SyntaxDAG const & syntaxDAG() const { return m_syntaxDAG; }
     Syntaxioms const & syntaxioms() const { return m_syntaxioms; }
     Syntaxioms primitivesyntaxioms() const
@@ -147,7 +145,6 @@ public:
     void addtheorempool()
     {
         m_thmpool = usablethms(assiters(), assiters().size(), typecodes());
-        m_theorempool = ::theorempool(assiters(), typecodes());
     }
 // Find definitions in assertions.
     void loaddefinitions()
@@ -202,11 +199,6 @@ public:
                 ++n;
         }
         return n;
-    }
-// Return true if all propositional assertions are sound.
-    bool checkpropassertion() const
-    {
-        return propctors().checkpropsat(assertions(), typecodes());
     }
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()

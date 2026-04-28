@@ -94,10 +94,10 @@ int main(int argc, char * argv[])
         std::cout << "Last section: " << sections.rbegin()->first,
         std::cout << sections.rbegin()->second;
 
-    tokens.position = 0;
+    tokens.rewind();
     // Iterator to the end section
-    Sections::const_iterator const end
-        (argv[2] ? sections.find(argv[2]) : sections.end());
+    Sections::const_iterator const end =
+        argv[2] ? sections.find(argv[2]) : sections.end();
     // # tokens to read
     std::size_t size(end == sections.end() ? tokens.size() :
                      end->second.tokenpos());
@@ -120,7 +120,8 @@ int main(int argc, char * argv[])
     printpercent(database.markpropassertions(), "/",
                  database.assertions().size(), " propositional assertions\n");
     timer.reset();
-    if (!database.checkpropassertion())
+    if (!database.propctors().checkpropsat
+        (database.assertions(), database.typecodes()))
         return EXIT_FAILURE;
     std::cout << "checked in " << timer << 's' << std::endl;
 

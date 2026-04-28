@@ -20,16 +20,4 @@ bool findsubst
 // All maximal abstractions governed by a syntax axiom.
 GovernedRPNspansbystep maxabs(RPNspanAST exp);
 
-// Map: goal -> theorems
-typedef std::map<struct Goal, Assiters> Theorempool;
-
-// Map usable theorems.
-Theorempool theorempool
-    (Assiters const & assiters, struct Typecodes const & typecodes);
-
-// Find all assertions matching an expression.
-Assiters usabletheorems
-    (Theorempool const & pool, nAss limit,
-     strview typecode, RPNspanAST exp);
-
 #endif // ANALYZE_H_INCLUDED
