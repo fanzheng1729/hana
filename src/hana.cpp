@@ -67,7 +67,11 @@ bool addRPN(Database & database)
     timer.reset();
     if (!database.checkRPN()) return false;
     std::cout << "done in " << timer << 's' << std::endl;
-    return true;
+
+    database.loaddefinitions();
+    std::cout << "Primitive syntax axioms\n" << database.primitivesyntaxioms();
+
+    return database.checkdefinitions();
 }
 
 int main(int argc, char * argv[])
@@ -105,11 +109,6 @@ int main(int argc, char * argv[])
 
     if (!addRPN(database))
         return EXIT_FAILURE;
-
-    if (database.loaddefinitions(),
-        !database.checkdefinitions()) return EXIT_FAILURE;
-
-    std::cout << "Primitive syntax axioms\n" << database.primitivesyntaxioms();
 
     if (database.loadpropctors(),
         !database.propctors().check(database.definitions()))
