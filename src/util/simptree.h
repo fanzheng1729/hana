@@ -125,21 +125,21 @@ public:
         // DO NOTHING and return nullptr if *this is nullptr.
         pNode insert(T const & t) const
         { return *this ? m_insert(t) : pNode(); }
-        pNode insertordered(T const & t) const
-        {
-            if (!*this) return pNode();
-            reserve(m_ptr->children.size() + 1);
-#ifdef __cpp_lib_incomplete_container_elements
-            // Pointer to the child.
-            return &*util::addordered(m_ptr->children, TreeNode(t));
-#else
-            // Pointer to the child.
-            pNode child = new TreeNode(t);
-            // Update the parent.
-            util::addordered(m_ptr->children, child);
-            return child;
-#endif // __cpp_lib_incomplete_container_elements
-        }
+//         pNode insertordered(T const & t) const
+//         {
+//             if (!*this) return pNode();
+//             reserve(m_ptr->children.size() + 1);
+// #ifdef __cpp_lib_incomplete_container_elements
+//             // Pointer to the child.
+//             return &*util::addordered(m_ptr->children, TreeNode(t));
+// #else
+//             // Pointer to the child.
+//             pNode child = new TreeNode(t);
+//             // Update the parent.
+//             util::addordered(m_ptr->children, child);
+//             return child;
+// #endif // __cpp_lib_incomplete_container_elements
+//         }
     };
 public:
     // Construct an empty tree.

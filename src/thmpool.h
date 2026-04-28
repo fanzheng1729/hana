@@ -7,7 +7,7 @@
 typedef std::pair<RPN, Assiters> Theorempoolnode;
 struct Theorempool : private SimpTree<Theorempoolnode>
 {
-    //
+    typedef SimpTree::pNode pNode;
 };
 
 #endif // THMPOOL_H_INCLUDED
