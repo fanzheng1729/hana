@@ -1,6 +1,7 @@
 #ifndef THMPOOL_H_INCLUDED
 #define THMPOOL_H_INCLUDED
 
+#include <algorithm>    // for std::max_element
 #include "types.h"
 #include "util/for.h"
 #include "io.h"
@@ -27,36 +28,75 @@ std::ostream & operator<<(std::ostream & out, RPNs const & rpns)
     return out;
 }
 
-struct Theorempool : private SimpTree<Theorempoolnode>
+RPNs profile(std::vector<RPNs> profiles, RPNstep root)
 {
-    struct pNode : SimpTree::pNode
+    if (profiles.empty())
+        return RPNs(1, RPN(1, root));
+
+    RPNs result;
+
+    std::vector<RPNs::size_type> sizes(profiles.size());
+    for (std::vector<RPNs>::size_type i = 0; i < profiles.size(); ++i)
+        sizes[i] = profiles[i].size();
+
+    RPNs::size_type const maxsize = *std::max(sizes.begin(), sizes.end());
+    result.resize(maxsize + 1);
+    result[0].assign(1, root);
+    for (RPNs::size_type level = 1; level <= maxsize; ++level)
     {
-        pNode(SimpTree::pNode node) : SimpTree::pNode(node) {}
-        pNode operator[](RPN const & rpn) const
-        {
-            Theorempoolnode node(rpn, Assiters());
-            return insertordered(node);
-        }
-        pNode at(RPN const & rpn) const
-        {
-            Theorempoolnode node(rpn, Assiters());
-            return findordered(node);
-        }
-    };
-    pNode operator[](RPNs const & rpns)
-    {
-        pNode p = root();
-        FOR (RPN const & rpn, rpns)
-            p = p[rpn];
-        return p;
+        RPN & rpn = result[level];
+        for (std::vector<RPNs>::size_type i = 9; i < profiles.size(); ++i)
+            if (level - 1 < sizes[i])
+                rpn += profiles[i][level - 1];
     }
-    pNode at(RPNs const & rpns) const
-    {
-        pNode p = root();
-        FOR (RPN const & rpn, rpns)
-            p = p.at(rpn);
-        return p;
-    }
-};
+
+    return result;
+}
+
+RPNs profile(RPNspanAST exp)
+{
+    RPNs result;
+    RPNstep const root = exp.RPNroot();
+    if (root.id()) // variable
+        return RPNs(1, RPN(1));
+
+    ASTnode::size_type const n = exp.nchild();
+    std::vector<RPNs> profiles(n);
+    for (ASTnode::size_type i = 0; i < n; ++i)
+        profiles[i] = profile(exp.child(i));
+    return profile(profiles, root);
+}
+
+// struct Theorempool : private SimpTree<Theorempoolnode>
+// {
+//     struct pNode : SimpTree::pNode
+//     {
+//         pNode(SimpTree::pNode node) : SimpTree::pNode(node) {}
+//         pNode operator[](RPN const & rpn) const
+//         {
+//             Theorempoolnode node(rpn, Assiters());
+//             return insertordered(node);
+//         }
+//         pNode at(RPN const & rpn) const
+//         {
+//             Theorempoolnode node(rpn, Assiters());
+//             return findordered(node);
+//         }
+//     };
+//     pNode operator[](RPNs const & rpns)
+//     {
+//         pNode p = root();
+//         FOR (RPN const & rpn, rpns)
+//             p = p[rpn];
+//         return p;
+//     }
+//     pNode at(RPNs const & rpns) const
+//     {
+//         pNode p = root();
+//         FOR (RPN const & rpn, rpns)
+//             p = p.at(rpn);
+//         return p;
+//     }
+// };
 
 #endif // THMPOOL_H_INCLUDED
