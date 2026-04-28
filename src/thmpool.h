@@ -5,6 +5,9 @@
 #include "util/simptree.h"
 
 typedef std::pair<RPN, Assiters> Theorempoolnode;
-typedef SimpTree<Theorempoolnode> Theorempool;
+struct Theorempool : private SimpTree<Theorempoolnode>
+{
+    //
+};
 
 #endif // THMPOOL_H_INCLUDED
