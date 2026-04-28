@@ -66,28 +66,25 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     if (limit > assnum())
         limit = assnum();
     // Theorems to be tried
-    Assiters const & assvec = iter->second;
-    // Assiters const & assvec
-    // = game.goaldatas().findsubst(goal, iter->second, limit);
+    Assiters const & assvec
+    = game.goaldatas().findsubst(goal, iter->second, limit);
+    std::vector<RPNspans> const & substvec = game.goaldatas().substitutions;
     // Prepare term generator
     initGen();
 
     Moves moves;
-    FOR (Assiter iter, assvec)
+    for (nAss i = 0; i < assvec.size(); ++i)
     {
-        Assertion const & ass = iter->second;
-        if (ass.number == 0 || ass.number >= limit)
+        Assiter const iter = assvec[i];
+        if (iter == Assiter())
             continue;
-        if (!ontopic(ass))
+        Assertion const & ass = iter->second;
+        if (ass.number == 0 || ass.number >= limit || !ontopic(ass))
             continue;
         if (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-        {
-            RPNspans subst;
-            if (findsubst(game.goal(), iter, subst) &&
-                addmoves(iter, subst, stage, moves))
-                return moves; // Move closes the goal.
-        }
+            if (addmoves(iter, substvec[i], stage, moves))
+                return moves;
     }
     if (stage == 0)
         addabsmoves(game, moves);
