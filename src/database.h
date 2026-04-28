@@ -21,6 +21,7 @@ class Database
     Hypotheses m_hypotheses;
     Assertions m_assertions;
     Assiters m_assiters;
+    Thmpool m_thmpool;
     Theorempool m_theorempool;
     SyntaxDAG m_syntaxDAG;
     Syntaxioms m_syntaxioms;
@@ -38,6 +39,7 @@ public:
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Assertions const & assertions() const { return m_assertions; }
     Assiters const & assiters() const { return m_assiters; }
+    Thmpool const & thmpool() const { return m_thmpool; }
     Theorempool const & theorempool() const { return m_theorempool; }
     SyntaxDAG const & syntaxDAG() const { return m_syntaxDAG; }
     Syntaxioms const & syntaxioms() const { return m_syntaxioms; }
@@ -144,6 +146,7 @@ public:
     bool checkRPN() const;
     void addtheorempool()
     {
+        m_thmpool = usablethms(assiters(), assiters().size(), typecodes());
         m_theorempool = ::theorempool(assiters(), typecodes());
     }
 // Find definitions in assertions.

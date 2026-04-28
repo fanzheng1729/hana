@@ -114,6 +114,10 @@ private:
     // Return true if it has no open hypotheses.
     bool tryass
         (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
+    // Add various moves.
+    // Return true if it has no open hypotheses.
+    bool addmoves
+        (Assiter iter, RPNspans subst, RPNsize size, Moves & moves) const;
     // Add Hypothesis-oriented moves.
     // Return true if it has no open hypotheses.
     bool addhypmoves(pAss pthm, Moves & moves,

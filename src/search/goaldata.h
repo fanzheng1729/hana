@@ -39,6 +39,17 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     // Usable theorems
     Assiters usabletheorems;
     // Maximal abstractions
+    Assiters const & findsubst(Goal const & goal, Assiters const & assiters, nAss limit)
+    {
+        static Assiters const empty;
+        if (usabletheorems.empty()) // Not seen
+            usabletheorems = ::findsubst(goal, assiters, limit);
+        if (usabletheorems.empty()) // No match
+            return usabletheorems.resize(1), empty;
+        return usabletheorems[0] == Assiter() ?
+                empty : // Seen and no match
+                usabletheorems; // Seen and has match
+    }
     bool maxabsfilled;
     GovernedRPNspansbystep maxabs;
 };

@@ -58,8 +58,6 @@ private:
     // Max # of rank in maxranks
     nAss maxranknumber;
 public:
-    // Pool of usable theorems
-    Thmpool thmpool;
     // Problem context
     Environ const * const pProbEnv;
     Environ const & probEnv() const { return *pProbEnv; }
@@ -79,7 +77,6 @@ public:
         numberlimit(std::min(env.assnum(), database.assiters().size())),
         maxranks(database.assmaxranks(env.assertion)),
         maxranknumber(database.syntaxDAG().maxranknumber(maxranks)),
-        thmpool(usablethms(database.assiters(), numberlimit, database.typecodes())),
         pProbEnv(env.assertion.expression.empty() ? Environs::mapped_type() :
                  addProbEnv(env)),
         staged(isstaged && STAGED)

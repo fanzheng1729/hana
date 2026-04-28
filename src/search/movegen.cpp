@@ -56,25 +56,19 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         return Moves();
     Goal const & goal = game.goal();
     // Check goal type code.
-    Thmpool::const_iterator iter =
-    prob().thmpool.find(goal.typecode);
-    if (iter == prob().thmpool.end())
+    Thmpool const & pool = prob().database.thmpool();
+    Thmpool::const_iterator const iter = pool.find(goal.typecode);
+    if (iter == pool.end())
         return Moves();
     // Problem assertion #
     nAss & limit = pProb->numberlimit;
-    // Assiters const & assvec = iter->second;
     // Adjust assertion # limit.
     if (limit > assnum())
         limit = assnum();
-    Assiters & assvec = game.goaldatas().usabletheorems;
-    if (assvec.empty())
-        assvec = iter->second;
-        // assvec = usabletheorems(prob().database.theorempool(), limit,
-        //                         goal.typecode, goal);
-    if (assvec.empty())
-        assvec.resize(1);
-    if (assvec[0] == Assiter())
-        return Moves();
+    // Theorems to be tried
+    Assiters const & assvec = iter->second;
+    // Assiters const & assvec
+    // = game.goaldatas().findsubst(goal, iter->second, limit);
     // Prepare term generator
     initGen();
 
@@ -82,24 +76,18 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     FOR (Assiter iter, assvec)
     {
         Assertion const & ass = iter->second;
-        if (ass.number >= limit) break;
-        if (ontopic(ass))
-            if (stage == 0 ||
-                (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-                if (tryass(game, iter, stage, moves))
-                    return moves; // Move closes the goal.
+        if (ass.number == 0 || ass.number >= limit)
+            continue;
+        if (!ontopic(ass))
+            continue;
+        if (stage == 0 ||
+            (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
+            if (tryass(game, iter, stage, moves))
+                return moves; // Move closes the goal.
     }
     if (stage == 0)
         addabsmoves(game, moves);
     return moves;
-}
-
-static bool findsubst
-    (Game const & game, Assiter iter, RPNspans & subst)
-{
-    Assertion const & ass = iter->second;
-    subst.assign(ass.maxvarid + 1, RPNspan());
-    return findsubst(game.goal(), ass.expRPNAST(), subst);
 }
 
 // Try applying an assertion, and add moves if okay.
@@ -110,9 +98,26 @@ bool Environ::tryass
 // std::cout << "Trying " << iter->first << " with " << goal.expression();
     Assertion const & ass = iter->second;
     RPNspans subst;
-    if (!findsubst(game, iter, subst))
+    if (!findsubst(game.goal(), iter, subst))
         return false;
     // Move with all bound substitutions
+    if (size > 0)
+        return ass.nfreevar() > 0
+            && addhardmoves(Move(&*iter, subst), size, moves);
+    else if (ass.nfreevar() > 0)
+        return assertion.nEhyps() > 0
+            && addhypmoves(&*iter, moves, subst);
+    else
+        return addboundmove(Move(&*iter, subst), moves);
+}
+
+// Add various moves.
+// Return true if it has no open hypotheses.
+bool Environ::addmoves
+    (Assiter iter, RPNspans subst, RPNsize size, Moves & moves) const
+{
+    Assertion const & ass = iter->second;
+
     if (size > 0)
         return ass.nfreevar() > 0
             && addhardmoves(Move(&*iter, subst), size, moves);
