@@ -126,23 +126,6 @@ bool findsubst
     subst.assign(ass.maxvarid + 1, RPNspan());
     return findsubst(goal, ass.expRPNAST(), subst);
 }
-Assiters findsubst
-    (Goal const & goal, Assiters const & assiters, nAss limit)
-{
-    Assiters result;
-
-    FOR (Assiter const iter, assiters)
-    {
-        nAss n = iter->second.number;
-        if (n == 0 || n >= limit)
-            continue;
-        RPNspans subst;
-        if (findsubst(goal, iter, subst))
-            result.push_back(iter);
-    }
-
-    return result;
-}
 
 // Return true if span1 has all the variables in span2
 static bool hasallvars(RPNspan span1, RPNspan span2)

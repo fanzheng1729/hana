@@ -82,23 +82,16 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
             continue;
         if (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-            if (tryass(game, iter, stage, moves))
+        {
+            RPNspans subst;
+            if (findsubst(game.goal(), iter, subst) &&
+                addmoves(iter, subst, stage, moves))
                 return moves; // Move closes the goal.
+        }
     }
     if (stage == 0)
         addabsmoves(game, moves);
     return moves;
-}
-
-// Try applying an assertion, and add moves if okay.
-// Return true if it has no open hypotheses.
-bool Environ::tryass
-    (Game const & game, Assiter iter, RPNsize size, Moves & moves) const
-{
-// std::cout << "Trying " << iter->first << " with " << goal.expression();
-    RPNspans subst;
-    return findsubst(game.goal(), iter, subst)
-        && addmoves(iter, subst, size, moves);
 }
 
 // Add various moves.

@@ -16,8 +16,6 @@ struct Goal;
 bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst);
 bool findsubst
     (Goal const & goal, Assiter iter, RPNspans & subst);
-Assiters findsubst
-    (Goal const & goal, Assiters const & assiters, nAss limit);
 
 // All maximal abstractions governed by a syntax axiom.
 GovernedRPNspansbystep maxabs(RPNspanAST exp);

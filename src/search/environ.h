@@ -110,10 +110,6 @@ private:
     bool addboundmove(Move const & move, Moves & moves) const;
     // Add a conjectural move. Return true if it has no open hypotheses.
     bool addconjmove(Move const & move, Moves & moves) const;
-    // Try applying an assertion, and add moves if okay.
-    // Return true if it has no open hypotheses.
-    bool tryass
-        (Game const & game, Assiter iter, RPNsize size, Moves & moves) const;
     // Add various moves.
     // Return true if it has no open hypotheses.
     bool addmoves
