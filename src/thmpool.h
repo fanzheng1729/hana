@@ -22,6 +22,11 @@ struct Theorempool : private SimpTree<Theorempoolnode>
             Theorempoolnode node(rpn, Assiters());
             return insertordered(node);
         }
+        pNode at(RPN const & rpn) const
+        {
+            Theorempoolnode node(rpn, Assiters());
+            return findordered(node);
+        }
     };
 };
 
