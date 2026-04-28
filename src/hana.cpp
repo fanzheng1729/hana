@@ -103,11 +103,6 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     std::cout << " done in " << timer << 's' << std::endl;
 
-    bool checkassiters
-        (Assertions const & assertions, Assiters const & assiters);
-    if (!checkassiters(database.assertions(), database.assiters()))
-        return std::cout << "Bad assiters" << std::endl, EXIT_FAILURE;
-
     if (!addRPN(database))
         return EXIT_FAILURE;
 

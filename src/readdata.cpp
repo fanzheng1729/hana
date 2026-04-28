@@ -706,18 +706,16 @@ bool Imp::read(Tokens::size_type const upto)
 
 // Read data from tokens. Returns true if okay.
 bool Database::read(Tokens & tokens, Comments const & comments,
-                    Tokens::size_type upto)
+                    Tokens::size_type const upto)
 {
     clear();
 
-    // Comment info
-    Commands const commands(comments["$j"]);
-//std::cout << "$j commands\n" << commands;
-    m_commentinfo.typecodes = Typecodes(commands["syntax"], commands["bound"]);
-//std::cout << "Syntax type codes: " << typecodes;
-//std::cout << "Bound type codes: " << commands["bound"];
-    m_commentinfo.ctordefns = Ctordefns(commands["definition"], commands["primitive"]);
-//std::cout << "Constructor definitions: " << ctordefns;
+// Additional information comments ($4.4.3)
+    m_commentinfo = Commentinfo(comments["$j"]);
 
-    return Imp(*this, tokens, comments).read(upto);
+    bool checkassiters
+        (Assertions const & assertions, Assiters const & assiters);
+
+    return Imp(*this, tokens, comments).read(upto)
+        && checkassiters(assertions(), assiters());
 }

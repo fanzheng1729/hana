@@ -39,6 +39,12 @@ struct Commentinfo
 {
     Typecodes typecodes;
     Ctordefns ctordefns;
+// Syntax and definition comments ($4.4.3)
+    Commentinfo(Commands const & commands = Commands())
+    {
+        typecodes = Typecodes(commands["syntax"], commands["bound"]);
+        ctordefns = Ctordefns(commands["definition"], commands["primitive"]);
+    }
 };
 
 #endif // COMMENT_H_INCLUDED
