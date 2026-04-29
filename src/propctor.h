@@ -22,6 +22,8 @@ std::ostream & operator<<(std::ostream & out, Propctor const & propctor);
 // Map: propositional syntax constructor label -> data
 struct Propctors : std::map<strview, Propctor>
 {
+    Propctors() {}
+    Propctors(class Database const & database);
 // Return true if data for all propositional syntax constructor are okay.
     bool check(Definitions const & definitions) const;
 // Print all propositional syntax constructors with truth tables.

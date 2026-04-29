@@ -75,14 +75,9 @@ bool addRPN(Database & database)
     return database.checkdefinitions();
 }
 
-void loadpropctors(Database & database)
-{
-    database.loadpropctors();
-}
-
 bool loadprop(Database & database)
 {
-    loadpropctors(database);
+    database.loadpropctors(database);
     Propctors const & propctors = database.propctors();
     if (!propctors.check(database.definitions())) return false;
 

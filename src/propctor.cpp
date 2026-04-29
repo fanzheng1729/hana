@@ -1,5 +1,6 @@
 #include <algorithm>    // for std::find
 #include "ass.h"
+#include "database.h"
 #include "io.h"
 #include "proof/analyze.h"
 #include "proof/skeleton.h"
@@ -27,26 +28,34 @@ std::ostream & operator<<(std::ostream & out, Propctor const & propctor)
     return out;
 }
 
-// If a syntax constructor is propositional,
-// i.e., if all hypotheses and conclusion are floating and begins with "wff",
-// Return the size of its truth table. Otherwise return 0.
-static TTindex truthtablesize(Assertion const & ass)
+Propctors::Propctors(class Database const & database)
 {
-    static const char wff[] = "wff";
-    if (ass.exptypecode() != wff)
-        return 0;
-
-    TTindex result = 1;
-
-    for (Hypsize i = 0; i < ass.nhyps(); ++i)
+    static const bool tts[][1 << 3] =
     {
-        if (!ass.hypfloats(i) || ass.hyptypecode(i) != wff)
-            return 0;
-
-        result *= 2;
-    }
-
-    return result;
+        {1, 0, 0, 1},   // equalities
+        {1, 0, 1, 1},   // implications
+        {1, 0},         // negations
+        {0, 0, 0, 1},   // conjunctions
+        {0, 1, 1, 1},   // disjunctions
+        {0, 0, 0, 0, 0, 0, 0, 1},   // 3conjunctions
+        {0, 1, 1, 1, 1, 1, 1, 1},   // 3disjunctions
+    };
+    static const unsigned maskpatterns[][2] =
+    {
+        {Relations::EQUIVALENCE, Relations::EQUIVALENCE},
+        {Relations::AX1, Relations::AX1},
+        {Relations::ID12,Relations::ID2},
+        {Relations::AND, Relations::AND},
+        {Relations::OR,  Relations::OR},
+        {Relations::A3AN,Relations::A3AN},
+        {Relations::O3OR,Relations::O3OR},
+    };
+    // Find propositional syntax axioms.
+    for (int i = 0; i < sizeof(tts)/sizeof(*tts); ++i)
+        addbatch
+        (database.relations(maskpatterns[i][0], maskpatterns[i][1]), tts[i]);
+    
+    adddefs(database.definitions());
 }
 
 // Return true the data of a propositional syntax constructor is okay.
@@ -89,6 +98,28 @@ void Propctors::printtruthtables() const
 {
     FOR (const_reference propctor, *this)
         std::cout << propctor.first << '\t' << propctor.second.truthtable;    
+}
+
+// If a syntax constructor is propositional,
+// i.e., if all hypotheses and conclusion are floating and begins with "wff",
+// Return the size of its truth table. Otherwise return 0.
+static TTindex truthtablesize(Assertion const & ass)
+{
+    static const char wff[] = "wff";
+    if (ass.exptypecode() != wff)
+        return 0;
+
+    TTindex result = 1;
+
+    for (Hypsize i = 0; i < ass.nhyps(); ++i)
+    {
+        if (!ass.hypfloats(i) || ass.hyptypecode(i) != wff)
+            return 0;
+
+        result *= 2;
+    }
+
+    return result;
 }
 
 // Add a batch of definitions with a given truth table.

@@ -155,33 +155,9 @@ public:
         return ::checkdefinitions(definitions(), typecodes());
     }
 // Load data related to propositional calculus.
-    void loadpropctors()
+    void loadpropctors(Propctors const & propctors)
     {
-        static const bool tts[][1 << 3] =
-        {
-            {1, 0, 0, 1},   // equalities
-            {1, 0, 1, 1},   // implications
-            {1, 0},         // negations
-            {0, 0, 0, 1},   // conjunctions
-            {0, 1, 1, 1},   // disjunctions
-            {0, 0, 0, 0, 0, 0, 0, 1},   // 3conjunctions
-            {0, 1, 1, 1, 1, 1, 1, 1},   // 3disjunctions
-        };
-        static const unsigned maskpatterns[][2] =
-        {
-            {Relations::EQUIVALENCE, Relations::EQUIVALENCE},
-            {Relations::AX1, Relations::AX1},
-            {Relations::ID12,Relations::ID2},
-            {Relations::AND, Relations::AND},
-            {Relations::OR,  Relations::OR},
-            {Relations::A3AN,Relations::A3AN},
-            {Relations::O3OR,Relations::O3OR},
-        };
-        // Find propositional syntax axioms.
-        for (int i = 0; i < sizeof(tts)/sizeof(*tts); ++i)
-            m_propctors.addbatch
-            (relations(maskpatterns[i][0], maskpatterns[i][1]), tts[i]);
-        m_propctors.adddefs(definitions());
+        m_propctors = propctors;
     }
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()
