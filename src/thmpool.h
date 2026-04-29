@@ -99,6 +99,7 @@ struct Theorempool : private SimpTree<Theorempoolnode>
             p = p.at(rpn);
         return p;
     }
+    Assiters matches(RPNspanAST exp) const;
 };
 
 #endif // THMPOOL_H_INCLUDED
