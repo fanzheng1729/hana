@@ -91,14 +91,19 @@ bool testpropsearch
     // Test assertions
     Assiters const & assiters = database.assiters();
     nAss const all = assiters.size();
-    std::map<RPN, Assiters> map;
+    Theorempool pool;
     for (nAss i = 1; i < all; ++i)
     // for (nAss i = 1638; i < all; ++i)
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
-// printass(*iter);
-// std::cout << profile(iter->second.expRPNAST()), std::cin.get();
+printass(*iter);
+RPNs const & prf = profile(iter->second.expRPNAST());
+Theorempool::pNode p = pool[prf];
+p->second.push_back(iter);
+FOR (Assiter it, p->second)
+std::cout << it->first << ' ';
+std::cin.get();
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))
             continue;
