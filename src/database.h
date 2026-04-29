@@ -6,8 +6,6 @@
 #include "proof/analyze.h"
 #include "propctor.h"
 #include "relation.h"
-#include "search/goal.h"
-#include "stat.h"
 #include "syntaxDAG.h"
 #include "syntaxiom.h"
 #include "util/for.h"
@@ -184,21 +182,6 @@ public:
             m_propctors.addbatch
             (relations(maskpatterns[i][0], maskpatterns[i][1]), tts[i]);
         m_propctors.adddefs(definitions());
-    }
-// Mark propositional assertions. Return its number.
-    nAss markpropassertions()
-    {
-        nAss n = 0;
-        FOR (Assertions::reference rass, m_assertions)
-        {
-            Assertion & ass = rass.second;
-            bool isprop = maxsymboldefnumber(ass,propctors(), Syntaxioms(), 1);
-            ass.settype(isprop * Asstype::PROPOSITIONAL);
-            // Check if it is propositional and starts with a non-primitive type code.
-            if (isprop && typecodes().isprimitive(ass.exptypecode()) == FALSE)
-                ++n;
-        }
-        return n;
     }
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()

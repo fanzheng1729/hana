@@ -5,6 +5,7 @@
 #include "proof/skeleton.h"
 #include "propctor.h"
 #include "relation.h"
+#include "stat.h"
 #include "typecode.h"
 #include "util/arith.h"
 #include "util/find.h"
@@ -333,6 +334,25 @@ bool Propctors::checkpropsat(Assertion const & ass) const
 {
     CNFClauses const & clauses(cnf(ass));
     return !unexpected(clauses.sat(), "unsound CNF", clauses);
+}
+
+// Mark propositional assertion. Return true if it is.
+bool Propctors::markass
+(Assertion & ass, struct Typecodes const & typecodes) const
+{
+    bool isprop = maxsymboldefnumber(ass, *this, Syntaxioms(), 1);
+    ass.settype(isprop * Asstype::PROPOSITIONAL);
+    return isprop && typecodes.isprimitive(ass.exptypecode()) == FALSE;
+}
+
+// Mark propositional assertions. Return its number.
+nAss Propctors::markassertions
+(Assertions & assertions, struct Typecodes const & typecodes) const
+{
+    nAss n = 0;
+    FOR (Assertions::reference rass, assertions)
+        n += markass(rass.second, typecodes);
+    return n;
 }
 
 // Return true if all propositional assertions are sound.

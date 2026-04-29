@@ -75,6 +75,33 @@ bool addRPN(Database & database)
     return database.checkdefinitions();
 }
 
+void loadpropctors(Database & database)
+{
+    database.loadpropctors();
+}
+
+bool loadprop(Database & database)
+{
+    loadpropctors(database);
+    Propctors const & propctors = database.propctors();
+    if (!propctors.check(database.definitions())) return false;
+
+    printpercent(propctors.markassertions
+                 (const_cast<Assertions&>(database.assertions()),
+                 database.typecodes()), "/",
+                 database.assertions().size(), " propositional assertions\n");
+    return true;
+}
+
+bool checkprop(Database const & database)
+{
+    Timer timer;
+    if (!database.propctors().checkpropsat
+        (database.assertions(), database.typecodes())) return false;
+    std::cout << "checked in " << timer << 's' << std::endl;
+    return true;
+}
+
 int main(int argc, char * argv[])
 {
     if (argc <= 1) return test();
@@ -113,17 +140,8 @@ int main(int argc, char * argv[])
     database.buildsyntaxDAG();
     std::cout << database.syntaxDAG();
 
-    database.loadpropctors();
-    if (!database.propctors().check(database.definitions()))
+    if (!loadprop(database) || !checkprop(database))
         return EXIT_FAILURE;
-
-    printpercent(database.markpropassertions(), "/",
-                 database.assertions().size(), " propositional assertions\n");
-    timer.reset();
-    if (!database.propctors().checkpropsat
-        (database.assertions(), database.typecodes()))
-        return EXIT_FAILURE;
-    std::cout << "checked in " << timer << 's' << std::endl;
 
     Param param = Param::default;
     // param.update(paramfilename);

@@ -66,6 +66,12 @@ struct Propctors : std::map<strview, Propctor>
             cnf.clear();
         return cnf;
     }
+// Mark propositional assertion. Return true if it is.
+    bool markass
+    (Assertion & ass, struct Typecodes const & typecodes) const;
+// Mark propositional assertions. Return its number.
+    nAss markassertions
+    (Assertions & assertions, struct Typecodes const & typecodes) const;
 // Return true if a propositional assertion is sound.
     bool checkpropsat(Assertion const & ass) const;
 // Return true if all propositional assertions are sound.
