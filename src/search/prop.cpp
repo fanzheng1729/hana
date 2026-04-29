@@ -97,7 +97,8 @@ bool testpropsearch
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
-std::cout << profile(iter->second.expRPNAST()), std::cin.get();
+// printass(*iter);
+// std::cout << profile(iter->second.expRPNAST()), std::cin.get();
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))
             continue;
