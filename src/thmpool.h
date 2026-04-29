@@ -70,7 +70,7 @@ RPNs profile(RPNspanAST exp)
 
 struct Theorempool : private SimpTree<Theorempoolnode>
 {
-    Theorempool() : SimpTree(Theorempoolnode(RPN(1), Assiters())) {}
+    Theorempool() : SimpTree(Theorempoolnode()) {}
     struct pNode : SimpTree::pNode
     {
         pNode(SimpTree::pNode node) : SimpTree::pNode(node) {}
