@@ -66,8 +66,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     if (limit > assnum())
         limit = assnum();
     // Theorems to be tried
-    Goaldatas & datas = game.goaldatas();
-    Assiters const & assvec = *(datas.passiters = &iter->second);
+    Assiters const & assvec = iter->second;
+    // Goaldatas & datas = game.goaldatas();
+    // datas.passiters = &assvec;
     // datas.substitutions.resize(assvec.size());
     // datas.seen.resize(assvec.size());
     // Prepare term generator

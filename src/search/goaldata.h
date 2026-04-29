@@ -39,17 +39,17 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     // Usable theorems
     Assiters const * passiters;
     // Corresponding substitutions
-    Bvector seen;
+    std::vector<int> seen;
     std::vector<RPNspans> substitutions;
     RPNspans const & findsubst(Goal const & goal, nAss index)
     {
+        static RPNspans const empty;
         RPNspans & spans = substitutions[index];
-        if (seen[index]) return spans;
-        // new
-        if (!::findsubst(goal, (*passiters)[index], spans))
-            spans.clear();
-        seen[index] = true;
-        return spans;
+        Assiter const iter = (*passiters)[index];
+        if (!seen[index])
+            seen[index] = ::findsubst(goal, iter, spans) ? 1 : 2;
+        // seen
+        return seen[index] == 1 ? spans : empty;
     }
     // Maximal abstractions
     bool maxabsfilled;
