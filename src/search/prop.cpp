@@ -97,13 +97,12 @@ bool testpropsearch
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
-printass(*iter);
-RPNs const & prf = profile(iter->second.expRPNAST());
-Theorempool::pNode p = pool[prf];
-p->second.push_back(iter);
-FOR (Assiter it, p->second)
-std::cout << it->first << ' ';
-std::cin.get();
+// printass(*iter);
+// Theorempool::pNode p = pool[profile(iter->second.expRPNAST())];
+// p->second.push_back(iter);
+// std::cout << p->second.size() << ' ';
+// std::cout << pool.matches(iter->second.expRPNAST()).size() << '\n';
+
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))
             continue;

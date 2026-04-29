@@ -44,8 +44,9 @@ typedef bool(* Compstep)(RPNstep, RPNstep);
 // Begin and end of a sequence of proof steps
 struct RPNspan : std::pair<RPNiter, RPNiter>
 {
-    RPNspan(RPNiter begin = RPNiter(), RPNiter end = RPNiter())
-        { first = begin, second = end; }
+    RPNspan() {}
+    RPNspan(RPNiter begin, RPNiter end) :
+        std::pair<RPNiter, RPNiter>(begin, end) {}
     RPNspan(RPN const & exp) :
         std::pair<RPNiter, RPNiter>(exp.begin(), exp.end()) {}
     bool empty() const { return second == first; }
