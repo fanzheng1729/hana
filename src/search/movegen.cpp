@@ -69,7 +69,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     Goaldatas & datas = game.goaldatas();
     Assiters const & assvec = *(datas.passiters = &iter->second);
     datas.substitutions.resize(assvec.size());
-    datas.seen.resize(assvec.size());
+    // datas.seen.resize(assvec.size());
     // Prepare term generator
     initGen();
     // All candidate substitutions
@@ -82,8 +82,13 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
             continue;
         if (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-            if (addmoves(assiter, datas.findsubst(goal, i), stage, moves))
+        {
+            RPNspans subst;
+            if (::findsubst(goal, assiter, subst)
+                && addmoves(assiter, subst, stage, moves))
+            // if (addmoves(assiter, datas.findsubst(goal, i), stage, moves))
                 return moves;
+        }
     }
     if (stage == 0)
         addabsmoves(game, moves);
