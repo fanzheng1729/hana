@@ -67,23 +67,22 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         limit = assnum();
     // Theorems to be tried
     Goaldatas & datas = game.goaldatas();
-    Assiters const & assvec = datas.findsubst(goal, iter->second, limit);
+    Assiters const & assvec = *(datas.passiters = &iter->second);
+    datas.substitutions.resize(assvec.size());
+    datas.seen.resize(assvec.size());
     // Prepare term generator
     initGen();
     // All candidate substitutions
-    std::vector<RPNspans> const & substvec = datas.substitutions;
     Moves moves;
     for (nAss i = 0; i < assvec.size(); ++i)
     {
-        Assiter const iter = assvec[i];
-        if (iter == Assiter())
-            continue;
-        Assertion const & ass = iter->second;
+        Assiter const assiter = assvec[i];
+        Assertion const & ass = assiter->second;
         if (ass.number == 0 || ass.number >= limit || !ontopic(ass))
             continue;
         if (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
-            if (addmoves(iter, substvec[i], stage, moves))
+            if (addmoves(assiter, datas.findsubst(goal, i), stage, moves))
                 return moves;
     }
     if (stage == 0)
@@ -96,6 +95,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
 bool Environ::addmoves
     (Assiter iter, RPNspans subst, RPNsize size, Moves & moves) const
 {
+    if (subst.empty())
+        return false;
+
     Assertion const & ass = iter->second;
 
     if (size > 0)

@@ -37,34 +37,21 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     bool proven() const { return !proof.empty(); }
     Goaldatas() : maxabsfilled(false) {}
     // Usable theorems
-    Assiters usabletheorems;
+    Assiters const * passiters;
     // Corresponding substitutions
+    Bvector seen;
     std::vector<RPNspans> substitutions;
-    // Maximal abstractions
-    Assiters const & findsubst(Goal const & goal, Assiters const & assiters, nAss limit)
+    RPNspans const & findsubst(Goal const & goal, nAss index)
     {
-        static Assiters const empty;
-        usabletheorems.reserve(limit);
-        substitutions.reserve(limit);
-        if (usabletheorems.empty()) // Not seen
-            FOR (Assiter const iter, assiters)
-            {
-                nAss const n = iter->second.number;
-                if (n == 0 || n >= limit) continue;
-                RPNspans subst;
-                if (::findsubst(goal, iter, subst))
-                {
-                    usabletheorems.push_back(iter);
-                    substitutions.push_back(RPNspans());
-                    substitutions.back().swap(subst);
-                }
-            }
-        if (usabletheorems.empty()) // No match
-            return usabletheorems.resize(1), empty;
-        return usabletheorems[0] == Assiter() ?
-                empty : // Seen and no match
-                usabletheorems; // Seen and has match
+        RPNspans & spans = substitutions[index];
+        if (seen[index]) return spans;
+        // new
+        if (!::findsubst(goal, (*passiters)[index], spans))
+            spans.clear();
+        seen[index] = true;
+        return spans;
     }
+    // Maximal abstractions
     bool maxabsfilled;
     GovernedRPNspansbystep maxabs;
 };
