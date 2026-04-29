@@ -68,7 +68,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     // Theorems to be tried
     Goaldatas & datas = game.goaldatas();
     Assiters const & assvec = *(datas.passiters = &iter->second);
-    datas.substitutions.resize(assvec.size());
+    // datas.substitutions.resize(assvec.size());
     // datas.seen.resize(assvec.size());
     // Prepare term generator
     initGen();
