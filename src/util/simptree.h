@@ -142,7 +142,7 @@ public:
             Children const * p = children();
             if (!p) return pNode();
             typename Children::const_iterator iter =
-            std::lower_bound(p->begin(), p->end(), t);
+            std::lower_bound(p->begin(), p->end(), TreeNode(t));
             return (iter == p->end() || *iter != t) ? pNode() : *iter;
         }
         // Add a child. Return the pointer to the child.
