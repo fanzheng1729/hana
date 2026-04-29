@@ -3,6 +3,7 @@
 
 #include "comment.h"
 #include "def.h"
+#include "info.h"
 #include "proof/analyze.h"
 #include "propctor.h"
 #include "relation.h"
@@ -26,6 +27,7 @@ class Database
     Relationmap m_relations;
     Definitions m_definitions;
     Propctors m_propctors;
+    Info m_info;
 public:
     Database() : m_assiters(1) { addvar(""); }
     bool read(Tokens & tokens, Comments const & comments,
@@ -158,6 +160,7 @@ public:
     void loadpropctors(Propctors const & propctors)
     {
         m_propctors = propctors;
+        // m_info.set("propctors", propctors);
     }
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()
