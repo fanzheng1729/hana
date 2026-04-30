@@ -166,6 +166,15 @@ void Problem::printmainline(pNode p, size_type detail) const
             (*printfn[p->game().attempt.isdefer()])(p),
             p->game().attempt.printconj();
 // std::cout << "Children printed" << std::endl;
+    if (p->game().proven())
+    {
+        if (askyn("Show proof y/n?"))
+        {
+            Printer printer(&database.typecodes());
+            printer.str(indentations(ast(proof())));
+        }
+        return;
+    }
     size_type level = 0, nDefer = 0;
     while (p = pickchild(p))
         if (!isourturn(p))
