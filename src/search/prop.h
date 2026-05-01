@@ -13,7 +13,7 @@
 struct Prop : Environ
 {
     Prop(Assertion const & ass, Propctors const & propctors,
-         double wfactor, std::size_t maxsize = -1) :
+         double wfactor = 0, std::size_t maxsize = -1) :
         Environ(ass, maxsize),
         allhypsCNF(propctors.hypscnf(ass, hypnatoms)),
         weightfactor(wfactor)
