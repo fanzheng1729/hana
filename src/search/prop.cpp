@@ -108,13 +108,14 @@ bool testpropsearch
             continue;
 
         // Skip non propositional theorems.
-        static const Prop prop1(ass, database.propctors());
+        static const Prop prop1(ass, GETINFO(database, Propctors));
         if (!(prop1.ontopic(ass)))
             continue;
 
         // Try search proof.
         ++allprop;
-        const   Prop prop(ass, database.propctors(), param.weightfactor, param.maxsize);
+        const   Prop prop(ass, GETINFO(database, Propctors),
+                            param.weightfactor, param.maxsize);
         const   MCTSParams v = {0, param.exploration};
         Problem tree(prop, database, v, param.staged);
         const   Treesize treesize = testsearch(iter, tree, param.maxsize);

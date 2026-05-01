@@ -4,6 +4,7 @@
 #include "database.h"
 #include "io.h"
 #include "param.h"
+#include "propctor.h"
 #include "search/problem.h"
 #include "sect.h"
 #include "token.h"
@@ -77,11 +78,10 @@ bool addRPN(Database & database)
 
 bool loadprop(Database & database)
 {
-    database.loadpropctors(database);
-    Propctors const & propctors = database.propctors();
-    if (!propctors.check(database.definitions())) return false;
+    Propctors const * p = database.info().set("Propctors", Propctors(database));
+    if (!p->check(database.definitions())) return false;
 
-    printpercent(propctors.markassertions
+    printpercent(p->markassertions
                  (const_cast<Assertions&>(database.assertions()),
                  database.typecodes()), "/",
                  database.assertions().size(), " propositional assertions\n");
@@ -91,7 +91,7 @@ bool loadprop(Database & database)
 bool checkprop(Database const & database)
 {
     Timer timer;
-    if (!database.propctors().checkpropsat
+    if (!GETINFO(database, Propctors).checkpropsat
         (database.assertions(), database.typecodes())) return false;
     std::cout << "checked in " << timer << 's' << std::endl;
     return true;

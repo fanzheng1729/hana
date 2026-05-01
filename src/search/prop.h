@@ -5,6 +5,7 @@
 #include <new>      // for std::nothrow
 #include "../database.h"
 #include "environ.h"
+#include "../propctor.h"
 #include "../util/filter.h"
 #include "../util/find.h"
 #include "../util/for.h"
@@ -14,7 +15,7 @@ struct Prop : Environ
 {
     Prop(Assertion const & ass, Propctors const & propctors,
          double wfactor = 0, std::size_t maxsize = -1) :
-        Environ(ass, maxsize),
+        Environ(ass, maxsize), propctors(propctors),
         allhypsCNF(propctors.hypscnf(ass, hypnatoms)),
         weightfactor(wfactor)
     {
@@ -26,9 +27,6 @@ struct Prop : Environ
         for (Hypsize i = 0; i < ass.nhyps(); ++i)
             hypsweight += weight(ass.hypRPN(i));
     }
-    // Propositional syntax constructors
-    Propctors const & propctors() const
-    { return prob().database.propctors(); }
     // Return true if an assertion is on topic/useful.
     virtual bool ontopic(Assertion const & ass) const
     { return ass.testtype(Asstype::PROPOSITIONAL); }
@@ -39,7 +37,7 @@ struct Prop : Environ
         CNFClauses cnf;
         // Add and negate Conclusion.
         Atom n = hypnatoms;
-        if (propctors().addformula
+        if (propctors.addformula
             (goal.rpn, goal.ast, assertion.hypiters, cnf, n))
             cnf.closeoff(n - 1, neg);
         else
@@ -113,8 +111,10 @@ struct Prop : Environ
     {
         if (!pProb) return NULL;
         return new(std::nothrow)
-        Prop(ass, prob().database.propctors(), weightfactor, m_maxmoves);
+        Prop(ass, propctors, weightfactor, m_maxmoves);
     }
+    // Propositional syntax constructors
+    Propctors const & propctors;
 private:
     // Add moves with free variables.
     // Return true if it has no open hypotheses.

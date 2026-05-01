@@ -5,7 +5,6 @@
 #include "def.h"
 #include "info.h"
 #include "proof/analyze.h"
-#include "propctor.h"
 #include "relation.h"
 #include "syntaxDAG.h"
 #include "syntaxiom.h"
@@ -26,7 +25,6 @@ class Database
     Commentinfo m_commentinfo;
     Relationmap m_relations;
     Definitions m_definitions;
-    Propctors m_propctors;
     Info m_info;
 public:
     Database() : m_assiters(1) { addvar(""); }
@@ -82,7 +80,10 @@ public:
     Relations disjunctions3() const
     { return relations(Relations::O3OR, Relations::O3OR); }
     Definitions const & definitions() const { return m_definitions; }
-    Propctors const & propctors() const { return m_propctors; }
+    Info & info() { return m_info; }
+    Info const & info() const { return m_info; }
+    #define GETINFO(database, key) \
+    (*(database).info().get<key>(#key))
     bool hasconst(strview str) const { return m_constants.count(str); }
     bool addconst(strview str) { return m_constants.insert(str).second; }
     VarIDmap::size_type nvar() const { return varIDmap().size() - 1; }
@@ -156,32 +157,25 @@ public:
     {
         return ::checkdefinitions(definitions(), typecodes());
     }
-// Load data related to propositional calculus.
-    void loadpropctors(Propctors const & propctors)
-    {
-        m_propctors = propctors;
-        // m_info.set("propctors", propctors);
-    }
 // Build DAG of syntaxioms.
     void buildsyntaxDAG()
     {
         return;
-        Syntaxioms const & prims = primitivesyntaxioms();
-        Propctors  const & props = propctors();
-        FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
-        {
-            strview const label = syntaxiom.first;
-            nAss const n = syntaxiom.second.pass->second.number;
-            strview rank = "other";
+        // Syntaxioms const & prims = primitivesyntaxioms();
+        // FOR (Syntaxioms::const_reference syntaxiom, syntaxioms())
+        // {
+        //     strview const label = syntaxiom.first;
+        //     nAss const n = syntaxiom.second.pass->second.number;
+        //     strview rank = "other";
 
-            if (props.count(label))
-                if (prims.count(label))
-                    continue;
-                else
-                    rank = label;
+        //     if (GETINFO(*this, Propctors).count(label))
+        //         if (prims.count(label))
+        //             continue;
+        //         else
+        //             rank = label;
 
-            m_syntaxDAG.addsyntax(label, n, rank);
-        }
+        //     m_syntaxDAG.addsyntax(label, n, rank);
+        // }
         FOR (Definitions::const_reference def, definitions())
             if (pAss const pdef = def.second.pdef)
                 m_syntaxDAG.adddef(def.first, pdef->second.expRPN);
