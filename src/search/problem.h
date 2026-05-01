@@ -146,9 +146,9 @@ public:
     void reval();
     // Proof of the assertion, if not empty
     RPN const & proof() const { return root()->game().proof(); }
-// Stats
     // Return true if proof() solves the problem *iter.
     bool checkproof(Assiter iter) const;
+// Stats
     // # goals of a given status
     Goals::size_type nGoal(int status) const;
     // # proven goals
