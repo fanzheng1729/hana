@@ -418,13 +418,14 @@ void Problem::printabs() const
 
 std::string Problem::proofstr(pNode p) const
 {
-    RPN const & rpn = p->game().proof();
-    if (rpn.empty())
-        return "";
-
+    Game const & game = p->game();
+    RPN const & rpn = game.proof();
     Printer printer(&database.typecodes());
-    verify(rpn, printer);
-    return printer.str(indentations(ast(rpn)));
+    Expression const & conclusion(verify(rpn, printer));
+    Expression const & expression(game.goal().expression());
+
+    return checkconclusion("", conclusion, expression) ?
+            printer.str(indentations(ast(rpn))) : "";
 }
 
 void Problem::writeproof(const char * const filename) const
@@ -432,7 +433,7 @@ void Problem::writeproof(const char * const filename) const
     if (!filename)
         return;
 
-    std::string const & str(proofstr(root()));
+    std::string const & str(proofstr());
     if (str.empty())
         return;
 

@@ -209,6 +209,7 @@ public:
     void navigate(bool detailed = true) const { navigate(root(), detailed); }
     void printabs() const;
     std::string proofstr(pNode p) const;
+    std::string proofstr() const { return proofstr(root()); }
     void writeproof(const char * const filename) const;
     virtual ~Problem()
     {
