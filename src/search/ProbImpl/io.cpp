@@ -169,10 +169,7 @@ void Problem::printmainline(pNode p, size_type detail) const
     if (p->game().proven())
     {
         if (askyn("Show proof y/n?"))
-        {
-            Printer printer(&database.typecodes());
-            printer.str(indentations(ast(proof())));
-        }
+            std::cout << proofstr(p);
         return;
     }
     size_type level = 0, nDefer = 0;
@@ -419,16 +416,27 @@ void Problem::printabs() const
         std::cout << verify(absRPN.first);
 }
 
-void Problem::writeproof(const char * const filename) const
+std::string Problem::proofstr(pNode p) const
 {
-    if (proof().empty() || !filename)
-        return;
+    RPN const & rpn = p->game().proof();
+    if (rpn.empty())
+        return "";
 
     Printer printer(&database.typecodes());
-    verify(proof(), printer);
+    verify(rpn, printer);
+    return printer.str(indentations(ast(rpn)));
+}
+
+void Problem::writeproof(const char * const filename) const
+{
+    if (!filename)
+        return;
+
+    std::string const & str(proofstr(root()));
+    if (str.empty())
+        return;
 
     std::ofstream out(filename);
-
     if (out)
-        out << printer.str(indentations(ast(proof())));
+        out << str;
 }
