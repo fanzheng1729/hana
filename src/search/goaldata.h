@@ -36,21 +36,6 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     RPN proof;
     bool proven() const { return !proof.empty(); }
     Goaldatas() : maxabsfilled(false) {}
-    // Usable theorems
-    Assiters const * passiters;
-    // Corresponding substitutions
-    std::vector<int> seen;
-    std::vector<RPNspans> substitutions;
-    RPNspans const & findsubst(Goal const & goal, nAss index)
-    {
-        static RPNspans const empty;
-        RPNspans & spans = substitutions[index];
-        Assiter const iter = (*passiters)[index];
-        if (!seen[index])
-            seen[index] = ::findsubst(goal, iter, spans) ? 1 : 2;
-        // seen
-        return seen[index] == 1 ? spans : empty;
-    }
     // Maximal abstractions
     bool maxabsfilled;
     GovernedRPNspansbystep maxabs;

@@ -3,6 +3,7 @@
 #include "../io.h"
 #include "printer.h"
 #include "../typecode.h"
+#include "../util/for.h"
 #include "../util/hex.h"
 #include "verify.h"
 

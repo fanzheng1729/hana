@@ -8,6 +8,7 @@
 #include "relation.h"
 #include "syntaxDAG.h"
 #include "syntaxiom.h"
+#include "thmpool.h"
 #include "util/for.h"
 // #include "io.h"
 class Database
@@ -19,7 +20,7 @@ class Database
     Hypotheses m_hypotheses;
     Assertions m_assertions;
     Assiters m_assiters;
-    Thmpool m_thmpool;
+    Theorempools m_theorempools;
     SyntaxDAG m_syntaxDAG;
     Syntaxioms m_syntaxioms;
     Commentinfo m_commentinfo;
@@ -36,7 +37,7 @@ public:
     Hypotheses const & hypotheses() const { return m_hypotheses; }
     Assertions const & assertions() const { return m_assertions; }
     Assiters const & assiters() const { return m_assiters; }
-    Thmpool const & thmpool() const { return m_thmpool; }
+    Theorempools const & theorempools() const { return m_theorempools; }
     SyntaxDAG const & syntaxDAG() const { return m_syntaxDAG; }
     Syntaxioms const & syntaxioms() const { return m_syntaxioms; }
     Syntaxioms primitivesyntaxioms() const
@@ -145,7 +146,9 @@ public:
     bool checkRPN() const;
     void addtheorempool()
     {
-        m_thmpool = usablethms(assiters(), assiters().size(), typecodes());
+        Theorempools usabletheorems
+            (Assiters const & assiters, struct Typecodes const & typecodes);
+        m_theorempools = usabletheorems(assiters(), typecodes());
     }
 // Find definitions in assertions.
     void loaddefinitions()

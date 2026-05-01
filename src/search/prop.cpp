@@ -77,7 +77,7 @@ static void printtime(Treesize nodes, Time time)
     std::cout << nodes << " nodes / " << time << "s = ";
     std::cout << nodes/time << " nps" << std::endl;
 }
-#include "../thmpool.h"
+
 // Test propositional proof search. Return true if okay.
 bool testpropsearch
     (Database const & database, Param const & param)
@@ -97,11 +97,6 @@ bool testpropsearch
     {
         Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
-// printass(*iter);
-// Theorempool::pNode p = pool[profile(iter->second.expRPNAST())];
-// p->second.push_back(iter);
-// std::cout << p->second.size() << ' ';
-// std::cout << pool.matches(iter->second.expRPNAST()).size() << '\n';
 
         // Skip axioms, trivial and duplicate theorems.
         if (ass.testtype(Asstype::AXIOM + Asstype::DUPLICATE))

@@ -56,9 +56,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         return Moves();
     Goal const & goal = game.goal();
     // Check goal type code.
-    Thmpool const & pool = prob().database.thmpool();
-    Thmpool::const_iterator const iter = pool.find(goal.typecode);
-    if (iter == pool.end())
+    Theorempools const & pools = prob().database.theorempools();
+    Theorempools::const_iterator const iter = pools.find(goal.typecode);
+    if (iter == pools.end())
         return Moves();
     // Problem assertion #
     nAss & limit = pProb->numberlimit;
@@ -66,11 +66,8 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     if (limit > assnum())
         limit = assnum();
     // Theorems to be tried
-    Assiters const & assvec = iter->second;
-    // Goaldatas & datas = game.goaldatas();
-    // datas.passiters = &assvec;
-    // datas.substitutions.resize(assvec.size());
-    // datas.seen.resize(assvec.size());
+    // Assiters const & assvec = iter->second;
+    Assiters const & assvec = iter->second.matches(goal, limit);
     // Prepare term generator
     initGen();
     // All candidate substitutions
@@ -84,10 +81,9 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         if (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
         {
-            RPNspans subst;
-            if (::findsubst(goal, assiter, subst)
+            RPNspans subst(ass.maxvarid + 1);
+            if (::findsubst(goal, ass.expRPNAST(), subst)
                 && addmoves(assiter, subst, stage, moves))
-            // if (addmoves(assiter, datas.findsubst(goal, i), stage, moves))
                 return moves;
         }
     }
