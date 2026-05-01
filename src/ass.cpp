@@ -1,6 +1,7 @@
 #include "ass.h"
 #include "disjvars.h"
 // #include "io.h"
+#include "thmpool.h"
 #include "typecode.h"
 #include "util/algo.h"  // for util::addordered
 #include "util/filter.h"
@@ -253,15 +254,14 @@ void Assertion::sethyps(Assertion const & ass,
 }
 
 // Map usable theorems.
-Thmpool usablethms
-    (Assiters const & assiters, Assiters::size_type limit,
-     struct Typecodes const & typecodes)
+Theorempools usabletheorems
+    (Assiters const & assiters, struct Typecodes const & typecodes)
 {
-    Thmpool result;
+    Theorempools result;
 
-    for (nAss i = 1; i < limit; ++i)
+    for (nAss i = 1; i < assiters.size(); ++i)
     {
-        Assiter iter = assiters[i];
+        Assiter const iter = assiters[i];
         Assertion const & ass = iter->second;
         if (ass.testtype(Asstype::USELESS))
             continue;
@@ -270,9 +270,8 @@ Thmpool usablethms
         if (typecodes.isprimitive(typecode) != FALSE)
             continue;
     
-        Assiters & assvec = result[typecode];
-        assvec.reserve(limit - 1);
-        assvec.push_back(iter);
+        result[typecode][profile(iter->second.expRPNAST())]
+        ->second.push_back(iter);
     }
 
     return result;

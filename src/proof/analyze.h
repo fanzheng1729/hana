@@ -11,11 +11,8 @@ AST ast(RPN const & exp);
 // Return the indentations of all the subASTs.
 Indentations indentations(AST const & ast);
 
-struct Goal;
 // Return true if the RPN of an expression matches a template.
 bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst);
-bool findsubst
-    (Goal const & goal, Assiter iter, RPNspans & subst);
 
 // All maximal abstractions governed by a syntax axiom.
 GovernedRPNspansbystep maxabs(RPNspanAST exp);

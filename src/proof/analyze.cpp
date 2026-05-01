@@ -1,10 +1,6 @@
 #include <algorithm>    // for std::find and std::lexicographic_compare
 #include "../ass.h"
-#include "../io.h"
-#include "../search/goal.h"
-#include "../typecode.h"
-#include "analyze.h"
-#include "compspan.h"
+// #include "../io.h"
 #include "verify.h"
 
 // Subroutine for building AST.
@@ -118,13 +114,6 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
     default:
         return false;
     }
-}
-bool findsubst
-    (Goal const & goal, Assiter iter, RPNspans & subst)
-{
-    Assertion const & ass = iter->second;
-    subst.assign(ass.maxvarid + 1, RPNspan());
-    return findsubst(goal, ass.expRPNAST(), subst);
 }
 
 // Return true if span1 has all the variables in span2

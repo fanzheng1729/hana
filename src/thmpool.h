@@ -176,4 +176,8 @@ struct Theorempool : private SimpTree<Theorempoolnode>
     }
 };
 
+// Map: typecode -> theorems
+typedef std::map<strview, Assiters> Thmpool;
+typedef std::map<strview, Theorempool> Theorempools;
+
 #endif // THMPOOL_H_INCLUDED
