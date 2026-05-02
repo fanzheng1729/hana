@@ -3,7 +3,6 @@
 
 #include <algorithm>    // for std::min
 #include "environ.h"
-#include "goaldata.h"
 #include "../proof/compspan.h"
 #include "../util/for.h"
 

@@ -67,11 +67,13 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
         limit = assnum();
     // Theorems to be tried
     Assiters const & assvec = iter->second.matches(goal, limit);
+    // Assiters const & assvec = prob().database.assiters();
     // Prepare term generator
     initGen();
     // All candidate substitutions
     Moves moves;
     for (nAss i = 0; i < assvec.size(); ++i)
+    // for (nAss i = 1; i < limit; ++i)
     {
         Assiter const assiter = assvec[i];
         Assertion const & ass = assiter->second;
@@ -81,7 +83,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
         {
             RPNspans subst(ass.maxvarid + 1);
-            if (::findsubst(goal, ass.expRPNAST(), subst)
+            if (findsubst(goal, ass.expRPNAST(), subst)
                 && addmoves(assiter, subst, stage, moves))
                 return moves;
         }

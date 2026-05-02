@@ -1,7 +1,6 @@
 #include "../database.h"
 #include "environ.h"
 #include "../io.h"
-#include "goaldata.h"
 #include "problem.h"
 #include "../util/filter.h"
 #include "../util/progress.h"

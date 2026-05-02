@@ -39,7 +39,7 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     bool maxabsfilled;
     GovernedRPNspansbystep maxabs;
 };
-
+#include <unordered_map>
 // Map: goal -> context -> evaluation
 typedef std::map<Goal, Goaldatas> Goals;
 typedef Goals::pointer pBIGGOAL;
