@@ -26,13 +26,9 @@ struct Goal
     }
 };
 inline bool operator==(Goal const & x, Goal const & y)
-{
-    return x.rpn == y.rpn && x.typecode == y.typecode;
-}
+{ return x.rpn == y.rpn && x.typecode == y.typecode; }
 inline bool operator!=(Goal const & x, Goal const & y)
-{
-    return !(x == y);
-}
+{ return !(x == y); }
 inline bool operator<(Goal const & x, Goal const & y)
 {
     int const cmp
