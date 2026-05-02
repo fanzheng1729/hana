@@ -37,20 +37,20 @@ inline bool operator<(Goal const & x, Goal const & y)
 }
 
 // Hash for goals
-struct Goalhash
-{
-    std::size_t operator()(const Goal & goal) const
-    {
-        static std::size_t const mul = 3;
-        std::size_t factor = 1, hash = 0;
-        RPN const & rpn = goal.rpn;
-        for (RPNsize i = 0; i < goal.rpn.size(); ++i)
-        {
-            hash += factor * reinterpret_cast<std::size_t>(rpn[i].ptr());
-            factor *= mul;
-        }
-        return hash;
-    }
-};
+// struct Goalhash
+// {
+//     std::size_t operator()(const Goal & goal) const
+//     {
+//         static std::size_t const mul = 3;
+//         std::size_t factor = 1, hash = 0;
+//         RPN const & rpn = goal.rpn;
+//         for (RPNsize i = 0; i < goal.rpn.size(); ++i)
+//         {
+//             hash += factor * reinterpret_cast<std::size_t>(rpn[i].ptr());
+//             factor *= mul;
+//         }
+//         return hash;
+//     }
+// };
 
 #endif // GOAL_H_INCLUDED
