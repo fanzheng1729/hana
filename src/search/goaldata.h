@@ -34,10 +34,6 @@ struct Goaldatas : std::map<Environ const *, class Goaldata>
     // Proof that holds in the problem context
     RPN proof;
     bool proven() const { return !proof.empty(); }
-    Goaldatas() : maxabsfilled(false) {}
-    // Maximal abstractions
-    bool maxabsfilled;
-    GovernedRPNspansbystep maxabs;
 };
 
 // Map: goal -> context -> evaluation

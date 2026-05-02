@@ -145,12 +145,9 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Game const & game, Moves & moves) const
 {
-    Goaldatas & datas = game.goaldatas();
-    if (!datas.maxabsfilled)
-        datas.maxabs = maxabs(game.goal()),
-        datas.maxabsfilled = true;
+    GovernedRPNspansbystep const & abs = maxabs(game.goal());
 
-    FOR (GovernedRPNspansbystep::const_reference rstep, datas.maxabs)
+    FOR (GovernedRPNspansbystep::const_reference rstep, abs)
         FOR (GovernedRPNspans::const_reference subexp, rstep.second)
             if (addabsmoves(game.goal(), subexp, moves))
                 return true;
