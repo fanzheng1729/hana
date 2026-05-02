@@ -66,7 +66,6 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     if (limit > assnum())
         limit = assnum();
     // Theorems to be tried
-    // Assiters const & assvec = iter->second;
     Assiters const & assvec = iter->second.matches(goal, limit);
     // Prepare term generator
     initGen();
@@ -76,7 +75,7 @@ Moves Environ::ourmoves(Game const & game, stage_t stage) const
     {
         Assiter const assiter = assvec[i];
         Assertion const & ass = assiter->second;
-        if (ass.number == 0 || ass.number >= limit || !ontopic(ass))
+        if (!ontopic(ass))
             continue;
         if (stage == 0 ||
             (ass.nfreevar() > 0 && stage >= ass.nfreevar()))
@@ -144,7 +143,12 @@ bool Environ::addhypmoves(pAss pthm, Moves & moves,
 // Add abstraction moves. Return true if it has no open hypotheses.
 bool Environ::addabsmoves(Game const & game, Moves & moves) const
 {
-    FOR (GovernedRPNspansbystep::const_reference rstep, game.goaldata().maxabs())
+    Goaldatas & datas = game.goaldatas();
+    if (!datas.maxabsfilled)
+        datas.maxabs = maxabs(game.goal()),
+        datas.maxabsfilled = true;
+
+    FOR (GovernedRPNspansbystep::const_reference rstep, datas.maxabs)
         FOR (GovernedRPNspans::const_reference subexp, rstep.second)
             if (addabsmoves(game.goal(), subexp, moves))
                 return true;

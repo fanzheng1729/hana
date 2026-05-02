@@ -1,5 +1,6 @@
 #include <algorithm>    // for std::find and std::lexicographic_compare
 #include "../ass.h"
+#include "compspan.h"
 // #include "../io.h"
 #include "verify.h"
 
@@ -79,11 +80,10 @@ Indentations indentations(AST const & ast)
         indentations(ast.begin(), ast.end(), result);
     return result;
 }
-extern std::size_t nfind = 0;
+
 // Return true if the RPN of an expression matches a template.
 bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
 {
-    ++nfind;
     if (exp.empty() || tmp.empty() || exp.size() < tmp.size())
         return false;
 // std::cout << "Matching " << exp.first << "Against " << tmp.first;
@@ -93,7 +93,6 @@ bool findsubst(RPNspanAST exp, RPNspanAST tmp, RPNspans & subst)
     case RPNstep::HYP:
         if (Symbol2::ID const id = tmproot.id())
         {
-// std::cout << "Var " << tmproot << " ID = " << id << std::endl;
             // Template hypothesis is floating. Check if it has been seen.
             if (subst[id].second > subst[id].first) // seen
                 return exp.first == subst[id];

@@ -151,7 +151,5 @@ int main(int argc, char * argv[])
     // bool const okay = testpropsearch(database, param);
     // std::cout.rdbuf(coutbuf);
     // if (!okay) return EXIT_FAILURE;
-extern std::size_t nfind;
-std::cout << nfind;
     return EXIT_SUCCESS;
 }

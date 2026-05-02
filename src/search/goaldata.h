@@ -4,7 +4,6 @@
 #include <algorithm>    // for std::lower_bound
 #include "game.h"
 #include "../MCTS/MCTS.h"
-#include "../types.h"
 #include "../util/for.h"
 
 // Proof status of a goal
@@ -167,14 +166,6 @@ public:
         }
 
         return status;
-    }
-    GovernedRPNspansbystep const & maxabs()
-    {
-        if (goaldatas().maxabsfilled)
-            return goaldatas().maxabs;
-        goaldatas().maxabs = ::maxabs(goal());
-        goaldatas().maxabsfilled = true;
-        return goaldatas().maxabs;
     }
 };
 
