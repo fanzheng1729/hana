@@ -1,13 +1,14 @@
 #ifndef SIMPTREE_H_INCLUDED
 #define SIMPTREE_H_INCLUDED
 
+#include <algorithm>    // for std::lower_bound
 #include <cstddef>      // for NULL
 #include <functional>   // for std::less
 #include <vector>
-#include "for.h"
-#include "../util/algo.h"   // for util::addordered
-
 // #undef __cpp_lib_incomplete_container_elements
+#ifndef __cpp_lib_incomplete_container_elements
+#include "for.h"
+#endif // __cpp_lib_incomplete_container_elements
 
 template<class T>
 class SimpTree
@@ -150,19 +151,30 @@ public:
         pNode insertordered(T const & t) const
         {
             if (!*this) return pNode();
-            reserve(m_ptr->children.size() + 1);
 #ifdef __cpp_lib_incomplete_container_elements
             // Pointer to the child.
-            return &*util::addordered(m_ptr->children, TreeNode(t));
+            return doinsertordered(t);
 #else
             // Pointer to the child.
             pNode child = new TreeNode(t);
             // Update the parent.
-            util::addordered(m_ptr->children, child);
+            doinsertordered(child);
             return child;
 #endif // __cpp_lib_incomplete_container_elements
         }
-    };
+    private:
+        pNode doinsertordered(typename Children::value_type const & child) const
+        {
+            Children & children = m_ptr->children;
+            typename Children::iterator const iter =
+                std::lower_bound(children.begin(), children.end(), child,
+                                 std::less<typename Children::value_type>());
+            if (iter == children.end() || *iter != child)
+                return &*children.insert(iter, child);
+            else
+                return &*iter;
+        }
+    }; // class pNode
 public:
     // Construct an empty tree.
     SimpTree() : m_data() {}
