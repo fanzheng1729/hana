@@ -21,7 +21,7 @@ struct Move
         Type type;
         // Index of the hypothesis, on their turn
         Hypsize index;
-        // True if no DEFER move is needed, in move tree
+        // True if no DEFER move is needed in singular extension
         bool nodefer;
     };
     // Pointer to the theorem to be used, on our turn
@@ -36,6 +36,12 @@ struct Move
     // mutable std::vector<pGoal> subgoals;
     // Workaround for some compilers
     mutable std::vector<void *> subgoals;
+    // Tree of moves to be tried in singular extension
+    typedef SimpTree<Move> MoveTree;
+    // Pointer to nodes in move trees
+    typedef MoveTree::pNode pMoveTree;
+    // Move trees for subgoals
+    // std::vector<MoveTree> MoveTrees;
     // Move of specified type, defaulted to NONE
     Move(Type t = NONE) : type(t), pthm() {}
     // Move applying a theorem, on our turn
