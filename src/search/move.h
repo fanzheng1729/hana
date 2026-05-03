@@ -14,7 +14,6 @@ static const std::string strcomb = "COMB";
 struct Move
 {
     enum Type {NONE, THM, CONJ, DEFER};
-    typedef std::vector<RPN> Substitutions;
     union
     {
         // Type of the attempt, on our turn
@@ -27,6 +26,7 @@ struct Move
     // Pointer to the theorem to be used, on our turn
     pAss pthm;
     // Substitutions to be used, on our turn
+    typedef std::vector<RPN> Substitutions;
     Substitutions substitutions;
     // Conjectures, last one = the abstracted goal
     typedef std::vector<Goal> Conjectures;
