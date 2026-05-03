@@ -112,7 +112,7 @@ public:
         T & operator*() const { return m_ptr->value; }
         T * operator->()const { return&m_ptr->value; }
         friend bool operator==(pNode x, pNode y){ return *x == *y; }
-        friend bool operator!=(pNode x, pNode y){ return *x != *y; }
+        friend bool operator!=(pNode x, pNode y){ return !(x == y); }
         friend bool operator< (pNode x, pNode y){ return *x < *y; }
         // Return pointer to the children of a node.
         // Return nullptr if *this is nullptr.
@@ -187,7 +187,7 @@ public:
     // Copy =
     SimpTree & operator=(SimpTree const & other)
     {
-        if (data() == other.data())
+        if (m_data == other.m_data)
             return *this;
         clear();
         return *(new(this) SimpTree(other));
@@ -198,7 +198,7 @@ public:
     // Move =
     SimpTree & operator=(SimpTree && other)
     {
-        if (data() == other.data())
+        if (m_data == other.m_data)
             return *this;
         clear();
         m_data = other.m_data;

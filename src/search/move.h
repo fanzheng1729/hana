@@ -41,7 +41,7 @@ struct Move
     // Pointer to nodes in move trees
     typedef MoveTree::pNode pMoveTree;
     // Move trees for subgoals
-    // std::vector<MoveTree> MoveTrees;
+    std::vector<MoveTree> MoveTrees;
     // Move of specified type, defaulted to NONE
     Move(Type t = NONE) : type(t), pthm() {}
     // Move applying a theorem, on our turn
