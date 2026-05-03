@@ -5,6 +5,7 @@
 #include "../bank.h"
 #include "goal.h"
 #include "../util/hex.h"
+#include "../util/simptree.h"
 
 static const std::string strconj = "CONJ";
 static const std::string strcomb = "COMB";
@@ -20,6 +21,8 @@ struct Move
         Type type;
         // Index of the hypothesis, on their turn
         Hypsize index;
+        // True if no DEFER move is needed, in move tree
+        bool nodefer;
     };
     // Pointer to the theorem to be used, on our turn
     pAss pthm;
