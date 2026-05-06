@@ -33,15 +33,15 @@ public:
         // Vector of children
         Children children;
         // The value
-        T value;
-        TreeNode(T const & t) : value(t) {}
+        T val;
+        TreeNode(T const & t) : val(t) {}
     public:
-        friend bool operator==(TreeNode const & x, TreeNode const & y)
-        { return x.value == y.value; }
-        friend bool operator!=(TreeNode const & x, TreeNode const & y)
-        { return !(x == y); }
-        friend bool operator< (TreeNode const & x, TreeNode const & y)
-        { return x.value < y.value; }
+        T & value() { return val; }
+        T const & value() const { return val; }
+        friend bool operator<(TreeNode const & x, T const & t)
+        { return x.value() < t; }
+        friend bool operator<(T const & t, TreeNode const & x)
+        { return t < x.value(); }
     }; // class TreeNode
 private:
     // Pointer to the root
@@ -88,7 +88,7 @@ public:
         pNode m_insert(TreeNode const & node) const
         {
             // Add the root of the subtree.
-            pNode child = m_insert(node.value);
+            pNode child = m_insert(node.value());
             // Add all its children.
             child.m_insertchildren(node);
 
@@ -110,11 +110,11 @@ public:
         // Return # children of a node. Return 0 if *this is nullptr.
         size_type nchild() const { return *this ? m_ptr->children.size() : 0; }
         // Return the content of a node. *this != nullptr.
-        T & operator*() const { return m_ptr->value; }
-        T * operator->()const { return&m_ptr->value; }
-        friend bool operator==(pNode x, pNode y){ return *x == *y; }
-        friend bool operator!=(pNode x, pNode y){ return !(x == y); }
-        friend bool operator< (pNode x, pNode y){ return *x < *y; }
+        T & value() const { return m_ptr->val; }
+        T & operator*() const { return value(); }
+        T * operator->()const { return&value(); }
+        friend bool operator<(pNode x, T const & t) { return *x < t; }
+        friend bool operator<(T const & t, pNode x) { return t < *x; }
         // Return pointer to the children of a node.
         // Return nullptr if *this is nullptr.
         Children const * children() const
@@ -122,16 +122,6 @@ public:
         // Reserve space for children and fix the parents of existing ones.
         void reserve(size_type n) const
         { if (*this) m_ptr->children.reserve(n); }
-        // Find a child with value t and return its pointer.
-        // Return nullptr if not found.
-        pNode find(T const & t) const
-        {
-            Children const * p = children();
-            if (!p) return pNode();
-            typename Children::const_iterator iter =
-            std::find(p->begin(), p->end(), t);
-            return iter == p->end() ? pNode() : *iter;
-        }
         // Add a child. Return the pointer to the child.
         // DO NOTHING and return nullptr if *this is nullptr.
         pNode insert(T const & t) const
@@ -142,37 +132,30 @@ public:
         {
             Children const * p = children();
             if (!p) return pNode();
-            typename Children::const_iterator iter =
-            std::lower_bound(p->begin(), p->end(), TreeNode(t));
-            return (iter == p->end() || *iter != t) ? pNode() : *iter;
+            typename Children::const_iterator iter = dofindordered(t);
+            return (iter == p->end() || iter->value() != t)
+                    ? pNode() : *iter;
         }
         // Add a child. Return the pointer to the child.
         // DO NOTHING and return nullptr if *this is nullptr.
         pNode insertordered(T const & t) const
         {
             if (!*this) return pNode();
+            Children & children = m_ptr->children;
+            typename Children::iterator const iter = dofindordered(t);
+            return (iter != children.end() && iter->value() == t) ?
+                    *iter :
 #ifdef __cpp_lib_incomplete_container_elements
-            // Pointer to the child.
-            return doinsertordered(t);
+                    *children.insert(iter, t);
 #else
-            // Pointer to the child.
-            pNode child = new TreeNode(t);
-            // Update the parent.
-            doinsertordered(child);
-            return child;
+                    *children.insert(iter, new TreeNode(t));
 #endif // __cpp_lib_incomplete_container_elements
         }
     private:
-        pNode doinsertordered(typename Children::value_type const & child) const
+        typename Children::iterator dofindordered(T const & t) const
         {
             Children & children = m_ptr->children;
-            typename Children::iterator const iter =
-                std::lower_bound(children.begin(), children.end(), child,
-                                 std::less<typename Children::value_type>());
-            if (iter == children.end() || *iter != child)
-                return &*children.insert(iter, child);
-            else
-                return &*iter;
+            return std::lower_bound(children.begin(), children.end(), t);
         }
     }; // class pNode
 public:
@@ -189,7 +172,7 @@ public:
 #ifdef __cpp_lib_incomplete_container_elements
             m_data = new TreeNode(*p);
 #else
-            m_data = new TreeNode(p->value);
+            m_data = new TreeNode(p->val);
             // Add children.
             data().m_insertchildren(*p);
 #endif // __cpp_lib_incomplete_container_elements

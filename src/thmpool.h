@@ -114,12 +114,12 @@ struct Theorempool : private SimpTree<Theorempoolnode>
         pNode(SimpTree::pNode node) : SimpTree::pNode(node) {}
         pNode operator[](RPN const & rpn) const
         {
-            Theorempoolnode node(rpn, Assiters());
+            Theorempoolnode const node(rpn, Assiters());
             return insertordered(node);
         }
         pNode at(RPN const & rpn) const
         {
-            Theorempoolnode node(rpn, Assiters());
+            Theorempoolnode const node(rpn, Assiters());
             return findordered(node);
         }
         Assiters matches(RPNspanASTs const & subexps, nAss limit = -1) const
