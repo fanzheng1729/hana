@@ -164,9 +164,9 @@ void Gen::generateupto(strview type, RPNsize size) const
         // Main loop of term generation
         dogenerate(types, size, adder);
     }
+
     // Record the # of terms.
-    countbysize.insert(countbysize.end(),
-                       size + 1 - countbysize.size(), terms.size());
+    countbysize.push_back(terms.size());
 }
 
 // Generate all terms for all arguments with RPN up to a given size.
